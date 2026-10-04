@@ -107,6 +107,16 @@ export default function HomePage() {
               autoFocus
             />
 
+            <div className="codeToolbar">
+              <div>
+                <div className="fieldLabel">FORMAT</div>
+                <div className="expiryHint">Choose a language for code sharing.</div>
+              </div>
+              <select className="languageSelect" value={language} onChange={(e) => setLanguage(e.target.value)} aria-label="Code language">
+                {languages.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+              </select>
+            </div>
+
             <div className="expiryPicker">
               <div>
                 <div className="fieldLabel">LINK LIFETIME</div>
