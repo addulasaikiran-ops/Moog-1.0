@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 
-type Expiry = 15 | 60;
+type Expiry = 5 | 15 | 30 | 60;
 
 export default function HomePage() {
   const [text, setText] = useState("");
