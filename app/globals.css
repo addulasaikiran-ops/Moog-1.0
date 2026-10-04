@@ -292,3 +292,15 @@ footer span { padding: 0 6px; color: #343841; }
   .countdownWrap { gap: 7px; }
   .countdownWrap strong { font-size: 13px; }
 }
+
+
+.codeToolbar { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; border-top:1px solid rgba(255,255,255,.08); }
+.languageSelect { border:1px solid var(--line); border-radius:10px; background:#11131a; color:#dfe2d8; padding:9px 12px; font-size:12px; outline:0; }
+.languageSelect:focus { border-color:rgba(201,255,77,.35); }
+.codeViewer { margin:-4px -18px 0; border:1px solid rgba(255,255,255,.08); border-radius:15px; overflow:hidden; background:#07080b; }
+.codeViewerTop { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:10px 13px; border-bottom:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.025); }
+.codeLanguage { color:var(--accent); font-size:10px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+.codeCopy { border:1px solid rgba(255,255,255,.1); background:#171a21; color:#dfe2d8; border-radius:8px; padding:7px 10px; font-size:11px; font-weight:700; cursor:pointer; }
+.codeCopy:hover { border-color:rgba(201,255,77,.25); }
+.codeViewer pre { margin:0; padding:22px; overflow:auto; max-height:65vh; color:#e9ebe5; font:13px/1.7 "SFMono-Regular",Consolas,"Liberation Mono",monospace; tab-size:2; white-space:pre; }
+@media(max-width:650px) { .codeToolbar { align-items:stretch; flex-direction:column; } .languageSelect { width:100%; } .codeViewer { margin:0 -4px; } .codeViewer pre { padding:16px; font-size:12px; } }
