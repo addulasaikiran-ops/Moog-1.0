@@ -557,3 +557,54 @@ footer span { padding: 0 6px; color: #343841; }
 @media(prefers-reduced-motion:reduce){
   .minimalCard { animation:none; }
 }
+
+
+/* Refined photo upload */
+.photoDrop {
+  min-height: 228px;
+  padding: 30px 28px;
+  border: 1px dashed rgba(255,255,255,.13);
+  border-radius: 16px;
+  background: #0b0c0f;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:border-color .18s, background .18s;
+}
+.photoDrop:hover, .photoDrop:focus-visible {
+  border-color:rgba(255,255,255,.28);
+  background:#0e0f12;
+  outline:none;
+}
+.photoDropEmpty {
+  width:min(560px,100%);
+  display:grid;
+  grid-template-columns:48px 1fr auto;
+  align-items:center;
+  gap:14px 16px;
+  text-align:left;
+}
+.photoDropGlyph {
+  width:48px;height:48px;display:grid;place-items:center;
+  border:1px solid rgba(255,255,255,.12);border-radius:12px;
+  color:#b9b9b5;background:#121316;font-size:25px;font-weight:300;line-height:1;
+}
+.photoDropCopy strong { display:block;color:#ececea;font-size:15px;font-weight:600;letter-spacing:-.01em; }
+.photoDropCopy span { display:block;margin-top:4px;color:#6f716f;font-size:12px; }
+.photoBrowse {
+  border:1px solid rgba(255,255,255,.12);background:#151619;color:#deded9;
+  border-radius:9px;padding:9px 12px;font-size:12px;font-weight:600;
+  transition:border-color .15s,background .15s;
+}
+.photoBrowse:hover { border-color:rgba(255,255,255,.24);background:#1a1b1f; }
+.photoDropEmpty small {
+  grid-column:2 / -1;color:#4f514f;font-size:10px;letter-spacing:.04em;
+}
+@media(max-width:650px){
+  .photoDrop { min-height:210px;padding:24px 18px; }
+  .photoDropEmpty { grid-template-columns:42px 1fr;gap:12px; }
+  .photoDropGlyph { width:42px;height:42px; }
+  .photoBrowse { grid-column:1 / -1;width:100%;padding:11px 12px; }
+  .photoDropEmpty small { grid-column:1 / -1;text-align:center; }
+}
