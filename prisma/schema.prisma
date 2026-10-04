@@ -19,6 +19,7 @@ model Share {
   viewOnce        Boolean   @default(false)
   viewedAt        DateTime?
   revealTokenHash String?   @unique
+  revealConsumedAt DateTime?
   createdAt       DateTime  @default(now())
   expiresAt       DateTime
 
