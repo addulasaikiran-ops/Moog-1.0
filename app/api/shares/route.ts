@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateToken, hashToken } from "@/lib/token";
 
-const EXPIRY_OPTIONS = new Set([15, 60]);
+const EXPIRY_OPTIONS = new Set([5, 15, 30, 60]);
 
 export async function POST(request: Request) {
   try {
