@@ -187,3 +187,93 @@ footer span { padding: 0 6px; color: #343841; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+
+/* Shared message viewer */
+.viewerPage {
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+  padding: 28px 20px 32px;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(201,255,77,.08), transparent 26%),
+    linear-gradient(180deg, #0a0b0f 0%, #08090c 100%);
+}
+.viewerShell { width: min(860px, 100%); margin: auto; position: relative; z-index: 1; }
+.viewerGlow { position: absolute; border-radius: 999px; filter: blur(100px); opacity: .08; pointer-events: none; }
+.viewerGlowOne { width: 360px; height: 360px; background: var(--accent); top: 35%; left: -220px; }
+.viewerGlowTwo { width: 300px; height: 300px; background: #6d5cff; right: -180px; bottom: 5%; }
+.viewerTopbar { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.viewerStatus {
+  display: flex; align-items: center; gap: 8px; color: #aeb2bd; font-size: 11px;
+  border: 1px solid var(--line); background: rgba(255,255,255,.025);
+  padding: 8px 11px; border-radius: 999px;
+}
+.viewerIntro { padding: 72px 4px 30px; }
+.viewerEyebrow { color: var(--accent); font-size: 10px; font-weight: 800; letter-spacing: .18em; margin-bottom: 14px; }
+.viewerIntro h1 {
+  margin: 0; font-size: clamp(42px, 7vw, 68px); line-height: .98;
+  letter-spacing: -.06em; font-weight: 800;
+}
+.viewerIntro h1 span { color: #666a76; }
+.viewerCard {
+  background: rgba(18,20,26,.9); border: 1px solid var(--line); border-radius: 26px;
+  box-shadow: 0 35px 100px rgba(0,0,0,.42), inset 0 1px rgba(255,255,255,.04);
+  backdrop-filter: blur(20px); overflow: hidden;
+}
+.viewerCardTop {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  padding: 20px 22px; border-bottom: 1px solid var(--line);
+}
+.viewerLabel { display: block; color: #7b808c; font-size: 10px; font-weight: 800; letter-spacing: .16em; }
+.viewerHint { margin: 5px 0 0; color: #555a66; font-size: 11px; }
+.viewerLock {
+  display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px;
+  color: var(--accent); border: 1px solid rgba(201,255,77,.16); background: rgba(201,255,77,.05);
+  font-size: 15px;
+}
+.viewerMessage {
+  min-height: 340px; padding: 42px 52px 48px; background: rgba(5,6,8,.38);
+}
+.viewerMessage p {
+  margin: 0; white-space: pre-wrap; overflow-wrap: anywhere;
+  color: #f1f2ed; font-size: clamp(17px, 2vw, 20px); line-height: 1.8;
+  letter-spacing: -.01em;
+}
+.quoteMark {
+  color: var(--accent); font-family: Georgia, serif; font-size: 58px; line-height: .7;
+  margin-bottom: 24px; opacity: .8;
+}
+.viewerFooter {
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+  padding: 19px 22px; border-top: 1px solid var(--line);
+}
+.viewerFooter strong {
+  display: block; margin-top: 5px; color: #b7bac3; font-size: 12px; font-weight: 600;
+}
+.viewerCreate {
+  color: #b9bdc7; font-size: 12px; font-weight: 700; text-decoration: none;
+  border: 1px solid rgba(255,255,255,.1); background: rgba(255,255,255,.025);
+  padding: 10px 13px; border-radius: 10px; transition: .2s;
+}
+.viewerCreate:hover { color: var(--text); border-color: rgba(201,255,77,.25); background: rgba(201,255,77,.04); }
+.viewerCreate span { color: var(--accent); margin-left: 5px; }
+.viewerBottom {
+  display: flex; justify-content: space-between; gap: 20px; padding: 22px 2px 8px;
+  color: #505560; font-size: 10px; letter-spacing: .04em;
+}
+.viewerBottom span:first-child { color: #777c86; font-weight: 800; letter-spacing: -.02em; }
+
+@media (max-width: 650px) {
+  .viewerPage { padding: 18px 14px 24px; }
+  .viewerStatus { display: none; }
+  .viewerIntro { padding: 56px 2px 24px; }
+  .viewerIntro h1 { font-size: 46px; }
+  .viewerCard { border-radius: 20px; }
+  .viewerCardTop { padding: 17px; }
+  .viewerMessage { min-height: 320px; padding: 30px 20px 36px; }
+  .viewerMessage p { font-size: 16px; line-height: 1.75; }
+  .viewerFooter { align-items: flex-start; flex-direction: column; padding: 17px; }
+  .viewerCreate { width: 100%; text-align: center; }
+  .viewerBottom { flex-direction: column; gap: 6px; }
+}
