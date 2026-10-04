@@ -1,12 +1,12 @@
 # Moog 1.0
 
-Moog is a no-login text sharing app. You paste text, create a random share URL, and the share is valid for one hour.
+Moog is a no-login text sharing app. You paste text, create a random share URL, choose its lifetime, optionally protect it with an access key, and optionally make it view once.
 
 ## Architecture
 
 - Next.js + TypeScript: web app and API routes
 - Prisma: database access
-- PostgreSQL: persistent storage (Neon is recommended)
+- PostgreSQL: persistent storage (Supabase Postgres works well)
 - GitHub Actions: scheduled cleanup every 15 minutes
 - Deployment: any Node-compatible host such as Railway, Render, or a VPS
 
@@ -74,4 +74,4 @@ Raw share tokens are never stored. The database stores only the SHA-256 digest.
 
 The share page checks the expiration timestamp on every request, so an expired link returns the 404 page even when the database cleanup job has not run yet.
 
-The current implementation limits text to 100,000 characters and does not require accounts or cookies for sharing.
+The current implementation limits text to 100,000 characters. Protected links use a short-lived, HttpOnly, path-scoped access cookie instead of placing the password in the URL. Share creation and password attempts are rate-limited per client. Security headers are applied globally.
