@@ -389,3 +389,50 @@ footer span { padding: 0 6px; color: #343841; }
   .photoDrop { min-height:220px; padding:20px 14px; }
   .photoPreview { max-height:320px; }
 }
+
+/* Viewer redesign */
+.viewerIntroCompact { padding: 58px 2px 22px; }
+.viewerIntroLine { display:flex; align-items:flex-end; justify-content:space-between; gap:20px; }
+.viewerIntroCompact h1 { font-size:clamp(38px,6vw,58px); }
+.viewerExpiryBadge,.viewerSecure {
+  display:flex;align-items:center;gap:8px;border:1px solid var(--line);
+  background:rgba(255,255,255,.025);color:#8d929d;padding:9px 11px;border-radius:999px;
+  font-size:10px;font-weight:750;letter-spacing:.04em;white-space:nowrap;
+}
+.viewerType {
+  color:#777c88;font-size:9px;font-weight:800;letter-spacing:.14em;
+  border:1px solid var(--line);padding:7px 9px;border-radius:8px;background:rgba(255,255,255,.02);
+}
+.viewerContentCard { box-shadow:0 30px 90px rgba(0,0,0,.36),inset 0 1px rgba(255,255,255,.035); }
+.viewerContentCard .viewerMessage { min-height:300px; }
+.messageText { max-width:760px;margin:auto; }
+.expiryBlock { min-width:170px; }
+.lockStage { width:min(620px,100%); margin:clamp(70px,14vh,130px) auto 0; text-align:center; }
+.lockIcon {
+  width:54px;height:54px;margin:0 auto 22px;display:grid;place-items:center;
+  border-radius:16px;color:var(--accent);background:rgba(201,255,77,.07);
+  border:1px solid rgba(201,255,77,.18);font-size:20px;
+}
+.lockStage h1 { margin:0;font-size:clamp(36px,6vw,54px);letter-spacing:-.055em;line-height:1; }
+.lockStage > p { margin:14px auto 26px;color:#777c88;font-size:14px;line-height:1.6;max-width:420px; }
+.lockForm { padding:22px; }
+.passwordRow { display:flex;gap:9px;margin-top:9px; }
+.passwordRow .passwordInput { flex:1;min-width:0; }
+.passwordRow .primary { white-space:nowrap; }
+.lockNote { margin-top:14px;color:#4f5560;font-size:10px; }
+.lockDot { color:var(--accent);font-size:14px; }
+.sharedPhotoWrap { max-width:760px;margin:auto;text-align:center; }
+.sharedPhoto { max-height:65vh; }
+.photoCaptionView { margin-top:16px !important;color:#aeb2bd !important;font-size:13px !important;line-height:1.6 !important; }
+.photoDownload { display:inline-flex;margin-top:16px;align-items:center;gap:7px;color:#aeb2bd;text-decoration:none;border:1px solid var(--line);background:rgba(255,255,255,.025);padding:9px 12px;border-radius:10px;font-size:11px;font-weight:700; }
+.photoDownload:hover { border-color:rgba(201,255,77,.25);color:var(--text); }
+@media(max-width:650px){
+  .viewerIntroCompact { padding:44px 2px 18px; }
+  .viewerIntroLine { align-items:flex-start;flex-direction:column;gap:14px; }
+  .viewerExpiryBadge { align-self:flex-start; }
+  .viewerContentCard .viewerMessage { min-height:280px; }
+  .viewerType { display:none; }
+  .passwordRow { flex-direction:column; }
+  .passwordRow .primary { width:100%; }
+  .lockStage { margin-top:72px; }
+}
