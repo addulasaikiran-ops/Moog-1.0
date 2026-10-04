@@ -1,0 +1,1 @@
+ALTER TABLE "public"."Share" ADD COLUMN "rConsumedAt" TIMESTAMP(3);
