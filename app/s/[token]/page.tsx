@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { hashToken, verifyAccessGrant } from "@/lib/token";
 import Countdown from "./Countdown";
 import CodeViewer from "./CodeViewer";
+import ViewOnceContent from "./ViewOnceContent";
 
 export const dynamic = "force-dynamic";
 
@@ -108,29 +109,35 @@ export default async function SharePage({ params, searchParams }: Props) {
               <Countdown expiresAt={share.expiresAt.toISOString()} />
             </div>
 
-            <div className="minimalContent">
-              {share.language === "photo" ? (
-                <div className="minimalPhoto">
-                  <img src={"/api/shares/" + token + "/image"} alt={share.text || "Shared photo"} />
-                  {share.text ? <p>{share.text}</p> : null}
+            {share.viewOnce ? (
+              <ViewOnceContent token={token} />
+            ) : (
+              <>
+                <div className="minimalContent">
+                  {share.language === "photo" ? (
+                    <div className="minimalPhoto">
+                      <img src={"/api/shares/" + token + "/image"} alt={share.text || "Shared photo"} />
+                      {share.text ? <p>{share.text}</p> : null}
+                    </div>
+                  ) : share.language === "text" ? (
+                    <p className="minimalText">{share.text}</p>
+                  ) : (
+                    <CodeViewer text={share.text} language={share.language} />
+                  )}
                 </div>
-              ) : share.language === "text" ? (
-                <p className="minimalText">{share.text}</p>
-              ) : (
-                <CodeViewer text={share.text} language={share.language} />
-              )}
-            </div>
 
-            <div className="minimalActions">
-              <div className="minimalActionGroup">
-                {share.language === "photo" ? (
-                  <a className="minimalAction primaryAction" href={"/api/shares/" + token + "/image?download=1"}>Download</a>
-                ) : (
-                  <span className="minimalActionNote">{share.viewOnce ? "View once" : "Private share"}</span>
-                )}
-              </div>
-              <a className="minimalNewShare" href="/">New share <span>→</span></a>
-            </div>
+                <div className="minimalActions">
+                  <div className="minimalActionGroup">
+                    {share.language === "photo" ? (
+                      <a className="minimalAction primaryAction" href={"/api/shares/" + token + "/image?download=1"}>Download</a>
+                    ) : (
+                      <span className="minimalActionNote">Private share</span>
+                    )}
+                  </div>
+                  <a className="minimalNewShare" href="/">New share <span>→</span></a>
+                </div>
+              </>
+            )}
           </article>
         </main>
 
