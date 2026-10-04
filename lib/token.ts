@@ -1,4 +1,4 @@
-import { createHash, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import { createHash, createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 
 export function generateToken(): string {
   return randomBytes(32).toString("base64url");
@@ -20,4 +20,32 @@ export function verifySecret(value: string, stored: string): boolean {
 
 export function hashToken(token: string): string {
   return createHash("sha256").update(token, "utf8").digest("hex");
+}
+
+export function createAccessGrant(tokenHash: string, expiresAt: Date): string {
+  const secret = process.env.ACCESS_SESSION_SECRET;
+  if (!secret) throw new Error("ACCESS_SESSION_SECRET is not configured.");
+  const payload = `${tokenHash}.${expiresAt.getTime()}`;
+  const signature = createHmac("sha256", secret).update(payload).digest("base64url");
+  return `${expiresAt.getTime()}.${signature}`;
+}
+
+export function verifyAccessGrant(tokenHash: string, expiresAt: Date, grant: string): boolean {
+  const secret = process.env.ACCESS_SESSION_SECRET;
+  if (!secret) return false;
+  const [grantExpiry, signature] = grant.split(".");
+  if (!grantExpiry || !signature) return false;
+  const expectedExpiry = expiresAt.getTime();
+  if (grantExpiry !== String(expectedExpiry) || expectedExpiry <= Date.now()) return false;
+  const payload = `${tokenHash}.${grantExpiry}`;
+  const expected = createHmac("sha256", secret).update(payload).digest("base64url");
+  const a = Buffer.from(signature);
+  const b = Buffer.from(expected);
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+export function getClientKey(request: Request): string {
+  return request.headers.get("x-real-ip")
+    ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+    ?? "unknown";
 }
