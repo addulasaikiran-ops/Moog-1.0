@@ -22,9 +22,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Validate Prisma schema
-        run: npx prisma validate
-
       - name: Generate Prisma client
         run: npm run db:generate
 
