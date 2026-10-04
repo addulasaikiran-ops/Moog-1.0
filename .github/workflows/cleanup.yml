@@ -1,0 +1,20 @@
+name: Cleanup expired Moog shares
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete expired shares
+        env:
+          APP_URL: \${{ secrets.MOOG_APP_URL }}
+          CRON_SECRET: \${{ secrets.MOOG_CRON_SECRET }}
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error \
+            -H "Authorization: Bearer \${CRON_SECRET}" \
+            "\${APP_URL}/api/cron/cleanup"
