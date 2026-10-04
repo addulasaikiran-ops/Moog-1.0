@@ -19,15 +19,18 @@ export default async function SharePage({ params, searchParams }: Props) {
 
   const cookieStore = await cookies();
   const grant = cookieStore.get(`moog_access_${token}`)?.value;
+  const revealGrant = cookieStore.get(`moog_reveal_${token}`)?.value;
   const unlocked = !share.passwordHash || (!!grant && verifyAccessGrant(tokenHash, share.expiresAt, grant));
+  const revealed = !share.viewOnce || (!!revealGrant && verifyAccessGrant(tokenHash, share.expiresAt, revealGrant));
+
+  if (share.viewOnce && share.viewedAt && !revealed) notFound();
 
   if (!unlocked) {
     return (
-      <main className="viewerPage viewerLockedPage">
-        <div className="viewerGlow viewerGlowOne" />
+      <main className="viewerPage viewerMinimal viewerLockedPage">
         <div className="viewerShell">
           <header className="viewerTopbar">
-            <a className="logo" href="/"><span className="logoMark">M</span><span>moog</span></a>
+            <a className="minimalLogo" href="/">moog</a>
             <span className="viewerSecure"><span className="lockDot">⌁</span> private link</span>
           </header>
           <section className="lockStage">
@@ -35,7 +38,7 @@ export default async function SharePage({ params, searchParams }: Props) {
             <div className="viewerEyebrow">PASSWORD PROTECTED</div>
             <h1>This link is private.</h1>
             <p>Enter the password to reveal what was shared with you.</p>
-            <section className="viewerCard passwordCard">
+            <section className="minimalCard passwordCard">
               <div className="lockForm">
                 <form action={"/api/shares/" + token + "/unlock"} method="post">
                   <label className="viewerLabel" htmlFor="password">ACCESS PASSWORD</label>
@@ -55,9 +58,30 @@ export default async function SharePage({ params, searchParams }: Props) {
     );
   }
 
-  if (share.viewOnce && share.language !== "photo") {
-    const claimed = await prisma.share.updateMany({ where: { id: share.id, viewedAt: null }, data: { viewedAt: new Date() } });
-    if (claimed.count !== 1) notFound();
+  if (share.viewOnce && !revealed) {
+    return (
+      <main className="viewerPage viewerMinimal">
+        <div className="viewerShell">
+          <header className="viewerTopbar">
+            <a className="minimalLogo" href="/">moog</a>
+            <span className="viewerSecure">private link</span>
+          </header>
+          <main className="viewerMain">
+            <section className="minimalCard revealCard">
+              <div className="revealContent">
+                <div className="revealEyebrow">VIEW ONCE</div>
+                <h1>Ready to reveal.</h1>
+                <p>This share can be opened once. Reveal it when you are ready to read it.</p>
+                <form action={`/api/shares/${token}/reveal`} method="post">
+                  <button className="minimalRevealButton" type="submit">Reveal <span>→</span></button>
+                </form>
+              </div>
+            </section>
+          </main>
+          <footer className="minimalFooter">moog · private, temporary sharing</footer>
+        </div>
+      </main>
+    );
   }
 
   return (
