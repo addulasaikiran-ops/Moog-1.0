@@ -11,7 +11,7 @@ const extensions: Record<string, string> = { javascript:"js",typescript:"ts",pyt
 
 function detectLanguage(text: string) {
   if (/<(!DOCTYPE|html|div|body|script|style)\b/i.test(text)) return "html";
-  if (/^\s*[{[].*[}\]]\s*$/s.test(text) && /"[^"]+"\s*:/.test(text)) return "json";
+  if (/^\s*[{[].*[}\]]\s*$/.test(text) && /"[^"]+"\s*:/.test(text)) return "json";
   if (/\b(def|import|from|print)\s+\w+|:\s*$/m.test(text) && /\bdef\s+\w+\s*\(/.test(text)) return "python";
   if (/\b(const|let|var|function|=>|console\.log)\b/.test(text)) return "javascript";
   if (/\b(SELECT|FROM|INSERT INTO|UPDATE|CREATE TABLE)\b/i.test(text)) return "sql";
