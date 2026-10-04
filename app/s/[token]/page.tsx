@@ -61,51 +61,56 @@ export default async function SharePage({ params, searchParams }: Props) {
   }
 
   return (
-    <main className="viewerPage"><div className="viewerGlow viewerGlowOne" /><div className="viewerGlow viewerGlowTwo" />
+    <main className="viewerPage viewerMinimal">
       <div className="viewerShell">
-        <header className="viewerTopbar"><a className="logo" href="/"><span className="logoMark">M</span><span>moog</span></a>
-          <span className="viewerStatus"><span className="pulse" /> {share.viewOnce ? "view once" : "private & temporary"}</span>
+        <header className="viewerTopbar">
+          <a className="minimalLogo" href="/">moog</a>
+          <a className="newShareLink" href="/">New share <span>→</span></a>
         </header>
-        <section className="viewerIntro viewerIntroCompact">
-          <div className="viewerIntroLine">
-            <div>
-              <div className="viewerEyebrow">{share.viewOnce ? "ONE-TIME" : "PRIVATE LINK"}</div>
-              <h1>{share.viewOnce ? "Read it once." : "Shared with you."}</h1>
-            </div>
-            <div className="viewerExpiryBadge"><span className="pulse" /> {share.viewOnce ? "view once" : "temporary"}</div>
-          </div>
-        </section>
-        <article className="viewerCard viewerContentCard">
-          <div className="viewerCardTop">
-            <div>
-              <span className="viewerLabel">{share.language === "photo" ? "SHARED PHOTO" : share.language === "text" ? "SHARED MESSAGE" : "SHARED " + share.language.toUpperCase() + " CODE"}</span>
-              <p className="viewerHint">Read only · no account required</p>
-            </div>
-            <div className="viewerType">{share.language === "photo" ? "PHOTO" : share.language === "text" ? "TEXT" : share.language.toUpperCase()}</div>
-          </div>
-          <div className="viewerMessage">
-            {share.language === "photo" ? (
-              <div className="sharedPhotoWrap">
-                <img className="sharedPhoto" src={"/api/shares/" + token + "/image"} alt={share.text || "Shared photo"} />
-                {share.text ? <p className="photoCaptionView">{share.text}</p> : null}
-                <a className="photoDownload" href={"/api/shares/" + token + "/image?download=1"}>Download photo <span>↓</span></a>
-              </div>
-            ) : share.language === "text" ? (
-              <div className="messageText"><div className="quoteMark">“</div><p>{share.text}</p></div>
-            ) : (
-              <CodeViewer text={share.text} language={share.language} />
-            )}
-          </div>
-          <div className="viewerFooter">
-            <div className="expiryBlock">
-              <span className="viewerLabel">EXPIRES</span>
+
+        <main className="viewerMain">
+          <article className={"minimalCard minimalCard-" + share.language}>
+            <div className="timeLine" />
+            <div className="minimalMeta">
+              <span>
+                {share.language === "photo"
+                  ? "PHOTO"
+                  : share.language === "text"
+                    ? "TEXT"
+                    : share.language.toUpperCase()}
+                {" · "}
+                {share.language === "photo" ? "SHARED IMAGE" : share.text.length.toLocaleString() + " CHARS"}
+              </span>
               <Countdown expiresAt={share.expiresAt.toISOString()} />
-              <span className="expiryDate">{share.expiresAt.toLocaleString()}</span>
             </div>
-            <a className="viewerCreate" href="/">Create a temporary message <span>→</span></a>
-          </div>
-        </article>
-        <footer className="viewerBottom"><span>moog</span><span>temporary text, intentionally temporary.</span></footer>
+
+            <div className="minimalContent">
+              {share.language === "photo" ? (
+                <div className="minimalPhoto">
+                  <img src={"/api/shares/" + token + "/image"} alt={share.text || "Shared photo"} />
+                  {share.text ? <p>{share.text}</p> : null}
+                </div>
+              ) : share.language === "text" ? (
+                <p className="minimalText">{share.text}</p>
+              ) : (
+                <CodeViewer text={share.text} language={share.language} />
+              )}
+            </div>
+
+            <div className="minimalActions">
+              <div className="minimalActionGroup">
+                {share.language === "photo" ? (
+                  <a className="minimalAction primaryAction" href={"/api/shares/" + token + "/image?download=1"}>Download</a>
+                ) : (
+                  <span className="minimalActionNote">{share.viewOnce ? "View once" : "Private share"}</span>
+                )}
+              </div>
+              <a className="minimalNewShare" href="/">New share <span>→</span></a>
+            </div>
+          </article>
+        </main>
+
+        <footer className="minimalFooter">moog · private, temporary sharing</footer>
       </div>
     </main>
   );
