@@ -4,20 +4,37 @@ import { FormEvent, useState } from "react";
 
 type Expiry = 5 | 15 | 30 | 60;
 
+const expiryLabels: Record<Expiry, string> = {
+  5: "5 minutes",
+  15: "15 minutes",
+  30: "30 minutes",
+  60: "1 hour",
+};
+
 export default function HomePage() {
   const [text, setText] = useState("");
   const [expiry, setExpiry] = useState<Expiry>(60);
   const [url, setUrl] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault(); setError(""); setUrl("");
-    if (!text.trim()) { setError("Write something first."); return; }
+    event.preventDefault();
+    setError("");
+    setUrl("");
+    setCopied(false);
+
+    if (!text.trim()) {
+      setError("Write something first.");
+      return;
+    }
+
     setLoading(true);
     try {
       const response = await fetch("/api/shares", {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text, expiryMinutes: expiry }),
       });
       const data = (await response.json()) as { url?: string; error?: string };
@@ -25,77 +42,142 @@ export default function HomePage() {
       setUrl(data.url ?? "");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
-    } finally { setLoading(false); }
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function copyLink() {
     if (!url) return;
-    try { await navigator.clipboard.writeText(url); } catch {}
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1600);
+    } catch {
+      setError("Could not copy the link. You can select it manually.");
+    }
   }
 
-  const expiryLabel = expiry === 15 ? "15 minutes" : "1 hour";
+  const expiryLabel = expiryLabels[expiry];
 
   return (
     <main className="home">
-      <div className="ambient ambientOne" /><div className="ambient ambientTwo" />
+      <div className="ambient ambientOne" />
+      <div className="ambient ambientTwo" />
+
       <div className="shell">
         <header className="topbar">
-          <div className="logo"><span className="logoMark">M</span><span>Moog</span></div>
-          <div className="badge"><span className="pulse" /> private by default</div>
+          <a className="logo" href="/" aria-label="Moog home">
+            <span className="logoMark">M</span>
+            <span>moog</span>
+          </a>
+          <div className="badge"><span className="pulse" /> temporary by design</div>
         </header>
 
         <section className="hero">
-          <div className="eyebrow">TEMPORARY TEXT SHARING</div>
-          <h1>Share words.<br /><span>Leave no trail.</span></h1>
-          <p className="heroCopy">Drop in any text, get a private link, and choose exactly how long it should stay alive.</p>
+          <div className="eyebrow">PRIVATE TEXT SHARING</div>
+          <h1>Say it once.<br /><span>Then let it disappear.</span></h1>
+          <p className="heroCopy">
+            Write anything, create a private link, and decide exactly how long it stays alive.
+          </p>
         </section>
 
         <section className="composer card">
           <form onSubmit={handleSubmit}>
             <div className="composerTop">
-              <div className="fieldLabel">YOUR MESSAGE</div>
+              <div>
+                <div className="fieldLabel">MESSAGE</div>
+                <div className="editorHint">No account. No setup.</div>
+              </div>
               <div className="counter">{text.length.toLocaleString()} / 100,000</div>
             </div>
-            <textarea value={text} onChange={(event) => setText(event.target.value)}
-              placeholder="Type or paste something to share…" maxLength={100000}
-              aria-label="Text to share" autoFocus />
+
+            <textarea
+              value={text}
+              onChange={(event) => {
+                setText(event.target.value);
+                setError("");
+                setUrl("");
+              }}
+              placeholder="Type or paste something private…"
+              maxLength={100000}
+              aria-label="Text to share"
+              autoFocus
+            />
 
             <div className="expiryPicker">
               <div>
-                <div className="fieldLabel">LINK EXPIRY</div>
-                <div className="expiryHint">The link disappears after this time.</div>
+                <div className="fieldLabel">LINK LIFETIME</div>
+                <div className="expiryHint">The link stops working after {expiryLabel}.</div>
               </div>
               <div className="expiryOptions" role="group" aria-label="Link expiry">
-                <button type="button" className={expiry === 15 ? "expiryOption active" : "expiryOption"}
-                  onClick={() => setExpiry(15)} aria-pressed={expiry === 15}>15 min</button>
-                <button type="button" className={expiry === 60 ? "expiryOption active" : "expiryOption"}
-                  onClick={() => setExpiry(60)} aria-pressed={expiry === 60}>1 hour</button>
+                {[5, 15, 30, 60].map((minutes) => (
+                  <button
+                    key={minutes}
+                    type="button"
+                    className={expiry === minutes ? "expiryOption active" : "expiryOption"}
+                    onClick={() => setExpiry(minutes as Expiry)}
+                    aria-pressed={expiry === minutes}
+                  >
+                    {minutes === 60 ? "60 min" : `${minutes} min`}
+                  </button>
+                ))}
               </div>
             </div>
 
             <div className="composerBottom">
-              <div className="trust"><span>⌁</span><span>No account · no tracking · expires in {expiryLabel}</span></div>
+              <div className="trust">
+                <span className="trustIcon">✦</span>
+                <span>Private link · expires in {expiryLabel}</span>
+              </div>
               <button className="primary" type="submit" disabled={loading || !text.trim()}>
-                {loading ? <><span className="spinner" /> Creating…</> : <>Create private link <span>↗</span></>}
+                {loading ? (
+                  <><span className="spinner" /> Creating secure link…</>
+                ) : (
+                  <>Create private link <span className="arrow">↗</span></>
+                )}
               </button>
             </div>
           </form>
-          {error ? <p className="error">{error}</p> : null}
+
+          {error ? (
+            <p className="error" role="alert"><span>!</span>{error}</p>
+          ) : null}
+
           {url ? (
-            <div className="result">
-              <div><div className="resultLabel">YOUR LINK IS READY · EXPIRES IN {expiryLabel.toUpperCase()}</div>
-                <a href={url} target="_blank" rel="noreferrer">{url}</a></div>
-              <button className="copy" type="button" onClick={copyLink}>Copy link</button>
+            <div className="result" aria-live="polite">
+              <div className="resultIcon">✓</div>
+              <div className="resultBody">
+                <div className="resultLabel">PRIVATE LINK CREATED</div>
+                <a href={url} target="_blank" rel="noreferrer">{url}</a>
+                <div className="resultMeta">Expires in {expiryLabel}</div>
+              </div>
+              <button className="copy" type="button" onClick={copyLink}>
+                {copied ? "Copied ✓" : "Copy link"}
+              </button>
             </div>
           ) : null}
         </section>
 
-        <div className="features">
-          <div><span>01</span><strong>Write</strong><small>Paste your text</small></div>
-          <div><span>02</span><strong>Share</strong><small>Send the private link</small></div>
-          <div><span>03</span><strong>Vanish</strong><small>Gone when the timer ends</small></div>
-        </div>
-        <footer>Moog <span>·</span> Temporary text, intentionally temporary.</footer>
+        <section className="features" aria-label="How Moog works">
+          <div>
+            <span>01</span>
+            <strong>Write</strong>
+            <small>Paste your text without an account.</small>
+          </div>
+          <div>
+            <span>02</span>
+            <strong>Share</strong>
+            <small>Send one private link to someone.</small>
+          </div>
+          <div>
+            <span>03</span>
+            <strong>Disappear</strong>
+            <small>The link expires on the timer you choose.</small>
+          </div>
+        </section>
+
+        <footer><strong>moog</strong><span>·</span> temporary text, intentionally temporary.</footer>
       </div>
     </main>
   );
