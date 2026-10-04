@@ -39,11 +39,28 @@ export default function HomePage() {
 
     setLoading(true);
     try {
-      const response = await fetch("/api/shares", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce, language: effectiveLanguage }),
-      });
+      let response: Response;
+
+      if (mode === "photo" && photo) {
+        const formData = new FormData();
+        formData.append("file", photo);
+        formData.append("text", photoCaption);
+        formData.append("expiryMinutes", String(expiry));
+        if (accessKey) formData.append("password", accessKey);
+        formData.append("viewOnce", String(viewOnce));
+
+        response = await fetch("/api/shares", {
+          method: "POST",
+          body: formData,
+        });
+      } else {
+        response = await fetch("/api/shares", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce, language: effectiveLanguage }),
+        });
+      }
+
       const data = (await response.json()) as { url?: string; error?: string };
       if (!response.ok) throw new Error(data.error ?? "Could not create link.");
       setUrl(data.url ?? "");
