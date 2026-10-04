@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useState } from "react";
+import { ClipboardEvent, DragEvent, FormEvent, useRef, useState } from "react";
 
 type Expiry = 1 | 5 | 15 | 30 | 60 | 360 | 1440;
 
@@ -20,7 +20,10 @@ export default function HomePage() {
   const [accessKey, setAccessKey] = useState("");
   const [viewOnce, setViewOnce] = useState(false);
   const [language, setLanguage] = useState("text");
-  const [mode, setMode] = useState<"text" | "code">("text");
+  const [mode, setMode] = useState<"text" | "code" | "photo">("text");
+  const [photo, setPhoto] = useState<File | null>(null);
+  const [photoCaption, setPhotoCaption] = useState("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -28,7 +31,7 @@ export default function HomePage() {
     setUrl("");
     setCopied(false);
 
-    if (!text.trim()) {
+    if (mode === "photo" ? !photo : !text.trim()) {
       setError("Write something first.");
       return;
     }
@@ -63,6 +66,24 @@ export default function HomePage() {
 
   const expiryLabel = expiryLabels[expiry];
   const effectiveLanguage = mode === "code" ? language : "text";
+
+  function selectPhoto(file: File | undefined) {
+    if (!file) return;
+    const allowed = ["image/jpeg", "image/png", "image/gif", "image/webp"];
+    if (!allowed.includes(file.type)) { setError("Use JPG, PNG, GIF, or WebP."); return; }
+    if (file.size > 10 * 1024 * 1024) { setError("Image must be 10 MB or smaller."); return; }
+    setPhoto(file); setError(""); setUrl("");
+  }
+
+  function handlePaste(event: ClipboardEvent<HTMLDivElement>) {
+    const item = Array.from(event.clipboardData.items).find((entry) => entry.type.startsWith("image/"));
+    if (item) { event.preventDefault(); selectPhoto(item.getAsFile() ?? undefined); }
+  }
+
+  function handleDrop(event: DragEvent<HTMLDivElement>) {
+    event.preventDefault();
+    selectPhoto(event.dataTransfer.files?.[0]);
+  }
 
   return (
     <main className="home">
@@ -109,7 +130,33 @@ export default function HomePage() {
               autoFocus
             />
 
-            <div className="modeToggle" role="group" aria-label="Content mode"><button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} onClick={() => setMode("text")}>Text</button><button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} onClick={() => setMode("code")}>Code</button></div>
+            <div className="modeToggle" role="group" aria-label="Content mode">
+              <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} onClick={() => setMode("text")}>Text</button>
+              <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} onClick={() => setMode("code")}>Code</button>
+              <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} onClick={() => { setMode("photo"); setText(""); }}>Photo</button>
+            </div>
+
+            {mode === "photo" ? (
+              <div className="photoComposer">
+                <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" hidden onChange={(e) => selectPhoto(e.target.files?.[0])} />
+                <div className="photoDrop" tabIndex={0} onPaste={handlePaste} onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onClick={() => fileInputRef.current?.click()}>
+                  {photo ? (
+                    <div className="photoPreviewWrap">
+                      <img className="photoPreview" src={URL.createObjectURL(photo)} alt="Selected preview" />
+                      <button type="button" className="photoOverlay" onClick={(e) => { e.stopPropagation(); setPhoto(null); }}>Remove</button>
+                    </div>
+                  ) : (
+                    <>
+                      <div className="photoDropIcon">↑</div>
+                      <strong>Add an image</strong>
+                      <span>Click to choose · drag & drop · or paste an image</span>
+                      <small>JPG, PNG, GIF, WebP · up to 10 MB</small>
+                    </>
+                  )}
+                </div>
+                <input className="sharePassword" value={photoCaption} onChange={(e) => setPhotoCaption(e.target.value)} maxLength={1000} placeholder="Optional photo caption" aria-label="Optional photo caption" />
+              </div>
+            ) : null}
 
             {mode === "code" ? <div className="codeToolbar">
               <div>
@@ -146,9 +193,9 @@ export default function HomePage() {
             <div className="composerBottom">
               <div className="trust">
                 <span className="trustIcon">✦</span>
-                <span>{mode === "code" ? `Code · ${languages.find(([v]) => v === language)?.[1] ?? language}` : (viewOnce ? "Burns after one view" : "Private link")}{accessKey ? " · protected" : ""} · {expiryLabel}</span>
+                <span>{mode === "photo" ? "Photo" : mode === "code" ? `Code · ${languages.find(([v]) => v === language)?.[1] ?? language}` : (viewOnce ? "Burns after one view" : "Private link")}{accessKey ? " · protected" : ""} · {expiryLabel}</span>
               </div>
-              <button className="primary" type="submit" disabled={loading || !text.trim()}>
+              <button className="primary" type="submit" disabled={loading || (mode === "photo" ? !photo : !text.trim())}>
                 {loading ? (
                   <><span className="spinner" /> Creating secure link…</>
                 ) : (
