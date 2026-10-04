@@ -15,7 +15,7 @@ export default async function SharePage({ params, searchParams }: Props) {
   const tokenHash = hashToken(token);
   const share = await prisma.share.findUnique({ where: { tokenHash } });
 
-  if (!share || share.expiresAt <= new Date() || (share.viewOnce && share.viewedAt)) notFound();
+  if (!share || share.expiresAt <= new Date()) notFound();
 
   const cookieStore = await cookies();
   const grant = cookieStore.get(`moog_access_${token}`)?.value;
