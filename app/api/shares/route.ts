@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       process.env.NEXT_PUBLIC_APP_URL ?? new URL(request.url).origin;
 
     return NextResponse.json(
-      { url: new URL(\`/s/\${token}\`, baseUrl).toString() },
+      { url: new URL(`/s/${token}`, baseUrl).toString() },
       { status: 201 }
     );
   } catch (error) {
