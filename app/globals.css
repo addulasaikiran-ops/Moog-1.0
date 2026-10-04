@@ -643,3 +643,9 @@ footer span { padding: 0 6px; color: #343841; }
   .siteFooter { align-items:flex-start;flex-direction:column;gap:10px;padding-top:22px; }
   .footerLegal { white-space:normal; }
 }
+
+
+.topNav { display:flex;align-items:center;gap:16px; }
+.topNav > a { color:#777c86;font-size:12px;text-decoration:none; }
+.topNav > a:hover { color:var(--text); }
+@media(max-width:650px){ .topNav > a { display:none; } }
