@@ -8,18 +8,19 @@ datasource db {
 }
 
 model Share {
-  id           String    @id @default(cuid())
-  text         String
-  language     String    @default("text")
-  tokenHash    String    @unique
-  imageData    Bytes?
-  imageMime    String?
-  imageName    String?
-  passwordHash String?
-  viewOnce     Boolean   @default(false)
-  viewedAt     DateTime?
-  createdAt    DateTime  @default(now())
-  expiresAt    DateTime
+  id              String    @id @default(cuid())
+  text            String
+  language        String    @default("text")
+  tokenHash       String    @unique
+  imageData       Bytes?
+  imageMime       String?
+  imageName       String?
+  passwordHash    String?
+  viewOnce        Boolean   @default(false)
+  viewedAt        DateTime?
+  revealTokenHash String?   @unique
+  createdAt       DateTime  @default(now())
+  expiresAt       DateTime
 
   @@index([expiresAt])
   @@index([viewOnce, viewedAt])
