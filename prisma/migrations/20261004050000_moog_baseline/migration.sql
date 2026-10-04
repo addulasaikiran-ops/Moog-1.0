@@ -20,3 +20,4 @@ CREATE INDEX "Share_expiresAt_idx" ON "public"."Share"("expiresAt");
 CREATE INDEX "Share_viewOnce_viewedAt_idx" ON "public"."Share"("viewOnce", "viewedAt");
 
 ALTER TABLE "public"."Share" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."_prisma_migrations" ENABLE ROW LEVEL SECURITY;
