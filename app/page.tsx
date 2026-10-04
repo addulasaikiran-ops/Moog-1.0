@@ -2,14 +2,9 @@
 
 import { FormEvent, useState } from "react";
 
-type Expiry = 5 | 15 | 30 | 60;
+type Expiry = 1 | 5 | 15 | 30 | 60 | 360 | 1440;
 
-const expiryLabels: Record<Expiry, string> = {
-  5: "5 minutes",
-  15: "15 minutes",
-  30: "30 minutes",
-  60: "1 hour",
-};
+const expiryLabels: Record<Expiry, string> = { 1: "1 minute", 5: "5 minutes", 15: "15 minutes", 30: "30 minutes", 60: "1 hour", 360: "6 hours", 1440: "24 hours" };
 
 export default function HomePage() {
   const [text, setText] = useState("");
@@ -18,6 +13,8 @@ export default function HomePage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [accessKey, setAccessKey] = useState("");
+  const [viewOnce, setViewOnce] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -35,7 +32,7 @@ export default function HomePage() {
       const response = await fetch("/api/shares", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, expiryMinutes: expiry }),
+        body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce }),
       });
       const data = (await response.json()) as { url?: string; error?: string };
       if (!response.ok) throw new Error(data.error ?? "Could not create link.");
@@ -111,7 +108,7 @@ export default function HomePage() {
                 <div className="expiryHint">The link stops working after {expiryLabel}.</div>
               </div>
               <div className="expiryOptions" role="group" aria-label="Link expiry">
-                {[5, 15, 30, 60].map((minutes) => (
+                {[1, 5, 15, 30, 60, 360, 1440].map((minutes) => (
                   <button
                     key={minutes}
                     type="button"
@@ -119,16 +116,18 @@ export default function HomePage() {
                     onClick={() => setExpiry(minutes as Expiry)}
                     aria-pressed={expiry === minutes}
                   >
-                    {minutes === 60 ? "60 min" : `${minutes} min`}
+                    {minutes === 1440 ? "24 hr" : minutes === 360 ? "6 hr" : minutes === 60 ? "1 hr" : `${minutes} min`}
                   </button>
                 ))}
               </div>
             </div>
 
+            <div className="advancedControls"><input className="sharePassword" type="password" value={accessKey} onChange={(e) => setAccessKey(e.target.value)} placeholder="Optional access key" maxLength={128} aria-label="Optional access key" /><label className="viewOnce"><input type="checkbox" checked={viewOnce} onChange={(e) => setViewOnce(e.target.checked)} /> View once</label></div>
+
             <div className="composerBottom">
               <div className="trust">
                 <span className="trustIcon">✦</span>
-                <span>Private link · expires in {expiryLabel}</span>
+                <span>{viewOnce ? "Burns after one view" : "Private link"}{accessKey ? " · protected" : ""} · {expiryLabel}</span>
               </div>
               <button className="primary" type="submit" disabled={loading || !text.trim()}>
                 {loading ? (
@@ -150,7 +149,7 @@ export default function HomePage() {
               <div className="resultBody">
                 <div className="resultLabel">PRIVATE LINK CREATED</div>
                 <a href={url} target="_blank" rel="noreferrer">{url}</a>
-                <div className="resultMeta">Expires in {expiryLabel}</div>
+                <div className="resultMeta">Expires in {expiryLabel}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""}</div>
               </div>
               <button className="copy" type="button" onClick={copyLink}>
                 {copied ? "Copied ✓" : "Copy link"}
