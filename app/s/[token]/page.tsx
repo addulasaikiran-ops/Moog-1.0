@@ -53,7 +53,7 @@ export default async function SharePage({ params, searchParams }: Props) {
         </section>
         <article className="viewerCard"><div className="viewerCardTop"><div><span className="viewerLabel">SHARED MESSAGE</span><p className="viewerHint">Read only · no account required</p></div><div className="viewerLock">↗</div></div>
           <div className="viewerMessage"><div className="quoteMark">“</div><p>{share.text}</p></div>
-          <div className="viewerFooter"><div><span className="viewerLabel">EXPIRES</span><strong>{share.expiresAt.toLocaleString()}</strong></div><a className="viewerCreate" href="/">Create a temporary message <span>→</span></a></div>
+          <div className="viewerFooter"><div><span className="viewerLabel">EXPIRES</span><Countdown expiresAt={share.expiresAt.toISOString()} /><span className="expiryDate">{share.expiresAt.toLocaleString()}</span></div><a className="viewerCreate" href="/">Create a temporary message <span>→</span></a></div>
         </article>
         <footer className="viewerBottom"><span>moog</span><span>temporary text, intentionally temporary.</span></footer>
       </div>
