@@ -10,6 +10,7 @@ datasource db {
 model Share {
   id           String    @id @default(cuid())
   text         String
+  language     String    @default("text")
   tokenHash    String    @unique
   passwordHash String?
   viewOnce     Boolean   @default(false)
