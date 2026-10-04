@@ -25,7 +25,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Too many links created. Try again in a minute." }, { status: 429 });
     }
 
-    const body = (await request.json()) as { text?: unknown; expiryMinutes?: unknown; password?: unknown; viewOnce?: unknown };
+    const body = (await request.json()) as { text?: unknown; expiryMinutes?: unknown; password?: unknown; viewOnce?: unknown; language?: unknown };
 
     if (typeof body.text !== "string") {
       return NextResponse.json({ error: "Text is required." }, { status: 400 });
@@ -45,6 +45,8 @@ export async function POST(request: Request) {
         : 60;
 
     const password = typeof body.password === "string" ? body.password : "";
+    const languageOptions = new Set(["text", "javascript", "typescript", "python", "html", "css", "json", "sql", "bash", "java", "csharp", "cpp", "go", "rust", "php", "markdown"]);
+    const language = typeof body.language === "string" && languageOptions.has(body.language) ? body.language : "text";
     if (password.length > 128) return NextResponse.json({ error: "Password is too long." }, { status: 400 });
 
     const token = generateToken();
@@ -53,6 +55,7 @@ export async function POST(request: Request) {
     await prisma.share.create({
       data: {
         text: body.text,
+        language,
         tokenHash: hashToken(token),
         passwordHash: password ? hashSecret(password) : null,
         viewOnce: body.viewOnce === true,
