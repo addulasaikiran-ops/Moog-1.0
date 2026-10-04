@@ -121,7 +121,7 @@ export default function HomePage() {
         </header>
 
         <section className="hero">
-          <div className="eyebrow">TEXT & CODE SHARING</div>
+          <div className="eyebrow">MOOG 1.0 · PRIVATE TEMPORARY SHARING</div>
           <h1>Say it once.<br /><span>Then let it disappear.</span></h1>
           <p className="heroCopy">
             Paste text or code, choose the format, create a private link, and decide exactly how long it stays alive.
