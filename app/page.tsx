@@ -270,7 +270,26 @@ export default function HomePage() {
           </div>
         </section>
 
-        <footer><strong>moog</strong><span>·</span> temporary text, intentionally temporary.</footer>
+        <section className="aboutMoog" aria-labelledby="about-moog-title">
+          <div className="aboutIntro">
+            <div className="eyebrow">ABOUT MOOG</div>
+            <h2 id="about-moog-title">Private sharing.<br /><span>Nothing extra.</span></h2>
+            <p>Moog is a temporary sharing tool for text, code, and images. Create a link, send it, and let it expire when you decide.</p>
+          </div>
+          <div className="aboutGrid">
+            <div><strong>Private links</strong><small>Share without creating an account or profile.</small></div>
+            <div><strong>Automatic expiry</strong><small>Choose from 1 minute to 24 hours.</small></div>
+            <div><strong>Password protection</strong><small>Add an access key when a link needs another layer of control.</small></div>
+            <div><strong>View once</strong><small>Make a share available for a single view.</small></div>
+            <div><strong>Text & code</strong><small>Share plain text with syntax-aware code formats and line numbers.</small></div>
+            <div><strong>Photo sharing</strong><small>Upload or paste JPG, PNG, GIF, and WebP images up to 10 MB.</small></div>
+          </div>
+        </section>
+
+        <footer className="siteFooter">
+          <div className="footerBrand"><strong>moog</strong><span>temporary sharing, intentionally temporary.</span></div>
+          <div className="footerLegal">© 2026 moog · moog-1.0 · All rights reserved.</div>
+        </footer>
       </div>
     </main>
   );
