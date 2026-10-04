@@ -12,6 +12,9 @@ model Share {
   text         String
   language     String    @default("text")
   tokenHash    String    @unique
+  imageData    Bytes?
+  imageMime    String?
+  imageName    String?
   passwordHash String?
   viewOnce     Boolean   @default(false)
   viewedAt     DateTime?
