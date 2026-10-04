@@ -279,3 +279,5 @@ footer span { padding: 0 6px; color: #343841; }
 }
 
 .advancedControls{display:flex;gap:10px;align-items:center;padding:14px 0;border-top:1px solid rgba(255,255,255,.08);flex-wrap:wrap}.sharePassword{flex:1;min-width:220px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;background:rgba(4,5,7,.45);color:var(--text);outline:0;font-size:13px}.sharePassword:focus{border-color:rgba(201,255,77,.35)}.viewOnce{display:flex;align-items:center;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;color:#aeb2bd;font-size:12px}.viewOnce input{accent-color:var(--accent)}.passwordCard{max-width:620px}.passwordCard .viewerMessage form{display:flex;gap:12px;flex-direction:column}.passwordInput{width:100%;padding:14px;border:1px solid var(--line);border-radius:12px;background:rgba(4,5,7,.68);color:var(--text);outline:0}.passwordInput:focus{border-color:rgba(201,255,77,.35)}@media(max-width:650px){.advancedControls{align-items:stretch;flex-direction:column}.sharePassword,.viewOnce{width:100%;min-width:0}}
+
+.passwordError{margin:0;color:#ff8d9a;font-size:12px}
