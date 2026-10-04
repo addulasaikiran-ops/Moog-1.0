@@ -169,12 +169,17 @@ export default function HomePage() {
                       <button type="button" className="photoOverlay" onClick={(e) => { e.stopPropagation(); setPhoto(null); setPhotoPreview(""); }}>Remove</button>
                     </div>
                   ) : (
-                    <>
-                      <div className="photoDropIcon">↑</div>
-                      <strong>Add an image</strong>
-                      <span>Click to choose · drag & drop · or paste an image</span>
-                      <small>JPG, PNG, GIF, WebP · up to 10 MB</small>
-                    </>
+                    <div className="photoDropEmpty">
+                      <div className="photoDropGlyph" aria-hidden="true">+</div>
+                      <div className="photoDropCopy">
+                        <strong>Drop an image here</strong>
+                        <span>or paste from your clipboard</span>
+                      </div>
+                      <button type="button" className="photoBrowse" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}>
+                        Browse files
+                      </button>
+                      <small>JPG · PNG · GIF · WebP · max 10 MB</small>
+                    </div>
                   )}
                 </div>
                 <input className="sharePassword" value={photoCaption} onChange={(e) => setPhotoCaption(e.target.value)} maxLength={1000} placeholder="Optional photo caption" aria-label="Optional photo caption" />
