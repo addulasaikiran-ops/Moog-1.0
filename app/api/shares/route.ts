@@ -1,11 +1,30 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { generateToken, hashSecret, hashToken } from "@/lib/token";
+import { generateToken, getClientKey, hashSecret, hashToken } from "@/lib/token";
 
 const EXPIRY_OPTIONS = new Set([1, 5, 15, 30, 60, 360, 1440]);
+const creationWindows = new Map<string, { startedAt: number; count: number }>();
+const CREATION_LIMIT = 20;
+const CREATION_WINDOW_MS = 60_000;
+
+function allowCreation(key: string): boolean {
+  const now = Date.now();
+  const current = creationWindows.get(key);
+  if (!current || now - current.startedAt >= CREATION_WINDOW_MS) {
+    creationWindows.set(key, { startedAt: now, count: 1 });
+    return true;
+  }
+  if (current.count >= CREATION_LIMIT) return false;
+  current.count += 1;
+  return true;
+}
 
 export async function POST(request: Request) {
   try {
+    if (!allowCreation(getClientKey(request))) {
+      return NextResponse.json({ error: "Too many links created. Try again in a minute." }, { status: 429 });
+    }
+
     const body = (await request.json()) as { text?: unknown; expiryMinutes?: unknown; password?: unknown; viewOnce?: unknown };
 
     if (typeof body.text !== "string") {
