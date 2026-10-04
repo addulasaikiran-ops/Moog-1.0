@@ -9,10 +9,9 @@ function formatRemaining(ms: number) {
   const minutes = Math.floor((totalSeconds % 3600) / 60);
   const seconds = totalSeconds % 60;
 
-  if (days > 0) return `${days}d ${hours}h ${minutes}m`;
-  if (hours > 0) return `${hours}h ${minutes}m ${seconds}s`;
-  if (minutes > 0) return `${minutes}m ${seconds}s`;
-  return `${seconds}s`;
+  if (days > 0) return `${days}d ${hours}h`;
+  if (hours > 0) return `${hours}h ${minutes}m`;
+  return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
 }
 
 export default function Countdown({ expiresAt }: { expiresAt: string }) {
@@ -38,7 +37,7 @@ export default function Countdown({ expiresAt }: { expiresAt: string }) {
 
   return (
     <div className="countdownWrap" aria-live="polite">
-      <span className="countdownLabel">DISAPPEARS IN</span>
+      <span className="countdownLabel">EXPIRES IN</span>
       <strong className={remaining !== null && remaining < 60_000 ? "countdownUrgent" : ""}>
         {remaining === null ? "—" : remaining === 0 ? "Expired" : formatRemaining(remaining)}
       </strong>
