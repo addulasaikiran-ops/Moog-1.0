@@ -23,6 +23,7 @@ export default function HomePage() {
   const [mode, setMode] = useState<"text" | "code" | "photo">("text");
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoCaption, setPhotoCaption] = useState("");
+  const [photoPreview, setPhotoPreview] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -73,6 +74,9 @@ export default function HomePage() {
     if (!allowed.includes(file.type)) { setError("Use JPG, PNG, GIF, or WebP."); return; }
     if (file.size > 10 * 1024 * 1024) { setError("Image must be 10 MB or smaller."); return; }
     setPhoto(file); setError(""); setUrl("");
+    const reader = new FileReader();
+    reader.onload = () => setPhotoPreview(typeof reader.result === "string" ? reader.result : "");
+    reader.readAsDataURL(file);
   }
 
   function handlePaste(event: ClipboardEvent<HTMLDivElement>) {
@@ -142,8 +146,8 @@ export default function HomePage() {
                 <div className="photoDrop" tabIndex={0} onPaste={handlePaste} onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onClick={() => fileInputRef.current?.click()}>
                   {photo ? (
                     <div className="photoPreviewWrap">
-                      <img className="photoPreview" src={URL.createObjectURL(photo)} alt="Selected preview" />
-                      <button type="button" className="photoOverlay" onClick={(e) => { e.stopPropagation(); setPhoto(null); }}>Remove</button>
+                      <img className="photoPreview" src={photoPreview} alt="Selected preview" />
+                      <button type="button" className="photoOverlay" onClick={(e) => { e.stopPropagation(); setPhoto(null); setPhotoPreview(""); }}>Remove</button>
                     </div>
                   ) : (
                     <>
