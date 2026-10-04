@@ -304,3 +304,28 @@ footer span { padding: 0 6px; color: #343841; }
 .codeCopy:hover { border-color:rgba(201,255,77,.25); }
 .codeViewer pre { margin:0; padding:22px; overflow:auto; max-height:65vh; color:#e9ebe5; font:13px/1.7 "SFMono-Regular",Consolas,"Liberation Mono",monospace; tab-size:2; white-space:pre; }
 @media(max-width:650px) { .codeToolbar { align-items:stretch; flex-direction:column; } .languageSelect { width:100%; } .codeViewer { margin:0 -4px; } .codeViewer pre { padding:16px; font-size:12px; } }
+
+
+.modeToggle { display:flex; gap:4px; padding:4px; margin:12px 0 0; width:max-content; border:1px solid var(--line); border-radius:11px; background:rgba(255,255,255,.025); }
+.modeButton { border:0; background:transparent; color:#858a96; padding:8px 16px; border-radius:8px; font-size:12px; font-weight:750; }
+.modeButton.active { background:var(--accent); color:var(--accent-ink); }
+.codeActions { display:flex; gap:6px; }
+.codeScroll { overflow:auto; max-height:65vh; }
+.codeViewer pre { max-height:none; min-width:max-content; padding:16px 0; }
+.codeViewer code { display:block; }
+.codeLine { display:grid; grid-template-columns:48px auto; min-height:22px; }
+.lineNumber { user-select:none; text-align:right; padding-right:14px; color:#454a55; border-right:1px solid rgba(255,255,255,.06); }
+.lineCode { padding-left:16px; padding-right:24px; white-space:pre; }
+.tokKeyword { color:#c9ff4d; }
+.tokString { color:#d6b77c; }
+.tokNumber { color:#9cc8ff; }
+.tokComment { color:#666d79; font-style:italic; }
+.tokTag { color:#8bd5ff; }
+.tokAttr { color:#c6a0ff; }
+@media(max-width:650px) {
+  .modeToggle { width:100%; }
+  .modeButton { flex:1; }
+  .codeViewerTop { align-items:flex-start; }
+  .codeActions { flex-wrap:wrap; justify-content:flex-end; }
+  .codeCopy { padding:7px 9px; }
+}
