@@ -1,27 +1,37 @@
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { hashToken, verifySecret } from "@/lib/token";
+import { hashToken, verifyAccessGrant } from "@/lib/token";
 
 export const dynamic = "force-dynamic";
 
-type Props = { params: Promise<{ token: string }>; searchParams: Promise<{ key?: string }> };
+type Props = { params: Promise<{ token: string }>; searchParams: Promise<{ error?: string }> };
 
 export default async function SharePage({ params, searchParams }: Props) {
   const { token } = await params;
-  const { key } = await searchParams;
-  const share = await prisma.share.findUnique({ where: { tokenHash: hashToken(token) } });
+  const { error } = await searchParams;
+  const tokenHash = hashToken(token);
+  const share = await prisma.share.findUnique({ where: { tokenHash } });
 
   if (!share || share.expiresAt <= new Date() || (share.viewOnce && share.viewedAt)) notFound();
 
-  if (share.passwordHash && (!key || !verifySecret(key, share.passwordHash))) {
+  const cookieStore = await cookies();
+  const grant = cookieStore.get("moog_access")?.value;
+  const unlocked = !share.passwordHash || (!!grant && verifyAccessGrant(tokenHash, share.expiresAt, grant));
+
+  if (!unlocked) {
     return (
       <main className="viewerPage"><div className="viewerShell">
         <header className="viewerTopbar"><a className="logo" href="/"><span className="logoMark">M</span><span>moog</span></a></header>
         <section className="viewerIntro"><div className="viewerEyebrow">PROTECTED MESSAGE</div><h1>Enter the password.<br /><span>Then read the message.</span></h1></section>
         <section className="viewerCard passwordCard"><div className="viewerMessage">
-          <form method="get"><label className="viewerLabel" htmlFor="key">PASSWORD</label>
-          <input className="passwordInput" id="key" name="key" type="password" placeholder="Enter password" autoFocus required />
-          <button className="primary" type="submit">Unlock message →</button></form>
+          <form action={`/api/shares/${token}/unlock`} method="post">
+            <label className="viewerLabel" htmlFor="password">PASSWORD</label>
+            <input className="passwordInput" id="password" name="password" type="password" placeholder="Enter password" autoFocus required />
+            {error === "invalid" ? <p className="passwordError" role="alert">That password is not correct.</p> : null}
+            {error === "missing" ? <p className="passwordError" role="alert">Enter the password to continue.</p> : null}
+            <button className="primary" type="submit">Unlock message →</button>
+          </form>
         </div></section>
       </div></main>
     );
