@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { hashToken, verifyAccessGrant } from "@/lib/token";
+import Countdown from "./Countdown";
 
 export const dynamic = "force-dynamic";
 
