@@ -46,23 +46,23 @@ export async function POST(
 
   const grant = createAccessGrant(share.tokenHash, share.expiresAt);
   const cookieStore = await cookies();
-  // Clear any older token-scoped cookie first. Browsers can keep both cookies
-  // when the name is the same, which can make the stale grant win.
-  cookieStore.set("moog_access", "", {
+  // Bind the access grant to this exact share URL. A token-specific cookie
+  // avoids collisions with stale grants from older sessions or other shares.
+  cookieStore.set(`moog_access_${token}`, grant, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: `/s/${token}`,
-    maxAge: 0,
+    expires: share.expiresAt,
   });
 
-  cookieStore.set("moog_access", grant, {
+  // Remove the legacy root-scoped cookie from older deployments.
+  cookieStore.set("moog_access", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    // The grant is cryptographically bound to this token hash and expiry.
     path: "/",
-    expires: share.expiresAt,
+    maxAge: 0,
   });
 
   return NextResponse.redirect(new URL(`/s/${token}`, request.url), 303);
