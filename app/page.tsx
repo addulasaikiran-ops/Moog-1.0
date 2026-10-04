@@ -117,7 +117,7 @@ export default function HomePage() {
             <span className="logoMark">M</span>
             <span>moog</span>
           </a>
-          <div className="badge"><span className="pulse" /> temporary by design</div>
+          <nav className="topNav"><a href="#about-moog">About</a><div className="badge"><span className="pulse" /> temporary by design</div></nav>
         </header>
 
         <section className="hero">
@@ -270,9 +270,9 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="aboutMoog" aria-labelledby="about-moog-title">
+        <section className="aboutMoog" id="about-moog" aria-labelledby="about-moog-title">
           <div className="aboutIntro">
-            <div className="eyebrow">ABOUT MOOG</div>
+            <div className="eyebrow">ABOUT THIS</div>
             <h2 id="about-moog-title">Private sharing.<br /><span>Nothing extra.</span></h2>
             <p>Moog is a temporary sharing tool for text, code, and images. Create a link, send it, and let it expire when you decide.</p>
           </div>
@@ -288,7 +288,7 @@ export default function HomePage() {
 
         <footer className="siteFooter">
           <div className="footerBrand"><strong>moog</strong><span>temporary sharing, intentionally temporary.</span></div>
-          <div className="footerLegal">© 2026 moog · moog-1.0 · All rights reserved.</div>
+          <div className="footerLegal">@moogmoog-1.0 · © 2026 · All rights reserved.</div>
         </footer>
       </div>
     </main>
