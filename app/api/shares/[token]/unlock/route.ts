@@ -16,6 +16,11 @@ function allowAttempt(key: string): boolean {
   }
   if (current.count >= ATTEMPT_LIMIT) return false;
   current.count += 1;
+  if (attempts.size > 5000) {
+    for (const [entryKey, entry] of attempts) {
+      if (now - entry.startedAt >= ATTEMPT_WINDOW_MS) attempts.delete(entryKey);
+    }
+  }
   return true;
 }
 
@@ -24,6 +29,11 @@ export async function POST(
   { params }: { params: Promise<{ token: string }> },
 ) {
   const { token } = await params;
+  const contentLength = Number(request.headers.get("content-length") ?? "0");
+  if (Number.isFinite(contentLength) && contentLength > 8192) {
+    return NextResponse.json({ error: "Request is too large." }, { status: 413 });
+  }
+
   const key = getClientKey(request);
   if (!allowAttempt(`${key}:${token.slice(0, 12)}`)) {
     return NextResponse.json({ error: "Too many password attempts. Try again later." }, { status: 429 });
