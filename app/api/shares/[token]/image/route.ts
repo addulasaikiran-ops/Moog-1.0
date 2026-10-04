@@ -16,23 +16,21 @@ export async function GET(request: Request, { params }: Params) {
     return new NextResponse("Not found", { status: 404 });
   }
 
+  // View-once photos are rendered directly into the one-time page response.
+  // This endpoint must never become a reusable bypass after reveal.
+  if (share.viewOnce) return new NextResponse("Not found", { status: 404 });
+
   const cookieStore = await cookies();
   const grant = cookieStore.get(`moog_access_${token}`)?.value;
-  const revealGrant = cookieStore.get(`moog_reveal_${token}`)?.value;
   const unlocked = !share.passwordHash || (!!grant && verifyAccessGrant(tokenHash, share.expiresAt, grant));
   if (!unlocked) return new NextResponse("Forbidden", { status: 403 });
-
-  if (share.viewOnce) {
-    const revealed = !!revealGrant && verifyAccessGrant(tokenHash, share.expiresAt, revealGrant);
-    if (!revealed || !share.viewedAt) return new NextResponse("Forbidden", { status: 403 });
-  }
 
   const download = new URL(request.url).searchParams.get("download") === "1";
   const headers = new Headers({
     "Content-Type": share.imageMime,
     "Content-Length": String(share.imageData.byteLength),
     "X-Content-Type-Options": "nosniff",
-    "Cache-Control": share.viewOnce ? "no-store" : "private, max-age=300",
+    "Cache-Control": "private, max-age=300",
     "Content-Disposition": `${download ? "attachment" : "inline"}; filename*=UTF-8''${encodeURIComponent(share.imageName || "image")}`,
   });
 
