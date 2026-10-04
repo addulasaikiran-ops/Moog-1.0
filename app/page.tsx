@@ -132,24 +132,26 @@ export default function HomePage() {
           <form onSubmit={handleSubmit}>
             <div className="composerTop">
               <div>
-                <div className="fieldLabel">MESSAGE</div>
-                <div className="editorHint">Paste text or code. No account. No setup.</div>
+                <div className="fieldLabel">{mode === "photo" ? "PHOTO" : "MESSAGE"}</div>
+                <div className="editorHint">{mode === "photo" ? "Upload, drag & drop, or paste an image." : "Paste text or code. No account. No setup."}</div>
               </div>
-              <div className="counter">{text.length.toLocaleString()} / 100,000</div>
+              {mode === "photo" ? <div className="counter">10 MB max</div> : <div className="counter">{text.length.toLocaleString()} / 100,000</div>}
             </div>
 
-            <textarea
-              value={text}
-              onChange={(event) => {
-                setText(event.target.value);
-                setError("");
-                setUrl("");
-              }}
-              placeholder="Type or paste something private…"
-              maxLength={100000}
-              aria-label="Text to share"
-              autoFocus
-            />
+            {mode !== "photo" ? (
+              <textarea
+                value={text}
+                onChange={(event) => {
+                  setText(event.target.value);
+                  setError("");
+                  setUrl("");
+                }}
+                placeholder="Type or paste something private…"
+                maxLength={100000}
+                aria-label="Text to share"
+                autoFocus
+              />
+            ) : null}
 
             <div className="modeToggle" role="group" aria-label="Content mode">
               <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} onClick={() => setMode("text")}>Text</button>
