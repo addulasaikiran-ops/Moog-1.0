@@ -18,7 +18,7 @@ export default async function SharePage({ params, searchParams }: Props) {
   if (!share || share.expiresAt <= new Date() || (share.viewOnce && share.viewedAt)) notFound();
 
   const cookieStore = await cookies();
-  const grant = cookieStore.get("moog_access")?.value;
+  const grant = cookieStore.get(`moog_access_${token}`)?.value;
   const unlocked = !share.passwordHash || (!!grant && verifyAccessGrant(tokenHash, share.expiresAt, grant));
 
   if (!unlocked) {
