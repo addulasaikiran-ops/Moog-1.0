@@ -22,9 +22,21 @@ export default async function SharePage({ params }: Props) {
   return (
     <main className="sharePage">
       <div className="container">
-        <section className="card">
+        <header className="shareHeader">
+          <a className="logo" href="/" aria-label="Moog home">
+            <span className="logoMark">M</span>
+            <span>moog</span>
+          </a>
+          <span className="badge"><span className="pulse" /> private link</span>
+        </header>
+
+        <section className="shareCard card">
+          <div className="shareMeta">
+            <span>SHARED MESSAGE</span>
+            <span>READ ONLY</span>
+          </div>
           <p className="shareText">{share.text}</p>
-          <p className="expiry">Expires {share.expiresAt.toLocaleString()}</p>
+          <p className="expiry">This link expires {share.expiresAt.toLocaleString()}.</p>
         </section>
       </div>
     </main>
