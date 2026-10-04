@@ -17,16 +17,14 @@ export async function GET(request: Request, { params }: Params) {
   }
 
   const cookieStore = await cookies();
-  const grant = cookieStore.get("moog_access")?.value;
+  const grant = cookieStore.get(`moog_access_${token}`)?.value;
+  const revealGrant = cookieStore.get(`moog_reveal_${token}`)?.value;
   const unlocked = !share.passwordHash || (!!grant && verifyAccessGrant(tokenHash, share.expiresAt, grant));
   if (!unlocked) return new NextResponse("Forbidden", { status: 403 });
 
   if (share.viewOnce) {
-    const claimed = await prisma.share.updateMany({
-      where: { id: share.id, viewedAt: null, expiresAt: { gt: new Date() } },
-      data: { viewedAt: new Date() },
-    });
-    if (claimed.count !== 1) return new NextResponse("Not found", { status: 404 });
+    const revealed = !!revealGrant && verifyAccessGrant(tokenHash, share.expiresAt, revealGrant);
+    if (!revealed || !share.viewedAt) return new NextResponse("Forbidden", { status: 403 });
   }
 
   const download = new URL(request.url).searchParams.get("download") === "1";
