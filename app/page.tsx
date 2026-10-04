@@ -4,6 +4,10 @@ import { FormEvent, useState } from "react";
 
 type Expiry = 1 | 5 | 15 | 30 | 60 | 360 | 1440;
 
+const languages = [
+  ["text", "Plain text"], ["javascript", "JavaScript"], ["typescript", "TypeScript"], ["python", "Python"], ["html", "HTML"], ["css", "CSS"], ["json", "JSON"], ["sql", "SQL"], ["bash", "Bash"], ["java", "Java"], ["csharp", "C#"], ["cpp", "C++"], ["go", "Go"], ["rust", "Rust"], ["php", "PHP"], ["markdown", "Markdown"],
+] as const;
+
 const expiryLabels: Record<Expiry, string> = { 1: "1 minute", 5: "5 minutes", 15: "15 minutes", 30: "30 minutes", 60: "1 hour", 360: "6 hours", 1440: "24 hours" };
 
 export default function HomePage() {
@@ -15,6 +19,7 @@ export default function HomePage() {
   const [copied, setCopied] = useState(false);
   const [accessKey, setAccessKey] = useState("");
   const [viewOnce, setViewOnce] = useState(false);
+  const [language, setLanguage] = useState("text");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -32,7 +37,7 @@ export default function HomePage() {
       const response = await fetch("/api/shares", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce }),
+        body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce, language }),
       });
       const data = (await response.json()) as { url?: string; error?: string };
       if (!response.ok) throw new Error(data.error ?? "Could not create link.");
@@ -72,10 +77,10 @@ export default function HomePage() {
         </header>
 
         <section className="hero">
-          <div className="eyebrow">PRIVATE TEXT SHARING</div>
+          <div className="eyebrow">TEXT & CODE SHARING</div>
           <h1>Say it once.<br /><span>Then let it disappear.</span></h1>
           <p className="heroCopy">
-            Write anything, create a private link, and decide exactly how long it stays alive.
+            Paste text or code, choose the format, create a private link, and decide exactly how long it stays alive.
           </p>
         </section>
 
@@ -84,7 +89,7 @@ export default function HomePage() {
             <div className="composerTop">
               <div>
                 <div className="fieldLabel">MESSAGE</div>
-                <div className="editorHint">No account. No setup.</div>
+                <div className="editorHint">Paste text or code. No account. No setup.</div>
               </div>
               <div className="counter">{text.length.toLocaleString()} / 100,000</div>
             </div>
@@ -161,8 +166,8 @@ export default function HomePage() {
         <section className="features" aria-label="How Moog works">
           <div>
             <span>01</span>
-            <strong>Write</strong>
-            <small>Paste your text without an account.</small>
+            <strong>Paste</strong>
+            <small>Drop in text or code without an account.</small>
           </div>
           <div>
             <span>02</span>
