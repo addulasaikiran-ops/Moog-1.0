@@ -50,7 +50,9 @@ export async function POST(
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    path: `/s/${token}`,
+    // Use a site-wide path so the browser reliably sends the grant after the 303 redirect.
+    // The grant is still cryptographically bound to this token hash and expiry.
+    path: "/",
     expires: share.expiresAt,
   });
 
