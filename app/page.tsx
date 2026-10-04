@@ -20,6 +20,7 @@ export default function HomePage() {
   const [accessKey, setAccessKey] = useState("");
   const [viewOnce, setViewOnce] = useState(false);
   const [language, setLanguage] = useState("text");
+  const [mode, setMode] = useState<"text" | "code">("text");
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,7 +38,7 @@ export default function HomePage() {
       const response = await fetch("/api/shares", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce, language }),
+        body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce, language: effectiveLanguage }),
       });
       const data = (await response.json()) as { url?: string; error?: string };
       if (!response.ok) throw new Error(data.error ?? "Could not create link.");
@@ -61,6 +62,7 @@ export default function HomePage() {
   }
 
   const expiryLabel = expiryLabels[expiry];
+  const effectiveLanguage = mode === "code" ? language : "text";
 
   return (
     <main className="home">
@@ -107,7 +109,9 @@ export default function HomePage() {
               autoFocus
             />
 
-            <div className="codeToolbar">
+            <div className="modeToggle" role="group" aria-label="Content mode"><button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} onClick={() => setMode("text")}>Text</button><button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} onClick={() => setMode("code")}>Code</button></div>
+
+            {mode === "code" ? <div className="codeToolbar">
               <div>
                 <div className="fieldLabel">FORMAT</div>
                 <div className="expiryHint">Choose a language for code sharing.</div>
@@ -115,7 +119,7 @@ export default function HomePage() {
               <select className="languageSelect" value={language} onChange={(e) => setLanguage(e.target.value)} aria-label="Code language">
                 {languages.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
               </select>
-            </div>
+            </div> : null}
 
             <div className="expiryPicker">
               <div>
@@ -142,7 +146,7 @@ export default function HomePage() {
             <div className="composerBottom">
               <div className="trust">
                 <span className="trustIcon">✦</span>
-                <span>{viewOnce ? "Burns after one view" : "Private link"}{accessKey ? " · protected" : ""} · {expiryLabel}</span>
+                <span>{mode === "code" ? `Code · ${languages.find(([v]) => v === language)?.[1] ?? language}` : (viewOnce ? "Burns after one view" : "Private link")}{accessKey ? " · protected" : ""} · {expiryLabel}</span>
               </div>
               <button className="primary" type="submit" disabled={loading || !text.trim()}>
                 {loading ? (
