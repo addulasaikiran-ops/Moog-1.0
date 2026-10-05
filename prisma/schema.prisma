@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model RateLimit {
+  key         String   @id
+  windowStart DateTime
+  count       Int
+}
+
 model Share {
   id              String    @id @default(cuid())
   text            String
