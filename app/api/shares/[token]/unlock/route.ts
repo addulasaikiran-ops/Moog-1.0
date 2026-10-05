@@ -1,28 +1,8 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
+import { allowRateLimit } from "@/lib/rate-limit";
 import { createAccessGrant, getClientKey, hashToken, verifySecret } from "@/lib/token";
-
-const attempts = new Map<string, { startedAt: number; count: number }>();
-const ATTEMPT_LIMIT = 5;
-const ATTEMPT_WINDOW_MS = 10 * 60_000;
-
-function allowAttempt(key: string): boolean {
-  const now = Date.now();
-  const current = attempts.get(key);
-  if (!current || now - current.startedAt >= ATTEMPT_WINDOW_MS) {
-    attempts.set(key, { startedAt: now, count: 1 });
-    return true;
-  }
-  if (current.count >= ATTEMPT_LIMIT) return false;
-  current.count += 1;
-  if (attempts.size > 5000) {
-    for (const [entryKey, entry] of attempts) {
-      if (now - entry.startedAt >= ATTEMPT_WINDOW_MS) attempts.delete(entryKey);
-    }
-  }
-  return true;
-}
 
 export async function POST(
   request: Request,
@@ -35,7 +15,7 @@ export async function POST(
   }
 
   const key = getClientKey(request);
-  if (!allowAttempt(`${key}:${token.slice(0, 12)}`)) {
+  if (!(await allowRateLimit("unlock:" + key + ":" + token.slice(0, 12), ATTEMPT_LIMIT, ATTEMPT_WINDOW_MS))) {
     return NextResponse.json({ error: "Too many password attempts. Try again later." }, { status: 429 });
   }
 
