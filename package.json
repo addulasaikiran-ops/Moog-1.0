@@ -12,16 +12,16 @@
     "db:deploy": "prisma migrate deploy"
   },
   "dependencies": {
-    "@prisma/client": "^6.17.0",
+    "@prisma/client": "6.19.3",
     "next": "15.5.27",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
   },
   "devDependencies": {
-    "@types/node": "^20.19.0",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.0",
-    "prisma": "^6.17.0",
-    "typescript": "^5.9.0"
+    "@types/node": "20.19.0",
+    "@types/react": "19.1.0",
+    "@types/react-dom": "19.1.0",
+    "prisma": "6.19.3",
+    "typescript": "5.9.0"
   }
 }
