@@ -17,5 +17,9 @@ export async function GET(request: Request) {
     },
   });
 
-  return NextResponse.json({ deleted: result.count });
+  const rateLimits = await prisma.rateLimit.deleteMany({
+    where: { windowStart: { lt: new Date(Date.now() - 24 * 60 * 60 * 1000) } },
+  });
+
+  return NextResponse.json({ deleted: result.count, rateLimitRowsDeleted: rateLimits.count });
 }
