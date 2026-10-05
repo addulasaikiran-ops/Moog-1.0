@@ -8,6 +8,10 @@ export const dynamic = "force-dynamic";
 type Params = { params: Promise<{ token: string }> };
 
 export async function POST(request: Request, { params }: Params) {
+  const expectedOrigin = new URL(request.url).origin;
+  const origin = request.headers.get("origin");
+  if (origin && origin !== expectedOrigin) return new NextResponse("Forbidden", { status: 403 });
+
   const { token } = await params;
   const tokenHash = hashToken(token);
   const share = await prisma.share.findUnique({ where: { tokenHash } });
@@ -35,7 +39,7 @@ export async function POST(request: Request, { params }: Params) {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
-    path: `/s/${token}`,
+    path: "/",
     expires: share.expiresAt,
   });
 
