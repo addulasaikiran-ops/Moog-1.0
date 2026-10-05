@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { allowRateLimit } from "@/lib/rate-limit";
 import { generateToken, getClientKey, hashSecret, hashToken } from "@/lib/token";
 
 const EXPIRY_OPTIONS = new Set([1, 5, 15, 30, 60, 360, 1440]);
@@ -10,26 +11,7 @@ const MAX_MULTIPART_BODY = MAX_IMAGE_SIZE + 128 * 1024;
 const MAX_JSON_BODY = 256 * 1024;
 const CREATION_LIMIT = 20;
 const CREATION_WINDOW_MS = 60_000;
-const creationWindows = new Map<string, { startedAt: number; count: number }>();
 
-function allowCreation(key: string): boolean {
-  const now = Date.now();
-  const current = creationWindows.get(key);
-  if (!current || now - current.startedAt >= CREATION_WINDOW_MS) {
-    creationWindows.set(key, { startedAt: now, count: 1 });
-  } else if (current.count >= CREATION_LIMIT) {
-    return false;
-  } else {
-    current.count += 1;
-  }
-
-  if (creationWindows.size > 5000) {
-    for (const [entryKey, entry] of creationWindows) {
-      if (now - entry.startedAt >= CREATION_WINDOW_MS) creationWindows.delete(entryKey);
-    }
-  }
-  return true;
-}
 
 function getExpiry(value: FormDataEntryValue | null): number {
   const parsed = Number(value);
@@ -56,7 +38,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Request is too large." }, { status: 413 });
     }
 
-    if (!allowCreation(getClientKey(request))) {
+    if (!(await allowRateLimit("create:" + getClientKey(request), CREATION_LIMIT, CREATION_WINDOW_MS))) {
       return NextResponse.json({ error: "Too many links created. Try again in a minute." }, { status: 429 });
     }
 
