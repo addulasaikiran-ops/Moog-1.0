@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { createAccessGrant, hashToken, verifyAccessGrant } from "@/lib/token";
+import { createAccessGrant, hashToken, isValidToken, verifyAccessGrant } from "@/lib/token";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +13,7 @@ export async function POST(request: Request, { params }: Params) {
   if (origin && origin !== expectedOrigin) return new NextResponse("Forbidden", { status: 403 });
 
   const { token } = await params;
+  if (!isValidToken(token)) return new NextResponse("Not found", { status: 404 });
   const tokenHash = hashToken(token);
   const share = await prisma.share.findUnique({ where: { tokenHash } });
 
