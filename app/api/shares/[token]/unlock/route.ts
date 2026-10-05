@@ -5,13 +5,14 @@ import { allowRateLimit } from "@/lib/rate-limit";
 
 const ATTEMPT_LIMIT = 5;
 const ATTEMPT_WINDOW_MS = 10 * 60_000;
-import { createAccessGrant, getClientKey, hashToken, verifySecret } from "@/lib/token";
+import { createAccessGrant, getClientKey, hashToken, isValidToken, verifySecret } from "@/lib/token";
 
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ token: string }> },
 ) {
   const { token } = await params;
+  if (!isValidToken(token)) return new NextResponse("Not found", { status: 404 });
   const contentLength = Number(request.headers.get("content-length") ?? "0");
   if (Number.isFinite(contentLength) && contentLength > 8192) {
     return NextResponse.json({ error: "Request is too large." }, { status: 413 });
