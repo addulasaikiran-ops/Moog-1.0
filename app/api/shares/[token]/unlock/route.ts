@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
+
+const ATTEMPT_LIMIT = 5;
+const ATTEMPT_WINDOW_MS = 10 * 60_000;
 import { createAccessGrant, getClientKey, hashToken, verifySecret } from "@/lib/token";
 
 export async function POST(
