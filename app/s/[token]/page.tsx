@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { hashToken, verifyAccessGrant } from "@/lib/token";
+import { hashToken, isValidToken, verifyAccessGrant } from "@/lib/token";
 import Countdown from "./Countdown";
 import CodeViewer from "./CodeViewer";
 import ViewOnceContent from "./ViewOnceContent";
@@ -13,6 +13,7 @@ type Props = { params: Promise<{ token: string }>; searchParams: Promise<{ error
 export default async function SharePage({ params, searchParams }: Props) {
   const { token } = await params;
   const { error } = await searchParams;
+  if (!isValidToken(token)) notFound();
   const tokenHash = hashToken(token);
   const share = await prisma.share.findUnique({ where: { tokenHash } });
 
