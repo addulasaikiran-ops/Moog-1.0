@@ -18,6 +18,10 @@ export function verifySecret(value: string, stored: string): boolean {
   return expected.length === actual.length && timingSafeEqual(actual, expected);
 }
 
+export function isValidToken(token: string): boolean {
+  return /^[A-Za-z0-9_-]{43}$/.test(token);
+}
+
 export function hashToken(token: string): string {
   return createHash("sha256").update(token, "utf8").digest("hex");
 }
