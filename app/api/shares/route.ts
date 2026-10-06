@@ -92,6 +92,7 @@ export async function POST(request: Request) {
     if (password.length > 128) return NextResponse.json({ error: "Password is too long." }, { status: 400 });
 
     const token = generateToken();
+    const revokeToken = generateToken();
     const expiresAt = new Date(Date.now() + minutes * 60 * 1000);
 
     await prisma.share.create({
@@ -102,6 +103,7 @@ export async function POST(request: Request) {
         imageMime,
         imageName,
         tokenHash: hashToken(token),
+        revokeTokenHash: hashToken(revokeToken),
         passwordHash: password ? hashSecret(password) : null,
         viewOnce,
         expiresAt,
@@ -109,7 +111,11 @@ export async function POST(request: Request) {
     });
 
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? new URL(request.url).origin;
-    return NextResponse.json({ url: new URL(`/s/${token}`, baseUrl).toString(), expiresAt: expiresAt.toISOString() }, { status: 201 });
+    return NextResponse.json({
+      url: new URL(`/s/${token}`, baseUrl).toString(),
+      revokeUrl: new URL(`/revoke/${revokeToken}`, baseUrl).toString(),
+      expiresAt: expiresAt.toISOString(),
+    }, { status: 201 });
   } catch (error) {
     console.error("Failed to create share:", error);
     return NextResponse.json({ error: "Could not create link." }, { status: 500 });
