@@ -16,7 +16,7 @@ export async function POST(request: Request, { params }: Params) {
   if (!isValidToken(token)) return new NextResponse("Not found", { status: 404 });
   const tokenHash = hashToken(token);
   const share = await prisma.share.findUnique({ where: { tokenHash } });
-  if (!share || !share.viewOnce || !share.viewedAt || share.expiresAt <= new Date()) {
+  if (!share || share.revokedAt || !share.viewOnce || !share.viewedAt || share.expiresAt <= new Date()) {
     return new NextResponse("Not found", { status: 404 });
   }
 
