@@ -2,6 +2,8 @@
 
 import { ReactNode, useEffect, useState } from "react";
 
+const POLL_INTERVAL_MS = 2000;
+
 export default function LiveShareGuard({
   token,
   children,
@@ -13,25 +15,58 @@ export default function LiveShareGuard({
 
   useEffect(() => {
     let active = true;
+    let timeoutId: number | undefined;
+    let controller: AbortController | undefined;
 
     const check = async () => {
+      controller = new AbortController();
+
       try {
         const response = await fetch(`/api/shares/${token}/status`, {
           method: "GET",
           credentials: "same-origin",
           cache: "no-store",
+          signal: controller.signal,
         });
 
-        if (!response.ok && active) setAvailable(false);
+        if (!active) return;
+
+        if (!response.ok) {
+          setAvailable(false);
+          return;
+        }
       } catch {
         // Keep the current view on transient network errors; the next poll retries.
+      } finally {
+        controller = undefined;
+      }
+
+      if (active) {
+        timeoutId = window.setTimeout(check, POLL_INTERVAL_MS);
       }
     };
 
-    const interval = window.setInterval(check, 2000);
+    // Check immediately so revocation is detected without waiting for the first interval.
+    void check();
+
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible" && active) {
+        if (timeoutId !== undefined) {
+          window.clearTimeout(timeoutId);
+          timeoutId = undefined;
+        }
+        controller?.abort();
+        void check();
+      }
+    };
+
+    document.addEventListener("visibilitychange", onVisibilityChange);
+
     return () => {
       active = false;
-      window.clearInterval(interval);
+      if (timeoutId !== undefined) window.clearTimeout(timeoutId);
+      controller?.abort();
+      document.removeEventListener("visibilitychange", onVisibilityChange);
     };
   }, [token]);
 
