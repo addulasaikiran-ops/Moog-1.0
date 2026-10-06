@@ -15,6 +15,8 @@ export default function HomePage() {
   const [expiry, setExpiry] = useState<Expiry>(60);
   const [url, setUrl] = useState("");
   const [revokeUrl, setRevokeUrl] = useState("");
+  const [revokeLoading, setRevokeLoading] = useState(false);
+  const [revoked, setRevoked] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -32,6 +34,7 @@ export default function HomePage() {
     setError("");
     setUrl("");
     setRevokeUrl("");
+    setRevoked(false);
     setCopied(false);
 
     if (mode === "photo" ? !photo : !text.trim()) {
@@ -71,6 +74,32 @@ export default function HomePage() {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function revokeShare() {
+    if (!revokeUrl || revokeLoading || revoked) return;
+    if (!window.confirm("Revoke this share now? Anyone currently viewing it will lose access.")) return;
+
+    const revokeToken = new URL(revokeUrl).pathname.split("/").filter(Boolean).pop();
+    if (!revokeToken) {
+      setError("Could not revoke this share.");
+      return;
+    }
+
+    setRevokeLoading(true);
+    setError("");
+    try {
+      const response = await fetch(`/api/revokes/${revokeToken}`, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+      });
+      if (!response.ok) throw new Error("Could not revoke this share.");
+      setRevoked(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not revoke this share.");
+    } finally {
+      setRevokeLoading(false);
     }
   }
 
@@ -252,7 +281,11 @@ export default function HomePage() {
                 <button className="copy" type="button" onClick={copyLink}>
                   {copied ? "Copied ✓" : "Copy link"}
                 </button>
-                {revokeUrl ? <a className="copy" href={revokeUrl} target="_blank" rel="noreferrer">Revoke control</a> : null}
+                {revokeUrl ? (
+                  <button className="copy" type="button" onClick={revokeShare} disabled={revokeLoading || revoked}>
+                    {revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke link"}
+                  </button>
+                ) : null}
               </div>
             </div>
           ) : null}
