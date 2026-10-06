@@ -24,8 +24,17 @@ export async function POST(request: Request, { params }: Params) {
     data: { revokedAt },
   });
 
+  const wantsJson = request.headers.get("accept")?.includes("application/json");
+
   if (result.count !== 1) {
+    if (wantsJson) {
+      return NextResponse.json({ revoked: false, error: "Share is already unavailable." }, { status: 409, headers: { "Cache-Control": "no-store" } });
+    }
     return NextResponse.redirect(new URL(`/revoke/${token}?status=unavailable`, request.url), 303);
+  }
+
+  if (wantsJson) {
+    return NextResponse.json({ revoked: true }, { status: 200, headers: { "Cache-Control": "no-store" } });
   }
 
   return NextResponse.redirect(new URL(`/revoke/${token}?status=revoked`, request.url), 303);
