@@ -14,6 +14,7 @@ export default function HomePage() {
   const [text, setText] = useState("");
   const [expiry, setExpiry] = useState<Expiry>(60);
   const [url, setUrl] = useState("");
+  const [revokeUrl, setRevokeUrl] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -30,6 +31,7 @@ export default function HomePage() {
     event.preventDefault();
     setError("");
     setUrl("");
+    setRevokeUrl("");
     setCopied(false);
 
     if (mode === "photo" ? !photo : !text.trim()) {
@@ -61,9 +63,10 @@ export default function HomePage() {
         });
       }
 
-      const data = (await response.json()) as { url?: string; error?: string };
+      const data = (await response.json()) as { url?: string; revokeUrl?: string; error?: string };
       if (!response.ok) throw new Error(data.error ?? "Could not create link.");
       setUrl(data.url ?? "");
+      setRevokeUrl(data.revokeUrl ?? "");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong.");
     } finally {
@@ -90,7 +93,7 @@ export default function HomePage() {
     const allowed = ["image/jpeg", "image/png", "image/gif", "image/webp"];
     if (!allowed.includes(file.type)) { setError("Use JPG, PNG, GIF, or WebP."); return; }
     if (file.size > 10 * 1024 * 1024) { setError("Image must be 10 MB or smaller."); return; }
-    setPhoto(file); setError(""); setUrl("");
+    setPhoto(file); setError(""); setUrl(""); setRevokeUrl("");
     const reader = new FileReader();
     reader.onload = () => setPhotoPreview(typeof reader.result === "string" ? reader.result : "");
     reader.readAsDataURL(file);
@@ -243,11 +246,14 @@ export default function HomePage() {
               <div className="resultBody">
                 <div className="resultLabel">PRIVATE LINK CREATED</div>
                 <a href={url} target="_blank" rel="noreferrer">{url}</a>
-                <div className="resultMeta">Expires in {expiryLabel}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""}</div>
+                <div className="resultMeta">Expires in {expiryLabel}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""} · Save the private revoke control.</div>
               </div>
-              <button className="copy" type="button" onClick={copyLink}>
-                {copied ? "Copied ✓" : "Copy link"}
-              </button>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
+                <button className="copy" type="button" onClick={copyLink}>
+                  {copied ? "Copied ✓" : "Copy link"}
+                </button>
+                {revokeUrl ? <a className="copy" href={revokeUrl} target="_blank" rel="noreferrer">Revoke control</a> : null}
+              </div>
             </div>
           ) : null}
         </section>
