@@ -285,6 +285,7 @@ export default function HomePage() {
           <div className="aboutGrid">
             <div><strong>Private links</strong><small>Share without creating an account or profile.</small></div>
             <div><strong>Automatic expiry</strong><small>Choose from 1 minute to 24 hours.</small></div>
+            <div><strong>Creator revoke</strong><small>Kill a live share early with its private control link.</small></div>
             <div><strong>Password protection</strong><small>Add an access key when a link needs another layer of control.</small></div>
             <div><strong>View once</strong><small>Make a share available for a single view.</small></div>
             <div><strong>Text & code</strong><small>Share plain text with syntax-aware code formats and line numbers.</small></div>
