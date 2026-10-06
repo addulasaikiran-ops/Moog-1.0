@@ -5,6 +5,7 @@ import { hashToken, isValidToken, verifyAccessGrant } from "@/lib/token";
 import Countdown from "./Countdown";
 import CodeViewer from "./CodeViewer";
 import ViewOnceContent from "./ViewOnceContent";
+import LiveShareGuard from "./LiveShareGuard";
 
 export const dynamic = "force-dynamic";
 
@@ -29,7 +30,8 @@ export default async function SharePage({ params, searchParams }: Props) {
 
   if (!unlocked) {
     return (
-      <main className="viewerPage viewerMinimal viewerLockedPage">
+      <LiveShareGuard token={token}>
+        <main className="viewerPage viewerMinimal viewerLockedPage">
         <div className="viewerShell">
           <header className="viewerTopbar">
             <a className="minimalLogo" href="/">moog</a>
@@ -56,13 +58,15 @@ export default async function SharePage({ params, searchParams }: Props) {
             <div className="lockNote">No account required · Access is temporary</div>
           </section>
         </div>
-      </main>
+        </main>
+      </LiveShareGuard>
     );
   }
 
   if (share.viewOnce && !revealed) {
     return (
-      <main className="viewerPage viewerMinimal">
+      <LiveShareGuard token={token}>
+        <main className="viewerPage viewerMinimal">
         <div className="viewerShell">
           <header className="viewerTopbar">
             <a className="minimalLogo" href="/">moog</a>
@@ -82,12 +86,14 @@ export default async function SharePage({ params, searchParams }: Props) {
           </main>
           <footer className="minimalFooter">moog · private, temporary sharing</footer>
         </div>
-      </main>
+        </main>
+      </LiveShareGuard>
     );
   }
 
   return (
-    <main className="viewerPage viewerMinimal">
+    <LiveShareGuard token={token}>
+      <main className="viewerPage viewerMinimal">
       <div className="viewerShell">
         <header className="viewerTopbar">
           <a className="minimalLogo" href="/">moog</a>
@@ -144,6 +150,7 @@ export default async function SharePage({ params, searchParams }: Props) {
 
         <footer className="minimalFooter">moog · private, temporary sharing</footer>
       </div>
-    </main>
+      </main>
+    </LiveShareGuard>
   );
 }
