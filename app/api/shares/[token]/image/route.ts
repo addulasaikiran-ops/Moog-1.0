@@ -13,7 +13,7 @@ export async function GET(request: Request, { params }: Params) {
   const tokenHash = hashToken(token);
   const share = await prisma.share.findUnique({ where: { tokenHash } });
 
-  if (!share || share.language !== "photo" || !share.imageData || !share.imageMime || share.expiresAt <= new Date()) {
+  if (!share || share.revokedAt || share.language !== "photo" || !share.imageData || !share.imageMime || share.expiresAt <= new Date()) {
     return new NextResponse("Not found", { status: 404 });
   }
 
