@@ -49,7 +49,16 @@ export default async function RevokePage({ params, searchParams }: Props) {
               <div className="lockForm">
                 <div className="viewerLabel">LINK EXPIRES</div>
                 <div className="expiryDate">{share.expiresAt.toLocaleString()}</div>
-                <form action={`/api/revokes/${token}`} method="post" style={{ marginTop: 16 }}>
+                <form
+                  action={`/api/revokes/${token}`}
+                  method="post"
+                  style={{ marginTop: 16 }}
+                  onSubmit={(event) => {
+                    if (!window.confirm("Revoke this share now? Anyone currently viewing it will lose access.")) {
+                      event.preventDefault();
+                    }
+                  }}
+                >
                   <button className="primary" type="submit" style={{ width: "100%" }}>Revoke share <span>→</span></button>
                 </form>
               </div>
