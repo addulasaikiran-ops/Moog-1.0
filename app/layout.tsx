@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/components/AuthProvider";
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://lucid-radiance-production.up.railway.app";
 export const metadata: Metadata = {
@@ -17,5 +16,5 @@ export const metadata: Metadata = {
 };
 const structuredData = { "@context": "https://schema.org", "@type": "WebSite", name: "Moog 1.0", alternateName: "Moog", url: siteUrl, description: "Private, temporary sharing for text, code, and photos." };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en"><head><meta name="google-site-verification" content="faNn5oeght5riOAmDiyfA_ki0nCNh6xq2flmzaJ_K7A" /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></head><body><AuthProvider>{children}</AuthProvider></body></html>;
+  return <html lang="en"><head><meta name="google-site-verification" content="faNn5oeght5riOAmDiyfA_ki0nCNh6xq2flmzaJ_K7A" /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></head><body>{children}</body></html>;
 }
