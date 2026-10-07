@@ -23,7 +23,7 @@ async function failure(reason: "not_found" | "expired" | "revoked") {
   return response({ error: "Share unavailable.", reason }, 404);
 }
 
-export async function POST(request: Request) {
+export async function POST(request: Request) {\n  const expectedOrigin = new URL(request.url).origin;\n  const origin = request.headers.get("origin");\n  if (origin && origin !== expectedOrigin) return NextResponse.json({ error: "Forbidden." }, { status: 403, headers: { "Cache-Control": "no-store" } });
   const expectedOrigin = new URL(request.url).origin;
   const origin = request.headers.get("origin");
   if (origin && origin !== expectedOrigin) return response({ error: "Forbidden" }, 403);
