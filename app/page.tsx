@@ -358,7 +358,7 @@ export default function HomePage() {
       <div className="shell">
         <header className="topbar">
           <a className="logo" href="/" aria-label="Moog home"><span className="logoMark">M</span><span>moog</span></a>
-          <nav className="topNav"><a href="#about-moog">About</a><div className="badge"><span className="pulse" /> temporary by design</div></nav>
+          <nav className="topNav" aria-label="Primary"><button type="button" className={tab === "send" ? "navLink active" : "navLink"} onClick={() => changeTab("send")}>Send</button><button type="button" className={tab === "receive" ? "navLink active" : "navLink"} onClick={() => changeTab("receive")}>Receive</button><a className="navLink" href="#about-moog">About</a><div className="badge"><span className="pulse" /> temporary by design</div></nav>
         </header>
 
         <section className="hero">
