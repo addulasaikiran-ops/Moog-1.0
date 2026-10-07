@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { allowRateLimit } from "@/lib/rate-limit";\nimport { getClientKey, hashToken, isValidToken, verifyAccessGrant } from "@/lib/token";
+import { allowRateLimit } from "@/lib/rate-limit";
+import { getClientKey, hashToken, isValidToken, verifyAccessGrant } from "@/lib/token";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,9 @@ export async function POST(request: Request, { params }: Params) {
   const { token } = await params;
   if (!isValidToken(token)) return new NextResponse("Not found", { status: 404 });
   const tokenHash = hashToken(token);
+  if (!(await allowRateLimit("consume:" + getClientKey(request) + ":" + tokenHash.slice(0, 16), 5, 10 * 60_000))) {
+    return new NextResponse("Too many reveal attempts. Try again later.", { status: 429, headers: { "Cache-Control": "no-store" } });
+  }
   const share = await prisma.share.findUnique({ where: { tokenHash } });
   if (!share || share.revokedAt || !share.viewOnce || !share.viewedAt || share.expiresAt <= new Date()) {
     return new NextResponse("Not found", { status: 404 });
