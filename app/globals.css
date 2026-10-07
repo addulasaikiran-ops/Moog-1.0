@@ -1042,3 +1042,32 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
   .featureCard{min-height:125px}
   .howGrid .howCard:last-child{grid-column:auto}
 }
+
+
+/* Viewer state polish */
+.viewerMinimal{
+  --viewer-bg:#0a0a0b;
+  --viewer-surface:#111215;
+  --viewer-well:#0b0c0e;
+  --viewer-border:rgba(255,255,255,.08);
+}
+.viewerMinimal .minimalLogo{font-weight:800;color:#f2f3ee}
+.viewerMinimal .minimalMeta{border-bottom-color:rgba(255,255,255,.08)}
+.viewerMinimal .minimalMeta .countdownWrap strong{color:#c6ff3d}
+.viewerMinimal .minimalCard{border-radius:18px;box-shadow:none}
+.viewerMinimal .timeLine{background:#c6ff3d}
+.viewerMinimal .minimalContent{background:#0d0e10}
+.viewerMinimal .codeViewer{background:#0b0c0e}
+.viewerMinimal .codeViewerTop{background:#101114}
+.viewerMinimal .codeLanguage{color:#c6ff3d}
+.viewerMinimal .codeLine .lineNumber{color:#454b55}
+.viewerMinimal .minimalActions{border-top-color:rgba(255,255,255,.08)}
+.viewerMinimal .primaryAction,.viewerMinimal .minimalRevealButton,.viewerMinimal .passwordRow .primary{background:#c6ff3d;color:#090a08}
+.viewerMinimal .viewerSecure,.viewerMinimal .viewerExpiryBadge{border-color:rgba(198,255,61,.16)}
+.viewerMinimal .lockIcon{color:#c6ff3d;border-color:rgba(198,255,61,.18);background:rgba(198,255,61,.05)}
+.viewerMinimal .lockStage h1{font-weight:800}
+.viewerUnavailable .lockStage{margin-top:clamp(100px,20vh,180px)}
+.viewerUnavailable .lockIcon{font-size:22px}
+.viewerUnavailable .viewerEyebrow{color:#c6ff3d}
+.viewerUnavailable .lockStage>p{max-width:460px}
+.viewerUnavailable .minimalRevealButton{display:inline-flex;width:auto;padding:0 16px;text-decoration:none}
