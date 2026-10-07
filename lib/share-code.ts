@@ -22,8 +22,7 @@ export function generateShareCode(): string {
   return formatShareCode(raw);
 }
 
-export function hashShareCode(code: string): string {
-  const secret = process.env.CODE_HASH_SECRET;
+export function hashShareCode(code: string, secret = process.env.CODE_HASH_SECRET): string {
   if (!secret) throw new Error("CODE_HASH_SECRET is not configured.");
   return createHmac("sha256", secret).update(normalizeShareCode(code), "utf8").digest("hex");
 }
