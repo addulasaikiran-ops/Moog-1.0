@@ -3,7 +3,7 @@ import { verifyFirebaseUser } from "@/lib/firebase-admin";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
 import { generateShareCode, hashShareCode } from "@/lib/share-code";
-import { generateToken, getClientKey, hashSecret, hashToken } from "@/lib/token";
+import { deriveShareToken, generateToken, getClientKey, hashSecret, hashToken } from "@/lib/token";
 
 const EXPIRY_OPTIONS = new Set([1, 5, 15, 30, 60, 360, 1440]);
 const LANGUAGE_OPTIONS = new Set(["text", "javascript", "typescript", "python", "html", "css", "json", "sql", "bash", "java", "csharp", "cpp", "go", "rust", "php", "markdown"]);
@@ -70,7 +70,8 @@ export async function POST(request: Request) {
 
     if (password.length > 128) return NextResponse.json({ error: "Password is too long." }, { status: 400 });
 
-    const token = generateToken();
+    const id = generateToken();
+    const token = deriveShareToken(id);
     const revokeToken = generateToken();
     const expiresAt = new Date(Date.now() + minutes * 60 * 1000);
 
@@ -80,6 +81,7 @@ export async function POST(request: Request) {
       try {
         await prisma.share.create({
           data: {
+            id,
             text, language, imageData, imageMime, imageName,
             ownerUid: user.uid,
             tokenHash: hashToken(token),
