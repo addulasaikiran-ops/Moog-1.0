@@ -12,13 +12,16 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
-    "db:deploy": "prisma migrate deploy"
+    "db:deploy": "prisma migrate deploy",
+    "cleanup": "node --experimental-strip-types scripts/cleanup.ts"
   },
   "dependencies": {
     "@prisma/client": "^6.17.0",
     "next": "15.5.27",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "bcryptjs": "^3.0.2",
+    "sharp": "^0.34.4"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.1",
