@@ -1419,3 +1419,5 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
 .lifetimePills.expiry-6 .lifetimeActivePill{transform:translateX(600%)}
 .lifetimePills.expiry-7 .lifetimeActivePill{transform:translateX(700%)}
 .lifetimePills.expiry-8 .lifetimeActivePill{transform:translateX(800%)}
+
+.revokeForm{margin-top:16px}.revokeButton{width:100%}
