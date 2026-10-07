@@ -6,8 +6,7 @@ import { deriveShareToken, generateToken, getClientKey, hashSecret, hashToken } 
 
 const EXPIRY_OPTIONS = new Set([1, 5, 15, 30, 60, 360, 1440]);
 const LANGUAGE_OPTIONS = new Set(["text", "javascript", "typescript", "python", "html", "css", "json", "sql", "bash", "java", "csharp", "cpp", "go", "rust", "php", "markdown"]);
-const IMAGE_TYPES = new Set(["image/jpeg", "image/png", "image/gif", "image/webp"]);
-const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
+import { IMAGE_TYPES, MAX_IMAGE_SIZE, hasValidImageSignature } from "@/lib/image";
 const MAX_MULTIPART_BODY = MAX_IMAGE_SIZE + 128 * 1024;
 const MAX_JSON_BODY = 256 * 1024;
 const CREATION_LIMIT = 20;
@@ -20,13 +19,6 @@ function getExpiry(value: FormDataEntryValue | null): number {
 function bodyTooLarge(request: Request, maxBytes: number): boolean {
   const length = request.headers.get("content-length");
   return length !== null && Number.isFinite(Number(length)) && Number(length) > maxBytes;
-}
-function hasValidImageSignature(bytes: Uint8Array, mime: string): boolean {
-  if (mime === "image/jpeg") return bytes.length >= 3 && bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
-  if (mime === "image/png") return bytes.length >= 8 && bytes.slice(0, 8).every((value, index) => value === [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a][index]);
-  if (mime === "image/gif") { const header = new TextDecoder().decode(bytes.slice(0, 6)); return header === "GIF89a" || header === "GIF87a"; }
-  if (mime === "image/webp") return bytes.length >= 12 && new TextDecoder().decode(bytes.slice(0, 4)) === "RIFF" && new TextDecoder().decode(bytes.slice(8, 12)) === "WEBP";
-  return false;
 }
 function isUniqueConstraint(error: unknown): boolean {
   return !!error && typeof error === "object" && "code" in error && (error as { code?: unknown }).code === "P2002";
