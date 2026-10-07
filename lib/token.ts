@@ -1,4 +1,5 @@
 import { createHash, createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
+import bcrypt from "bcryptjs";
 
 export function generateToken(): string { return randomBytes(32).toString("base64url"); }
 export function deriveShareToken(id: string, secret = process.env.TOKEN_DERIVATION_SECRET): string {
