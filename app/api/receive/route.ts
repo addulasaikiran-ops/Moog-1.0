@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
-import { getClientKey } from "@/lib/token";
-import { hashShareCode, normalizeShareCode } from "@/lib/share-code";
+import { deriveShareToken, getClientKey } from "@/lib/token";
+import { SHARE_CODE_ALPHABET, hashShareCode, normalizeShareCode } from "@/lib/share-code";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +12,7 @@ const FAILURE_LIMIT = 5;
 const FAILURE_WINDOW_MS = 10 * 60_000;
 const MAX_BODY = 256;
 const FAILURE_DELAY_MS = 50;
+const NORMALIZED_CODE_RE = new RegExp("^MG[" + SHARE_CODE_ALPHABET + "]{8}$");
 
 function response(body: Record<string, unknown>, status: number) {
   return NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
@@ -43,16 +44,16 @@ export async function POST(request: Request) {
   }
 
   const normalized = normalizeShareCode(code);
-  if (normalized.length !== 10 || !normalized.startsWith("MG-".replace("-", ""))) {
+  if (!NORMALIZED_CODE_RE.test(normalized)) {
     await allowRateLimit("receive-fail:" + clientKey, FAILURE_LIMIT, FAILURE_WINDOW_MS);
     return failure("not_found");
   }
 
-  let share: { tokenHash: string; expiresAt: Date; revokedAt: Date | null } | null = null;
+  let share: { id: string; expiresAt: Date; revokedAt: Date | null } | null = null;
   try {
     share = await prisma.share.findUnique({
       where: { codeHash: hashShareCode(code) },
-      select: { tokenHash: true, expiresAt: true, revokedAt: true },
+      select: { id: true, expiresAt: true, revokedAt: true },
     });
   } catch {
     return response({ error: "Could not process the code." }, 500);
@@ -74,5 +75,5 @@ export async function POST(request: Request) {
     return failure("expired");
   }
 
-  return response({ token: share.tokenHash }, 200);
+  return response({ token: deriveShareToken(share.id) }, 200);
 }
