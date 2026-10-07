@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     default: "Moog 1.0 — Private Temporary Sharing",
     template: "%s — Moog 1.0",
   },
-  description: "Moog 1.0 is a private, temporary sharing tool for text, code, and photos. Create an expiring link without an account.",
+  description: "Moog 1.0 is a private, temporary sharing tool for text, code, and photos. Create an expiring link while signed in.",
   applicationName: "Moog 1.0",
   keywords: ["Moog 1.0", "Moog", "temporary sharing", "private sharing", "expiring links", "share text", "share code", "share photos"],
   alternates: { canonical: "/" },
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Moog 1.0",
     title: "Moog 1.0 — Private Temporary Sharing",
-    description: "Create private, expiring links for text, code, and photos. No account required.",
+    description: "Create private, expiring links for text, code, and photos.",
   },
   twitter: {
     card: "summary",
