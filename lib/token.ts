@@ -31,5 +31,9 @@ export function verifyAccessGrant(tokenHash: string, expiresAt: Date, grant: str
   const a=Buffer.from(signature),b=Buffer.from(expected); return a.length===b.length&&timingSafeEqual(a,b);
 }
 export function getClientKey(request: Request): string {
-  return request.headers.get("x-real-ip") ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const address = request.headers.get("x-real-ip") ?? request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const secret = process.env.RATE_LIMIT_SECRET ?? process.env.TOKEN_DERIVATION_SECRET;
+  if (!secret) return "anonymous";
+  const day = new Date().toISOString().slice(0, 10);
+  return "client:" + createHmac("sha256", secret).update(day + ":" + address, "utf8").digest("hex").slice(0, 32);
 }
