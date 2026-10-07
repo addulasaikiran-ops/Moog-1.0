@@ -81,14 +81,48 @@ export default function HomePage() {
   const [receiveCode, setReceiveCode] = useState("");
   const [receiveLoading, setReceiveLoading] = useState(false);
   const [receiveError, setReceiveError] = useState("");
+  const [recentShares, setRecentShares] = useState<RecentShare[]>([]);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
+    try {
+      const stored = JSON.parse(window.localStorage.getItem("moog_recent_shares") ?? "[]") as unknown;
+      if (Array.isArray(stored)) {
+        const now = Date.now();
+        const valid = stored.filter((entry): entry is RecentShare => {
+          if (!entry || typeof entry !== "object") return false;
+          const item = entry as Partial<RecentShare>;
+          return (item.type === "text" || item.type === "code" || item.type === "photo") &&
+            typeof item.createdAt === "string" &&
+            typeof item.expiresAt === "string" &&
+            typeof item.revokeUrl === "string" &&
+            new Date(item.expiresAt).getTime() > now;
+        });
+        setRecentShares(valid);
+        window.localStorage.setItem("moog_recent_shares", JSON.stringify(valid));
+      }
+    } catch {
+      setRecentShares([]);
+    }
+
     const value = new URLSearchParams(window.location.search).get("tab");
     if (value === "receive") setTab("receive");
     const onPopState = () => setTab(new URLSearchParams(window.location.search).get("tab") === "receive" ? "receive" : "send");
     window.addEventListener("popstate", onPopState);
     return () => window.removeEventListener("popstate", onPopState);
+  }, []);
+
+  useEffect(() => {
+    const prune = () => {
+      setRecentShares((current) => {
+        const valid = current.filter((item) => new Date(item.expiresAt).getTime() > Date.now());
+        try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(valid)); } catch {}
+        return valid;
+      });
+    };
+    prune();
+    const interval = window.setInterval(prune, 60_000);
+    return () => window.clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -170,7 +204,23 @@ export default function HomePage() {
     handleFile(event.dataTransfer.files?.[0] ?? null);
   }
 
-  function saveRecentShare(entry: RecentShare) {\n    setRecentShares((current) => {\n      const next = [entry, ...current.filter((item) => item.revokeUrl !== entry.revokeUrl)].slice(0, 10);\n      try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(next)); } catch {}\n      return next;\n    });\n  }\n\n  function removeRecentShare(revokeUrl: string) {\n    setRecentShares((current) => {\n      const next = current.filter((item) => item.revokeUrl !== revokeUrl);\n      try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(next)); } catch {}\n      return next;\n    });\n  }\n\n  async function copyValue(value: string, kind: "link" | "code" | "revoke") {
+  function saveRecentShare(entry: RecentShare) {
+    setRecentShares((current) => {
+      const next = [entry, ...current.filter((item) => item.revokeUrl !== entry.revokeUrl)].slice(0, 10);
+      try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }
+
+  function removeRecentShare(revokeUrl: string) {
+    setRecentShares((current) => {
+      const next = current.filter((item) => item.revokeUrl !== revokeUrl);
+      try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(next)); } catch {}
+      return next;
+    });
+  }
+
+  async function copyValue(value: string, kind: "link" | "code" | "revoke") {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(kind === "revoke" ? "link" : kind);
@@ -229,7 +279,10 @@ export default function HomePage() {
       setUrl(body.url ?? "");
       setRevokeUrl(body.revokeUrl ?? "");
       setCode(body.code ?? "");
-      setExpiresAt(body.expiresAt ?? "");\n      if (body.revokeUrl && body.expiresAt) {\n        saveRecentShare({ type: mode, createdAt: new Date().toISOString(), expiresAt: body.expiresAt, revokeUrl: body.revokeUrl });\n      }
+      setExpiresAt(body.expiresAt ?? "");
+      if (body.revokeUrl && body.expiresAt) {
+        saveRecentShare({ type: mode, createdAt: new Date().toISOString(), expiresAt: body.expiresAt, revokeUrl: body.revokeUrl });
+      }
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Could not create link.");
     } finally {
@@ -251,7 +304,8 @@ export default function HomePage() {
         setError(body.error ?? "Share is already unavailable.");
         return;
       }
-      setRevoked(true);\n      removeRecentShare(targetRevokeUrl);
+      setRevoked(true);
+      removeRecentShare(targetRevokeUrl);
     } catch {
       setError("Could not revoke the share right now.");
     } finally {
@@ -391,7 +445,14 @@ export default function HomePage() {
           </section>
         ) : null}
 
-        {recentShares.length ? (\n          <section className="recentShares card" aria-labelledby="recent-shares-title">\n            <div className="recentHeader"><div><div className="fieldLabel" id="recent-shares-title">RECENT SHARES ON THIS DEVICE</div><p>Saved only on this device. Clearing your browser data removes it.</p></div></div>\n            <div className="recentList">{recentShares.map((item) => { const expired = new Date(item.expiresAt).getTime() <= Date.now(); return <div className="recentItem" key={item.revokeUrl}><div><strong>{item.type === "photo" ? "Photo" : item.type === "code" ? "Code" : "Text"}</strong><small>{expired ? "Expired" : `Active · ${formatCountdown(new Date(item.expiresAt).getTime() - Date.now())} left`}</small></div><div className="recentActions"><button className="copy" type="button" onClick={() => void copyValue(item.revokeUrl, "revoke")}>Copy revoke link</button>{!expired ? <button className="revokeNow" type="button" onClick={() => void revokeShare(item.revokeUrl)}>Revoke now</button> : null}<button className="textButton" type="button" onClick={() => removeRecentShare(item.revokeUrl)}>Remove</button></div></div>})}</div>\n          </section>\n        ) : null}\n\n        <section className="features" aria-label="How Moog works">
+        {recentShares.length ? (
+          <section className="recentShares card" aria-labelledby="recent-shares-title">
+            <div className="recentHeader"><div><div className="fieldLabel" id="recent-shares-title">RECENT SHARES ON THIS DEVICE</div><p>Saved only on this device. Clearing your browser data removes it.</p></div></div>
+            <div className="recentList">{recentShares.map((item) => { const expired = new Date(item.expiresAt).getTime() <= Date.now(); return <div className="recentItem" key={item.revokeUrl}><div><strong>{item.type === "photo" ? "Photo" : item.type === "code" ? "Code" : "Text"}</strong><small>{expired ? "Expired" : `Active · ${formatCountdown(new Date(item.expiresAt).getTime() - Date.now())} left`}</small></div><div className="recentActions"><button className="copy" type="button" onClick={() => void copyValue(item.revokeUrl, "revoke")}>Copy revoke link</button>{!expired ? <button className="revokeNow" type="button" onClick={() => void revokeShare(item.revokeUrl)}>Revoke now</button> : null}<button className="textButton" type="button" onClick={() => removeRecentShare(item.revokeUrl)}>Remove</button></div></div>})}</div>
+          </section>
+        ) : null}
+
+        <section className="features" aria-label="How Moog works">
           <div><span>01</span><strong>Paste</strong><small>Drop in text or code without an account.</small></div>
           <div><span>02</span><strong>Share</strong><small>Send one private link or unique code.</small></div>
           <div><span>03</span><strong>Disappear</strong><small>The link expires on the timer you choose.</small></div>
