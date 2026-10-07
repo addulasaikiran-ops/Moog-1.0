@@ -35,7 +35,7 @@ export default async function RevokePage({ params, searchParams }: Props) {
         </header>
         <section className="lockStage">
           <div className="lockIcon">SHARE CONTROL</div>
-          <div className="viewerEyebrow">{revoked ? "SHARE REVOKED" : "PRIVATE CONTROL LINK"}</div>
+          <div className="viewerEyebrow">{revoked ? "SHARE REVOKED" : "CREATOR CONTROL LINK"}</div>
           <h1>{revoked ? "This share is no longer available." : "Revoke this share?"}</h1>
           <p>
             {revoked
@@ -64,7 +64,7 @@ export default async function RevokePage({ params, searchParams }: Props) {
               </div>
             </section>
           ) : null}
-          <div className="lockNote">Keep this private control link safe · No account required</div>
+          <div className="lockNote">Keep this creator control link safe · No account required</div>
         </section>
       </div>
     </main>
