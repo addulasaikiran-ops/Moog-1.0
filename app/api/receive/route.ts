@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
-import { getClientKey } from "@/lib/token";
+import { deriveShareToken, getClientKey } from "@/lib/token";
 import { SHARE_CODE_ALPHABET, hashShareCode, normalizeShareCode } from "@/lib/share-code";
-import { getReceiveState, getReceiveToken } from "@/lib/receive";
+import { getReceiveState } from "@/lib/receive";
 
 export const dynamic = "force-dynamic";
 
@@ -78,5 +78,5 @@ export async function POST(request: Request) {
     return failure("expired");
   }
 
-  return response({ token: getReceiveToken(share) }, 200);
+  return response({ token: deriveShareToken(share.id) }, 200);
 }
