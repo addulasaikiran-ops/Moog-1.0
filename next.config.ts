@@ -32,7 +32,11 @@ const nextConfig: NextConfig = {
   reactStrictMode: true,
   typedRoutes: true,
   async headers() {
-    return [\n      { source: "/(.*)", headers: securityHeaders },\n      { source: "/s/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }, { key: "Cache-Control", value: "no-store" }, { key: "Referrer-Policy", value: "no-referrer" }] },\n      { source: "/api/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }, { key: "Cache-Control", value: "no-store" }, { key: "Referrer-Policy", value: "no-referrer" }] },\n    ];
+    return [
+      { source: "/(.*)", headers: securityHeaders },
+      { source: "/s/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }, { key: "Cache-Control", value: "no-store" }, { key: "Referrer-Policy", value: "no-referrer" }] },
+      { source: "/api/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }, { key: "Cache-Control", value: "no-store" }, { key: "Referrer-Policy", value: "no-referrer" }] },
+    ];
   },
 };
 
