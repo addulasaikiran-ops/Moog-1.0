@@ -8,8 +8,9 @@ export function normalizeShareCode(value: string): string {
 }
 
 export function formatShareCode(normalized: string): string {
-  if (!/^[A-Z0-9]{8}$/.test(normalized)) throw new Error("Invalid share code.");
-  return `MG-${normalized.slice(0, 4)}-${normalized.slice(4)}`;
+  const raw = normalized.startsWith("MG") ? normalized.slice(2) : normalized;
+  if (!/^[A-Z0-9]{8}$/.test(raw)) throw new Error("Invalid share code.");
+  return `MG-${raw.slice(0, 4)}-${raw.slice(4)}`;
 }
 
 export function isValidShareCode(value: string): boolean {
