@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { CSSProperties, FormEvent, useEffect, useRef, useState } from "react";
 
 const EXPIRY_OPTIONS = [
   { value: 1, label: "1 minute" },
@@ -418,7 +418,7 @@ export default function HomePage() {
 
               <div className="lifetimeSection">
                 <div className="lifetimeHeader"><span>LINK LIFETIME</span><strong>Private link · {EXPIRY_OPTIONS.find((option) => option.value === expiryMinutes)?.label ?? "1 hour"}</strong></div>
-                <div className="lifetimePills" role="group" aria-label="Link lifetime" style={{ "--expiry-index": EXPIRY_OPTIONS.findIndex((option) => option.value === expiryMinutes) } as React.CSSProperties}>
+                <div className="lifetimePills" role="group" aria-label="Link lifetime" style={{ "--expiry-index": EXPIRY_OPTIONS.findIndex((option) => option.value === expiryMinutes) } as CSSProperties}>
                   <span className="lifetimeActivePill" aria-hidden="true" />
                   {EXPIRY_OPTIONS.map((option) => <button key={option.value} type="button" className={expiryMinutes === option.value ? "lifetimePill active" : "lifetimePill"} onClick={() => setExpiryMinutes(option.value)}>{option.label.replace(" minutes", " min").replace(" minute", " min").replace(" hours", " hr").replace(" hour", " hr")}</button>)}
                 </div>
