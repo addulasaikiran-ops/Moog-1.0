@@ -27,7 +27,7 @@ async function failure(reason: "not_found" | "expired" | "revoked") {
 export async function POST(request: Request) {
   const expectedOrigin = new URL(request.url).origin;
   const origin = request.headers.get("origin");
-  if (origin && origin !== expectedOrigin) return response({ error: "Forbidden" }, 403);
+  if (origin !== expectedOrigin) return response({ error: "Forbidden" }, 403);
 
   const clientKey = getClientKey(request);
   if (!(await allowRateLimit("receive:" + clientKey, ATTEMPT_LIMIT, ATTEMPT_WINDOW_MS))) {
