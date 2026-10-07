@@ -7,11 +7,15 @@ export function deriveShareToken(id: string, secret = process.env.TOKEN_DERIVATI
   return createHmac("sha256", secret).update("share:" + id, "utf8").digest("base64url");
 }
 export function hashSecret(value: string): string {
-  const salt = randomBytes(16).toString("hex"); const digest = scryptSync(value, salt, 32).toString("hex"); return `scrypt:${salt}:${digest}`;
+  return bcrypt.hashSync(value, 12);
 }
 export function verifySecret(value: string, stored: string): boolean {
-  const [scheme,salt,digest]=stored.split(":"); if(scheme!=="scrypt"||!salt||!digest)return false;
-  const actual=scryptSync(value,salt,32), expected=Buffer.from(digest,"hex"); return expected.length===actual.length&&timingSafeEqual(actual,expected);
+  if (/^\\$2[aby]\\$/.test(stored)) return bcrypt.compareSync(value, stored);
+  const [scheme, salt, digest] = stored.split(":");
+  if (scheme !== "scrypt" || !salt || !digest) return false;
+  const actual = scryptSync(value, salt, 32);
+  const expected = Buffer.from(digest, "hex");
+  return expected.length === actual.length && timingSafeEqual(actual, expected);
 }
 export function isValidToken(token: string): boolean { return /^[A-Za-z0-9_-]{43}$/.test(token); }
 export function hashToken(token: string): string { return createHash("sha256").update(token,"utf8").digest("hex"); }
