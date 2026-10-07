@@ -290,8 +290,8 @@ export default function HomePage() {
     }
   }
 
-  async function revokeShare() {
-    if (!revokeUrl) return;
+  async function revokeShare(targetRevokeUrl = revokeUrl) {
+    if (!targetRevokeUrl) return;
     setRevokeLoading(true);
     setError("");
     try {
@@ -304,7 +304,7 @@ export default function HomePage() {
         setError(body.error ?? "Share is already unavailable.");
         return;
       }
-      setRevoked(true);
+      setRevoked(targetRevokeUrl === revokeUrl);
       removeRecentShare(targetRevokeUrl);
     } catch {
       setError("Could not revoke the share right now.");
@@ -362,8 +362,8 @@ export default function HomePage() {
 
         <section className="hero">
           <div className="eyebrow">MOOG 1.0 · PRIVATE TEMPORARY SHARING</div>
-          <h1>Share it.<br /><span>Then it’s gone.</span></h1>
-          <p className="heroCopy">Text, code, or photos with a private link and a unique code. Create once, receive anywhere, and let it expire. No account needed.</p>
+          <h1>Say it once.<br /><span>Then let it disappear.</span></h1>
+          <p className="heroCopy">Paste text or code, choose the format, create a private link, and decide exactly how long it stays alive.</p>
         </section>
 
         <div className="shareTabs" role="tablist" aria-label="Share mode" onKeyDown={(event) => { if (event.key === "ArrowRight" || event.key === "ArrowDown") { event.preventDefault(); changeTab("receive"); } if (event.key === "ArrowLeft" || event.key === "ArrowUp") { event.preventDefault(); changeTab("send"); } }}>
@@ -415,9 +415,14 @@ export default function HomePage() {
                 </div>
               ) : null}
 
+              <div className="lifetimeSection">
+                <div className="lifetimeHeader"><span>LINK LIFETIME</span><strong>Private link · {EXPIRY_OPTIONS.find((option) => option.value === expiryMinutes)?.label ?? "1 hour"}</strong></div>
+                <div className="lifetimePills" role="group" aria-label="Link lifetime">
+                  {EXPIRY_OPTIONS.map((option) => <button key={option.value} type="button" className={expiryMinutes === option.value ? "lifetimePill active" : "lifetimePill"} onClick={() => setExpiryMinutes(option.value)}>{option.label.replace(" minutes", " min").replace(" minute", " min").replace(" hours", " hr").replace(" hour", " hr")}</button>)}
+                </div>
+              </div>
               <div className="optionsRow">
-                <label className="optionField"><span>Expires</span><select value={expiryMinutes} onChange={(event) => setExpiryMinutes(Number(event.target.value))}>{EXPIRY_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
-                <label className="optionField"><span>Access key <small>optional</small></span><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} placeholder="Add a password" aria-describedby="access-key-note" /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide access key" : "Show access key"} onClick={() => setShowAccessKey((value) => !value)}>{showAccessKey ? "Hide" : "Show"}</button></div><small id="access-key-note" className="optionNote">Recipients must enter this to open the share.</small></label>
+                <label className="optionField accessKeyField"><span>Access key <small>optional</small></span><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} placeholder="Add an access key" aria-describedby="access-key-note" /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide access key" : "Show access key"} onClick={() => setShowAccessKey((value) => !value)}>{showAccessKey ? "◉" : "○"}</button></div><small id="access-key-note" className="optionNote">Recipients enter this to open the share.</small></label>
                 <label className="checkField"><input type="checkbox" checked={viewOnce} onChange={(event) => setViewOnce(event.target.checked)} /><span>View once</span></label>
               </div>
 
@@ -459,15 +464,27 @@ export default function HomePage() {
           </section>
         ) : null}
 
-        <section className="features" aria-label="How Moog works">
-          <div><span>01</span><strong>Paste</strong><small>Drop in text or code without an account.</small></div>
-          <div><span>02</span><strong>Share</strong><small>Send one private link or unique code.</small></div>
-          <div><span>03</span><strong>Revoke</strong><small>Revoke anytime. Keep your private revoke link to end a share early.</small></div>
-          <div><span>04</span><strong>Disappear</strong><small>The link expires on the timer you choose.</small></div>
+        <section className="stepsRow" aria-label="Moog in three steps">
+          <div className="stepCard"><span>01</span><strong>Paste</strong><small>Add something private without an account.</small></div>
+          <div className="stepCard"><span>02</span><strong>Share</strong><small>Send the private link or unique code.</small></div>
+          <div className="stepCard"><span>03</span><strong>Disappear</strong><small>It expires automatically, or you revoke it early.</small></div>
         </section>
 
-        <section className="howMoog" id="about-moog" aria-labelledby="about-moog-title">
-          <div className="howIntro"><div className="eyebrow">THE DETAILS</div><h2 id="about-moog-title">How Moog works</h2><p>Simple sharing with a short life by design.</p></div>
+        <section className="aboutMoog" id="about-moog" aria-labelledby="about-title">
+          <div className="aboutIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="about-title">Private sharing. <span>Nothing extra.</span></h2></div>
+          <div className="featureGrid">
+            <div className="featureCard"><i>↗</i><strong>Private links</strong><small>High-entropy links designed for temporary access.</small></div>
+            <div className="featureCard"><i>◷</i><strong>Automatic expiry</strong><small>Choose a lifetime from 1 minute to 24 hours.</small></div>
+            <div className="featureCard"><i>×</i><strong>Creator revoke</strong><small>End an active share whenever you need to.</small></div>
+            <div className="featureCard"><i>⌁</i><strong>Password protection</strong><small>Add an access key for another layer of control.</small></div>
+            <div className="featureCard"><i>1×</i><strong>View once</strong><small>Reveal a share once when the moment calls for it.</small></div>
+            <div className="featureCard"><i>&lt;/&gt;</i><strong>Text &amp; code</strong><small>Paste plain text or supported code formats.</small></div>
+            <div className="featureCard"><i>□</i><strong>Photo sharing</strong><small>Share JPG, PNG, GIF, or WebP images up to 10 MB.</small></div>
+          </div>
+        </section>
+
+        <section className="howMoog" aria-labelledby="how-moog-title">
+          <div className="howIntro"><div className="eyebrow">THE DETAILS</div><h2 id="how-moog-title">How Moog works</h2><p>Create, share, receive, gone.</p></div>
           <div className="howGrid">
             <div className="howCard"><span className="howIcon" aria-hidden="true">＋</span><strong>Create</strong><small>Add text, code, or a photo and pick an expiry.</small></div>
             <div className="howCard"><span className="howIcon" aria-hidden="true">↗</span><strong>Share</strong><small>Send the link or the unique code.</small></div>
@@ -477,10 +494,10 @@ export default function HomePage() {
           <div className="facts" aria-label="Moog facts"><span>◷ 1 min to 24 hours</span><span>⌁ Optional access key</span><span>◉ View once</span><span>▧ Photos up to 10 MB</span><span>◎ No accounts</span></div>
           <p className="screenshotNote">Moog controls access, not copies. A screenshot cannot be taken back.</p>
           <section className="securitySection"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Private by default.</h3><p>Tokens and unique codes are stored as hashes. Expired and revoked shares are rejected by the server, and open viewers detect revocation within seconds. Moog cannot prevent screenshots or copies.</p></section>
-          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3><details><summary>Is it private?</summary><p>Shares use high-entropy private links and hashed lookup values. Optional access keys add another layer.</p></details><details><summary>Can the recipient copy it?</summary><p>Yes. Moog is designed for temporary access, not copy prevention.</p></details><details><summary>What happens when it expires?</summary><p>The server rejects the share after its expiry time.</p></details><details><summary>Can I revoke?</summary><p>Yes. Keep the private revoke control link from creation and use it while the share is active.</p></details><details><summary>Do I need an account?</summary><p>No. Both sending and receiving are account-free.</p></details><details><summary>What if I lose my revoke link?</summary><p>It can&apos;t be recovered. The share still expires on its timer.</p></details><details><summary>What file types are allowed?</summary><p>JPG, PNG, GIF, and WebP images up to 10 MB, plus text and supported code languages.</p></details></section>
+          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3><details><summary>Do I need an account?</summary><p>No. Sending and receiving are both account-free.</p></details><details><summary>How long do shares stay alive?</summary><p>Choose from 1 minute to 24 hours when you create a share.</p></details><details><summary>Can I revoke a share early?</summary><p>Yes. Keep the private revoke link shown after creation and use it while the share is active.</p></details><details><summary>Can someone copy what I shared?</summary><p>Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back.</p></details><details><summary>What can I share?</summary><p>Text, supported code formats, and JPG, PNG, GIF, or WebP photos up to 10 MB.</p></details></section>
         </section>
 
-        <footer className="siteFooter"><div className="footerBrand"><strong>moog</strong><span>temporary sharing, intentionally temporary.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:hello@moog.example">Contact</a></nav><div className="footerLegal">moog 1.0 · © 2026</div></footer>
+        <footer className="siteFooter"><div className="footerBrand"><strong>moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav><div className="footerLegal">moog 1.0 · © 2026</div></footer>
       </div>
     </main>
   );
