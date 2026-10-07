@@ -9,5 +9,10 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   ...compat.extends("next/core-web-vitals"),
+  {
+    rules: {
+      "@next/next/no-html-link-for-pages": "off",
+    },
+  },
   globalIgnores([".next/**", "node_modules/**", "coverage/**"]),
 ]);
