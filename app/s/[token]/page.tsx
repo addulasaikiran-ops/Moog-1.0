@@ -35,12 +35,12 @@ export default async function SharePage({ params, searchParams }: Props) {
         <div className="viewerShell">
           <header className="viewerTopbar">
             <a className="minimalLogo" href="/">moog</a>
-            <span className="viewerSecure"><span className="lockDot">⌁</span> private link</span>
+            <span className="viewerSecure"><span className="lockDot">⌁</span> access link</span>
           </header>
           <section className="lockStage">
             <div className="lockIcon">↗</div>
             <div className="viewerEyebrow">PASSWORD PROTECTED</div>
-            <h1>This link is private.</h1>
+            <h1>This link requires the access password.</h1>
             <p>Enter the password to reveal what was shared with you.</p>
             <section className="minimalCard passwordCard">
               <div className="lockForm">
@@ -84,7 +84,7 @@ export default async function SharePage({ params, searchParams }: Props) {
               </div>
             </section>
           </main>
-          <footer className="minimalFooter">moog · private, temporary sharing</footer>
+          <footer className="minimalFooter">moog · temporary sharing</footer>
         </div>
         </main>
       </LiveShareGuard>
@@ -138,7 +138,7 @@ export default async function SharePage({ params, searchParams }: Props) {
                     {share.language === "photo" ? (
                       <a className="minimalAction primaryAction" href={"/api/shares/" + token + "/image?download=1"}>Download</a>
                     ) : (
-                      <span className="minimalActionNote">Private share</span>
+                      <span className="minimalActionNote">Access-controlled share</span>
                     )}
                   </div>
                   <a className="minimalNewShare" href="/">New share <span>→</span></a>
