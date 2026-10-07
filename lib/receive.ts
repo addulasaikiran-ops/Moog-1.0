@@ -1,4 +1,4 @@
-import { deriveShareToken } from "@/lib/token";
+import { deriveShareToken } from "./token";
 
 export type ReceiveShare = {
   id: string;
