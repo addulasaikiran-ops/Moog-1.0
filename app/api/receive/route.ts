@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isAllowedOrigin } from "@/lib/origin";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
 import { deriveShareToken, getClientKey } from "@/lib/token";
@@ -25,9 +26,7 @@ async function failure(reason: "not_found" | "expired" | "revoked") {
 }
 
 export async function POST(request: Request) {
-  const expectedOrigin = new URL(request.url).origin;
-  const origin = request.headers.get("origin");
-  if (origin !== expectedOrigin) return response({ error: "Forbidden" }, 403);
+  if (!isAllowedOrigin(request)) return response({ error: "Forbidden" }, 403);
 
   const clientKey = getClientKey(request);
   if (!(await allowRateLimit("receive:" + clientKey, ATTEMPT_LIMIT, ATTEMPT_WINDOW_MS))) {
