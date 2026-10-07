@@ -1,5 +1,3 @@
-import { deriveShareToken } from "./token";
-
 export type ReceiveShare = {
   id: string;
   expiresAt: Date;
@@ -17,9 +15,6 @@ export function getReceiveState(share: ReceiveShare | null, now = new Date()): R
   return "available";
 }
 
-export function getReceiveToken(share: ReceiveShare): string {
-  return deriveShareToken(share.id);
-}
 
 export function isReceiveRateLimited(attempts: number, failures: number): boolean {
   return attempts > 10 || failures > 5;
