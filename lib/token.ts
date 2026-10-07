@@ -1,8 +1,7 @@
 import { createHash, createHmac, randomBytes, scryptSync, timingSafeEqual } from "node:crypto";
 
 export function generateToken(): string { return randomBytes(32).toString("base64url"); }
-export function deriveShareToken(id: string): string {
-  const secret = process.env.TOKEN_DERIVATION_SECRET;
+export function deriveShareToken(id: string, secret = process.env.TOKEN_DERIVATION_SECRET): string {
   if (!secret) throw new Error("TOKEN_DERIVATION_SECRET is not configured.");
   return createHmac("sha256", secret).update("share:" + id, "utf8").digest("base64url");
 }
