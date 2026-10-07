@@ -32,6 +32,7 @@ const CODE_LANGUAGES = [
 
 type Tab = "send" | "receive";
 type Mode = "text" | "code" | "photo";
+type RecentShare = { type: Mode; createdAt: string; expiresAt: string; revokeUrl: string };
 
 function formatReceiveCode(value: string): string {
   const raw = value.toUpperCase().replace(/[\s-]/g, "").slice(0, 10);
@@ -169,10 +170,10 @@ export default function HomePage() {
     handleFile(event.dataTransfer.files?.[0] ?? null);
   }
 
-  async function copyValue(value: string, kind: "link" | "code") {
+  function saveRecentShare(entry: RecentShare) {\n    setRecentShares((current) => {\n      const next = [entry, ...current.filter((item) => item.revokeUrl !== entry.revokeUrl)].slice(0, 10);\n      try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(next)); } catch {}\n      return next;\n    });\n  }\n\n  function removeRecentShare(revokeUrl: string) {\n    setRecentShares((current) => {\n      const next = current.filter((item) => item.revokeUrl !== revokeUrl);\n      try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(next)); } catch {}\n      return next;\n    });\n  }\n\n  async function copyValue(value: string, kind: "link" | "code" | "revoke") {
     try {
       await navigator.clipboard.writeText(value);
-      setCopied(kind);
+      setCopied(kind === "revoke" ? "link" : kind);
       window.setTimeout(() => setCopied(""), 1400);
     } catch {
       setError("Could not copy. Please copy it manually.");
@@ -228,7 +229,7 @@ export default function HomePage() {
       setUrl(body.url ?? "");
       setRevokeUrl(body.revokeUrl ?? "");
       setCode(body.code ?? "");
-      setExpiresAt(body.expiresAt ?? "");
+      setExpiresAt(body.expiresAt ?? "");\n      if (body.revokeUrl && body.expiresAt) {\n        saveRecentShare({ type: mode, createdAt: new Date().toISOString(), expiresAt: body.expiresAt, revokeUrl: body.revokeUrl });\n      }
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Could not create link.");
     } finally {
@@ -241,7 +242,7 @@ export default function HomePage() {
     setRevokeLoading(true);
     setError("");
     try {
-      const response = await fetch(revokeUrl, {
+      const response = await fetch(targetRevokeUrl, {
         method: "POST",
         headers: { Accept: "application/json" },
       });
@@ -250,7 +251,7 @@ export default function HomePage() {
         setError(body.error ?? "Share is already unavailable.");
         return;
       }
-      setRevoked(true);
+      setRevoked(true);\n      removeRecentShare(targetRevokeUrl);
     } catch {
       setError("Could not revoke the share right now.");
     } finally {
@@ -385,12 +386,12 @@ export default function HomePage() {
               <div className="resultLabel">PRIVATE LINK CREATED</div>
               <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
               <div className="uniqueCodeBox"><div><span>Unique code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "Copy code"}</button></div>
-              <p className="resultNote">The code is shown only once. Copy it now.</p><div className="resultBottom"><span>Active for {remaining > 0 ? formatCountdown(remaining) : "expired"} · expires at {expiresAt ? new Date(expiresAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "—"}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
+              <p className="resultNote">The code and revoke link are shown only once. Copy them now.</p><div className="revokeLinkRow"><span>Revoke link</span><button className="copy" type="button" onClick={() => void copyValue(revokeUrl, "revoke")}>Copy revoke link</button></div><p className="resultWarning">Save your revoke link. It can&apos;t be recovered.</p><div className="resultBottom"><span>Active for {remaining > 0 ? formatCountdown(remaining) : "expired"} · expires at {expiresAt ? new Date(expiresAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "—"}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
             </div>
           </section>
         ) : null}
 
-        <section className="features" aria-label="How Moog works">
+        {recentShares.length ? (\n          <section className="recentShares card" aria-labelledby="recent-shares-title">\n            <div className="recentHeader"><div><div className="fieldLabel" id="recent-shares-title">RECENT SHARES ON THIS DEVICE</div><p>Saved only on this device. Clearing your browser data removes it.</p></div></div>\n            <div className="recentList">{recentShares.map((item) => { const expired = new Date(item.expiresAt).getTime() <= Date.now(); return <div className="recentItem" key={item.revokeUrl}><div><strong>{item.type === "photo" ? "Photo" : item.type === "code" ? "Code" : "Text"}</strong><small>{expired ? "Expired" : `Active · ${formatCountdown(new Date(item.expiresAt).getTime() - Date.now())} left`}</small></div><div className="recentActions"><button className="copy" type="button" onClick={() => void copyValue(item.revokeUrl, "revoke")}>Copy revoke link</button>{!expired ? <button className="revokeNow" type="button" onClick={() => void revokeShare(item.revokeUrl)}>Revoke now</button> : null}<button className="textButton" type="button" onClick={() => removeRecentShare(item.revokeUrl)}>Remove</button></div></div>})}</div>\n          </section>\n        ) : null}\n\n        <section className="features" aria-label="How Moog works">
           <div><span>01</span><strong>Paste</strong><small>Drop in text or code without an account.</small></div>
           <div><span>02</span><strong>Share</strong><small>Send one private link or unique code.</small></div>
           <div><span>03</span><strong>Disappear</strong><small>The link expires on the timer you choose.</small></div>
@@ -404,10 +405,10 @@ export default function HomePage() {
             <div className="howCard"><span className="howIcon">03</span><strong>Receive</strong><small>Open it without an account, on any device.</small></div>
             <div className="howCard"><span className="howIcon">04</span><strong>Gone</strong><small>It expires, or you revoke it live.</small></div>
           </div>
-          <div className="facts" aria-label="Moog facts"><span>◷ 1 min to 24 hours</span><span>⌁ Optional access key</span><span>◉ View once</span><span>▧ Photos up to 10 MB</span></div>
+          <div className="facts" aria-label="Moog facts"><span>◷ 1 min to 24 hours</span><span>⌁ Optional access key</span><span>◉ View once</span><span>▧ Photos up to 10 MB</span><span>◎ No accounts</span></div>
           <p className="screenshotNote">Moog controls access, not copies. A screenshot cannot be taken back.</p>
           <section className="securitySection"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Private by default.</h3><p>Tokens and unique codes are stored as hashes. Expired and revoked shares are rejected by the server, and open viewers detect revocation within seconds. Moog cannot prevent screenshots or copies.</p></section>
-          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3><details><summary>Is it private?</summary><p>Shares use high-entropy private links and hashed lookup values. Optional access keys add another layer.</p></details><details><summary>Can the recipient copy it?</summary><p>Yes. Moog is designed for temporary access, not copy prevention.</p></details><details><summary>What happens when it expires?</summary><p>The server rejects the share after its expiry time.</p></details><details><summary>Can I revoke?</summary><p>Yes. Keep the private revoke control link from creation and use it while the share is active.</p></details><details><summary>Do I need an account?</summary><p>No. Both sending and receiving are account-free in this version.</p></details><details><summary>What file types are allowed?</summary><p>JPG, PNG, GIF, and WebP images up to 10 MB, plus text and supported code languages.</p></details></section>
+          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3><details><summary>Is it private?</summary><p>Shares use high-entropy private links and hashed lookup values. Optional access keys add another layer.</p></details><details><summary>Can the recipient copy it?</summary><p>Yes. Moog is designed for temporary access, not copy prevention.</p></details><details><summary>What happens when it expires?</summary><p>The server rejects the share after its expiry time.</p></details><details><summary>Can I revoke?</summary><p>Yes. Keep the private revoke control link from creation and use it while the share is active.</p></details><details><summary>Do I need an account?</summary><p>No. Both sending and receiving are account-free.</p></details><details><summary>What if I lose my revoke link?</summary><p>It can&apos;t be recovered. The share still expires on its timer.</p></details><details><summary>What file types are allowed?</summary><p>JPG, PNG, GIF, and WebP images up to 10 MB, plus text and supported code languages.</p></details></section>
         </section>
 
         <footer className="siteFooter"><div className="footerBrand"><strong>moog</strong><span>temporary sharing, intentionally temporary.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:hello@moog.example">Contact</a></nav><div className="footerLegal">moog 1.0 · © 2026</div></footer>
