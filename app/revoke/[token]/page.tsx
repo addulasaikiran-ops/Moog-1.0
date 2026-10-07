@@ -5,7 +5,7 @@ import { hashToken, isValidToken } from "@/lib/token";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Revoke share — Moog 1.0",
+  title: "Revoke share — Moog",
   robots: { index: false, follow: false },
 };
 
@@ -52,14 +52,14 @@ export default async function RevokePage({ params, searchParams }: Props) {
                 <form
                   action={`/api/revokes/${token}`}
                   method="post"
-                  style={{ marginTop: 16 }}
+                  className="revokeForm"
                   onSubmit={(event) => {
                     if (!window.confirm("Revoke this share now? Anyone currently viewing it will lose access.")) {
                       event.preventDefault();
                     }
                   }}
                 >
-                  <button className="primary" type="submit" style={{ width: "100%" }}>Revoke share <span>→</span></button>
+                  <button className="primary revokeButton" type="submit">Revoke share <span>→</span></button>
                 </form>
               </div>
             </section>
