@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { isAllowedOrigin } from "@/lib/origin";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
@@ -9,9 +10,7 @@ export const dynamic = "force-dynamic";
 type Params = { params: Promise<{ token: string }> };
 
 export async function POST(request: Request, { params }: Params) {
-  const expectedOrigin = new URL(request.url).origin;
-  const origin = request.headers.get("origin");
-  if (origin !== expectedOrigin) return new NextResponse("Forbidden", { status: 403 });
+  if (!isAllowedOrigin(request)) return new NextResponse("Forbidden", { status: 403 });
 
   const { token } = await params;
   if (!isValidToken(token)) return new NextResponse("Not found", { status: 404 });
