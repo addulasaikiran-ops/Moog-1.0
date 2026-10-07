@@ -6,7 +6,7 @@ import { deriveShareToken, generateToken, getClientKey, hashSecret, hashToken } 
 import { IMAGE_TYPES, MAX_IMAGE_SIZE, hasValidImageSignature, sanitizeImage } from "@/lib/image";
 import { isAllowedOrigin } from "@/lib/origin";
 
-const EXPIRY_OPTIONS = new Set([1, 5, 15, 30, 60, 360, 1440]);
+const EXPIRY_OPTIONS = new Set([1, 5, 15, 30, 60, 360, 1440, 4320, 10080]);
 const LANGUAGE_OPTIONS = new Set(["text", "javascript", "typescript", "python", "html", "css", "json", "sql", "bash", "java", "csharp", "cpp", "go", "rust", "php", "markdown"]);
 const MAX_MULTIPART_BODY = MAX_IMAGE_SIZE + 128 * 1024;
 const MAX_JSON_BODY = 256 * 1024;
