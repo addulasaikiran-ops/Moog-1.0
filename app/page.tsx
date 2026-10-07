@@ -1,8 +1,6 @@
 "use client";
 
 import { ClipboardEvent, DragEvent, FormEvent, useEffect, useRef, useState } from "react";
-import AuthPanel from "@/components/AuthPanel";
-import { useAuth } from "@/components/AuthProvider";
 
 type Expiry = 1 | 5 | 15 | 30 | 60 | 360 | 1440;
 type Tab = "send" | "receive";
@@ -28,7 +26,7 @@ function formatReceiveCode(value: string): string {
 }
 
 export default function HomePage() {
-  const { user, ready, getIdToken } = useAuth();
+
   const [tab, setTab] = useState<Tab>("send");
   const [text, setText] = useState("");
   const [expiry, setExpiry] = useState<Expiry>(60);
@@ -80,22 +78,19 @@ export default function HomePage() {
     event.preventDefault();
     setError(""); setUrl(""); setRevokeUrl(""); setCode(""); setRevoked(false); setCopied(""); setExpiresAt("");
     if (mode === "photo" ? !photo : !text.trim()) { setError("Write something first."); return; }
-    if (!ready || !user) { setError("Please sign in before creating a share."); return; }
-
     setLoading(true);
     try {
-      const idToken = await getIdToken();
       let response: Response;
       if (mode === "photo" && photo) {
         const formData = new FormData();
         formData.append("file", photo); formData.append("text", photoCaption); formData.append("expiryMinutes", String(expiry));
         if (accessKey) formData.append("password", accessKey);
         formData.append("viewOnce", String(viewOnce));
-        response = await fetch("/api/shares", { method: "POST", headers: { Authorization: "Bearer " + idToken }, body: formData });
+        response = await fetch("/api/shares", { method: "POST", body: formData });
       } else {
         response = await fetch("/api/shares", {
           method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: "Bearer " + idToken },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce, language: effectiveLanguage }),
         });
       }
@@ -114,8 +109,7 @@ export default function HomePage() {
     if (!revokeToken) { setError("Could not revoke this share."); return; }
     setRevokeLoading(true); setError("");
     try {
-      const idToken = await getIdToken();
-      const response = await fetch("/api/revokes/" + revokeToken, { method: "POST", headers: { Accept: "application/json", Authorization: "Bearer " + idToken } });
+      const response = await fetch("/api/revokes/" + revokeToken, { method: "POST", headers: { Accept: "application/json" } });
       if (!response.ok) throw new Error("Could not revoke this share.");
       setRevoked(true); setRemaining(0);
     } catch (err) { setError(err instanceof Error ? err.message : "Could not revoke this share."); }
@@ -180,7 +174,7 @@ export default function HomePage() {
       <div className="shell">
         <header className="topbar">
           <a className="logo" href="/" aria-label="Moog home"><span className="logoMark">M</span><span>moog</span></a>
-          <nav className="topNav"><a href="#about-moog">About</a><div className="badge"><span className="pulse" /> temporary by design</div><AuthPanel /></nav>
+          <nav className="topNav"><a href="#about-moog">About</a><div className="badge"><span className="pulse" /> temporary by design</div></nav>
         </header>
 
         <section className="hero">
@@ -219,9 +213,8 @@ export default function HomePage() {
               {mode === "code" ? <div className="codeToolbar"><div><div className="fieldLabel">FORMAT</div><div className="expiryHint">Choose a language for code sharing.</div></div><select className="languageSelect" value={language} onChange={(e) => setLanguage(e.target.value)} aria-label="Code language">{languages.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></div> : null}
               <div className="expiryPicker"><div><div className="fieldLabel">LINK LIFETIME</div><div className="expiryHint">The link stops working after {expiryLabel}.</div></div><div className="expiryOptions" role="group" aria-label="Link expiry">{[1,5,15,30,60,360,1440].map((minutes) => <button key={minutes} type="button" className={expiry === minutes ? "expiryOption active" : "expiryOption"} onClick={() => setExpiry(minutes as Expiry)} aria-pressed={expiry === minutes}>{minutes === 1440 ? "24 hr" : minutes === 360 ? "6 hr" : minutes === 60 ? "1 hr" : minutes + " min"}</button>)}</div></div>
               <div className="advancedControls"><input className="sharePassword" type="password" value={accessKey} onChange={(e) => setAccessKey(e.target.value)} placeholder="Optional access key" maxLength={128} aria-label="Optional access key" /><label className="viewOnce"><input type="checkbox" checked={viewOnce} onChange={(e) => setViewOnce(e.target.checked)} /> View once</label></div>
-              <div className="composerBottom"><div className="trust"><span className="trustIcon">✦</span><span>{mode === "photo" ? "Photo" : mode === "code" ? "Code · " + (languages.find(([v]) => v === language)?.[1] ?? language) : viewOnce ? "Burns after one view" : "Private link"}{accessKey ? " · protected" : ""} · {expiryLabel}</span></div><button className="primary" type="submit" disabled={!user || loading || (mode === "photo" ? !photo : !text.trim())}>{loading ? <><span className="spinner" /> Creating secure link…</> : <>Create private link <span className="arrow">↗</span></>}</button></div>
+              <div className="composerBottom"><div className="trust"><span className="trustIcon">✦</span><span>{mode === "photo" ? "Photo" : mode === "code" ? "Code · " + (languages.find(([v]) => v === language)?.[1] ?? language) : viewOnce ? "Burns after one view" : "Private link"}{accessKey ? " · protected" : ""} · {expiryLabel}</span></div><button className="primary" type="submit" disabled={loading || (mode === "photo" ? !photo : !text.trim())}>{loading ? <><span className="spinner" /> Creating secure link…</> : <>Create private link <span className="arrow">↗</span></>}</button></div>
             </form>
-            {!user && ready ? <p className="authRequired" role="status">Sign in to Send. Receive is available without an account.</p> : null}
             {error ? <p className="error" role="alert"><span>!</span>{error}</p> : null}
 
             {url ? <div className="result resultExpanded" aria-live="polite">
