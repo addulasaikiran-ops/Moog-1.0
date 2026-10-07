@@ -92,5 +92,5 @@ export default function LiveShareGuard({
     );
   }
 
-  return children;
+  return disappearing ? <div className="disappearInk">{children}</div> : children;
 }
