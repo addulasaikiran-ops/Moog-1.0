@@ -460,7 +460,7 @@ export default function HomePage() {
 
               {error ? <div className="formError" role="alert">{error}</div> : null}
 
-              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>Create private share <span>→</span></>}</button>
+              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>Create share <span>→</span></>}</button>
             </form>
           </section>
         ) : (
