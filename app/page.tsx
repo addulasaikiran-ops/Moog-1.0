@@ -80,6 +80,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(false);
   const [revokeLoading, setRevokeLoading] = useState(false);
   const [revoked, setRevoked] = useState(false);
+  const [viewed, setViewed] = useState(false);
   const [error, setError] = useState("");
   const [receiveCode, setReceiveCode] = useState("");
   const [receiveLoading, setReceiveLoading] = useState(false);
@@ -136,6 +137,24 @@ export default function HomePage() {
     const interval = window.setInterval(tick, 1000);
     return () => window.clearInterval(interval);
   }, [expiresAt]);
+
+  useEffect(() => {
+    if (!revokeUrl || !viewOnce) return;
+    const token = revokeUrl.split("/").pop();
+    if (!token) return;
+    let active = true;
+    const check = async () => {
+      try {
+        const response = await fetch("/api/revokes/" + token + "/status", { cache: "no-store" });
+        if (!response.ok) return;
+        const body = await response.json() as { viewed?: boolean };
+        if (active && body.viewed) setViewed(true);
+      } catch {}
+    };
+    void check();
+    const interval = window.setInterval(() => void check(), 3000);
+    return () => { active = false; window.clearInterval(interval); };
+  }, [revokeUrl, viewOnce]);
 
   useEffect(() => {
     if (!url || !revokeUrl || revoked) return;
@@ -243,6 +262,7 @@ export default function HomePage() {
     setExpiresAt("");
     setRemaining(0);
     setRevoked(false);
+    setViewed(false);
 
     if (mode === "photo" && !file) {
       setError("Choose an image first.");
@@ -464,7 +484,7 @@ export default function HomePage() {
               <div className="resultLabel">PRIVATE LINK CREATED</div>
               <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "⧉ Copy"}</button></div>
               <div className="uniqueCodeBox"><div><span>Unique code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
-              <p className="resultNote">The code and revoke link are shown only once. Copy them now.</p><div className="revokeLinkRow"><span>Private revoke link</span><button className="copy" type="button" onClick={() => void copyValue(revokeUrl, "revoke")}>{copied === "link" ? "Copied ✓" : "⧉ Copy"}</button></div><p className="resultWarning">Save this. It can&apos;t be recovered.</p><div className="resultBottom"><span className="expiryStatus"><b>Expires in</b> {remaining > 0 ? formatCountdown(remaining) : "0s"}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
+              <p className="resultNote">The code and revoke link are shown only once. Copy them now.</p><div className="revokeLinkRow"><span>Private revoke link</span><button className="copy" type="button" onClick={() => void copyValue(revokeUrl, "revoke")}>{copied === "link" ? "Copied ✓" : "⧉ Copy"}</button></div><p className="resultWarning">Save this. It can&apos;t be recovered.</p><div className="resultBottom"><span className="expiryStatus"><b>Expires in</b> {remaining > 0 ? formatCountdown(remaining) : "0s"}{viewOnce ? (viewed ? " · viewed" : " · not viewed yet") : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
             </div>
           </section>
         ) : null}
