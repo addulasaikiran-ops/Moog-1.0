@@ -1,3 +1,4 @@
+process.env.TOKEN_DERIVATION_SECRET = "test-token-secret";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { getReceiveState, getReceiveToken, isReceiveRateLimited } from "../lib/receive.ts";
