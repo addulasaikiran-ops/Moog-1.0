@@ -18,3 +18,22 @@ export function hasValidImageSignature(bytes: Uint8Array, mime: string): boolean
   }
   return false;
 }
+
+
+export async function sanitizeImage(bytes: Uint8Array, mime: string): Promise<Buffer> {
+  const sharp = (await import("sharp")).default;
+  const input = Buffer.from(bytes);
+  const image = sharp(input, { animated: mime === "image/gif" || mime === "image/webp" });
+  switch (mime) {
+    case "image/jpeg":
+      return image.rotate().jpeg({ quality: 92, mozjpeg: true }).toBuffer();
+    case "image/png":
+      return image.rotate().png({ compressionLevel: 9 }).toBuffer();
+    case "image/gif":
+      return image.rotate().gif().toBuffer();
+    case "image/webp":
+      return image.rotate().webp({ quality: 92 }).toBuffer();
+    default:
+      throw new Error("Unsupported image type");
+  }
+}
