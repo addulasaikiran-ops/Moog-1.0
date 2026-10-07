@@ -1388,3 +1388,24 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
   .photoDrop{min-height:205px}
   .photoComposer>img{max-height:300px}
 }
+
+.standaloneSecurity{margin-top:64px}
+.standaloneSecurity p{max-width:760px}
+.legalCallout{margin:28px 0;padding:20px;border:1px solid rgba(200,255,61,.12);border-radius:16px;background:rgba(200,255,61,.025)}
+.legalCallout strong{font-size:15px}
+.legalCallout p{margin:7px 0 16px;color:#777e88;font-size:12px;line-height:1.65}
+.reportForm{display:grid;gap:14px;margin:28px 0}
+.reportForm label{display:grid;gap:7px;color:#aeb3bc;font-size:11px;letter-spacing:.02em}
+.reportForm label span{color:#626974}
+.reportForm input,.reportForm select,.reportForm textarea{
+  width:100%;border:1px solid rgba(255,255,255,.08);border-radius:11px;
+  background:#0b0c0f;color:#e5e8e1;padding:12px 13px;font:inherit;font-size:13px;outline:none;
+  transition:border-color 180ms ease,box-shadow 180ms ease,background 180ms ease;
+}
+.reportForm textarea{resize:vertical;min-height:150px;line-height:1.55}
+.reportForm input:focus,.reportForm select:focus,.reportForm textarea:focus{
+  border-color:rgba(200,255,61,.35);box-shadow:0 0 0 3px rgba(200,255,61,.05);background:#0d0f12;
+}
+.reportForm .legalButton{width:100%;margin-top:2px}
+.reportSuccess{padding:11px 13px;border:1px solid rgba(200,255,61,.14);border-radius:10px;background:rgba(200,255,61,.045);color:#c8ff3d;font-size:12px}
+@media(max-width:560px){.standaloneSecurity{margin-top:48px}.legalCallout{padding:16px}}
