@@ -481,7 +481,7 @@ export default function HomePage() {
           <section className="result resultExpanded" aria-live="polite">
             <div className="resultIcon">✓</div>
             <div className="resultBody">
-              <div className="resultLabel">PRIVATE LINK CREATED</div>
+              <div className="resultLabel">ACCESS LINK CREATED</div>
               <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "⧉ Copy"}</button></div>
               <div className="uniqueCodeBox"><div><span>Unique code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
               <p className="resultNote">The code and revoke link are shown only once. Copy them now.</p><div className="revokeLinkRow"><span>Creator revoke link</span><button className="copy" type="button" onClick={() => void copyValue(revokeUrl, "revoke")}>{copied === "link" ? "Copied ✓" : "⧉ Copy"}</button></div><p className="resultWarning">Save this. It can&apos;t be recovered.</p><div className="resultBottom"><span className="expiryStatus"><b>Expires in</b> {remaining > 0 ? formatCountdown(remaining) : "0s"}{viewOnce ? (viewed ? " · viewed" : " · not viewed yet") : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
@@ -496,14 +496,8 @@ export default function HomePage() {
           </section>
         ) : null}
 
-        <section className="stepsRow" aria-label="Moog in three steps">
-          <div className="stepCard"><span>01</span><strong>Paste</strong><small>Add something to share without an account.</small></div>
-          <div className="stepCard"><span>02</span><strong>Share</strong><small>Send the access link or unique code.</small></div>
-          <div className="stepCard"><span>03</span><strong>Disappear</strong><small>It expires automatically, or you revoke it early.</small></div>
-        </section>
-
         <section className="aboutMoog" id="about-moog" aria-labelledby="about-title">
-          <div className="aboutIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="about-title">Temporary access. <span>Nothing extra.</span></h2></div>
+          <div className="aboutIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="about-title">Temporary access.</h2></div>
           <div className="featureGrid">
             <div className="featureCard"><i>↗</i><strong>Access links</strong><small>High-entropy links designed for temporary access.</small></div>
             <div className="featureCard"><i>◷</i><strong>Automatic expiry</strong><small>Choose a lifetime from 1 minute to 7 days.</small></div>
@@ -515,14 +509,14 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="securitySection standaloneSecurity"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Access-controlled, not magically private.</h3><p>Moog stores shared content on the server so it can deliver the share. Tokens and codes are stored as hashes, access keys are hashed, and expired or revoked shares are rejected. Moog does not provide end-to-end encryption yet, so do not use it for secrets that require server-blind encryption.</p></section>
+        <section className="securitySection standaloneSecurity"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Access-controlled, not end-to-end encrypted.</h3><p>Moog stores shared content on the server so it can deliver the share. Tokens and codes are stored as hashes, access keys are hashed, and expired or revoked shares are rejected. Moog does not provide end-to-end encryption yet, so do not use it for secrets that require server-blind encryption.</p></section>
 
         <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3>
           {[
             ["Is my share end-to-end encrypted?", "Not yet. Moog currently protects access to server-stored content, but the server can technically read active share content. Treat it as temporary access control, not zero-knowledge encryption."],
             ["Do I need an account?", "No. Sending and receiving are both account-free."],
             ["How long do shares stay alive?", "Choose from 1 minute to 7 days when you create a share."],
-            ["Can I revoke a share early?", "Yes. Keep the private creator control link shown after creation and use it while the share is active."],
+            ["Can I revoke a share early?", "Yes. Keep the creator control link shown after creation and use it while the share is active."],
             ["Can someone copy what I shared?", "Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back."],
             ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP photos up to 10 MB."],
           ].map(([question, answer], index) => (
