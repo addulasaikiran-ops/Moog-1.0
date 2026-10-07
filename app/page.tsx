@@ -64,6 +64,7 @@ export default function HomePage() {
   const [expiryMinutes, setExpiryMinutes] = useState(60);
   const [accessKey, setAccessKey] = useState("");
   const [showAccessKey, setShowAccessKey] = useState(false);
+  const [showSecurity, setShowSecurity] = useState(false);
   const [viewOnce, setViewOnce] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
@@ -417,13 +418,21 @@ export default function HomePage() {
 
               <div className="lifetimeSection">
                 <div className="lifetimeHeader"><span>LINK LIFETIME</span><strong>Private link · {EXPIRY_OPTIONS.find((option) => option.value === expiryMinutes)?.label ?? "1 hour"}</strong></div>
-                <div className="lifetimePills" role="group" aria-label="Link lifetime">
+                <div className="lifetimePills" role="group" aria-label="Link lifetime" style={{ "--expiry-index": EXPIRY_OPTIONS.findIndex((option) => option.value === expiryMinutes) } as React.CSSProperties}>
+                  <span className="lifetimeActivePill" aria-hidden="true" />
                   {EXPIRY_OPTIONS.map((option) => <button key={option.value} type="button" className={expiryMinutes === option.value ? "lifetimePill active" : "lifetimePill"} onClick={() => setExpiryMinutes(option.value)}>{option.label.replace(" minutes", " min").replace(" minute", " min").replace(" hours", " hr").replace(" hour", " hr")}</button>)}
                 </div>
               </div>
-              <div className="optionsRow">
-                <label className="optionField accessKeyField"><span>Access key <small>optional</small></span><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} placeholder="Add an access key" aria-describedby="access-key-note" /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide access key" : "Show access key"} onClick={() => setShowAccessKey((value) => !value)}>{showAccessKey ? "◉" : "○"}</button></div><small id="access-key-note" className="optionNote">Recipients enter this to open the share.</small></label>
-                <label className="checkField"><input type="checkbox" checked={viewOnce} onChange={(event) => setViewOnce(event.target.checked)} /><span>View once</span></label>
+              <div className="securityBar">
+                <button type="button" className={showSecurity ? "securityDisclosure open" : "securityDisclosure"} aria-expanded={showSecurity} onClick={() => setShowSecurity((value) => !value)}>
+                  <span className="securityDot" aria-hidden="true" />
+                  <span><strong>Security</strong><small>{accessKey ? "Access key enabled" : viewOnce ? "View once enabled" : "Optional controls"}</small></span>
+                  <span className="securityChevron" aria-hidden="true">⌄</span>
+                </button>
+                {showSecurity ? <div className="securityOptions">
+                  <label className="optionField accessKeyField"><span>Access key <small>optional</small></span><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} placeholder="Add an access key" aria-describedby="access-key-note" /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide access key" : "Show access key"} onClick={() => setShowAccessKey((value) => !value)}>{showAccessKey ? "Hide" : "Show"}</button></div><small id="access-key-note" className="optionNote">Recipients enter this to open the share.</small></label>
+                  <label className="checkField"><input type="checkbox" checked={viewOnce} onChange={(event) => setViewOnce(event.target.checked)} /><span><strong>View once</strong><small>Opens once, then disappears.</small></span></label>
+                </div> : null}
               </div>
 
               {error ? <div className="formError" role="alert">{error}</div> : null}
