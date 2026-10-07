@@ -1278,3 +1278,50 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
   html{scroll-behavior:auto}
   .stepCard,.featureCard{transition:none}
 }
+
+/* MOOG premium interaction layer */
+.lifetimePills{position:relative;display:flex;gap:0;padding:3px;overflow:hidden;isolation:isolate}
+.lifetimeActivePill{position:absolute;z-index:0;top:3px;bottom:3px;left:3px;width:calc((100% - 6px)/7);border-radius:999px;background:rgba(200,255,61,.10);border:1px solid rgba(200,255,61,.55);box-shadow:0 0 24px rgba(200,255,61,.045);transform:translateX(calc(var(--expiry-index)*100%));transition:transform 220ms cubic-bezier(.22,.8,.24,1),opacity 180ms ease;pointer-events:none}
+.lifetimePill{position:relative;z-index:1;flex:1;min-width:0;margin:0;border:0;background:transparent;color:#858b95;transition:color 180ms ease}
+.lifetimePill.active{background:transparent;color:var(--accent);box-shadow:none}
+.lifetimePill:hover{color:#e3e7df}
+.securityBar{margin-top:16px;border-top:1px solid rgba(255,255,255,.065);padding-top:14px}
+.securityDisclosure{width:100%;min-height:44px;display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid rgba(255,255,255,.065);border-radius:12px;background:#0b0c0f;color:#aeb3bc;text-align:left;transition:border-color 180ms ease,background 180ms ease}
+.securityDisclosure:hover,.securityDisclosure.open{border-color:rgba(200,255,61,.16);background:#0d0f12}
+.securityDisclosure>span:nth-child(2){display:grid;gap:2px;flex:1}
+.securityDisclosure strong{font-size:12px;color:#d8dcd5}
+.securityDisclosure small{font-size:10px;color:#626974}
+.securityDot{width:7px;height:7px;border-radius:50%;background:#5e646d;transition:background 180ms ease,box-shadow 180ms ease}
+.securityDisclosure.open .securityDot,.securityDisclosure:hover .securityDot{background:var(--accent);box-shadow:0 0 10px rgba(200,255,61,.35)}
+.securityChevron{color:#666d77;transition:transform 220ms ease}
+.securityDisclosure.open .securityChevron{transform:rotate(180deg)}
+.securityOptions{display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,.55fr);gap:12px;padding:12px 2px 0;animation:securityIn 220ms cubic-bezier(.22,.8,.24,1)}
+@keyframes securityIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+.securityOptions .checkField{min-height:44px;height:auto;align-self:end;padding:9px 12px;align-items:flex-start}
+.securityOptions .checkField>span{display:grid;gap:3px}
+.securityOptions .checkField strong{font-size:12px;color:#d8dcd5}
+.securityOptions .checkField small{font-size:10px;color:#626974;line-height:1.35}
+.securityOptions .optionNote{display:block}
+.createButton{transition:transform 140ms ease,box-shadow 180ms ease,filter 180ms ease}
+.createButton:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 10px 28px rgba(200,255,61,.10)}
+.createButton:hover:not(:disabled)>span{display:inline-block;transform:translateX(3px)}
+.createButton:active:not(:disabled){transform:scale(.975);transition-duration:90ms}
+.formError{margin-top:12px;padding:10px 12px;border:1px solid rgba(255,141,154,.13);border-radius:10px;background:rgba(255,141,154,.045);color:#ff9fac;font-size:12px}
+.result{animation:resultIn 420ms cubic-bezier(.22,.8,.24,1) both}
+@keyframes resultIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.copy{min-height:40px;transition:background 160ms ease,border-color 160ms ease,transform 120ms ease}
+.copy:active{transform:scale(.97)}
+.receiveOpen{transition:transform 140ms ease,box-shadow 180ms ease}
+.receiveOpen:hover:not(:disabled){transform:translateY(-1px)}
+.receiveOpen:active:not(:disabled){transform:scale(.975)}
+.faq details{overflow:hidden}
+.faq summary{min-height:44px;display:flex;align-items:center;justify-content:space-between;list-style:none;cursor:pointer}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";flex:none;width:26px;height:26px;display:grid;place-items:center;border:1px solid rgba(255,255,255,.08);border-radius:50%;color:#777e88;font-weight:400;transition:color 180ms ease,border-color 180ms ease}
+.faq details[open] summary:after{content:"−";color:var(--accent);border-color:rgba(200,255,61,.22)}
+.faq details p{margin-top:2px;animation:faqIn 220ms ease both}
+@keyframes faqIn{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+.disappearInk{animation:disappearInk 680ms cubic-bezier(.55,.08,.68,.53) forwards}
+@keyframes disappearInk{0%{opacity:1;filter:blur(0);transform:translateY(0)}100%{opacity:0;filter:blur(8px);transform:translateY(-6px)}}
+@media(max-width:560px){.securityOptions{grid-template-columns:1fr}.lifetimePill{flex:1}}
+@media(prefers-reduced-motion:reduce){.lifetimeActivePill,.securityChevron,.securityIn,.result,.disappearInk,.faq details p{transition:none!important;animation:none!important}.createButton:hover:not(:disabled),.receiveOpen:hover:not(:disabled){transform:none}}
