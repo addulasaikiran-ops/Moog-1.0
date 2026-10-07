@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
-import { createAccessGrant, hashToken, isValidToken, verifyAccessGrant } from "@/lib/token";
+import { allowRateLimit } from "@/lib/rate-limit";\nimport { createAccessGrant, getClientKey, hashToken, isValidToken, verifyAccessGrant } from "@/lib/token";
 
 export const dynamic = "force-dynamic";
 
