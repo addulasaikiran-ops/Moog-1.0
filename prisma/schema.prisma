@@ -32,3 +32,15 @@ model Share {
   @@index([viewOnce, viewedAt])
   @@index([revokedAt])
 }
+
+model AbuseReport {
+  id         String   @id @default(cuid())
+  shareUrl   String
+  category   String
+  email      String?
+  details    String
+  createdAt  DateTime @default(now())
+  status     String   @default("open")
+  @@index([createdAt])
+  @@index([status, createdAt])
+}
