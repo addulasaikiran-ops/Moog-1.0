@@ -11,7 +11,7 @@ type Params = { params: Promise<{ token: string }> };
 export async function POST(request: Request, { params }: Params) {
   const expectedOrigin = new URL(request.url).origin;
   const origin = request.headers.get("origin");
-  if (origin && origin !== expectedOrigin) return new NextResponse("Forbidden", { status: 403 });
+  if (origin !== expectedOrigin) return new NextResponse("Forbidden", { status: 403 });
 
   const { token } = await params;
   if (!isValidToken(token)) return new NextResponse("Not found", { status: 404 });
