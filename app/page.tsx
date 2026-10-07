@@ -10,6 +10,8 @@ const EXPIRY_OPTIONS = [
   { value: 60, label: "1 hour" },
   { value: 360, label: "6 hours" },
   { value: 1440, label: "24 hours" },
+  { value: 4320, label: "3 days" },
+  { value: 10080, label: "7 days" },
 ];
 
 const CODE_LANGUAGES = [
