@@ -1,8 +1,6 @@
 "use client";
 
 import { ClipboardEvent, DragEvent, FormEvent, useRef, useState } from "react";
-import AuthPanel from "@/components/AuthPanel";
-import { useAuth } from "@/components/AuthProvider";
 
 type Expiry = 1 | 5 | 15 | 30 | 60 | 360 | 1440;
 
@@ -13,7 +11,6 @@ const languages = [
 const expiryLabels: Record<Expiry, string> = { 1: "1 minute", 5: "5 minutes", 15: "15 minutes", 30: "30 minutes", 60: "1 hour", 360: "6 hours", 1440: "24 hours" };
 
 export default function HomePage() {
-  const { user, ready, getIdToken } = useAuth();
   const [text, setText] = useState("");
   const [expiry, setExpiry] = useState<Expiry>(60);
   const [url, setUrl] = useState("");
@@ -45,14 +42,8 @@ export default function HomePage() {
       return;
     }
 
-    if (!ready || !user) {
-      setError("Please sign in before creating a share.");
-      return;
-    }
-
     setLoading(true);
     try {
-      const idToken = await getIdToken();
       let response: Response;
 
       if (mode === "photo" && photo) {
@@ -65,13 +56,12 @@ export default function HomePage() {
 
         response = await fetch("/api/shares", {
           method: "POST",
-          headers: { Authorization: `Bearer ${idToken}` },
           body: formData,
         });
       } else {
         response = await fetch("/api/shares", {
           method: "POST",
-          headers: { "Content-Type": "application/json", Authorization: `Bearer ${idToken}` },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce, language: effectiveLanguage }),
         });
       }
@@ -100,10 +90,9 @@ export default function HomePage() {
     setRevokeLoading(true);
     setError("");
     try {
-      const idToken = await getIdToken();
       const response = await fetch(`/api/revokes/${revokeToken}`, {
         method: "POST",
-        headers: { Accept: "application/json", Authorization: `Bearer ${idToken}` },
+        headers: { Accept: "application/json" },
       });
       if (!response.ok) throw new Error("Could not revoke this share.");
       setRevoked(true);
@@ -160,7 +149,7 @@ export default function HomePage() {
             <span className="logoMark">M</span>
             <span>moog</span>
           </a>
-          <nav className="topNav"><a href="#about-moog">About</a><div className="badge"><span className="pulse" /> temporary by design</div><AuthPanel /></nav>
+          <nav className="topNav"><a href="#about-moog">About</a><div className="badge"><span className="pulse" /> temporary by design</div></nav>
         </header>
 
         <section className="hero">
@@ -176,7 +165,7 @@ export default function HomePage() {
             <div className="composerTop">
               <div>
                 <div className="fieldLabel">{mode === "photo" ? "PHOTO" : "MESSAGE"}</div>
-                <div className="editorHint">{mode === "photo" ? "Upload, drag & drop, or paste an image." : user ? "Paste text or code. Your account owns the revoke control." : "Sign in above to create and manage private shares."}</div>
+                <div className="editorHint">{mode === "photo" ? "Upload, drag & drop, or paste an image." : "Paste text or code. No account. No setup."}</div>
               </div>
               {mode === "photo" ? <div className="counter">10 MB max</div> : <div className="counter">{text.length.toLocaleString()} / 100,000</div>}
             </div>
@@ -266,7 +255,7 @@ export default function HomePage() {
                 <span className="trustIcon">✦</span>
                 <span>{mode === "photo" ? "Photo" : mode === "code" ? `Code · ${languages.find(([v]) => v === language)?.[1] ?? language}` : (viewOnce ? "Burns after one view" : "Private link")}{accessKey ? " · protected" : ""} · {expiryLabel}</span>
               </div>
-              <button className="primary" type="submit" disabled={!user || loading || (mode === "photo" ? !photo : !text.trim())}>
+              <button className="primary" type="submit" disabled={loading || (mode === "photo" ? !photo : !text.trim())}>
                 {loading ? (
                   <><span className="spinner" /> Creating secure link…</>
                 ) : (
@@ -286,7 +275,7 @@ export default function HomePage() {
               <div className="resultBody">
                 <div className="resultLabel">PRIVATE LINK CREATED</div>
                 <a href={url} target="_blank" rel="noreferrer">{url}</a>
-                <div className="resultMeta">Expires in {expiryLabel}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""} · Only your signed-in account can revoke it.</div>
+                <div className="resultMeta">Expires in {expiryLabel}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""} · Save the private revoke control.</div>
               </div>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap", justifyContent: "flex-end" }}>
                 <button className="copy" type="button" onClick={copyLink}>
@@ -327,9 +316,9 @@ export default function HomePage() {
             <p>Moog is a temporary sharing tool for text, code, and images. Create a link, send it, and let it expire when you decide.</p>
           </div>
           <div className="aboutGrid">
-            <div><strong>Private links</strong><small>Recipients do not need an account.</small></div>
+            <div><strong>Private links</strong><small>Share without creating an account or profile.</small></div>
             <div><strong>Automatic expiry</strong><small>Choose from 1 minute to 24 hours.</small></div>
-            <div><strong>Creator revoke</strong><small>Revoke your live shares while signed in.</small></div>
+            <div><strong>Creator revoke</strong><small>Kill a live share early with its private control link.</small></div>
             <div><strong>Password protection</strong><small>Add an access key when a link needs another layer of control.</small></div>
             <div><strong>View once</strong><small>Make a share available for a single view.</small></div>
             <div><strong>Text & code</strong><small>Share plain text with syntax-aware code formats and line numbers.</small></div>
