@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { verifyFirebaseUser } from "@/lib/firebase-admin";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
 import { generateToken, getClientKey, hashSecret, hashToken } from "@/lib/token";
@@ -33,6 +34,8 @@ function hasValidImageSignature(bytes: Uint8Array, mime: string): boolean {
 
 export async function POST(request: Request) {
   try {
+    const user = await verifyFirebaseUser(request);
+    if (!user) return NextResponse.json({ error: "Please sign in to create a share." }, { status: 401 });
     const isMultipart = (request.headers.get("content-type") ?? "").includes("multipart/form-data");
     if (bodyTooLarge(request, isMultipart ? MAX_MULTIPART_BODY : MAX_JSON_BODY)) {
       return NextResponse.json({ error: "Request is too large." }, { status: 413 });
@@ -102,6 +105,7 @@ export async function POST(request: Request) {
         imageData,
         imageMime,
         imageName,
+        ownerUid: user.uid,
         tokenHash: hashToken(token),
         revokeTokenHash: hashToken(revokeToken),
         passwordHash: password ? hashSecret(password) : null,
