@@ -62,6 +62,7 @@ export default function HomePage() {
   const [language, setLanguage] = useState("javascript");
   const [expiryMinutes, setExpiryMinutes] = useState(60);
   const [accessKey, setAccessKey] = useState("");
+  const [showAccessKey, setShowAccessKey] = useState(false);
   const [viewOnce, setViewOnce] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState("");
@@ -80,6 +81,14 @@ export default function HomePage() {
   const [receiveLoading, setReceiveLoading] = useState(false);
   const [receiveError, setReceiveError] = useState("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  useEffect(() => {
+    const value = new URLSearchParams(window.location.search).get("tab");
+    if (value === "receive") setTab("receive");
+    const onPopState = () => setTab(new URLSearchParams(window.location.search).get("tab") === "receive" ? "receive" : "send");
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
+  }, []);
 
   useEffect(() => {
     if (!expiresAt) return;
@@ -131,6 +140,9 @@ export default function HomePage() {
 
   function changeTab(next: Tab) {
     setTab(next);
+    const params = new URLSearchParams(window.location.search);
+    params.set("tab", next);
+    window.history.replaceState({}, "", `${window.location.pathname}?${params.toString()}${window.location.hash}`);
     setError("");
     setReceiveError("");
   }
@@ -297,9 +309,9 @@ export default function HomePage() {
           <p className="heroCopy">Text, code, or photos with a private link and a unique code. Create once, receive anywhere, and let it expire. No account needed.</p>
         </section>
 
-        <div className="shareTabs" role="tablist" aria-label="Share mode">
-          <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "shareTab active" : "shareTab"} onClick={() => changeTab("send")}>↗ <span>Send</span></button>
-          <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "shareTab active" : "shareTab"} onClick={() => changeTab("receive")}>↓ <span>Receive</span></button>
+        <div className="shareTabs" role="tablist" aria-label="Share mode" onKeyDown={(event) => { if (event.key === "ArrowRight" || event.key === "ArrowDown") { event.preventDefault(); changeTab("receive"); } if (event.key === "ArrowLeft" || event.key === "ArrowUp") { event.preventDefault(); changeTab("send"); } }}>
+          <button type="button" role="tab" tabIndex={tab === "send" ? 0 : -1} aria-selected={tab === "send"} className={tab === "send" ? "shareTab active" : "shareTab"} onClick={() => changeTab("send")}>↗ <span>Send</span></button>
+          <button type="button" role="tab" tabIndex={tab === "receive" ? 0 : -1} aria-selected={tab === "receive"} className={tab === "receive" ? "shareTab active" : "shareTab"} onClick={() => changeTab("receive")}>↓ <span>Receive</span></button>
         </div>
 
         {tab === "send" ? (
@@ -343,7 +355,7 @@ export default function HomePage() {
 
               <div className="optionsRow">
                 <label className="optionField"><span>Expires</span><select value={expiryMinutes} onChange={(event) => setExpiryMinutes(Number(event.target.value))}>{EXPIRY_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
-                <label className="optionField"><span>Access key <small>optional</small></span><input type="password" value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} placeholder="Add a password" /></label>
+                <label className="optionField"><span>Access key <small>optional</small></span><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} placeholder="Add a password" aria-describedby="access-key-note" /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide access key" : "Show access key"} onClick={() => setShowAccessKey((value) => !value)}>{showAccessKey ? "Hide" : "Show"}</button></div><small id="access-key-note" className="optionNote">Recipients must enter this to open the share.</small></label>
                 <label className="checkField"><input type="checkbox" checked={viewOnce} onChange={(event) => setViewOnce(event.target.checked)} /><span>View once</span></label>
               </div>
 
@@ -373,7 +385,7 @@ export default function HomePage() {
               <div className="resultLabel">PRIVATE LINK CREATED</div>
               <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
               <div className="uniqueCodeBox"><div><span>Unique code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "Copy code"}</button></div>
-              <div className="resultBottom"><span>Expires in {remaining > 0 ? formatCountdown(remaining) : "expired"}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
+              <p className="resultNote">The code is shown only once. Copy it now.</p><div className="resultBottom"><span>Active for {remaining > 0 ? formatCountdown(remaining) : "expired"} · expires at {expiresAt ? new Date(expiresAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "—"}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
             </div>
           </section>
         ) : null}
@@ -393,10 +405,12 @@ export default function HomePage() {
             <div className="howCard"><span className="howIcon">04</span><strong>Gone</strong><small>It expires, or you revoke it live.</small></div>
           </div>
           <div className="facts" aria-label="Moog facts"><span>◷ 1 min to 24 hours</span><span>⌁ Optional access key</span><span>◉ View once</span><span>▧ Photos up to 10 MB</span></div>
-          <p className="screenshotNote">Moog controls access, not copies. A screenshot can't be taken back.</p>
+          <p className="screenshotNote">Moog controls access, not copies. A screenshot cannot be taken back.</p>
+          <section className="securitySection"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Private by default.</h3><p>Tokens and unique codes are stored as hashes. Expired and revoked shares are rejected by the server, and open viewers detect revocation within seconds. Moog cannot prevent screenshots or copies.</p></section>
+          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3><details><summary>Is it private?</summary><p>Shares use high-entropy private links and hashed lookup values. Optional access keys add another layer.</p></details><details><summary>Can the recipient copy it?</summary><p>Yes. Moog is designed for temporary access, not copy prevention.</p></details><details><summary>What happens when it expires?</summary><p>The server rejects the share after its expiry time.</p></details><details><summary>Can I revoke?</summary><p>Yes. Keep the private revoke control link from creation and use it while the share is active.</p></details><details><summary>Do I need an account?</summary><p>No. Both sending and receiving are account-free in this version.</p></details><details><summary>What file types are allowed?</summary><p>JPG, PNG, GIF, and WebP images up to 10 MB, plus text and supported code languages.</p></details></section>
         </section>
 
-        <footer className="siteFooter"><div className="footerBrand"><strong>moog</strong><span>temporary sharing, intentionally temporary.</span></div><div className="footerLegal">@moogmoog-1.0 · © 2026 · All rights reserved.</div></footer>
+        <footer className="siteFooter"><div className="footerBrand"><strong>moog</strong><span>temporary sharing, intentionally temporary.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="mailto:hello@moog.example">Contact</a></nav><div className="footerLegal">moog 1.0 · © 2026</div></footer>
       </div>
     </main>
   );
