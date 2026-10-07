@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { allowRateLimit, allowRateLimitCost } from "@/lib/rate-limit";
 import { generateShareCode, hashShareCode } from "@/lib/share-code";
 import { deriveShareToken, generateToken, getClientKey, hashSecret, hashToken } from "@/lib/token";
-import { IMAGE_TYPES, MAX_IMAGE_SIZE, hasValidImageSignature } from "@/lib/image";
+import { IMAGE_TYPES, MAX_IMAGE_SIZE, hasValidImageSignature, sanitizeImage } from "@/lib/image";
 import { isAllowedOrigin } from "@/lib/origin";
 
 const EXPIRY_OPTIONS = new Set([1, 5, 15, 30, 60, 360, 1440]);
@@ -30,6 +30,7 @@ export async function POST(request: Request) {
   try {
     const isMultipart = (request.headers.get("content-type") ?? "").includes("multipart/form-data");
     if (bodyTooLarge(request, isMultipart ? MAX_MULTIPART_BODY : MAX_JSON_BODY)) return NextResponse.json({ error: "Request is too large." }, { status: 413 });
+    await prisma.share.deleteMany({ where: { expiresAt: { lte: new Date() } } });
     if (!(await allowRateLimit("create:" + getClientKey(request), CREATION_LIMIT, CREATION_WINDOW_MS))) return NextResponse.json({ error: "Too many links created. Try again in a minute." }, { status: 429 });
 
     let text = "", language = "text", password = "", viewOnce = false;
@@ -43,7 +44,11 @@ export async function POST(request: Request) {
       if (file.size > MAX_IMAGE_SIZE) return NextResponse.json({ error: "Image must be 10 MB or smaller." }, { status: 413 });
       const bytes = new Uint8Array(await file.arrayBuffer()) as Uint8Array<ArrayBuffer>;
       if (!hasValidImageSignature(bytes, file.type)) return NextResponse.json({ error: "The uploaded file does not match its image type." }, { status: 400 });
-      imageData = bytes; imageMime = file.type; imageName = file.name || "image";
+      const sanitized = await sanitizeImage(bytes, file.type);
+      if (sanitized.byteLength > MAX_IMAGE_SIZE) return NextResponse.json({ error: "Processed image must be 10 MB or smaller." }, { status: 413 });
+      imageData = new Uint8Array(sanitized) as Uint8Array<ArrayBuffer>;
+      imageMime = file.type;
+      imageName = (file.name || "image").replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 120);
       text = typeof form.get("text") === "string" ? String(form.get("text")).slice(0, 1000) : "";
       password = typeof form.get("password") === "string" ? String(form.get("password")) : "";
       viewOnce = form.get("viewOnce") === "true"; minutes = getExpiry(form.get("expiryMinutes")); language = "photo";
