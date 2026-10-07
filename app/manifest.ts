@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Moog 1.0",
+    name: "Moog",
     short_name: "Moog",
-    description: "Private temporary sharing with no account needed.",
+    description: "Temporary access-controlled sharing with no account needed.",
     start_url: "/",
     display: "standalone",
     background_color: "#08090c",
