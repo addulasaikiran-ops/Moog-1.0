@@ -1,23 +1,21 @@
 generator client {
   provider = "prisma-client-js"
 }
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
-
 model RateLimit {
   key         String   @id
   windowStart DateTime
   count       Int
 }
-
 model Share {
   id              String    @id @default(cuid())
   text            String
   language        String    @default("text")
   tokenHash       String    @unique
+  codeHash        String?   @unique
   revokeTokenHash String?   @unique
   imageData       Bytes?
   imageMime       String?
@@ -30,7 +28,6 @@ model Share {
   revokedAt       DateTime?
   createdAt       DateTime  @default(now())
   expiresAt       DateTime
-
   @@index([expiresAt])
   @@index([viewOnce, viewedAt])
   @@index([revokedAt])

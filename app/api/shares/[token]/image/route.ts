@@ -31,7 +31,7 @@ export async function GET(request: Request, { params }: Params) {
     "Content-Type": share.imageMime,
     "Content-Length": String(share.imageData.byteLength),
     "X-Content-Type-Options": "nosniff",
-    "Cache-Control": "private, max-age=300",
+    "Cache-Control": "no-store",
     "Content-Disposition": `${download ? "attachment" : "inline"}; filename*=UTF-8''${encodeURIComponent(share.imageName || "image")}`,
   });
 

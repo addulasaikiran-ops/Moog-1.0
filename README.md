@@ -39,7 +39,7 @@ cp .env.example .env
 Set \`DATABASE_URL\` to a PostgreSQL database, then:
 
 \`\`\`bash
-npx prisma db push
+npx prisma migrate dev
 npm run dev
 \`\`\`
 
@@ -70,8 +70,12 @@ The workflow also supports manual execution from the GitHub Actions tab.
 
 ## Security notes
 
-Raw share tokens are never stored. The database stores only the SHA-256 digest.
+Raw share tokens, revoke tokens, and receive codes are never stored. Share and revoke tokens use SHA-256 digests; receive codes use HMAC-SHA256 with `CODE_HASH_SECRET`.
 
 The share page checks the expiration timestamp on every request, so an expired link returns the 404 page even when the database cleanup job has not run yet.
 
 The current implementation limits text to 100,000 characters. Protected links use a short-lived, HttpOnly, path-scoped access cookie instead of placing the password in the URL. Share creation and password attempts are rate-limited per client. Security headers are applied globally.
+
+## Railway migrations
+
+Set the Railway service pre-deploy command to `npx prisma migrate deploy`. Do not use `prisma db push` in production. Configure the required server-only secrets before deploying.

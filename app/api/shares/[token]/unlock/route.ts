@@ -11,6 +11,9 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ token: string }> },
 ) {
+  const expectedOrigin = new URL(request.url).origin;
+  const origin = request.headers.get("origin");
+  if (origin !== expectedOrigin) return NextResponse.json({ error: "Forbidden." }, { status: 403 });
   const { token } = await params;
   if (!isValidToken(token)) return new NextResponse("Not found", { status: 404 });
   const contentLength = Number(request.headers.get("content-length") ?? "0");
