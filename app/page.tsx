@@ -333,10 +333,12 @@ export default function HomePage() {
       if (!response.ok || !body.token) {
         const message =
           body.reason === "expired"
-            ? "That share has expired."
+            ? "This share has expired"
             : body.reason === "revoked"
-              ? "That share was revoked."
-              : body.error ?? "Share unavailable.";
+              ? "This share was revoked"
+              : response.status === 429
+                ? "Too many attempts. Try again in a few minutes."
+                : "That code didn't work";
         throw new Error(message);
       }
       window.location.assign(`/s/${body.token}`);
@@ -401,6 +403,11 @@ export default function HomePage() {
                   onDragOver={(event) => { event.preventDefault(); setDragActive(true); }}
                   onDragLeave={() => setDragActive(false)}
                   onDrop={onDrop}
+                  onPaste={(event) => {
+                    if (mode !== "photo") return;
+                    const image = Array.from(event.clipboardData.files).find((item) => item.type.startsWith("image/"));
+                    if (image) { event.preventDefault(); handleFile(image); }
+                  }}
                 >
                   {previewUrl ? <img src={previewUrl} alt="Selected preview" /> : <div className="photoDrop"><strong>Drop an image here</strong><span>or choose a file below</span></div>}
                   <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={(event) => handleFile(event.target.files?.[0] ?? null)} />
@@ -462,10 +469,10 @@ export default function HomePage() {
         <section className="howMoog" id="about-moog" aria-labelledby="about-moog-title">
           <div className="howIntro"><div className="eyebrow">THE DETAILS</div><h2 id="about-moog-title">How Moog works</h2><p>Simple sharing with a short life by design.</p></div>
           <div className="howGrid">
-            <div className="howCard"><span className="howIcon">01</span><strong>Create</strong><small>Add text, code, or a photo and pick an expiry.</small></div>
-            <div className="howCard"><span className="howIcon">02</span><strong>Share</strong><small>Send the link or the unique code.</small></div>
-            <div className="howCard"><span className="howIcon">03</span><strong>Receive</strong><small>Open it without an account, on any device.</small></div>
-            <div className="howCard"><span className="howIcon">04</span><strong>Gone</strong><small>It expires, or you revoke it live.</small></div>
+            <div className="howCard"><span className="howIcon" aria-hidden="true">＋</span><strong>Create</strong><small>Add text, code, or a photo and pick an expiry.</small></div>
+            <div className="howCard"><span className="howIcon" aria-hidden="true">↗</span><strong>Share</strong><small>Send the link or the unique code.</small></div>
+            <div className="howCard"><span className="howIcon" aria-hidden="true">↓</span><strong>Receive</strong><small>Open it without an account, on any device.</small></div>
+            <div className="howCard"><span className="howIcon" aria-hidden="true">×</span><strong>Gone</strong><small>It expires, or you revoke it live.</small></div>
           </div>
           <div className="facts" aria-label="Moog facts"><span>◷ 1 min to 24 hours</span><span>⌁ Optional access key</span><span>◉ View once</span><span>▧ Photos up to 10 MB</span><span>◎ No accounts</span></div>
           <p className="screenshotNote">Moog controls access, not copies. A screenshot cannot be taken back.</p>
