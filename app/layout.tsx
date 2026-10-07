@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   applicationName: "Moog",
   alternates: { canonical: "/" },
   robots: { index: true, follow: true, googleBot: { index: true, follow: true, "max-image-preview": "large" } },
-  openGraph: { type: "website", url: siteUrl, siteName: "Moog", title: "Moog — Temporary Private Sharing", description: "Create temporary access-controlled links for text, code, and photos." },
+  openGraph: { type: "website", url: siteUrl, siteName: "Moog", title: "Moog — Temporary Sharing", description: "Create temporary access-controlled links for text, code, and photos." },
   twitter: { card: "summary_large_image", title: "Moog — Temporary Private Sharing", description: "Temporary access-controlled sharing for text, code, and photos." },
   icons: { icon: "/moog.svg", shortcut: "/moog.svg", apple: "/moog.svg" },
 };
