@@ -363,9 +363,9 @@ export default function HomePage() {
         </header>
 
         <section className="hero">
-          <div className="eyebrow">MOOG 1.0 · PRIVATE TEMPORARY SHARING</div>
+          <div className="eyebrow">PRIVATE TEMPORARY SHARING</div>
           <h1>Say it once.<br /><span>Then let it disappear.</span></h1>
-          <p className="heroCopy">Paste text or code, choose the format, create a private link, and decide exactly how long it stays alive.</p>
+          <p className="heroCopy">Share text, code, or a photo with access controls and a clear expiry.</p>
         </section>
 
         <div className="shareTabs" role="tablist" aria-label="Share mode" onKeyDown={(event) => { if (event.key === "ArrowRight" || event.key === "ArrowDown") { event.preventDefault(); changeTab("receive"); } if (event.key === "ArrowLeft" || event.key === "ArrowUp") { event.preventDefault(); changeTab("send"); } }}>
@@ -493,33 +493,23 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="howMoog" aria-labelledby="how-moog-title">
-          <div className="howIntro"><div className="eyebrow">THE DETAILS</div><h2 id="how-moog-title">How Moog works</h2><p>Create, share, receive, gone.</p></div>
-          <div className="howGrid">
-            <div className="howCard"><span className="howIcon" aria-hidden="true">＋</span><strong>Create</strong><small>Add text, code, or a photo and pick an expiry.</small></div>
-            <div className="howCard"><span className="howIcon" aria-hidden="true">↗</span><strong>Share</strong><small>Send the link or the unique code.</small></div>
-            <div className="howCard"><span className="howIcon" aria-hidden="true">↓</span><strong>Receive</strong><small>Open it without an account, on any device.</small></div>
-            <div className="howCard"><span className="howIcon" aria-hidden="true">×</span><strong>Gone</strong><small>It expires, or you revoke it live.</small></div>
-          </div>
-          <div className="facts" aria-label="Moog facts"><span>◷ 1 min to 24 hours</span><span>⌁ Optional access key</span><span>◉ View once</span><span>▧ Photos up to 10 MB</span><span>◎ No accounts</span></div>
-          <p className="screenshotNote">Moog controls access, not copies. A screenshot cannot be taken back.</p>
-          <section className="securitySection"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Private by default.</h3><p>Tokens and unique codes are stored as hashes. Expired and revoked shares are rejected by the server, and open viewers detect revocation within seconds. Moog cannot prevent screenshots or copies.</p></section>
-          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3>
-            {[
-              ["Do I need an account?", "No. Sending and receiving are both account-free."],
-              ["How long do shares stay alive?", "Choose from 1 minute to 24 hours when you create a share."],
-              ["Can I revoke a share early?", "Yes. Keep the private revoke link shown after creation and use it while the share is active."],
-              ["Can someone copy what I shared?", "Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back."],
-              ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP photos up to 10 MB."],
-            ].map(([question, answer], index) => (
-              <details key={question} open={openFaq === index}>
-                <summary onClick={(event) => { event.preventDefault(); setOpenFaq(openFaq === index ? null : index); }}>{question}</summary>
-                <p>{answer}</p>
-              </details>
-            ))}</section>
-        </section>
+        <section className="securitySection standaloneSecurity"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Access-controlled, not magically private.</h3><p>Moog stores shared content on the server so it can deliver the share. Tokens and codes are stored as hashes, access keys are hashed, and expired or revoked shares are rejected. Moog does not provide end-to-end encryption yet, so do not use it for secrets that require server-blind encryption.</p></section>
 
-        <footer className="siteFooter"><div className="footerBrand"><strong>moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav><div className="footerLegal">moog 1.0 · © 2026</div></footer>
+        <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3>
+          {[
+            ["Is my share end-to-end encrypted?", "Not yet. Moog currently protects access to server-stored content, but the server can technically read active share content. Treat it as temporary access control, not zero-knowledge encryption."],
+            ["Do I need an account?", "No. Sending and receiving are both account-free."],
+            ["How long do shares stay alive?", "Choose from 1 minute to 24 hours when you create a share."],
+            ["Can I revoke a share early?", "Yes. Keep the private creator control link shown after creation and use it while the share is active."],
+            ["Can someone copy what I shared?", "Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back."],
+            ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP photos up to 10 MB."],
+          ].map(([question, answer], index) => (
+            <details key={question} open={openFaq === index}>
+              <summary onClick={(event) => { event.preventDefault(); setOpenFaq(openFaq === index ? null : index); }}>{question}</summary>
+              <p>{answer}</p>
+            </details>
+          ))}</section>
+        <footer className="siteFooter"><div className="footerBrand"><strong>moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a><a href="/report-abuse">Report abuse</a></nav><div className="footerLegal">moog 1.0 · © 2026</div></footer>
       </div>
     </main>
   );
