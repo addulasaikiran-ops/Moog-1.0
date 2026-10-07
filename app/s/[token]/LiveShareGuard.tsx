@@ -12,6 +12,7 @@ export default function LiveShareGuard({
   children: ReactNode;
 }) {
   const [available, setAvailable] = useState(true);
+  const [disappearing, setDisappearing] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -32,7 +33,8 @@ export default function LiveShareGuard({
         if (!active) return;
 
         if (!response.ok) {
-          setAvailable(false);
+          setDisappearing(true);
+          window.setTimeout(() => { if (active) setAvailable(false); }, 680);
           return;
         }
       } catch {
