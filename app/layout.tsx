@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { AuthProvider } from "@/components/AuthProvider";
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://lucid-radiance-production.up.railway.app";
 
@@ -10,7 +9,7 @@ export const metadata: Metadata = {
     default: "Moog 1.0 — Private Temporary Sharing",
     template: "%s — Moog 1.0",
   },
-  description: "Moog 1.0 is a private, temporary sharing tool for text, code, and photos. Create an expiring link while signed in.",
+  description: "Moog 1.0 is a private, temporary sharing tool for text, code, and photos. Create an expiring link without an account.",
   applicationName: "Moog 1.0",
   keywords: ["Moog 1.0", "Moog", "temporary sharing", "private sharing", "expiring links", "share text", "share code", "share photos"],
   alternates: { canonical: "/" },
@@ -20,7 +19,7 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: "Moog 1.0",
     title: "Moog 1.0 — Private Temporary Sharing",
-    description: "Create private, expiring links for text, code, and photos.",
+    description: "Create private, expiring links for text, code, and photos. No account required.",
   },
   twitter: {
     card: "summary",
@@ -46,7 +45,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <meta name="google-site-verification" content="faNn5oeght5riOAmDiyfA_ki0nCNh6xq2flmzaJ_K7A" />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </head>
-      <body><AuthProvider>{children}</AuthProvider></body>
+      <body>{children}</body>
     </html>
   );
 }
