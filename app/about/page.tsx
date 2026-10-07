@@ -1,0 +1,2 @@
+export const metadata={title:"About — Moog 1.0",description:"About Moog 1.0, private temporary sharing by design."};
+export default function AboutPage(){return <main className="legalPage"><div className="legalShell"><a className="minimalLogo" href="/">moog</a><p className="eyebrow">ABOUT MOOG 1.0</p><h1>Temporary sharing, intentionally temporary.</h1><p>Moog lets you share text, code, and photos through private links that expire. Sending and receiving are account-free.</p><a className="primary legalButton" href="/">Back to Moog <span>→</span></a></div></main>}
