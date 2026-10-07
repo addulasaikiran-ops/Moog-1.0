@@ -70,7 +70,7 @@ export default async function SharePage({ params, searchParams }: Props) {
         <div className="viewerShell">
           <header className="viewerTopbar">
             <a className="minimalLogo" href="/">moog</a>
-            <span className="viewerSecure">private link</span>
+            <span className="viewerSecure">access link</span>
           </header>
           <main className="viewerMain">
             <section className="minimalCard revealCard">
@@ -148,7 +148,7 @@ export default async function SharePage({ params, searchParams }: Props) {
           </article>
         </main>
 
-        <footer className="minimalFooter">moog · private, temporary sharing</footer>
+        <footer className="minimalFooter">moog · temporary sharing</footer>
       </div>
       </main>
     </LiveShareGuard>
