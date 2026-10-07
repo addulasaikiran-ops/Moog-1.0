@@ -486,7 +486,7 @@ export default function HomePage() {
           <div className="aboutIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="about-title">Private sharing. <span>Nothing extra.</span></h2></div>
           <div className="featureGrid">
             <div className="featureCard"><i>↗</i><strong>Private links</strong><small>High-entropy links designed for temporary access.</small></div>
-            <div className="featureCard"><i>◷</i><strong>Automatic expiry</strong><small>Choose a lifetime from 1 minute to 24 hours.</small></div>
+            <div className="featureCard"><i>◷</i><strong>Automatic expiry</strong><small>Choose a lifetime from 1 minute to 7 days.</small></div>
             <div className="featureCard"><i>×</i><strong>Creator revoke</strong><small>End an active share whenever you need to.</small></div>
             <div className="featureCard"><i>⌁</i><strong>Password protection</strong><small>Add an access key for another layer of control.</small></div>
             <div className="featureCard"><i>1×</i><strong>View once</strong><small>Reveal a share once when the moment calls for it.</small></div>
