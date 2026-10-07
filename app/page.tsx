@@ -1,176 +1,290 @@
 "use client";
 
-import { ClipboardEvent, DragEvent, FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 
-type Expiry = 1 | 5 | 15 | 30 | 60 | 360 | 1440;
-type Tab = "send" | "receive";
+const EXPIRY_OPTIONS = [
+  { value: 1, label: "1 minute" },
+  { value: 5, label: "5 minutes" },
+  { value: 15, label: "15 minutes" },
+  { value: 30, label: "30 minutes" },
+  { value: 60, label: "1 hour" },
+  { value: 360, label: "6 hours" },
+  { value: 1440, label: "24 hours" },
+];
 
-const languages = [
-  ["text", "Plain text"], ["javascript", "JavaScript"], ["typescript", "TypeScript"], ["python", "Python"], ["html", "HTML"], ["css", "CSS"], ["json", "JSON"], ["sql", "SQL"], ["bash", "Bash"], ["java", "Java"], ["csharp", "C#"], ["cpp", "C++"], ["go", "Go"], ["rust", "Rust"], ["php", "PHP"], ["markdown", "Markdown"],
+const CODE_LANGUAGES = [
+  ["javascript", "JavaScript"],
+  ["typescript", "TypeScript"],
+  ["python", "Python"],
+  ["html", "HTML"],
+  ["css", "CSS"],
+  ["json", "JSON"],
+  ["sql", "SQL"],
+  ["bash", "Bash"],
+  ["java", "Java"],
+  ["csharp", "C#"],
+  ["cpp", "C++"],
+  ["go", "Go"],
+  ["rust", "Rust"],
+  ["php", "PHP"],
+  ["markdown", "Markdown"],
 ] as const;
-const expiryLabels: Record<Expiry, string> = { 1: "1 minute", 5: "5 minutes", 15: "15 minutes", 30: "30 minutes", 60: "1 hour", 360: "6 hours", 1440: "24 hours" };
+
+type Tab = "send" | "receive";
+type Mode = "text" | "code" | "photo";
+
+function formatReceiveCode(value: string): string {
+  const raw = value.toUpperCase().replace(/[\s-]/g, "").slice(0, 10);
+  if (!raw.startsWith("MG") && raw.length) return raw;
+  const body = raw.slice(2, 10);
+  if (!body) return "MG";
+  return `MG-${body.slice(0, 4)}${body.length > 4 ? `-${body.slice(4, 8)}` : ""}`;
+}
 
 function formatCountdown(ms: number): string {
-  const total = Math.max(0, Math.ceil(ms / 1000));
-  const hours = Math.floor(total / 3600);
-  const minutes = Math.floor((total % 3600) / 60);
-  const seconds = total % 60;
-  return hours > 0 ? `${hours}:${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}` : `${minutes}:${String(seconds).padStart(2, "0")}`;
+  const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  if (hours) return `${hours}h ${minutes}m`;
+  if (minutes) return `${minutes}m ${seconds}s`;
+  return `${seconds}s`;
 }
-function formatReceiveCode(value: string): string {
-  const raw = value.toUpperCase().replace(/[\s-]/g, "").replace(/[^A-Z0-9]/g, "").slice(0, 10);
-  if (!raw) return "";
-  const prefix = raw.startsWith("MG") ? "MG" : raw.slice(0, 2);
-  const body = raw.startsWith("MG") ? raw.slice(2) : raw.slice(2);
-  return prefix + (body.length ? "-" + body.slice(0, 4) : "") + (body.length > 4 ? "-" + body.slice(4, 8) : "");
+
+function isValidCode(value: string): boolean {
+  return /^MG-[A-HJ-MNP-Z2-9]{4}-[A-HJ-MNP-Z2-9]{4}$/.test(value);
 }
 
 export default function HomePage() {
-
   const [tab, setTab] = useState<Tab>("send");
+  const [mode, setMode] = useState<Mode>("text");
   const [text, setText] = useState("");
-  const [expiry, setExpiry] = useState<Expiry>(60);
+  const [language, setLanguage] = useState("javascript");
+  const [expiryMinutes, setExpiryMinutes] = useState(60);
+  const [accessKey, setAccessKey] = useState("");
+  const [viewOnce, setViewOnce] = useState(false);
+  const [file, setFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+  const [dragActive, setDragActive] = useState(false);
   const [url, setUrl] = useState("");
   const [revokeUrl, setRevokeUrl] = useState("");
   const [code, setCode] = useState("");
+  const [expiresAt, setExpiresAt] = useState("");
+  const [remaining, setRemaining] = useState(0);
+  const [copied, setCopied] = useState<"link" | "code" | "">("");
+  const [loading, setLoading] = useState(false);
   const [revokeLoading, setRevokeLoading] = useState(false);
   const [revoked, setRevoked] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [copied, setCopied] = useState<"link" | "code" | "">("");
-  const [accessKey, setAccessKey] = useState("");
-  const [viewOnce, setViewOnce] = useState(false);
-  const [language, setLanguage] = useState("text");
-  const [mode, setMode] = useState<"text" | "code" | "photo">("text");
-  const [photo, setPhoto] = useState<File | null>(null);
-  const [photoCaption, setPhotoCaption] = useState("");
-  const [photoPreview, setPhotoPreview] = useState("");
-  const [expiresAt, setExpiresAt] = useState("");
-  const [remaining, setRemaining] = useState(0);
   const [receiveCode, setReceiveCode] = useState("");
   const [receiveLoading, setReceiveLoading] = useState(false);
   const [receiveError, setReceiveError] = useState("");
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const requested = params.get("tab");
-    if (requested === "receive" || requested === "send") setTab(requested);
-  }, []);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (!expiresAt) return;
-    const update = () => setRemaining(new Date(expiresAt).getTime() - Date.now());
-    update();
-    const timer = window.setInterval(update, 1000);
-    return () => window.clearInterval(timer);
+    const tick = () => setRemaining(Math.max(0, new Date(expiresAt).getTime() - Date.now()));
+    tick();
+    const interval = window.setInterval(tick, 1000);
+    return () => window.clearInterval(interval);
   }, [expiresAt]);
+
+  useEffect(() => {
+    if (!url || !revokeUrl || revoked) return;
+    const token = revokeUrl.split("/").pop();
+    if (!token) return;
+
+    let active = true;
+    let controller: AbortController | null = null;
+
+    const check = async () => {
+      controller?.abort();
+      controller = new AbortController();
+      try {
+        const response = await fetch(url, { method: "HEAD", cache: "no-store", signal: controller.signal });
+        if (active && response.status === 404) setRevoked(true);
+      } catch {
+        // Transient errors should not revoke the UI state.
+      }
+    };
+
+    void check();
+    const interval = window.setInterval(() => void check(), 2000);
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") void check();
+    };
+    document.addEventListener("visibilitychange", onVisibility);
+
+    return () => {
+      active = false;
+      controller?.abort();
+      window.clearInterval(interval);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, [url, revokeUrl, revoked]);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
 
   function changeTab(next: Tab) {
     setTab(next);
-    const params = new URLSearchParams(window.location.search);
-    params.set("tab", next);
-    window.history.replaceState(null, "", "?" + params.toString());
-    if (next === "receive") setError("");
+    setError("");
+    setReceiveError("");
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  function handleFile(nextFile: File | null) {
+    if (!nextFile) return;
+    if (!["image/jpeg", "image/png", "image/gif", "image/webp"].includes(nextFile.type)) {
+      setError("Use JPG, PNG, GIF, or WebP.");
+      return;
+    }
+    if (nextFile.size > 10 * 1024 * 1024) {
+      setError("Image must be 10 MB or smaller.");
+      return;
+    }
+    setFile(nextFile);
+    setError("");
+    if (previewUrl) URL.revokeObjectURL(previewUrl);
+    setPreviewUrl(URL.createObjectURL(nextFile));
+  }
+
+  function onDrop(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
-    setError(""); setUrl(""); setRevokeUrl(""); setCode(""); setRevoked(false); setCopied(""); setExpiresAt("");
-    if (mode === "photo" ? !photo : !text.trim()) { setError("Write something first."); return; }
+    setDragActive(false);
+    handleFile(event.dataTransfer.files?.[0] ?? null);
+  }
+
+  async function copyValue(value: string, kind: "link" | "code") {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(kind);
+      window.setTimeout(() => setCopied(""), 1400);
+    } catch {
+      setError("Could not copy. Please copy it manually.");
+    }
+  }
+
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    setError("");
+    setUrl("");
+    setRevokeUrl("");
+    setCode("");
+    setExpiresAt("");
+    setRemaining(0);
+    setRevoked(false);
+
+    if (mode === "photo" && !file) {
+      setError("Choose an image first.");
+      return;
+    }
+    if (mode !== "photo" && !text.trim()) {
+      setError("Text cannot be empty.");
+      return;
+    }
+
     setLoading(true);
     try {
       let response: Response;
-      if (mode === "photo" && photo) {
-        const formData = new FormData();
-        formData.append("file", photo); formData.append("text", photoCaption); formData.append("expiryMinutes", String(expiry));
-        if (accessKey) formData.append("password", accessKey);
-        formData.append("viewOnce", String(viewOnce));
-        response = await fetch("/api/shares", { method: "POST", body: formData });
+      if (mode === "photo") {
+        const body = new FormData();
+        body.set("file", file as File);
+        body.set("text", text);
+        body.set("password", accessKey);
+        body.set("viewOnce", String(viewOnce));
+        body.set("expiryMinutes", String(expiryMinutes));
+        response = await fetch("/api/shares", { method: "POST", body });
       } else {
         response = await fetch("/api/shares", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text, expiryMinutes: expiry, password: accessKey || undefined, viewOnce, language: effectiveLanguage }),
+          body: JSON.stringify({
+            text,
+            language: mode === "code" ? language : "text",
+            password: accessKey,
+            viewOnce,
+            expiryMinutes,
+          }),
         });
       }
-      const data = (await response.json()) as { url?: string; revokeUrl?: string; code?: string; expiresAt?: string; error?: string };
-      if (!response.ok) throw new Error(data.error ?? "Could not create link.");
-      setUrl(data.url ?? ""); setRevokeUrl(data.revokeUrl ?? ""); setCode(data.code ?? ""); setExpiresAt(data.expiresAt ?? "");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
-    } finally { setLoading(false); }
+
+      const body = (await response.json()) as { url?: string; revokeUrl?: string; code?: string; expiresAt?: string; error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Could not create link.");
+      setUrl(body.url ?? "");
+      setRevokeUrl(body.revokeUrl ?? "");
+      setCode(body.code ?? "");
+      setExpiresAt(body.expiresAt ?? "");
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : "Could not create link.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function revokeShare() {
-    if (!revokeUrl || revokeLoading || revoked) return;
-    if (!window.confirm("Revoke this share now? Anyone currently viewing it will lose access.")) return;
-    const revokeToken = new URL(revokeUrl).pathname.split("/").filter(Boolean).pop();
-    if (!revokeToken) { setError("Could not revoke this share."); return; }
-    setRevokeLoading(true); setError("");
+    if (!revokeUrl) return;
+    setRevokeLoading(true);
+    setError("");
     try {
-      const response = await fetch("/api/revokes/" + revokeToken, { method: "POST", headers: { Accept: "application/json" } });
-      if (!response.ok) throw new Error("Could not revoke this share.");
-      setRevoked(true); setRemaining(0);
-    } catch (err) { setError(err instanceof Error ? err.message : "Could not revoke this share."); }
-    finally { setRevokeLoading(false); }
+      const response = await fetch(revokeUrl, {
+        method: "POST",
+        headers: { Accept: "application/json" },
+      });
+      const body = (await response.json()) as { revoked?: boolean; error?: string };
+      if (!response.ok || !body.revoked) {
+        setError(body.error ?? "Share is already unavailable.");
+        return;
+      }
+      setRevoked(true);
+    } catch {
+      setError("Could not revoke the share right now.");
+    } finally {
+      setRevokeLoading(false);
+    }
   }
 
-  async function copyValue(value: string, kind: "link" | "code") {
-    if (!value) return;
-    try {
-      await navigator.clipboard.writeText(value);
-      setCopied(kind);
-      window.setTimeout(() => setCopied(""), 1600);
-    } catch { setError("Could not copy. You can select it manually."); }
-  }
-
-  async function receiveShare(event: FormEvent<HTMLFormElement>) {
+  async function receiveShare(event: FormEvent) {
     event.preventDefault();
-    if (!receiveCode || receiveLoading) return;
-    setReceiveLoading(true); setReceiveError("");
+    setReceiveError("");
+    const normalized = formatReceiveCode(receiveCode);
+    if (!isValidCode(normalized)) {
+      setReceiveError("Enter a valid Moog code like MG-7K4Q-92XF.");
+      return;
+    }
+
+    setReceiveLoading(true);
     try {
       const response = await fetch("/api/receive", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ code: receiveCode }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: normalized }),
       });
-      const data = (await response.json()) as { token?: string; error?: string; reason?: string };
-      if (!response.ok) {
-        if (response.status === 429) throw new Error("Too many attempts, try again later");
-        if (data.reason === "expired") throw new Error("This share expired");
-        if (data.reason === "revoked") throw new Error("This share was revoked");
-        throw new Error("Code not found");
+      const body = (await response.json()) as { token?: string; error?: string; reason?: string };
+      if (!response.ok || !body.token) {
+        const message =
+          body.reason === "expired"
+            ? "That share has expired."
+            : body.reason === "revoked"
+              ? "That share was revoked."
+              : body.error ?? "Share unavailable.";
+        throw new Error(message);
       }
-      if (!data.token) throw new Error("Code not found");
-      window.location.assign("/s/" + data.token);
-    } catch (err) {
-      setReceiveError(err instanceof Error ? err.message : "Code not found");
-    } finally { setReceiveLoading(false); }
+      window.location.assign(`/s/${body.token}`);
+    } catch (receiveSubmitError) {
+      setReceiveError(receiveSubmitError instanceof Error ? receiveSubmitError.message : "Share unavailable.");
+    } finally {
+      setReceiveLoading(false);
+    }
   }
-
-  function selectPhoto(file: File | undefined) {
-    if (!file) return;
-    const allowed = ["image/jpeg", "image/png", "image/gif", "image/webp"];
-    if (!allowed.includes(file.type)) { setError("Use JPG, PNG, GIF, or WebP."); return; }
-    if (file.size > 10 * 1024 * 1024) { setError("Image must be 10 MB or smaller."); return; }
-    setPhoto(file); setError(""); setUrl(""); setRevokeUrl(""); setCode("");
-    const reader = new FileReader();
-    reader.onload = () => setPhotoPreview(typeof reader.result === "string" ? reader.result : "");
-    reader.readAsDataURL(file);
-  }
-  function handlePaste(event: ClipboardEvent<HTMLDivElement>) {
-    const item = Array.from(event.clipboardData.items).find((entry) => entry.type.startsWith("image/"));
-    if (item) { event.preventDefault(); selectPhoto(item.getAsFile() ?? undefined); }
-  }
-  function handleDrop(event: DragEvent<HTMLDivElement>) { event.preventDefault(); selectPhoto(event.dataTransfer.files?.[0]); }
-
-  const expiryLabel = expiryLabels[expiry];
-  const effectiveLanguage = mode === "code" ? language : "text";
 
   return (
-    <main className="home">
-      <div className="ambient ambientOne" /><div className="ambient ambientTwo" />
+    <main className="page">
+      <div className="ambient ambientOne" />
+      <div className="ambient ambientTwo" />
+
       <div className="shell">
         <header className="topbar">
           <a className="logo" href="/" aria-label="Moog home"><span className="logoMark">M</span><span>moog</span></a>
@@ -179,8 +293,8 @@ export default function HomePage() {
 
         <section className="hero">
           <div className="eyebrow">MOOG 1.0 · PRIVATE TEMPORARY SHARING</div>
-          <h1>Share it.<br /><span>Then it's gone.</span></h1>
-          <p className="heroCopy">Text, code, or photos with a private link and a unique code. Create once, receive anywhere, and let it expire.</p>
+          <h1>Share it.<br /><span>Then it’s gone.</span></h1>
+          <p className="heroCopy">Text, code, or photos with a private link and a unique code. Create once, receive anywhere, and let it expire. No account needed.</p>
         </section>
 
         <div className="shareTabs" role="tablist" aria-label="Share mode">
@@ -193,46 +307,57 @@ export default function HomePage() {
             <div className="srOnly" id="send-title">Send a private share</div>
             <form onSubmit={handleSubmit}>
               <div className="composerTop">
-                <div><div className="fieldLabel">{mode === "photo" ? "PHOTO" : "MESSAGE"}</div><div className="editorHint">{mode === "photo" ? "Upload, drag & drop, or paste an image." : user ? "Paste text or code. Your account owns the revoke control." : "Sign in above to create and manage private shares."}</div></div>
+                <div><div className="fieldLabel">{mode === "photo" ? "PHOTO" : "MESSAGE"}</div><div className="editorHint">{mode === "photo" ? "Upload, drag & drop, or paste an image." : "Paste text or code. No account required."}</div></div>
                 {mode === "photo" ? <div className="counter">10 MB max</div> : <div className="counter">{text.length.toLocaleString()} / 100,000</div>}
               </div>
+
               {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder="Type or paste something private…" maxLength={100000} aria-label="Text to share" autoFocus /> : null}
+
               <div className="modeToggle" role="group" aria-label="Content mode">
                 <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} onClick={() => setMode("text")}>Text</button>
                 <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} onClick={() => setMode("code")}>Code</button>
                 <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} onClick={() => { setMode("photo"); setText(""); }}>Photo</button>
               </div>
-              {mode === "photo" ? <div className="photoComposer">
-                <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" hidden onChange={(e) => selectPhoto(e.target.files?.[0])} />
-                <div className="photoDrop" tabIndex={0} onPaste={handlePaste} onDragOver={(e) => e.preventDefault()} onDrop={handleDrop} onClick={() => fileInputRef.current?.click()}>
-                  {photo ? <div className="photoPreviewWrap"><img className="photoPreview" src={photoPreview} alt="Selected preview" /><button type="button" className="photoOverlay" onClick={(e) => { e.stopPropagation(); setPhoto(null); setPhotoPreview(""); }}>Remove</button></div> :
-                    <div className="photoDropEmpty"><div className="photoDropGlyph" aria-hidden="true">+</div><div className="photoDropCopy"><strong>Drop an image here</strong><span>or paste from your clipboard</span></div><button type="button" className="photoBrowse" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}>Browse files</button><small>JPG · PNG · GIF · WebP · max 10 MB</small></div>}
-                </div>
-                <input className="sharePassword" value={photoCaption} onChange={(e) => setPhotoCaption(e.target.value)} maxLength={1000} placeholder="Optional photo caption" aria-label="Optional photo caption" />
-              </div> : null}
-              {mode === "code" ? <div className="codeToolbar"><div><div className="fieldLabel">FORMAT</div><div className="expiryHint">Choose a language for code sharing.</div></div><select className="languageSelect" value={language} onChange={(e) => setLanguage(e.target.value)} aria-label="Code language">{languages.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></div> : null}
-              <div className="expiryPicker"><div><div className="fieldLabel">LINK LIFETIME</div><div className="expiryHint">The link stops working after {expiryLabel}.</div></div><div className="expiryOptions" role="group" aria-label="Link expiry">{[1,5,15,30,60,360,1440].map((minutes) => <button key={minutes} type="button" className={expiry === minutes ? "expiryOption active" : "expiryOption"} onClick={() => setExpiry(minutes as Expiry)} aria-pressed={expiry === minutes}>{minutes === 1440 ? "24 hr" : minutes === 360 ? "6 hr" : minutes === 60 ? "1 hr" : minutes + " min"}</button>)}</div></div>
-              <div className="advancedControls"><input className="sharePassword" type="password" value={accessKey} onChange={(e) => setAccessKey(e.target.value)} placeholder="Optional access key" maxLength={128} aria-label="Optional access key" /><label className="viewOnce"><input type="checkbox" checked={viewOnce} onChange={(e) => setViewOnce(e.target.checked)} /> View once</label></div>
-              <div className="composerBottom"><div className="trust"><span className="trustIcon">✦</span><span>{mode === "photo" ? "Photo" : mode === "code" ? "Code · " + (languages.find(([v]) => v === language)?.[1] ?? language) : viewOnce ? "Burns after one view" : "Private link"}{accessKey ? " · protected" : ""} · {expiryLabel}</span></div><button className="primary" type="submit" disabled={loading || (mode === "photo" ? !photo : !text.trim())}>{loading ? <><span className="spinner" /> Creating secure link…</> : <>Create private link <span className="arrow">↗</span></>}</button></div>
-            </form>
-            {error ? <p className="error" role="alert"><span>!</span>{error}</p> : null}
 
-            {url ? <div className="result resultExpanded" aria-live="polite">
-              <div className="resultIcon">✓</div>
-              <div className="resultBody">
-                <div className="resultLabel">PRIVATE LINK CREATED</div>
-                <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
-                <div className="uniqueCodeBox"><div><span>Unique code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "Copy code"}</button></div>
-                <div className="resultBottom"><span>Expires in {remaining > 0 ? formatCountdown(remaining) : "expired"}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={revokeShare} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
+              {mode === "code" ? (
+                <div className="codeSelectRow">
+                  <label htmlFor="language">Language</label>
+                  <select id="language" value={language} onChange={(event) => setLanguage(event.target.value)}>
+                    {CODE_LANGUAGES.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+                  </select>
+                </div>
+              ) : null}
+
+              {mode === "photo" ? (
+                <div
+                  className={dragActive ? "photoComposer dragActive" : "photoComposer"}
+                  onDragOver={(event) => { event.preventDefault(); setDragActive(true); }}
+                  onDragLeave={() => setDragActive(false)}
+                  onDrop={onDrop}
+                >
+                  {previewUrl ? <img src={previewUrl} alt="Selected preview" /> : <div className="photoDrop"><strong>Drop an image here</strong><span>or choose a file below</span></div>}
+                  <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={(event) => handleFile(event.target.files?.[0] ?? null)} />
+                  <button className="copy" type="button" onClick={() => fileInputRef.current?.click()}>Choose image</button>
+                </div>
+              ) : null}
+
+              <div className="optionsRow">
+                <label className="optionField"><span>Expires</span><select value={expiryMinutes} onChange={(event) => setExpiryMinutes(Number(event.target.value))}>{EXPIRY_OPTIONS.map((option) => <option key={option.value} value={option.value}>{option.label}</option>)}</select></label>
+                <label className="optionField"><span>Access key <small>optional</small></span><input type="password" value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} placeholder="Add a password" /></label>
+                <label className="checkField"><input type="checkbox" checked={viewOnce} onChange={(event) => setViewOnce(event.target.checked)} /><span>View once</span></label>
               </div>
-            </div> : null}
+
+              {error ? <div className="formError" role="alert">{error}</div> : null}
+
+              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>Create private share <span>→</span></>}</button>
+            </form>
           </section>
         ) : (
           <section className="receiveCard card" aria-labelledby="receive-title">
             <div className="receiveHeader"><span className="receiveGlyph" aria-hidden="true">↓</span><div><h2 id="receive-title">Receive</h2><p>Got a code from someone? Paste it here to open what they shared. No account needed.</p></div></div>
             <form onSubmit={receiveShare}>
               <label className="receiveLabel" htmlFor="receive-code">Unique code</label>
-              <input id="receive-code" className="receiveInput" value={receiveCode} onChange={(e) => { setReceiveCode(formatReceiveCode(e.target.value)); setReceiveError(""); }} placeholder="MG-7K4Q-92XF" inputMode="text" autoCapitalize="characters" autoComplete="off" spellCheck={false} aria-describedby="receive-help" />
+              <input id="receive-code" className="receiveInput" value={receiveCode} onChange={(event) => { setReceiveCode(formatReceiveCode(event.target.value)); setReceiveError(""); }} placeholder="MG-7K4Q-92XF" inputMode="text" autoCapitalize="characters" autoComplete="off" spellCheck={false} aria-describedby="receive-help" />
               <p id="receive-help" className="receiveHint">Codes can be pasted with or without dashes or spaces.</p>
               {receiveError ? <p className="receiveError" role="alert">{receiveError}</p> : null}
               <button className="receiveOpen primary" type="submit" disabled={!receiveCode || receiveLoading}>{receiveLoading ? <><span className="spinner" /> Opening share…</> : <>Open share <span>→</span></>}</button>
@@ -240,6 +365,24 @@ export default function HomePage() {
             <div className="receiveNote"><span aria-hidden="true">⌁</span><span>Locked shares ask for the access key. View-once shares open through their normal one-time reveal.</span></div>
           </section>
         )}
+
+        {url ? (
+          <section className="result resultExpanded" aria-live="polite">
+            <div className="resultIcon">✓</div>
+            <div className="resultBody">
+              <div className="resultLabel">PRIVATE LINK CREATED</div>
+              <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
+              <div className="uniqueCodeBox"><div><span>Unique code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "Copy code"}</button></div>
+              <div className="resultBottom"><span>Expires in {remaining > 0 ? formatCountdown(remaining) : "expired"}{viewOnce ? " · view once" : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
+            </div>
+          </section>
+        ) : null}
+
+        <section className="features" aria-label="How Moog works">
+          <div><span>01</span><strong>Paste</strong><small>Drop in text or code without an account.</small></div>
+          <div><span>02</span><strong>Share</strong><small>Send one private link or unique code.</small></div>
+          <div><span>03</span><strong>Disappear</strong><small>The link expires on the timer you choose.</small></div>
+        </section>
 
         <section className="howMoog" id="about-moog" aria-labelledby="about-moog-title">
           <div className="howIntro"><div className="eyebrow">THE DETAILS</div><h2 id="about-moog-title">How Moog works</h2><p>Simple sharing with a short life by design.</p></div>
