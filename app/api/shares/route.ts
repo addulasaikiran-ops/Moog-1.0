@@ -1,9 +1,11 @@
 import { NextResponse } from "next/server";
+import { isAllowedOrigin } from "@/lib/origin";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit, allowRateLimitCost } from "@/lib/rate-limit";
 import { generateShareCode, hashShareCode } from "@/lib/share-code";
 import { deriveShareToken, generateToken, getClientKey, hashSecret, hashToken } from "@/lib/token";
 import { IMAGE_TYPES, MAX_IMAGE_SIZE, hasValidImageSignature } from "@/lib/image";
+import { isAllowedOrigin } from "@/lib/origin";
 
 const EXPIRY_OPTIONS = new Set([1, 5, 15, 30, 60, 360, 1440]);
 const LANGUAGE_OPTIONS = new Set(["text", "javascript", "typescript", "python", "html", "css", "json", "sql", "bash", "java", "csharp", "cpp", "go", "rust", "php", "markdown"]);
@@ -25,9 +27,7 @@ function isUniqueConstraint(error: unknown): boolean {
 }
 
 export async function POST(request: Request) {
-  const expectedOrigin = new URL(request.url).origin;
-  const origin = request.headers.get("origin");
-  if (origin !== expectedOrigin) return NextResponse.json({ error: "Forbidden." }, { status: 403, headers: { "Cache-Control": "no-store" } });
+  if (!isAllowedOrigin(request)) return NextResponse.json({ error: "Forbidden." }, { status: 403, headers: { "Cache-Control": "no-store" } });
   try {
     const isMultipart = (request.headers.get("content-type") ?? "").includes("multipart/form-data");
     if (bodyTooLarge(request, isMultipart ? MAX_MULTIPART_BODY : MAX_JSON_BODY)) return NextResponse.json({ error: "Request is too large." }, { status: 413 });
