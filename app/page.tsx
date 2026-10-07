@@ -445,7 +445,7 @@ export default function HomePage() {
           </section>
         ) : null}
 
-        {recentShares.length ? (
+        {tab === "send" && recentShares.length ? (
           <section className="recentShares card" aria-labelledby="recent-shares-title">
             <div className="recentHeader"><div><div className="fieldLabel" id="recent-shares-title">RECENT SHARES ON THIS DEVICE</div><p>Saved only on this device. Clearing your browser data removes it.</p></div></div>
             <div className="recentList">{recentShares.map((item) => { const expired = new Date(item.expiresAt).getTime() <= Date.now(); return <div className="recentItem" key={item.revokeUrl}><div><strong>{item.type === "photo" ? "Photo" : item.type === "code" ? "Code" : "Text"}</strong><small>{expired ? "Expired" : `Active · ${formatCountdown(new Date(item.expiresAt).getTime() - Date.now())} left`}</small></div><div className="recentActions"><button className="copy" type="button" onClick={() => void copyValue(item.revokeUrl, "revoke")}>Copy revoke link</button>{!expired ? <button className="revokeNow" type="button" onClick={() => void revokeShare(item.revokeUrl)}>Revoke now</button> : null}<button className="textButton" type="button" onClick={() => removeRecentShare(item.revokeUrl)}>Remove</button></div></div>})}</div>
