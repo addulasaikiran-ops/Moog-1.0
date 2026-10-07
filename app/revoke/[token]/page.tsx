@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import { prisma } from "@/lib/prisma";
-import { hashToken, isValidToken } from "@/lib/token";
+import { isValidToken } from "@/lib/token";
+import RevokeClient from "./RevokeClient";
 
 export const dynamic = "force-dynamic";
 
@@ -16,15 +16,7 @@ export default async function RevokePage({ params, searchParams }: Props) {
   const { status } = await searchParams;
   if (!isValidToken(token)) notFound();
 
-  const share = await prisma.share.findUnique({
-    where: { revokeTokenHash: hashToken(token) },
-    select: { expiresAt: true, revokedAt: true },
-  });
-  if (!share) notFound();
-
-  const alreadyRevoked = !!share.revokedAt || share.expiresAt <= new Date();
-  const revoked = alreadyRevoked || status === "revoked";
-  const unavailable = status === "unavailable";
+  if (status === "revoked") return <main className="viewerPage viewerMinimal viewerLockedPage"><div className="viewerShell"><RevokeClient token={token} expiresAt={new Date().toISOString()} /></div></main>;
 
   return (
     <main className="viewerPage viewerMinimal viewerLockedPage">
