@@ -15,7 +15,6 @@ model RateLimit {
 
 model Share {
   id              String    @id @default(cuid())
-  ownerUid        String?
   text            String
   language        String    @default("text")
   tokenHash       String    @unique
@@ -35,5 +34,4 @@ model Share {
   @@index([expiresAt])
   @@index([viewOnce, viewedAt])
   @@index([revokedAt])
-  @@index([ownerUid])
 }
