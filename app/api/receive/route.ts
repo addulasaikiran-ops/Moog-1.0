@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
 import { getClientKey } from "@/lib/token";
 import { SHARE_CODE_ALPHABET, hashShareCode, normalizeShareCode } from "@/lib/share-code";
+import { getReceiveState, getReceiveToken } from "@/lib/receive";
 
 export const dynamic = "force-dynamic";
 
@@ -45,7 +46,8 @@ export async function POST(request: Request) {
 
   const normalized = normalizeShareCode(code);
   if (!NORMALIZED_CODE_RE.test(normalized)) {
-    await allowRateLimit("receive-fail:" + clientKey, FAILURE_LIMIT, FAILURE_WINDOW_MS);
+    const failures = await allowRateLimit("receive-fail:" + clientKey, FAILURE_LIMIT, FAILURE_WINDOW_MS);
+    if (!failures) return response({ error: "Too many attempts, try again later" }, 429);
     return failure("not_found");
   }
 
