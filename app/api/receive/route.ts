@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
-import { deriveShareToken, getClientKey } from "@/lib/token";
+import { getClientKey } from "@/lib/token";
 import { SHARE_CODE_ALPHABET, hashShareCode, normalizeShareCode } from "@/lib/share-code";
 
 export const dynamic = "force-dynamic";
@@ -64,16 +64,17 @@ export async function POST(request: Request) {
     if (!failures) return response({ error: "Too many attempts, try again later" }, 429);
     return failure("not_found");
   }
-  if (share.revokedAt) {
+  const state = getReceiveState(share);
+  if (state === "revoked") {
     const failures = await allowRateLimit("receive-fail:" + clientKey, FAILURE_LIMIT, FAILURE_WINDOW_MS);
     if (!failures) return response({ error: "Too many attempts, try again later" }, 429);
     return failure("revoked");
   }
-  if (share.expiresAt <= new Date()) {
+  if (state === "expired") {
     const failures = await allowRateLimit("receive-fail:" + clientKey, FAILURE_LIMIT, FAILURE_WINDOW_MS);
     if (!failures) return response({ error: "Too many attempts, try again later" }, 429);
     return failure("expired");
   }
 
-  return response({ token: deriveShareToken(share.id) }, 200);
+  return response({ token: getReceiveToken(share) }, 200);
 }
