@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { verifyFirebaseUser } from "@/lib/firebase-admin";
 import { prisma } from "@/lib/prisma";
 import { hashToken, isValidToken } from "@/lib/token";
 
@@ -14,10 +15,18 @@ export async function POST(request: Request, { params }: Params) {
   const { token } = await params;
   if (!isValidToken(token)) return new NextResponse("Not found", { status: 404 });
 
+  const user = await verifyFirebaseUser(request);
+  if (!user) {
+    const wantsJson = request.headers.get("accept")?.includes("application/json");
+    if (wantsJson) return NextResponse.json({ revoked: false, error: "Please sign in to revoke this share." }, { status: 401, headers: { "Cache-Control": "no-store" } });
+    return new NextResponse("Please sign in to revoke this share.", { status: 401 });
+  }
+
   const revokedAt = new Date();
   const result = await prisma.share.updateMany({
     where: {
       revokeTokenHash: hashToken(token),
+      ownerUid: user.uid,
       revokedAt: null,
       expiresAt: { gt: revokedAt },
     },
