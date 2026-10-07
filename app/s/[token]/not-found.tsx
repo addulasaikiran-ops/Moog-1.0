@@ -13,7 +13,7 @@ export default function ShareNotFound() {
           <p>It may have expired, been revoked, or already been viewed once. Nothing else is required.</p>
           <a className="minimalRevealButton" href="/">Create a new share <span>→</span></a>
         </section>
-        <footer className="minimalFooter">moog · private, temporary sharing</footer>
+        <footer className="minimalFooter">moog · temporary sharing</footer>
       </div>
     </main>
   );
