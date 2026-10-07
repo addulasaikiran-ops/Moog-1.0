@@ -1338,3 +1338,53 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
   background:var(--accent);transform-origin:center;
 }
 @media(max-width:650px){.topNav{gap:12px}.navLink{font-size:11px}.topNav .badge{display:none}}
+
+.photoComposer{
+  border:1px solid rgba(255,255,255,.065);
+  border-radius:16px;
+  padding:8px;
+  background:#0b0c0f;
+  transition:border-color 200ms ease,background 200ms ease,box-shadow 200ms ease;
+}
+.photoComposer.dragActive{
+  border-color:rgba(200,255,61,.35);
+  background:#0d100c;
+  box-shadow:0 0 0 3px rgba(200,255,61,.045);
+}
+.photoComposer>img{
+  display:block;
+  width:100%;
+  max-height:380px;
+  object-fit:contain;
+  border-radius:11px;
+  background:#070809;
+}
+.photoComposer>input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}
+.photoComposer>.copy{
+  width:100%;
+  margin-top:8px;
+  border-radius:10px;
+}
+.photoDrop{
+  min-height:240px;
+  border-radius:11px;
+  background:transparent;
+}
+.photoDropIcon{
+  width:40px;height:40px;margin:0 auto 13px;
+  font-size:21px;font-weight:400;
+}
+.photoDrop>small{
+  display:block;
+  margin-top:11px;
+  color:#555c67;
+  font-size:10px;
+  letter-spacing:.03em;
+}
+.faq details[open]{
+  border-bottom-color:rgba(200,255,61,.10);
+}
+@media(max-width:560px){
+  .photoDrop{min-height:205px}
+  .photoComposer>img{max-height:300px}
+}
