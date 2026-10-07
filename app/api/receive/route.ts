@@ -54,7 +54,7 @@ export async function POST(request: Request) {\n  const expectedOrigin = new URL
   let share: { id: string; expiresAt: Date; revokedAt: Date | null } | null = null;
   try {
     share = await prisma.share.findUnique({
-      where: { codeHash: hashShareCode(code) },
+      where: { codeHash: hashShareCode(normalized) },
       select: { id: true, expiresAt: true, revokedAt: true },
     });
   } catch {
