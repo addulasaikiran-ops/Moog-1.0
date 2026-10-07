@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { allowRateLimit } from "@/lib/rate-limit";
+import { allowRateLimit, allowRateLimitCost } from "@/lib/rate-limit";
 import { generateShareCode, hashShareCode } from "@/lib/share-code";
 import { deriveShareToken, generateToken, getClientKey, hashSecret, hashToken } from "@/lib/token";
 
@@ -70,6 +70,12 @@ export async function POST(request: Request) {
     }
 
     if (password.length > 128) return NextResponse.json({ error: "Password is too long." }, { status: 400 });
+
+    const storedBytes = new TextEncoder().encode(text).byteLength + (imageData?.byteLength ?? 0);
+    const storageUnits = Math.max(1, Math.ceil(storedBytes / 1024));
+    if (!(await allowRateLimitCost("storage-day:" + getClientKey(request), 100 * 1024, 24 * 60 * 60_000, storageUnits))) {
+      return NextResponse.json({ error: "Daily sharing limit reached. Try again tomorrow." }, { status: 429, headers: { "Cache-Control": "no-store" } });
+    }
 
     const id = generateToken();
     const token = deriveShareToken(id);
