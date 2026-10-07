@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { verifyFirebaseUser } from "@/lib/firebase-admin";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
 import { generateShareCode, hashShareCode } from "@/lib/share-code";
@@ -35,9 +34,6 @@ function isUniqueConstraint(error: unknown): boolean {
 
 export async function POST(request: Request) {
   try {
-    const user = await verifyFirebaseUser(request);
-    if (!user) return NextResponse.json({ error: "Please sign in to create a share." }, { status: 401, headers: { "Cache-Control": "no-store" } });
-
     const isMultipart = (request.headers.get("content-type") ?? "").includes("multipart/form-data");
     if (bodyTooLarge(request, isMultipart ? MAX_MULTIPART_BODY : MAX_JSON_BODY)) return NextResponse.json({ error: "Request is too large." }, { status: 413 });
     if (!(await allowRateLimit("create:" + getClientKey(request), CREATION_LIMIT, CREATION_WINDOW_MS))) return NextResponse.json({ error: "Too many links created. Try again in a minute." }, { status: 429 });
@@ -83,7 +79,6 @@ export async function POST(request: Request) {
           data: {
             id,
             text, language, imageData, imageMime, imageName,
-            ownerUid: user.uid,
             tokenHash: hashToken(token),
             codeHash: hashShareCode(rawCode),
             revokeTokenHash: hashToken(revokeToken),
