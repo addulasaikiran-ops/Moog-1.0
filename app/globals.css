@@ -1281,7 +1281,7 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
 
 /* MOOG premium interaction layer */
 .lifetimePills{position:relative;display:flex;gap:0;padding:3px;overflow:hidden;isolation:isolate}
-.lifetimeActivePill{position:absolute;z-index:0;top:3px;bottom:3px;left:3px;width:calc((100% - 6px)/var(--expiry-count));border-radius:999px;background:rgba(200,255,61,.10);border:1px solid rgba(200,255,61,.55);box-shadow:0 0 24px rgba(200,255,61,.045);transform:translateX(calc(var(--expiry-index)*100%));transition:transform 220ms cubic-bezier(.22,.8,.24,1),opacity 180ms ease;pointer-events:none}
+.lifetimeActivePill{position:absolute;z-index:0;top:3px;bottom:3px;left:3px;width:calc((100% - 6px)/9);border-radius:999px;background:rgba(200,255,61,.10);border:1px solid rgba(200,255,61,.55);box-shadow:0 0 24px rgba(200,255,61,.045);transform:translateX(calc(var(--expiry-index)*100%));transition:transform 220ms cubic-bezier(.22,.8,.24,1),opacity 180ms ease;pointer-events:none}
 .lifetimePill{position:relative;z-index:1;flex:1;min-width:0;margin:0;border:0;background:transparent;color:#858b95;transition:color 180ms ease}
 .lifetimePill.active{background:transparent;color:var(--accent);box-shadow:none}
 .lifetimePill:hover{color:#e3e7df}
@@ -1409,3 +1409,13 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
 .reportForm .legalButton{width:100%;margin-top:2px}
 .reportSuccess{padding:11px 13px;border:1px solid rgba(200,255,61,.14);border-radius:10px;background:rgba(200,255,61,.045);color:#c8ff3d;font-size:12px}
 @media(max-width:560px){.standaloneSecurity{margin-top:48px}.legalCallout{padding:16px}}
+
+.lifetimePills.expiry-0 .lifetimeActivePill{transform:translateX(0)}
+.lifetimePills.expiry-1 .lifetimeActivePill{transform:translateX(100%)}
+.lifetimePills.expiry-2 .lifetimeActivePill{transform:translateX(200%)}
+.lifetimePills.expiry-3 .lifetimeActivePill{transform:translateX(300%)}
+.lifetimePills.expiry-4 .lifetimeActivePill{transform:translateX(400%)}
+.lifetimePills.expiry-5 .lifetimeActivePill{transform:translateX(500%)}
+.lifetimePills.expiry-6 .lifetimeActivePill{transform:translateX(600%)}
+.lifetimePills.expiry-7 .lifetimeActivePill{transform:translateX(700%)}
+.lifetimePills.expiry-8 .lifetimeActivePill{transform:translateX(800%)}
