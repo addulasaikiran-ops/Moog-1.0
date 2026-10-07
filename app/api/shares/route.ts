@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { isAllowedOrigin } from "@/lib/origin";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit, allowRateLimitCost } from "@/lib/rate-limit";
 import { generateShareCode, hashShareCode } from "@/lib/share-code";
