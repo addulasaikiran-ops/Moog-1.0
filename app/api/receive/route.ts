@@ -18,12 +18,13 @@ const NORMALIZED_CODE_RE = new RegExp("^MG[" + SHARE_CODE_ALPHABET + "]{8}$");
 function response(body: Record<string, unknown>, status: number) {
   return NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
 }
+
 async function failure(reason: "not_found" | "expired" | "revoked") {
   await new Promise((resolve) => setTimeout(resolve, FAILURE_DELAY_MS));
   return response({ error: "Share unavailable.", reason }, 404);
 }
 
-export async function POST(request: Request) {\n  const expectedOrigin = new URL(request.url).origin;\n  const origin = request.headers.get("origin");\n  if (origin && origin !== expectedOrigin) return NextResponse.json({ error: "Forbidden." }, { status: 403, headers: { "Cache-Control": "no-store" } });
+export async function POST(request: Request) {
   const expectedOrigin = new URL(request.url).origin;
   const origin = request.headers.get("origin");
   if (origin && origin !== expectedOrigin) return response({ error: "Forbidden" }, 403);
@@ -34,11 +35,15 @@ export async function POST(request: Request) {\n  const expectedOrigin = new URL
   }
 
   const contentLength = Number(request.headers.get("content-length") ?? "0");
-  if (Number.isFinite(contentLength) && contentLength > MAX_BODY) return response({ error: "Invalid request." }, 400);
+  if (Number.isFinite(contentLength) && contentLength > MAX_BODY) {
+    return response({ error: "Invalid request." }, 400);
+  }
 
   let code = "";
   try {
-    const body = (await request.json()) as { code?: unknown };
+    const rawBody = await request.text();
+    if (new TextEncoder().encode(rawBody).byteLength > MAX_BODY) return response({ error: "Invalid request." }, 400);
+    const body = JSON.parse(rawBody) as { code?: unknown };
     code = typeof body.code === "string" ? body.code : "";
   } catch {
     return response({ error: "Invalid request." }, 400);
@@ -66,16 +71,12 @@ export async function POST(request: Request) {\n  const expectedOrigin = new URL
     if (!failures) return response({ error: "Too many attempts, try again later" }, 429);
     return failure("not_found");
   }
+
   const state = getReceiveState(share);
-  if (state === "revoked") {
+  if (state === "revoked" || state === "expired") {
     const failures = await allowRateLimit("receive-fail:" + clientKey, FAILURE_LIMIT, FAILURE_WINDOW_MS);
     if (!failures) return response({ error: "Too many attempts, try again later" }, 429);
-    return failure("revoked");
-  }
-  if (state === "expired") {
-    const failures = await allowRateLimit("receive-fail:" + clientKey, FAILURE_LIMIT, FAILURE_WINDOW_MS);
-    if (!failures) return response({ error: "Too many attempts, try again later" }, 429);
-    return failure("expired");
+    return failure(state);
   }
 
   return response({ token: deriveShareToken(share.id) }, 200);
