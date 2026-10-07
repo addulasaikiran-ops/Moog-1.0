@@ -83,6 +83,7 @@ export default function HomePage() {
   const [receiveLoading, setReceiveLoading] = useState(false);
   const [receiveError, setReceiveError] = useState("");
   const [recentShares, setRecentShares] = useState<RecentShare[]>([]);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
@@ -410,7 +411,7 @@ export default function HomePage() {
                     if (image) { event.preventDefault(); handleFile(image); }
                   }}
                 >
-                  {previewUrl ? <img src={previewUrl} alt="Selected preview" /> : <div className="photoDrop"><strong>Drop an image here</strong><span>or choose a file below</span></div>}
+                  {previewUrl ? <img src={previewUrl} alt="Selected preview" /> : <div className="photoDrop"><div className="photoDropIcon" aria-hidden="true">+</div><strong>Drop an image here</strong><span>or choose a photo</span><small>JPG / PNG / GIF / WebP · up to 10 MB</small></div>}
                   <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={(event) => handleFile(event.target.files?.[0] ?? null)} />
                   <button className="copy" type="button" onClick={() => fileInputRef.current?.click()}>Choose image</button>
                 </div>
@@ -503,7 +504,19 @@ export default function HomePage() {
           <div className="facts" aria-label="Moog facts"><span>◷ 1 min to 24 hours</span><span>⌁ Optional access key</span><span>◉ View once</span><span>▧ Photos up to 10 MB</span><span>◎ No accounts</span></div>
           <p className="screenshotNote">Moog controls access, not copies. A screenshot cannot be taken back.</p>
           <section className="securitySection"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Private by default.</h3><p>Tokens and unique codes are stored as hashes. Expired and revoked shares are rejected by the server, and open viewers detect revocation within seconds. Moog cannot prevent screenshots or copies.</p></section>
-          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3><details><summary>Do I need an account?</summary><p>No. Sending and receiving are both account-free.</p></details><details><summary>How long do shares stay alive?</summary><p>Choose from 1 minute to 24 hours when you create a share.</p></details><details><summary>Can I revoke a share early?</summary><p>Yes. Keep the private revoke link shown after creation and use it while the share is active.</p></details><details><summary>Can someone copy what I shared?</summary><p>Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back.</p></details><details><summary>What can I share?</summary><p>Text, supported code formats, and JPG, PNG, GIF, or WebP photos up to 10 MB.</p></details></section>
+          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3>
+            {[
+              ["Do I need an account?", "No. Sending and receiving are both account-free."],
+              ["How long do shares stay alive?", "Choose from 1 minute to 24 hours when you create a share."],
+              ["Can I revoke a share early?", "Yes. Keep the private revoke link shown after creation and use it while the share is active."],
+              ["Can someone copy what I shared?", "Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back."],
+              ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP photos up to 10 MB."],
+            ].map(([question, answer], index) => (
+              <details key={question} open={openFaq === index}>
+                <summary onClick={(event) => { event.preventDefault(); setOpenFaq(openFaq === index ? null : index); }}>{question}</summary>
+                <p>{answer}</p>
+              </details>
+            ))}</section>
         </section>
 
         <footer className="siteFooter"><div className="footerBrand"><strong>moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a></nav><div className="footerLegal">moog 1.0 · © 2026</div></footer>
