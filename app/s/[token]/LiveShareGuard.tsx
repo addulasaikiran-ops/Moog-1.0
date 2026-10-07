@@ -85,7 +85,7 @@ export default function LiveShareGuard({
             <div className="viewerEyebrow">LINK REVOKED</div>
             <h1>This share is no longer available.</h1>
             <p>The creator revoked this link, or its expiry time has passed.</p>
-            <div className="lockNote">Private, temporary sharing · No account required</div>
+            <div className="lockNote">Temporary sharing · No account required</div>
           </section>
         </div>
       </main>
