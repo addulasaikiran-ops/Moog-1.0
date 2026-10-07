@@ -54,7 +54,7 @@ export async function POST(request: Request) {
       password = typeof form.get("password") === "string" ? String(form.get("password")) : "";
       viewOnce = form.get("viewOnce") === "true"; minutes = getExpiry(form.get("expiryMinutes")); language = "photo";
     } else {
-      const body = (await request.json()) as { text?: unknown; expiryMinutes?: unknown; password?: unknown; viewOnce?: unknown; language?: unknown };
+      const rawBody = await request.text();\n      if (new TextEncoder().encode(rawBody).byteLength > MAX_JSON_BODY) return NextResponse.json({ error: "Request is too large." }, { status: 413 });\n      const body = JSON.parse(rawBody) as { text?: unknown; expiryMinutes?: unknown; password?: unknown; viewOnce?: unknown; language?: unknown };
       if (typeof body.text !== "string" || !body.text.trim()) return NextResponse.json({ error: "Text cannot be empty." }, { status: 400 });
       if (body.text.length > 100000) return NextResponse.json({ error: "Text is too long." }, { status: 413 });
       language = typeof body.language === "string" && LANGUAGE_OPTIONS.has(body.language) ? body.language : "text";
@@ -101,7 +101,7 @@ export async function POST(request: Request) {
       expiresAt: expiresAt.toISOString(),
     }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
-    console.error("Failed to create share:", error);
+    console.error("Failed to create share.");
     return NextResponse.json({ error: "Could not create link." }, { status: 500 });
   }
 }
