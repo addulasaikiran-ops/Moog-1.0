@@ -33,6 +33,9 @@ function isUniqueConstraint(error: unknown): boolean {
 }
 
 export async function POST(request: Request) {
+  const expectedOrigin = new URL(request.url).origin;
+  const origin = request.headers.get("origin");
+  if (origin !== expectedOrigin) return NextResponse.json({ error: "Forbidden." }, { status: 403, headers: { "Cache-Control": "no-store" } });
   try {
     const isMultipart = (request.headers.get("content-type") ?? "").includes("multipart/form-data");
     if (bodyTooLarge(request, isMultipart ? MAX_MULTIPART_BODY : MAX_JSON_BODY)) return NextResponse.json({ error: "Request is too large." }, { status: 413 });
