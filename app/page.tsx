@@ -455,7 +455,8 @@ export default function HomePage() {
         <section className="features" aria-label="How Moog works">
           <div><span>01</span><strong>Paste</strong><small>Drop in text or code without an account.</small></div>
           <div><span>02</span><strong>Share</strong><small>Send one private link or unique code.</small></div>
-          <div><span>03</span><strong>Disappear</strong><small>The link expires on the timer you choose.</small></div>
+          <div><span>03</span><strong>Revoke</strong><small>Revoke anytime. Keep your private revoke link to end a share early.</small></div>
+          <div><span>04</span><strong>Disappear</strong><small>The link expires on the timer you choose.</small></div>
         </section>
 
         <section className="howMoog" id="about-moog" aria-labelledby="about-moog-title">
