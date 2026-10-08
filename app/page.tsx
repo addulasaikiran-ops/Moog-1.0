@@ -37,11 +37,7 @@ type Mode = "text" | "code" | "photo";
 type RecentShare = { type: Mode; createdAt: string; expiresAt: string };
 
 function formatReceiveCode(value: string): string {
-  const raw = value.toUpperCase().replace(/[\s-]/g, "").slice(0, 10);
-  if (!raw.startsWith("MG") && raw.length) return raw;
-  const body = raw.slice(2, 10);
-  if (!body) return "MG";
-  return `MG-${body.slice(0, 4)}${body.length > 4 ? `-${body.slice(4, 8)}` : ""}`;
+  return value.replace(/\D/g, "").slice(0, 6);
 }
 
 function formatCountdown(ms: number): string {
@@ -55,7 +51,7 @@ function formatCountdown(ms: number): string {
 }
 
 function isValidCode(value: string): boolean {
-  return /^MG-[A-HJ-MNP-Z2-9]{4}-[A-HJ-MNP-Z2-9]{4}$/.test(value);
+  return /^\d{6}$/.test(value);
 }
 
 export default function HomePage() {
@@ -200,7 +196,7 @@ export default function HomePage() {
     setReceiveError("");
     const normalized = formatReceiveCode(receiveCode);
     if (!isValidCode(normalized)) {
-      setReceiveError("Enter a valid Moog code like MG-7K4Q-92XF.");
+      setReceiveError("Enter the 6-digit share code.");
       return;
     }
 
@@ -237,13 +233,13 @@ export default function HomePage() {
       <div className="shell">
         <header className="topbar">
           <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">●</span><span>Moog</span></a>
-          <nav className="topNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a className="headerCreate" href="#composer">Create link</a></nav>
+          <nav className="topNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a className="headerCreate" href="#composer">Create share</a></nav>
         </header>
 
         <section className="hero">
-          <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · NO ACCOUNT</div>
-          <h1>Share privately.<br /><span>Let it disappear.</span></h1>
-          <p className="heroCopy">Share text, code, or images with a private link.<br />No account required. Set an expiry time, add an access key if you want, and keep control.</p>
+          <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · SIMPLE</div>
+          <h1>Create a private share.<br /><span>Let it disappear.</span></h1>
+          <p className="heroCopy">A simple, temporary way to share private text, code, or images.<br />No account. No clutter. Set an expiry and share.</p>
           <div className="heroBenefits" aria-label="Key benefits">
             <div><i className="heroBenefitIcon heroBenefitPurple">●</i><span><strong>No account</strong><small>required</small></span></div>
             <div><i className="heroBenefitIcon heroBenefitBlue">◷</i><span><strong>Automatic</strong><small>expiry</small></span></div>
@@ -339,8 +335,8 @@ export default function HomePage() {
             <div className="receiveHeader"><span className="receiveGlyph" aria-hidden="true">↓</span><div><h2 id="receive-title">Receive</h2><p>Got a code from someone? Paste it here to open what they shared. No account needed.</p></div></div>
             <form onSubmit={receiveShare}>
               <label className="receiveLabel" htmlFor="receive-code">Unique code</label>
-              <input id="receive-code" className="receiveInput" value={receiveCode} onChange={(event) => { setReceiveCode(formatReceiveCode(event.target.value)); setReceiveError(""); }} placeholder="MG-7K4Q-92XF" inputMode="text" autoCapitalize="characters" autoComplete="off" spellCheck={false} aria-describedby="receive-help" />
-              <p id="receive-help" className="receiveHint">Codes can be pasted with or without dashes or spaces.</p>
+              <input id="receive-code" className="receiveInput" value={receiveCode} onChange={(event) => { setReceiveCode(formatReceiveCode(event.target.value)); setReceiveError(""); }} placeholder="000000" inputMode="numeric" pattern="[0-9]*" autoComplete="off" spellCheck={false} aria-describedby="receive-help" />
+              <p id="receive-help" className="receiveHint">Six numbers. If the share is protected, you’ll also enter its password.</p>
               {receiveError ? <p className="receiveError" role="alert">{receiveError}</p> : null}
               <button className="receiveOpen primary" type="submit" disabled={!receiveCode || receiveLoading}>{receiveLoading ? <><span className="spinner" /> Opening share…</> : <>Open share <span>→</span></>}</button>
             </form>
@@ -352,12 +348,12 @@ export default function HomePage() {
           <section className="result resultExpanded" aria-live="polite" aria-labelledby="share-ready-title">
             <div className="resultSuccessRow">
               <div className="resultIcon" aria-hidden="true">✓</div>
-              <div><div className="resultLabel">SHARE CREATED</div><h2 id="share-ready-title">Your private link is ready.</h2><p>Send this link or the unique code to the person you trust. No account is needed.</p></div>
+              <div><div className="resultLabel">SHARE CREATED</div><h2 id="share-ready-title">Ready to share.</h2><p>Use either the private link or the 6-digit code.</p></div>
             </div>
             <div className="resultBody">
               <div className="resultFieldLabel">PRIVATE LINK</div>
               <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
-              <div className="uniqueCodeBox"><div><span>Share code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
+              <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
               <div className="resultMetaGrid" aria-label="Share details"><div><span>EXPIRES</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{accessKey ? "Password protected" : "Link only"}</strong></div><div><span>VIEWING</span><strong>{viewOnce ? "View once" : "Until expiry"}</strong></div></div>
               <p className="resultNote">Keep the link private. Anyone who has it can attempt to open the share.</p>
               <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{copied ? `${copied === "link" ? "Private link" : "Share code"} copied to clipboard.` : "Ready to share."}</span><button className="resultNewButton" type="button" onClick={() => { setUrl(""); setCode(""); setExpiresAt(""); setError(""); window.scrollTo({ top: document.getElementById("composer")?.offsetTop ?? 0, behavior: "smooth" }); }}>Create another</button></div>
