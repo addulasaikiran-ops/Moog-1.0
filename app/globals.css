@@ -1996,3 +1996,190 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
   .refSpinner{animation:none}
   .refFaq summary span{transition:none}
 }
+
+
+/* Supplied-reference light UI skin. Keeps the existing Moog interactions and API flow intact. */
+.page:not(.refPage){
+  --bg:#f3f4f6;
+  --panel:#fff;
+  --text:#212529;
+  --muted:#495057;
+  --line:#d5d9de;
+  --accent:#2b6cb0;
+  --accent-ink:#fff;
+  min-height:100vh;
+  padding:0 0 40px;
+  overflow-x:hidden;
+  background:#f3f4f6;
+  color:#212529;
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+.page:not(.refPage) .ambient{display:none}
+.page:not(.refPage) .shell{width:min(1140px,100%);margin:0 auto;padding:0 24px}
+.page:not(.refPage) .topbar{
+  position:sticky;top:0;z-index:20;margin:0 -24px;padding:0 24px;min-height:60px;
+  background:#2b3036;border-bottom:1px solid #1f2327;
+}
+.page:not(.refPage) .topbar .logo{color:#fff;text-decoration:none;font-size:20px}
+.page:not(.refPage) .logoLock{width:32px;height:32px;border-radius:6px;background:#2b6cb0;color:#fff}
+.page:not(.refPage) .topNav{gap:4px 20px}
+.page:not(.refPage) .topNav>a{color:#d5dadf;font-size:15px;text-decoration:none}
+.page:not(.refPage) .topNav>a:hover{color:#fff}
+.page:not(.refPage) .headerCreate{padding:8px 16px;border-radius:6px;background:#2b6cb0!important;color:#fff!important}
+.page:not(.refPage) .hero{
+  width:46%;max-width:none;margin:0;padding:56px 0 26px;text-align:left;
+  position:relative;z-index:2;
+}
+.page:not(.refPage) .heroBadge{
+  margin:0;padding:5px 12px;border-radius:4px;background:#e7f0fa;border:1px solid #c5daf0;color:#235a93;
+  font-size:12px;letter-spacing:.1em;
+}
+.page:not(.refPage) .hero h1{
+  margin-top:20px;font-size:clamp(40px,5.5vw,58px);line-height:1.05;letter-spacing:-.03em;color:#212529;
+}
+.page:not(.refPage) .hero h1 span{color:#2b6cb0}
+.page:not(.refPage) .heroCopy{max-width:510px;margin:20px 0 0;color:#495057;font-size:18px;line-height:1.55}
+.page:not(.refPage) .heroBenefits{display:grid;gap:12px;margin-top:26px}
+.page:not(.refPage) .heroBenefits>div{display:flex;align-items:center;gap:10px;color:#212529}
+.page:not(.refPage) .heroBenefitIcon{width:32px;height:32px;border-radius:6px!important;background:#fff!important;border:1px solid #d5d9de;color:#2b6cb0!important}
+.page:not(.refPage) .heroBenefits strong{font-size:15px}.page:not(.refPage) .heroBenefits small{display:none}
+.page:not(.refPage) .heroVisual{position:absolute;right:2%;top:92px;width:45%;height:230px;opacity:.95}
+.page:not(.refPage) .visualGlow{background:radial-gradient(circle,rgba(43,108,176,.14),transparent 62%);filter:blur(18px)}
+.page:not(.refPage) .visualPanel{border-color:#d5d9de;background:#fff;box-shadow:0 14px 34px rgba(16,24,40,.10)}
+.page:not(.refPage) .visualPanelBack span{background:#b9c1ca;box-shadow:0 15px #c7cdd3,0 30px #d2d7dc,0 45px #e0e3e6,0 60px #c7cdd3}
+.page:not(.refPage) .visualPanelMain{box-shadow:0 14px 34px rgba(16,24,40,.12)}
+.page:not(.refPage) .visualCode span{background:#91a4b8}
+.page:not(.refPage) .visualPhoto{background:linear-gradient(145deg,#e7edf3,#b9c8d4 42%,#d8c19a 43%,#7189a0)}
+.page:not(.refPage) .visualLock{background:#2b6cb0;box-shadow:none;border-color:#fff}
+.page:not(.refPage) .visualExpiry{border-color:#2b6cb0;background:#fff;color:#212529;box-shadow:0 10px 25px rgba(16,24,40,.12)}
+.page:not(.refPage) .visualExpiry b{color:#2b6cb0}
+
+.page:not(.refPage) .composer{
+  width:52%;margin-left:48%;margin-top:-300px;padding:20px 22px;
+  border:1px solid #d5d9de;border-radius:8px;background:#fff;
+  box-shadow:0 1px 2px rgba(16,24,40,.06);backdrop-filter:none;
+}
+.page:not(.refPage) .composerTop{display:none}
+.page:not(.refPage) .modeToggle{margin:0 0 14px;gap:0;border-bottom:1px solid #d5d9de}
+.page:not(.refPage) .modeButton{
+  flex:1;min-height:46px;padding:0 14px;border:0;border-bottom:3px solid transparent;margin-bottom:-1px;
+  border-radius:0;background:transparent;color:#66707a;font-size:14px;font-weight:600;
+}
+.page:not(.refPage) .modeButton.active{background:transparent;border-color:#2b6cb0;color:#235a93;box-shadow:none}
+.page:not(.refPage) textarea{
+  min-height:190px;margin:0;padding:12px 14px;border:1px solid #bfc5cc;border-radius:6px;
+  background:#fff;color:#212529;font-size:14.5px;line-height:1.55;
+}
+.page:not(.refPage) textarea::placeholder{color:#7a828a}
+.page:not(.refPage) .codeSelectRow{margin:14px 0 0}
+.page:not(.refPage) .codeSelectRow label{display:block;margin-bottom:6px;color:#66707a;font-size:13px;font-weight:700}
+.page:not(.refPage) .codeSelectRow select{width:100%;min-height:46px;border:1px solid #bfc5cc;border-radius:6px;background:#fff;color:#212529}
+.page:not(.refPage) .lifetimeSection{margin-top:16px}
+.page:not(.refPage) .lifetimeHeader{margin-bottom:7px}
+.page:not(.refPage) .lifetimeHeader span{font-size:13px;color:#66707a;font-weight:700}
+.page:not(.refPage) .lifetimePills{display:flex;flex-wrap:wrap;gap:6px}
+.page:not(.refPage) .lifetimePill{
+  min-height:40px;padding:0 12px;border:1px solid #bfc5cc;border-radius:6px;
+  background:#f8f9fa;color:#495057;font-size:13px;font-weight:500;box-shadow:none;
+}
+.page:not(.refPage) .lifetimePill.active{background:#2b6cb0;border-color:#2b6cb0;color:#fff}
+.page:not(.refPage) .lifetimeActivePill{display:none}
+.page:not(.refPage) .securityBar{margin-top:18px;border-top:1px solid #d5d9de}
+.page:not(.refPage) .securityDisclosure{padding:11px 0 5px;color:#212529}
+.page:not(.refPage) .securityDisclosure .securityDot{background:#2b6cb0;box-shadow:none}
+.page:not(.refPage) .securityDisclosure small{color:#66707a}
+.page:not(.refPage) .securityOptions{grid-template-columns:1.3fr 1fr;gap:12px}
+.page:not(.refPage) .optionField,.page:not(.refPage) .checkField{color:#495057}
+.page:not(.refPage) .secretInput input,.page:not(.refPage) .codeSelectRow select{background:#fff;border-color:#bfc5cc;color:#212529}
+.page:not(.refPage) .createButton{
+  min-height:52px;margin-top:20px;border-radius:6px;background:#2b6cb0;color:#fff;
+  box-shadow:none;font-size:17px
+}
+.page:not(.refPage) .createButton:hover:not(:disabled){background:#235a93;transform:none}
+.page:not(.refPage) .composerTrust{color:#66707a;font-size:13px}
+.page:not(.refPage) .result{
+  width:52%;margin:18px 0 0 auto;padding:16px;border:1px solid #b7dfc4;border-radius:6px;
+  background:#eaf6ee;box-shadow:none
+}
+.page:not(.refPage) .resultIcon{background:#2e9e5b;color:#fff;box-shadow:none}
+.page:not(.refPage) .resultLabel{color:#1e6b3a;font-size:13px;letter-spacing:.08em}
+.page:not(.refPage) .resultLinkRow a,.page:not(.refPage) .uniqueCodeBox,.page:not(.refPage) .revokeLinkRow{background:#fff;border-color:#d5d9de}
+.page:not(.refPage) .resultLinkRow a{color:#495057}
+.page:not(.refPage) .resultLinkRow .copy,.page:not(.refPage) .uniqueCodeBox .copy,.page:not(.refPage) .revokeLinkRow .copy{background:#f8f9fa;border-color:#bfc5cc;color:#495057;border-radius:5px}
+.page:not(.refPage) .revokeNow{background:#b42318;border-color:#b42318;border-radius:5px;padding:8px 12px}
+.page:not(.refPage) .productFeatures{
+  clear:both;width:100%;margin:34px auto 0;display:grid;grid-template-columns:repeat(4,1fr);gap:16px
+}
+.page:not(.refPage) .featureCard{
+  min-height:126px;padding:22px;border:1px solid #d5d9de;border-radius:8px;
+  background:#fff;box-shadow:0 1px 2px rgba(16,24,40,.04)
+}
+.page:not(.refPage) .featureCard i{width:42px;height:42px;border-radius:6px;background:#e7f0fa!important;color:#2b6cb0!important;box-shadow:none!important}
+.page:not(.refPage) .featureCard strong{color:#212529;font-size:18px;font-weight:600}
+.page:not(.refPage) .featureCard small{color:#495057;font-size:14px}
+.page:not(.refPage) .referenceHow{margin-top:70px;padding-top:0}
+.page:not(.refPage) .referenceHow .howIntro .eyebrow{color:#2b6cb0}
+.page:not(.refPage) .referenceHow .howIntro h2,.page:not(.refPage) .useIntro h2,.page:not(.refPage) .sectionHeading h2{color:#212529}
+.page:not(.refPage) .referenceHow .howIntro p,.page:not(.refPage) .useIntro p,.page:not(.refPage) .sectionHeading p{color:#495057}
+.page:not(.refPage) .howSteps{margin-top:28px}
+.page:not(.refPage) .howSteps>div{border:1px solid #d5d9de;border-radius:8px;background:#fff;padding:18px 12px}
+.page:not(.refPage) .howSteps>b{display:none}
+.page:not(.refPage) .howSteps>span{color:#2b6cb0}
+.page:not(.refPage) .howSteps b{background:#e7f0fa!important;color:#235a93!important;box-shadow:none!important}
+.page:not(.refPage) .howSteps strong{color:#212529}
+.page:not(.refPage) .howSteps small{color:#495057}
+.page:not(.refPage) .useMoog{margin-top:70px}
+.page:not(.refPage) .useGrid{gap:16px}
+.page:not(.refPage) .useGrid>div{border:1px solid #d5d9de;border-radius:8px;background:#fff}
+.page:not(.refPage) .useGrid i{background:#e7f0fa!important;color:#2b6cb0!important;box-shadow:none!important}
+.page:not(.refPage) .useGrid strong{color:#212529}.page:not(.refPage) .useGrid small{color:#495057}
+.page:not(.refPage) .securityReference{margin-top:70px}
+.page:not(.refPage) .securityGrid{gap:16px}
+.page:not(.refPage) .securityGrid>div{min-height:150px;border:1px solid #d5d9de;border-radius:8px;background:#fff}
+.page:not(.refPage) .securityIcon{background:#e7f0fa!important;color:#2b6cb0!important;box-shadow:none!important}
+.page:not(.refPage) .securityGrid strong{color:#212529}.page:not(.refPage) .securityGrid small{color:#495057}
+.page:not(.refPage) .securityDisclosureText{color:#66707a}
+.page:not(.refPage) .faqArea{margin-top:70px}
+.page:not(.refPage) .faq{gap:8px}
+.page:not(.refPage) .faq details{border:1px solid #d5d9de;border-radius:6px;background:#fff}
+.page:not(.refPage) .faq summary{color:#212529}
+.page:not(.refPage) .faq details p{color:#495057}
+.page:not(.refPage) .contactCard{border:1px solid #c5daf0;border-radius:8px;background:#e7f0fa}
+.page:not(.refPage) .contactIcon{background:#fff;color:#2b6cb0}
+.page:not(.refPage) .contactCard h3{color:#212529}.page:not(.refPage) .contactCard p{color:#495057}
+.page:not(.refPage) .contactCard a{background:#2b6cb0}.page:not(.refPage) .contactCard a:hover{background:#235a93}
+.page:not(.refPage) .siteFooter{margin-top:70px;border-top:0;background:#2b3036;color:#d5dadf}
+.page:not(.refPage) .footerBrand strong{color:#fff}.page:not(.refPage) .footerBrand span,.page:not(.refPage) .footerLinks a{color:#d5dadf}
+.page:not(.refPage) .footerLegal{color:#b6bdc4}
+
+@media(max-width:900px){
+  .page:not(.refPage) .hero{width:100%;text-align:center;padding-top:38px}
+  .page:not(.refPage) .heroCopy{margin-left:auto;margin-right:auto}
+  .page:not(.refPage) .heroVisual{display:none}
+  .page:not(.refPage) .composer{width:100%;margin:0}
+  .page:not(.refPage) .result{width:100%}
+}
+@media(max-width:680px){
+  .page:not(.refPage) .shell{padding:0 16px}
+  .page:not(.refPage) .topbar{margin:0 -16px;padding:0 16px}
+  .page:not(.refPage) .topNav{gap:10px}
+  .page:not(.refPage) .topNav>a:not(.headerCreate){display:none}
+  .page:not(.refPage) .hero{padding-top:30px;text-align:left}
+  .page:not(.refPage) .hero h1{font-size:42px}
+  .page:not(.refPage) .heroCopy{font-size:16px}
+  .page:not(.refPage) .heroBenefits{gap:10px}
+  .page:not(.refPage) .lifetimePills{display:grid;grid-template-columns:repeat(3,1fr)}
+  .page:not(.refPage) .securityOptions{grid-template-columns:1fr}
+  .page:not(.refPage) .productFeatures,.page:not(.refPage) .securityGrid{grid-template-columns:1fr 1fr}
+  .page:not(.refPage) .useGrid{grid-template-columns:1fr}
+  .page:not(.refPage) .howSteps{grid-template-columns:1fr 1fr}
+  .page:not(.refPage) .howSteps>span{display:none}
+  .page:not(.refPage) .faqArea{grid-template-columns:1fr}
+  .page:not(.refPage) .siteFooter{padding-left:16px;padding-right:16px}
+}
+@media(max-width:440px){
+  .page:not(.refPage) .hero h1{font-size:38px}
+  .page:not(.refPage) .heroBenefits{display:grid}
+  .page:not(.refPage) .productFeatures,.page:not(.refPage) .securityGrid{grid-template-columns:1fr}
+  .page:not(.refPage) .lifetimePills{grid-template-columns:repeat(3,1fr)}
+}
