@@ -17,5 +17,5 @@ export const metadata: Metadata = {
 const structuredData = { "@context": "https://schema.org", "@type": "WebSite", name: "Moog", url: siteUrl, description: "Temporary access-controlled sharing for text, code, and photos." };
 export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const nonce = (await headers()).get("x-nonce") ?? undefined;
-  return <html lang="en"><head><meta name="google-site-verification" content="faNn5oeght5riOAmDiyfA_ki0nCNh6xq2flmzaJ_K7A" /><script nonce={nonce} async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-854551842374792" crossOrigin="anonymous"></script><script nonce={nonce} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></head><body>{children}</body></html>;
+  return <html lang="en"><head><meta name="google-site-verification" content="faNn5oeght5riOAmDiyfA_ki0nCNh6xq2flmzaJ_K7A" /><meta name="google-adsense-account" content="ca-pub-854551842374792" /><script nonce={nonce} async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-854551842374792" crossOrigin="anonymous"></script><script nonce={nonce} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} /></head><body>{children}</body></html>;
 }
