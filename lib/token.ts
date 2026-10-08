@@ -10,7 +10,7 @@ export function hashSecret(value: string): string {
   return bcrypt.hashSync(value, 12);
 }
 export function verifySecret(value: string, stored: string): boolean {
-  if (/^\\$2[aby]\\$/.test(stored)) return bcrypt.compareSync(value, stored);
+  if (/^\$2[aby]\$/.test(stored)) return bcrypt.compareSync(value, stored);
   const [scheme, salt, digest] = stored.split(":");
   if (scheme !== "scrypt" || !salt || !digest) return false;
   const actual = scryptSync(value, salt, 32);
