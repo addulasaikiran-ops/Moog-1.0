@@ -405,6 +405,10 @@ export default function HomePage() {
           <div className="visualExpiry"><b>◷</b><span>Link expires<br /><strong>in 15 minutes</strong></span></div>
         </div>
 
+        <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
+          <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
+          <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("receive")}>Receive</button>
+        </div>
         {tab === "send" ? (
           <section className="composer card" id="composer" aria-labelledby="send-title">
             <div className="srOnly" id="send-title">Send a share</div>
