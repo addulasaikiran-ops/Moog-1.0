@@ -1421,3 +1421,34 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
 .lifetimePills.expiry-8 .lifetimeActivePill{transform:translateX(800%)}
 
 .revokeForm{margin-top:16px}.revokeButton{width:100%}
+
+
+/* Homepage clarity layer */
+.heroTrust{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  margin-top:22px;color:#dfe4da;font-size:13px;
+}
+.heroTrust span{color:var(--accent);font-weight:800}
+.heroTrust strong{font-weight:700}
+.expiryHighlight{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  margin-top:13px;padding:11px 14px;width:max-content;max-width:100%;
+  border:1px solid rgba(200,255,61,.14);border-radius:12px;
+  background:rgba(200,255,61,.035);color:#7f8792;font-size:11px;
+}
+.expiryHighlight strong{color:#dce2d8;font-weight:700}
+.createButton{
+  min-height:56px;font-weight:800;
+  box-shadow:0 12px 34px rgba(200,255,61,.10);
+}
+.resultLabel{color:var(--accent)}
+.resultLinkRow .copy{font-weight:800}
+.resultWarning{color:#c8ff3d;font-size:12px;line-height:1.5}
+.standalonePrivacy{margin-top:36px}
+.standalonePrivacy h3{font-size:clamp(26px,3vw,34px)}
+.standalonePrivacy p{max-width:760px}
+@media(max-width:560px){
+  .heroTrust{font-size:12px;gap:7px}
+  .expiryHighlight{width:100%;line-height:1.5}
+  .expiryHighlight strong{font-size:11px}
+}
