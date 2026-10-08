@@ -19,7 +19,7 @@ export async function POST(request: Request, { params }: Params) {
     return new NextResponse("Too many reveal attempts. Try again later.", { status: 429, headers: { "Cache-Control": "no-store" } });
   }
   const share = await prisma.share.findUnique({ where: { tokenHash } });
-  if (!share || share.revokedAt || !share.viewOnce || !share.viewedAt || share.expiresAt <= new Date()) {
+  if (!share || !share.viewOnce || !share.viewedAt || share.expiresAt <= new Date()) {
     return new NextResponse("Not found", { status: 404 });
   }
 
