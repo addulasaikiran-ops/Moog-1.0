@@ -20,7 +20,7 @@ function response(body: Record<string, unknown>, status: number) {
   return NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
 }
 
-async function failure(reason: "not_found" | "expired" | "revoked") {
+async function failure(reason: "not_found" | "expired") {
   await new Promise((resolve) => setTimeout(resolve, FAILURE_DELAY_MS));
   return response({ error: "Share unavailable.", reason }, 404);
 }
@@ -55,11 +55,11 @@ export async function POST(request: Request) {
     return failure("not_found");
   }
 
-  let share: { id: string; expiresAt: Date; revokedAt: Date | null } | null = null;
+  let share: { id: string; expiresAt: Date } | null = null;
   try {
     share = await prisma.share.findUnique({
       where: { codeHash: hashShareCode(normalized) },
-      select: { id: true, expiresAt: true, revokedAt: true },
+      select: { id: true, expiresAt: true },
     });
   } catch {
     return response({ error: "Could not process the code." }, 500);
@@ -72,7 +72,7 @@ export async function POST(request: Request) {
   }
 
   const state = getReceiveState(share);
-  if (state === "revoked" || state === "expired") {
+  if (state === "expired") {
     const failures = await allowRateLimit("receive-fail:" + clientKey, FAILURE_LIMIT, FAILURE_WINDOW_MS);
     if (!failures) return response({ error: "Too many attempts, try again later" }, 429);
     return failure(state);
