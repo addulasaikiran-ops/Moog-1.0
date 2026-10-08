@@ -413,7 +413,7 @@ export default function HomePage() {
         <section className="productFeatures" aria-label="Moog benefits">
           <div className="featureCard featurePurple"><i>▣</i><strong>Private by default</strong><small>Your content isn&apos;t publicly searchable. Only people with the link can access it.</small></div>
           <div className="featureCard featureBlue"><i>◷</i><strong>Automatic expiry</strong><small>Choose exactly how long it stays available.</small></div>
-          <div className="featureCard featureGreen"><i>✓</i><strong>Revoke anytime</strong><small>Delete access before the timer ends.</small></div>
+          
           <div className="featureCard featureOrange"><i>◉</i><strong>No account required</strong><small>Share instantly without creating another account.</small></div>
         </section>
 
