@@ -349,13 +349,18 @@ export default function HomePage() {
         )}
 
         {url ? (
-          <section className="result resultExpanded" aria-live="polite">
-            <div className="resultIcon">✓</div>
+          <section className="result resultExpanded" aria-live="polite" aria-labelledby="share-ready-title">
+            <div className="resultSuccessRow">
+              <div className="resultIcon" aria-hidden="true">✓</div>
+              <div><div className="resultLabel">SHARE CREATED</div><h2 id="share-ready-title">Your private link is ready.</h2><p>Send this link or the unique code to the person you trust. No account is needed.</p></div>
+            </div>
             <div className="resultBody">
-              <div className="resultLabel">YOUR PRIVATE LINK IS READY</div>
-              <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
-              <div className="uniqueCodeBox"><div><span>Unique code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
-              <p className="resultNote">Your link is ready. It will automatically expire when the timer ends.</p><div className="resultBottom"><span className="expiryStatus"><b>Expires in</b> {remaining > 0 ? formatCountdown(remaining) : "0s"}{viewOnce ? (viewed ? " · viewed" : " · not viewed yet") : ""}{accessKey ? " · protected" : ""}</span></div>
+              <div className="resultFieldLabel">PRIVATE LINK</div>
+              <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
+              <div className="uniqueCodeBox"><div><span>Share code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
+              <div className="resultMetaGrid" aria-label="Share details"><div><span>EXPIRES</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{accessKey ? "Password protected" : "Link only"}</strong></div><div><span>VIEWING</span><strong>{viewOnce ? "View once" : "Until expiry"}</strong></div></div>
+              <p className="resultNote">Keep the link private. Anyone who has it can attempt to open the share.</p>
+              <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{copied ? `${copied === "link" ? "Private link" : "Share code"} copied to clipboard.` : "Ready to share."}</span><button className="resultNewButton" type="button" onClick={() => { setUrl(""); setCode(""); setExpiresAt(""); setError(""); window.scrollTo({ top: document.getElementById("composer")?.offsetTop ?? 0, behavior: "smooth" }); }}>Create another</button></div>
             </div>
           </section>
         ) : null}
