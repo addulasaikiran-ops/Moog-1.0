@@ -16,7 +16,6 @@ model Share {
   language        String    @default("text")
   tokenHash       String    @unique
   codeHash        String?   @unique
-  revokeTokenHash String?   @unique
   imageData       Bytes?
   imageMime       String?
   imageName       String?
@@ -25,12 +24,10 @@ model Share {
   viewedAt        DateTime?
   revealTokenHash String?   @unique
   rConsumedAt     DateTime?
-  revokedAt       DateTime?
   createdAt       DateTime  @default(now())
   expiresAt       DateTime
   @@index([expiresAt])
   @@index([viewOnce, viewedAt])
-  @@index([revokedAt])
 }
 
 model AbuseReport {
