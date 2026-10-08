@@ -48,7 +48,7 @@ export default function LiveShareGuard({
       }
     };
 
-    // Check immediately so revocation is detected without waiting for the first interval.
+    // Check immediately so expiry is detected without waiting for the first interval.
     void check();
 
     const onVisibilityChange = () => {
@@ -82,9 +82,9 @@ export default function LiveShareGuard({
           </header>
           <section className="lockStage">
             <div className="lockIcon">SHARE UNAVAILABLE</div>
-            <div className="viewerEyebrow">LINK REVOKED</div>
+            <div className="viewerEyebrow">SHARE EXPIRED</div>
             <h1>This share is no longer available.</h1>
-            <p>The creator revoked this link, or its expiry time has passed.</p>
+            <p>This temporary share has reached its expiry time and is no longer available.</p>
             <div className="lockNote">Temporary sharing · No account required</div>
           </section>
         </div>
