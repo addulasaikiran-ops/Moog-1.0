@@ -82,49 +82,8 @@ export default function HomePage() {
   const [receiveCode, setReceiveCode] = useState("");
   const [receiveLoading, setReceiveLoading] = useState(false);
   const [receiveError, setReceiveError] = useState("");
-  const [recentShares, setRecentShares] = useState<RecentShare[]>([]);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-
-  useEffect(() => {
-    try {
-      const stored = JSON.parse(window.localStorage.getItem("moog_recent_shares") ?? "[]") as unknown;
-      if (Array.isArray(stored)) {
-        const now = Date.now();
-        const valid = stored.filter((entry): entry is RecentShare => {
-          if (!entry || typeof entry !== "object") return false;
-          const item = entry as Partial<RecentShare>;
-          return (item.type === "text" || item.type === "code" || item.type === "photo") &&
-            typeof item.createdAt === "string" &&
-            typeof item.expiresAt === "string" &&
-            new Date(item.expiresAt).getTime() > now;
-        });
-        setRecentShares(valid);
-        window.localStorage.setItem("moog_recent_shares", JSON.stringify(valid));
-      }
-    } catch {
-      setRecentShares([]);
-    }
-
-    const value = new URLSearchParams(window.location.search).get("tab");
-    if (value === "receive") setTab("receive");
-    const onPopState = () => setTab(new URLSearchParams(window.location.search).get("tab") === "receive" ? "receive" : "send");
-    window.addEventListener("popstate", onPopState);
-    return () => window.removeEventListener("popstate", onPopState);
-  }, []);
-
-  useEffect(() => {
-    const prune = () => {
-      setRecentShares((current) => {
-        const valid = current.filter((item) => new Date(item.expiresAt).getTime() > Date.now());
-        try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(valid)); } catch {}
-        return valid;
-      });
-    };
-    prune();
-    const interval = window.setInterval(prune, 60_000);
-    return () => window.clearInterval(interval);
-  }, []);
 
   useEffect(() => {
     if (!expiresAt) return;
@@ -169,14 +128,6 @@ export default function HomePage() {
     event.preventDefault();
     setDragActive(false);
     handleFile(event.dataTransfer.files?.[0] ?? null);
-  }
-
-  function saveRecentShare(entry: RecentShare) {
-    setRecentShares((current) => {
-      const next = [entry, ...current.filter((item) => item.createdAt !== entry.createdAt)].slice(0, 10);
-      try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(next)); } catch {}
-      return next;
-    });
   }
 
   async function copyValue(value: string, kind: "link" | "code") {
@@ -237,7 +188,6 @@ export default function HomePage() {
       setUrl(body.url ?? "");
       setCode(body.code ?? "");
       setExpiresAt(body.expiresAt ?? "");
-      if (body.expiresAt) saveRecentShare({ type: mode, createdAt: new Date().toISOString(), expiresAt: body.expiresAt });
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Could not create link.");
     } finally {
