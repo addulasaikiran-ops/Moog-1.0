@@ -12,7 +12,9 @@ test("wrong code maps to not found", () => {
   assert.equal(getReceiveState(null), "not_found");
 });
 
-test("expired shares are unavailable", () => {\n  assert.equal(getReceiveState({ ...base, expiresAt: new Date(Date.now() - 1) }), "expired");\n});
+test("expired shares are unavailable", () => {
+  assert.equal(getReceiveState({ ...base, expiresAt: new Date(Date.now() - 1) }), "expired");
+});
 
 test("receive lookup remains only a locator for password and view-once shares", () => {
   const protectedShare = { ...base, passwordHash: "scrypt:secret", viewOnce: true };
