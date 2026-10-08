@@ -1,26 +1,25 @@
 import { createHmac, randomInt } from "node:crypto";
 
-export const SHARE_CODE_ALPHABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
-const SHARE_CODE_RE = /^MG-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+export const SHARE_CODE_LENGTH = 6;
+const SHARE_CODE_RE = /^\d{6}$/;
 
 export function normalizeShareCode(value: string): string {
-  return value.toUpperCase().replace(/[\s-]/g, "");
+  return value.replace(/\D/g, "").slice(0, SHARE_CODE_LENGTH);
 }
 
 export function formatShareCode(normalized: string): string {
-  const raw = normalized.startsWith("MG") ? normalized.slice(2) : normalized;
-  if (!/^[A-Z0-9]{8}$/.test(raw)) throw new Error("Invalid share code.");
-  return `MG-${raw.slice(0, 4)}-${raw.slice(4)}`;
+  if (!SHARE_CODE_RE.test(normalized)) throw new Error("Invalid share code.");
+  return normalized;
 }
 
 export function isValidShareCode(value: string): boolean {
-  return SHARE_CODE_RE.test(value);
+  return SHARE_CODE_RE.test(normalizeShareCode(value));
 }
 
 export function generateShareCode(): string {
   let raw = "";
-  for (let i = 0; i < 8; i += 1) raw += SHARE_CODE_ALPHABET[randomInt(SHARE_CODE_ALPHABET.length)];
-  return formatShareCode(raw);
+  for (let i = 0; i < SHARE_CODE_LENGTH; i += 1) raw += randomInt(10).toString();
+  return raw;
 }
 
 export function hashShareCode(code: string, secret = process.env.CODE_HASH_SECRET): string {
