@@ -387,8 +387,23 @@ export default function HomePage() {
         <section className="hero">
           <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · NO ACCOUNT</div>
           <h1>Share privately.<br /><span>Let it disappear.</span></h1>
-          <p className="heroCopy">Share text, code, or images with a private link. No account required.<br />Set an expiry time, add an access key if you want, and keep control.</p>
+          <p className="heroCopy">Share text, code, or images with a private link.<br />No account required. Set an expiry time, add an access key if you want, and keep control.</p>
+          <div className="heroBenefits" aria-label="Key benefits">
+            <div><i className="heroBenefitIcon heroBenefitPurple">●</i><span><strong>No account</strong><small>required</small></span></div>
+            <div><i className="heroBenefitIcon heroBenefitBlue">◷</i><span><strong>Automatic</strong><small>expiry</small></span></div>
+            <div><i className="heroBenefitIcon heroBenefitGreen">✓</i><span><strong>Private</strong><small>by default</small></span></div>
+          </div>
         </section>
+        <div className="heroVisual" aria-hidden="true">
+          <div className="visualGlow" />
+          <div className="visualPanel visualPanelBack"><span></span><span></span><span></span><span></span><span></span></div>
+          <div className="visualPanel visualPanelMain">
+            <div className="visualCode"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div className="visualPhoto" />
+          </div>
+          <div className="visualLock">●</div>
+          <div className="visualExpiry"><b>◷</b><span>Link expires<br /><strong>in 15 minutes</strong></span></div>
+        </div>
 
         {tab === "send" ? (
           <section className="composer card" id="composer" aria-labelledby="send-title">
@@ -406,12 +421,6 @@ export default function HomePage() {
               </div>
 
               {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder="Type or paste something to share…" maxLength={100000} aria-label="Text to share" autoFocus /> : null}
-
-              <div className="modeToggle" role="group" aria-label="Content mode">
-                <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} onClick={() => setMode("text")}>Text</button>
-                <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} onClick={() => setMode("code")}>Code</button>
-                <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} onClick={() => { setMode("photo"); setText(""); }}>Photo</button>
-              </div>
 
               {mode === "code" ? (
                 <div className="codeSelectRow">
@@ -528,11 +537,19 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="securitySection standalonePrivacy" id="security"><div className="eyebrow">PRIVACY</div><h3>Private by default.</h3><p>Moog does not publish a public directory of shares, and share pages are marked noindex. Anyone with the private link can access it unless you enable an access key. Moog controls access, not copies.</p></section>
+        <section className="securityReference" id="security" aria-labelledby="security-title">
+          <div className="sectionHeading"><div className="eyebrow">SECURITY & PRIVACY</div><h2 id="security-title">Built with privacy in mind.</h2><p>Here&apos;s what you need to know.</p></div>
+          <div className="securityGrid">
+            <div><i className="securityIcon securityPurple">⌁</i><strong>Private links</strong><small>High-entropy links that are difficult to guess.</small></div>
+            <div><i className="securityIcon securityBlue">▤</i><strong>Secure storage</strong><small>Links and codes are stored as hashes.</small></div>
+            <div><i className="securityIcon securityGreen">✓</i><strong>We control access, not copies</strong><small>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</small></div>
+            <div><i className="securityIcon securityPurple">◉</i><strong>No tracking</strong><small>Moog doesn&apos;t require an account and doesn&apos;t use third-party analytics tracking.</small></div>
+          </div>
+          <p className="securityDisclosureText">Moog stores shared content on the server so it can deliver the share. It is access-controlled, not end-to-end encrypted.</p>
+        </section>
 
-        <section className="securitySection standaloneSecurity"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Access-controlled, not end-to-end encrypted.</h3><p>Moog stores shared content on the server so it can deliver the share. Tokens and codes are stored as hashes, access keys are hashed, and expired or revoked shares are rejected. Moog does not provide end-to-end encryption yet, so do not use it for secrets that require server-blind encryption.</p></section>
-
-        <section className="faq" id="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3>
+        <section className="faqArea" id="faq" aria-labelledby="faq-title">
+          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Frequently asked questions</h3>
           {[
             ["Is my share end-to-end encrypted?", "Not yet. Moog currently protects access to server-stored content, but the server can technically read active share content. Treat it as temporary access control, not zero-knowledge encryption."],
             ["Do I need an account?", "No. Sending and receiving are both account-free."],
@@ -546,6 +563,8 @@ export default function HomePage() {
               <p>{answer}</p>
             </details>
           ))}</section>
+          <aside className="contactCard"><div className="contactIcon">✉</div><h3>Still have questions?</h3><p>We&apos;re here to help. If you need more information, feel free to reach out.</p><a href="/contact">Contact us <span>→</span></a></aside>
+        </section>
         <footer className="siteFooter"><div className="footerBrand"><strong>Moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a><a href="/report-abuse">Report abuse</a></nav><div className="footerLegal">© 2026 Moog</div></footer>
       </div>
     </main>
