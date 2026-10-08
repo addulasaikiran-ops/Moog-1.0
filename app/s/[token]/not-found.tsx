@@ -3,7 +3,7 @@ export default function ShareNotFound() {
     <main className="viewerPage viewerMinimal viewerUnavailable">
       <div className="viewerShell">
         <header className="viewerTopbar">
-          <a className="minimalLogo" href="/">moog</a>
+          <a className="minimalLogo" href="/">Moog</a>
           <span className="viewerSecure"><span className="lockDot">⌁</span> temporary share</span>
         </header>
         <section className="lockStage">
