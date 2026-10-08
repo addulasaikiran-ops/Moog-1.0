@@ -14,10 +14,10 @@ export async function GET(request: Request, { params }: Params) {
 
   const share = await prisma.share.findUnique({
     where: { tokenHash: hashToken(token) },
-    select: { expiresAt: true, revokedAt: true },
+    select: { expiresAt: true },
   });
 
-  const available = !!share && !share.revokedAt && share.expiresAt > new Date();
+  const available = !!share && share.expiresAt > new Date();
 
   return NextResponse.json(
     { available },
