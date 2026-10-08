@@ -518,16 +518,13 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="aboutMoog" id="about-moog" aria-labelledby="about-title">
-          <div className="aboutIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="about-title">Temporary access.</h2></div>
-          <div className="featureGrid">
-            <div className="featureCard"><i>↗</i><strong>Access links</strong><small>High-entropy links designed for temporary access.</small></div>
-            <div className="featureCard"><i>◷</i><strong>Automatic expiry</strong><small>Choose a lifetime from 1 minute to 7 days.</small></div>
-            <div className="featureCard"><i>×</i><strong>Creator revoke</strong><small>End an active share whenever you need to.</small></div>
-            <div className="featureCard"><i>⌁</i><strong>Password protection</strong><small>Add an access key for another layer of control.</small></div>
-            <div className="featureCard"><i>1×</i><strong>View once</strong><small>Reveal a share once when the moment calls for it.</small></div>
-            <div className="featureCard"><i>&lt;/&gt;</i><strong>Text &amp; code</strong><small>Paste plain text or supported code formats.</small></div>
-            <div className="featureCard"><i>□</i><strong>Photo sharing</strong><small>Share JPG, PNG, GIF, or WebP images up to 10 MB.</small></div>
+        <section className="useMoog" id="about-moog" aria-labelledby="use-title">
+          <div className="useIntro"><div className="eyebrow">USE MOOG FOR</div><h2 id="use-title">Simple, secure and temporary sharing.</h2><p>Built for real situations where access should not last forever.</p></div>
+          <div className="useGrid">
+            <div><i className="usePink">▣</i><strong>Sensitive information</strong><small>Share passwords, API keys or other secrets.</small></div>
+            <div><i className="useBlue">&lt;/&gt;</i><strong>Code snippets</strong><small>Send code to a teammate without leaving it forever.</small></div>
+            <div><i className="useGreen">▤</i><strong>Temporary notes</strong><small>Share text between devices without an account.</small></div>
+            <div><i className="useOrange">▧</i><strong>Private images</strong><small>Share screenshots or photos that shouldn&apos;t stay online.</small></div>
           </div>
         </section>
 
