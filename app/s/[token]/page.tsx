@@ -34,7 +34,7 @@ export default async function SharePage({ params, searchParams }: Props) {
         <main className="viewerPage viewerMinimal viewerLockedPage">
         <div className="viewerShell">
           <header className="viewerTopbar">
-            <a className="minimalLogo" href="/">moog</a>
+            <a className="minimalLogo" href="/">Moog</a>
             <span className="viewerSecure"><span className="lockDot">⌁</span> access link</span>
           </header>
           <section className="lockStage">
@@ -69,7 +69,7 @@ export default async function SharePage({ params, searchParams }: Props) {
         <main className="viewerPage viewerMinimal">
         <div className="viewerShell">
           <header className="viewerTopbar">
-            <a className="minimalLogo" href="/">moog</a>
+            <a className="minimalLogo" href="/">Moog</a>
             <span className="viewerSecure">access link</span>
           </header>
           <main className="viewerMain">
@@ -96,7 +96,7 @@ export default async function SharePage({ params, searchParams }: Props) {
       <main className="viewerPage viewerMinimal">
       <div className="viewerShell">
         <header className="viewerTopbar">
-          <a className="minimalLogo" href="/">moog</a>
+          <a className="minimalLogo" href="/">Moog</a>
           <a className="newShareLink" href="/">New share <span>→</span></a>
         </header>
 
