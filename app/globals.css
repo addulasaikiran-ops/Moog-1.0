@@ -2230,3 +2230,623 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
     border-radius:0 0 8px 8px;
   }
 }
+
+
+/* =========================================================
+   MOOG OBSIDIAN PRIVACY — PRODUCT UI OVERRIDE
+   Keeps all existing interactions/API behavior intact.
+   ========================================================= */
+
+:root{
+  --obs-bg:#07080b;
+  --obs-surface:#0d0f14;
+  --obs-surface-2:#11141b;
+  --obs-surface-3:#161a22;
+  --obs-line:rgba(255,255,255,.085);
+  --obs-line-strong:rgba(255,255,255,.14);
+  --obs-text:#f5f7fb;
+  --obs-muted:#9299a8;
+  --obs-dim:#656d7d;
+  --obs-accent:#b9ff45;
+  --obs-accent-soft:rgba(185,255,69,.10);
+  --obs-danger:#ff6b78;
+}
+
+.page:not(.refPage){
+  min-height:100vh!important;
+  padding:0 0 72px!important;
+  background:
+    radial-gradient(900px 500px at 50% -8%,rgba(185,255,69,.065),transparent 62%),
+    radial-gradient(600px 420px at 0% 45%,rgba(102,92,255,.045),transparent 65%),
+    linear-gradient(180deg,#08090c 0%,#07080b 55%,#08090c 100%)!important;
+  color:var(--obs-text)!important;
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+}
+.page:not(.refPage) .shell{
+  width:min(1120px,100%)!important;
+  padding:0 28px!important;
+}
+.page:not(.refPage) .ambientOne{background:#b9ff45!important;opacity:.055!important}
+.page:not(.refPage) .ambientTwo{background:#665cff!important;opacity:.045!important}
+
+.page:not(.refPage) .topbar{
+  position:sticky!important;
+  top:0;
+  z-index:30;
+  min-height:72px!important;
+  margin:0 -28px!important;
+  padding:0 28px!important;
+  border:0!important;
+  border-bottom:1px solid var(--obs-line)!important;
+  background:rgba(7,8,11,.78)!important;
+  backdrop-filter:blur(22px)!important;
+}
+.page:not(.refPage) .topbar .logo{
+  color:var(--obs-text)!important;
+  font-size:21px!important;
+  letter-spacing:-.055em!important;
+}
+.page:not(.refPage) .logoLock{
+  width:34px!important;height:34px!important;
+  border-radius:10px!important;
+  background:var(--obs-accent)!important;
+  color:#0b0d08!important;
+  box-shadow:0 0 28px rgba(185,255,69,.14)!important;
+}
+.page:not(.refPage) .topNav{gap:5px!important}
+.page:not(.refPage) .topNav>a{
+  color:#858d9d!important;
+  padding:9px 12px!important;
+  border-radius:9px!important;
+  font-size:13px!important;
+  transition:.2s!important;
+}
+.page:not(.refPage) .topNav>a:hover{
+  color:#f4f6f9!important;
+  background:rgba(255,255,255,.045)!important;
+}
+.page:not(.refPage) .topNav .headerCreate{
+  margin-left:6px!important;
+  padding:9px 14px!important;
+  color:#0b0d08!important;
+  background:var(--obs-accent)!important;
+  box-shadow:0 8px 25px rgba(185,255,69,.10)!important;
+}
+.page:not(.refPage) .topNav .headerCreate:hover{
+  color:#0b0d08!important;
+  background:#c9ff69!important;
+}
+
+.page:not(.refPage) .hero{
+  width:100%!important;
+  max-width:820px!important;
+  margin:0 auto!important;
+  padding:92px 0 38px!important;
+  text-align:center!important;
+}
+.page:not(.refPage) .heroBadge{
+  display:inline-flex!important;
+  align-items:center!important;
+  padding:7px 11px!important;
+  margin:0!important;
+  border:1px solid rgba(185,255,69,.16)!important;
+  border-radius:999px!important;
+  background:rgba(185,255,69,.055)!important;
+  color:#b9d890!important;
+  font-size:10px!important;
+  letter-spacing:.16em!important;
+}
+.page:not(.refPage) .hero h1{
+  margin:22px 0 0!important;
+  color:var(--obs-text)!important;
+  font-size:clamp(52px,7vw,88px)!important;
+  line-height:.94!important;
+  letter-spacing:-.075em!important;
+  font-weight:820!important;
+}
+.page:not(.refPage) .hero h1 span{
+  color:#6e7583!important;
+}
+.page:not(.refPage) .heroCopy{
+  max-width:650px!important;
+  margin:25px auto 0!important;
+  color:#949baa!important;
+  font-size:16px!important;
+  line-height:1.65!important;
+}
+.page:not(.refPage) .heroBenefits{
+  display:flex!important;
+  justify-content:center!important;
+  flex-wrap:wrap!important;
+  gap:9px!important;
+  margin-top:27px!important;
+}
+.page:not(.refPage) .heroBenefits>div{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:8px 11px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:10px!important;
+  background:rgba(255,255,255,.022)!important;
+}
+.page:not(.refPage) .heroBenefitIcon{
+  width:25px!important;height:25px!important;
+  border:0!important;
+  background:var(--obs-accent-soft)!important;
+  color:var(--obs-accent)!important;
+}
+.page:not(.refPage) .heroBenefits strong{
+  color:#cbd0da!important;font-size:12px!important;
+}
+.page:not(.refPage) .heroBenefits small{
+  display:inline!important;
+  margin-left:4px!important;
+  color:#697181!important;
+  font-size:11px!important;
+}
+
+.page:not(.refPage) .heroVisual{display:none!important}
+
+.page:not(.refPage) .referenceComposerTabs{
+  width:100%!important;
+  margin:14px 0 0!important;
+  padding:4px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:13px!important;
+  background:rgba(13,15,20,.9)!important;
+}
+.page:not(.refPage) .referenceComposerTab{
+  min-height:42px!important;
+  border:0!important;
+  border-radius:9px!important;
+  background:transparent!important;
+  color:#747c8c!important;
+  font-size:13px!important;
+}
+.page:not(.refPage) .referenceComposerTab.active{
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:#171a22!important;
+  color:#f0f3f8!important;
+  box-shadow:0 5px 18px rgba(0,0,0,.25)!important;
+}
+
+.page:not(.refPage) .composer,
+.page:not(.refPage) .receiveCard,
+.page:not(.refPage) .recentShares{
+  width:100%!important;
+  margin:0!important;
+  padding:22px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:18px!important;
+  background:rgba(13,15,20,.88)!important;
+  box-shadow:0 24px 80px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.025)!important;
+  backdrop-filter:blur(18px)!important;
+}
+.page:not(.refPage) .referenceComposerTabs + .composer{border-radius:18px!important;margin-top:10px!important}
+.page:not(.refPage) .composerTop{display:flex!important;padding:0 2px 10px!important}
+.page:not(.refPage) .counter{color:#626a79!important;font-size:11px!important}
+
+.page:not(.refPage) .modeToggle{
+  display:flex!important;
+  gap:4px!important;
+  margin:0 0 12px!important;
+  padding:4px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:12px!important;
+  background:#090b0f!important;
+}
+.page:not(.refPage) .modeButton{
+  min-height:40px!important;
+  border:0!important;
+  border-radius:8px!important;
+  background:transparent!important;
+  color:#707887!important;
+  font-size:12px!important;
+}
+.page:not(.refPage) .modeButton:hover{color:#dbe0e8!important;background:rgba(255,255,255,.035)!important}
+.page:not(.refPage) .modeButton.active{
+  border:1px solid rgba(255,255,255,.07)!important;
+  background:#181c24!important;
+  color:#f2f5f8!important;
+  box-shadow:0 4px 14px rgba(0,0,0,.24)!important;
+}
+
+.page:not(.refPage) textarea{
+  min-height:300px!important;
+  margin:0!important;
+  padding:19px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:13px!important;
+  background:#080a0e!important;
+  color:#eef1f5!important;
+  font-size:15px!important;
+  line-height:1.7!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.018)!important;
+}
+.page:not(.refPage) textarea::placeholder{color:#4f5765!important}
+.page:not(.refPage) textarea:focus{
+  border-color:rgba(185,255,69,.28)!important;
+  box-shadow:0 0 0 3px rgba(185,255,69,.045),inset 0 1px rgba(255,255,255,.02)!important;
+}
+
+.page:not(.refPage) .codeSelectRow{margin-top:12px!important}
+.page:not(.refPage) .codeSelectRow label{
+  color:#747c8b!important;font-size:10px!important;
+  text-transform:uppercase!important;letter-spacing:.12em!important;
+}
+.page:not(.refPage) .codeSelectRow select{
+  min-height:43px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:10px!important;
+  background:#090b0f!important;
+  color:#dfe4eb!important;
+  padding:0 12px!important;
+}
+
+.page:not(.refPage) .photoComposer{
+  border:1px dashed rgba(255,255,255,.14)!important;
+  border-radius:13px!important;
+  background:#080a0e!important;
+}
+.page:not(.refPage) .photoComposer.dragActive{
+  border-color:rgba(185,255,69,.45)!important;
+  background:rgba(185,255,69,.035)!important;
+}
+.page:not(.refPage) .photoDropIcon{
+  background:var(--obs-accent-soft)!important;
+  color:var(--obs-accent)!important;
+}
+
+.page:not(.refPage) .lifetimeSection{
+  margin-top:15px!important;
+  padding:15px 0 0!important;
+  border-top:1px solid var(--obs-line)!important;
+}
+.page:not(.refPage) .lifetimeHeader span{
+  color:#737b8b!important;font-size:10px!important;
+  text-transform:uppercase!important;letter-spacing:.12em!important;
+}
+.page:not(.refPage) .lifetimeHeader strong{color:#dbe0e7!important;font-size:12px!important}
+.page:not(.refPage) .lifetimePills{gap:6px!important}
+.page:not(.refPage) .lifetimePill{
+  min-height:37px!important;
+  padding:0 11px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:9px!important;
+  background:#0b0d12!important;
+  color:#747c8c!important;
+  font-size:11px!important;
+}
+.page:not(.refPage) .lifetimePill:hover{
+  color:#dfe3e9!important;background:#141720!important;
+}
+.page:not(.refPage) .lifetimePill.active{
+  border-color:rgba(185,255,69,.55)!important;
+  background:var(--obs-accent)!important;
+  color:#0a0d07!important;
+  box-shadow:0 6px 20px rgba(185,255,69,.10)!important;
+}
+
+.page:not(.refPage) .securityBar{
+  margin-top:14px!important;
+  border-top:1px solid var(--obs-line)!important;
+}
+.page:not(.refPage) .securityDisclosure{
+  min-height:50px!important;
+  color:#d4d9e1!important;
+}
+.page:not(.refPage) .securityDisclosure .securityDot{
+  width:7px!important;height:7px!important;
+  background:var(--obs-accent)!important;
+  box-shadow:0 0 12px rgba(185,255,69,.65)!important;
+}
+.page:not(.refPage) .securityDisclosure small{color:#697181!important}
+.page:not(.refPage) .securityOptions{gap:12px!important}
+.page:not(.refPage) .optionField,
+.page:not(.refPage) .checkField{color:#c7ccd5!important}
+.page:not(.refPage) .secretInput input{
+  background:#090b0f!important;border-color:var(--obs-line)!important;color:#edf0f4!important;
+}
+.page:not(.refPage) .secretInput input::placeholder{color:#4f5765!important}
+.page:not(.refPage) .toggleSecret{
+  color:#8f98a8!important;background:#141720!important;border-color:var(--obs-line)!important;
+}
+.page:not(.refPage) .optionNote{color:#626a79!important}
+.page:not(.refPage) .checkField input{accent-color:var(--obs-accent)!important}
+
+.page:not(.refPage) .formError,
+.page:not(.refPage) .receiveError{
+  border:1px solid rgba(255,107,120,.16)!important;
+  border-radius:10px!important;
+  background:rgba(255,107,120,.055)!important;
+  color:#ff9aa4!important;
+  padding:10px 12px!important;
+}
+
+.page:not(.refPage) .createButton,
+.page:not(.refPage) .receiveOpen{
+  width:100%!important;
+  min-height:52px!important;
+  margin-top:16px!important;
+  border-radius:11px!important;
+  background:var(--obs-accent)!important;
+  color:#0a0d07!important;
+  font-size:14px!important;
+  font-weight:850!important;
+  box-shadow:0 12px 34px rgba(185,255,69,.10)!important;
+}
+.page:not(.refPage) .createButton:hover:not(:disabled),
+.page:not(.refPage) .receiveOpen:hover:not(:disabled){
+  background:#c8ff68!important;
+  transform:translateY(-1px)!important;
+}
+.page:not(.refPage) .composerTrust{
+  margin-top:11px!important;
+  color:#606877!important;
+  font-size:11px!important;
+  text-align:center!important;
+}
+
+.page:not(.refPage) .receiveHeader h2{color:#eef1f5!important}
+.page:not(.refPage) .receiveHeader p{color:#777f8f!important}
+.page:not(.refPage) .receiveLabel{color:#747c8b!important}
+.page:not(.refPage) .receiveInput{
+  background:#080a0e!important;border-color:var(--obs-line)!important;color:#f1f4f7!important;
+  border-radius:11px!important;
+}
+.page:not(.refPage) .receiveHint{color:#5f6775!important}
+.page:not(.refPage) .receiveNote{
+  border-color:var(--obs-line)!important;
+  background:rgba(255,255,255,.018)!important;
+  color:#727b8b!important;
+}
+
+.page:not(.refPage) .result{
+  width:100%!important;
+  margin:12px 0 0!important;
+  padding:18px!important;
+  border:1px solid rgba(185,255,69,.18)!important;
+  border-radius:15px!important;
+  background:rgba(185,255,69,.035)!important;
+  box-shadow:none!important;
+}
+.page:not(.refPage) .resultIcon{
+  background:var(--obs-accent)!important;color:#0a0d07!important;
+  box-shadow:0 0 24px rgba(185,255,69,.13)!important;
+}
+.page:not(.refPage) .resultLabel{color:#a9e96a!important}
+.page:not(.refPage) .resultLinkRow a,
+.page:not(.refPage) .uniqueCodeBox,
+.page:not(.refPage) .revokeLinkRow{
+  background:#090b0f!important;
+  border-color:var(--obs-line)!important;
+  color:#dce1e8!important;
+}
+.page:not(.refPage) .resultLinkRow a{color:#cdd3dc!important}
+.page:not(.refPage) .copy{
+  border-color:var(--obs-line-strong)!important;
+  background:#171a22!important;
+  color:#e8ebef!important;
+  border-radius:8px!important;
+}
+.page:not(.refPage) .copy:hover{background:#20242e!important}
+.page:not(.refPage) .resultNote,
+.page:not(.refPage) .resultWarning{color:#747d8c!important}
+.page:not(.refPage) .expiryStatus{color:#8c95a4!important}
+.page:not(.refPage) .revokeNow{
+  border:1px solid rgba(255,107,120,.20)!important;
+  background:rgba(255,107,120,.10)!important;
+  color:#ff9aa4!important;
+  border-radius:8px!important;
+}
+.page:not(.refPage) .revokeNow:hover:not(:disabled){background:rgba(255,107,120,.16)!important}
+
+.page:not(.refPage) .recentShares{margin-top:12px!important}
+.page:not(.refPage) .recentHeader p{color:#5f6775!important}
+.page:not(.refPage) .recentItem{border-color:var(--obs-line)!important}
+.page:not(.refPage) .recentItem strong{color:#dce1e8!important}
+.page:not(.refPage) .recentItem small{color:#687180!important}
+.page:not(.refPage) .textButton{color:#727b8b!important}
+
+.page:not(.refPage) .productFeatures{
+  clear:both!important;
+  width:100%!important;
+  margin:16px 0 0!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,1fr)!important;
+  gap:8px!important;
+}
+.page:not(.refPage) .featureCard{
+  min-height:148px!important;
+  padding:19px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:13px!important;
+  background:rgba(13,15,20,.62)!important;
+  box-shadow:none!important;
+}
+.page:not(.refPage) .featureCard i{
+  width:32px!important;height:32px!important;
+  margin-bottom:13px!important;
+  background:var(--obs-accent-soft)!important;
+  color:var(--obs-accent)!important;
+}
+.page:not(.refPage) .featureCard strong{
+  color:#dce1e8!important;font-size:13px!important;
+}
+.page:not(.refPage) .featureCard small{
+  margin-top:6px!important;color:#697181!important;font-size:11px!important;line-height:1.5!important;
+}
+
+.page:not(.refPage) .referenceHow,
+.page:not(.refPage) .useMoog,
+.page:not(.refPage) .securityReference,
+.page:not(.refPage) .faqArea{
+  margin-top:92px!important;
+}
+.page:not(.refPage) .howIntro,
+.page:not(.refPage) .useIntro,
+.page:not(.refPage) .sectionHeading{
+  max-width:650px!important;
+  margin:0 auto 28px!important;
+  text-align:center!important;
+}
+.page:not(.refPage) .howIntro .eyebrow,
+.page:not(.refPage) .useIntro .eyebrow,
+.page:not(.refPage) .sectionHeading .eyebrow{
+  color:#8ed13f!important;
+}
+.page:not(.refPage) .howIntro h2,
+.page:not(.refPage) .useIntro h2,
+.page:not(.refPage) .sectionHeading h2{
+  color:#eef1f5!important;
+  font-size:clamp(30px,4vw,44px)!important;
+  letter-spacing:-.045em!important;
+}
+.page:not(.refPage) .howIntro p,
+.page:not(.refPage) .useIntro p,
+.page:not(.refPage) .sectionHeading p{
+  color:#747d8c!important;
+}
+.page:not(.refPage) .howSteps{
+  display:grid!important;
+  grid-template-columns:1fr auto 1fr auto 1fr auto 1fr!important;
+  align-items:stretch!important;
+  gap:9px!important;
+}
+.page:not(.refPage) .howSteps>div{
+  border:1px solid var(--obs-line)!important;
+  border-radius:13px!important;
+  background:rgba(13,15,20,.65)!important;
+  padding:18px 15px!important;
+}
+.page:not(.refPage) .howSteps>span{color:#3e4654!important;align-self:center!important}
+.page:not(.refPage) .howSteps b{
+  background:#171a22!important;
+  color:#a8b0be!important;
+  box-shadow:none!important;
+}
+.page:not(.refPage) .howSteps strong{color:#dfe3e9!important}
+.page:not(.refPage) .howSteps small{color:#687180!important;line-height:1.5!important}
+
+.page:not(.refPage) .useGrid{
+  gap:8px!important;
+}
+.page:not(.refPage) .useGrid>div{
+  min-height:145px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:13px!important;
+  background:rgba(13,15,20,.62)!important;
+  padding:19px!important;
+}
+.page:not(.refPage) .useGrid i{
+  background:var(--obs-accent-soft)!important;
+  color:var(--obs-accent)!important;
+  box-shadow:none!important;
+}
+.page:not(.refPage) .useGrid strong{color:#dce1e8!important}
+.page:not(.refPage) .useGrid small{color:#697181!important;line-height:1.5!important}
+
+.page:not(.refPage) .securityGrid{
+  gap:8px!important;
+}
+.page:not(.refPage) .securityGrid>div{
+  min-height:155px!important;
+  border:1px solid var(--obs-line)!important;
+  border-radius:13px!important;
+  background:rgba(13,15,20,.62)!important;
+}
+.page:not(.refPage) .securityIcon{
+  background:var(--obs-accent-soft)!important;
+  color:var(--obs-accent)!important;
+  box-shadow:none!important;
+}
+.page:not(.refPage) .securityGrid strong{color:#dce1e8!important}
+.page:not(.refPage) .securityGrid small{color:#697181!important;line-height:1.5!important}
+.page:not(.refPage) .securityDisclosureText{
+  color:#535c6c!important;
+  text-align:center!important;
+  font-size:11px!important;
+}
+
+.page:not(.refPage) .faqArea{
+  display:grid!important;
+  grid-template-columns:minmax(0,1.6fr) minmax(280px,.7fr)!important;
+  gap:18px!important;
+}
+.page:not(.refPage) .faq details{
+  border:1px solid var(--obs-line)!important;
+  border-radius:11px!important;
+  background:rgba(13,15,20,.62)!important;
+}
+.page:not(.refPage) .faq summary{color:#dfe3e9!important}
+.page:not(.refPage) .faq details p{color:#727b8b!important}
+.page:not(.refPage) .contactCard{
+  border:1px solid var(--obs-line)!important;
+  border-radius:13px!important;
+  background:rgba(185,255,69,.035)!important;
+}
+.page:not(.refPage) .contactIcon{
+  background:var(--obs-accent-soft)!important;
+  color:var(--obs-accent)!important;
+}
+.page:not(.refPage) .contactCard h3{color:#e5e9ee!important}
+.page:not(.refPage) .contactCard p{color:#727b8b!important}
+.page:not(.refPage) .contactCard a{
+  background:var(--obs-accent)!important;
+  color:#0a0d07!important;
+}
+
+.page:not(.refPage) .siteFooter{
+  margin-top:90px!important;
+  padding:30px 0 8px!important;
+  border-top:1px solid var(--obs-line)!important;
+  background:transparent!important;
+  color:#697181!important;
+}
+.page:not(.refPage) .footerBrand strong{color:#eef1f5!important}
+.page:not(.refPage) .footerBrand span,
+.page:not(.refPage) .footerLinks a{color:#697181!important}
+.page:not(.refPage) .footerLinks a:hover{color:#dce1e8!important}
+.page:not(.refPage) .footerLegal{color:#4f5765!important}
+
+@media(max-width:900px){
+  .page:not(.refPage) .shell{padding:0 20px!important}
+  .page:not(.refPage) .topbar{margin:0 -20px!important;padding:0 20px!important}
+  .page:not(.refPage) .hero{padding-top:72px!important}
+  .page:not(.refPage) .productFeatures{grid-template-columns:repeat(2,1fr)!important}
+  .page:not(.refPage) .howSteps{grid-template-columns:1fr 1fr!important}
+  .page:not(.refPage) .howSteps>span{display:none!important}
+  .page:not(.refPage) .faqArea{grid-template-columns:1fr!important}
+}
+@media(max-width:680px){
+  .page:not(.refPage) .shell{padding:0 14px!important}
+  .page:not(.refPage) .topbar{margin:0 -14px!important;padding:0 14px!important;min-height:64px!important}
+  .page:not(.refPage) .topNav>a:not(.headerCreate){display:none!important}
+  .page:not(.refPage) .hero{
+    padding:60px 0 26px!important;
+    text-align:left!important;
+  }
+  .page:not(.refPage) .hero h1{font-size:clamp(44px,13vw,62px)!important}
+  .page:not(.refPage) .heroCopy{margin-left:0!important;margin-right:0!important;font-size:15px!important}
+  .page:not(.refPage) .heroBenefits{justify-content:flex-start!important}
+  .page:not(.refPage) .heroBenefits>div{flex:1 1 100px!important}
+  .page:not(.refPage) .composer,
+  .page:not(.refPage) .receiveCard,
+  .page:not(.refPage) .recentShares{padding:14px!important;border-radius:15px!important}
+  .page:not(.refPage) textarea{min-height:270px!important}
+  .page:not(.refPage) .lifetimePills{display:grid!important;grid-template-columns:repeat(3,1fr)!important}
+  .page:not(.refPage) .lifetimePill{padding:0 4px!important}
+  .page:not(.refPage) .productFeatures{grid-template-columns:1fr!important}
+  .page:not(.refPage) .howSteps{grid-template-columns:1fr!important}
+  .page:not(.refPage) .useGrid{grid-template-columns:1fr!important}
+  .page:not(.refPage) .securityGrid{grid-template-columns:1fr!important}
+  .page:not(.refPage) .referenceHow,
+  .page:not(.refPage) .useMoog,
+  .page:not(.refPage) .securityReference,
+  .page:not(.refPage) .faqArea{margin-top:68px!important}
+  .page:not(.refPage) .siteFooter{margin-top:68px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .page:not(.refPage) *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
