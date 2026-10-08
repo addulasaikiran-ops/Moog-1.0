@@ -3,7 +3,7 @@ import { isAllowedOrigin } from "@/lib/origin";
 import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
 import { deriveShareToken, getClientKey } from "@/lib/token";
-import { SHARE_CODE_ALPHABET, hashShareCode, normalizeShareCode } from "@/lib/share-code";
+import { SHARE_CODE_LENGTH, hashShareCode, normalizeShareCode } from "@/lib/share-code";
 import { getReceiveState } from "@/lib/receive";
 
 export const dynamic = "force-dynamic";
@@ -14,7 +14,7 @@ const FAILURE_LIMIT = 5;
 const FAILURE_WINDOW_MS = 10 * 60_000;
 const MAX_BODY = 256;
 const FAILURE_DELAY_MS = 50;
-const NORMALIZED_CODE_RE = new RegExp("^MG[" + SHARE_CODE_ALPHABET + "]{8}$");
+const NORMALIZED_CODE_RE = new RegExp("^\\d{" + SHARE_CODE_LENGTH + "}$");
 
 function response(body: Record<string, unknown>, status: number) {
   return NextResponse.json(body, { status, headers: { "Cache-Control": "no-store" } });
