@@ -3238,3 +3238,11 @@ body{background:var(--moog-bg)!important;color:var(--moog-text)!important}
   .page .heroBenefits>div{background:#0d0d0d!important}
   .page .referenceComposerTabs{margin-top:10px!important}
 }
+
+
+.statusSkeleton{width:min(260px,100%);margin:0 auto 28px;display:grid;gap:8px}
+.statusSkeleton span{display:block;height:8px;border-radius:999px;background:linear-gradient(90deg,#151515 20%,#242424 45%,#151515 70%);background-size:220% 100%;animation:moogSkeleton 1.4s ease-in-out infinite}
+.statusSkeleton span:nth-child(2){width:82%}
+.statusSkeleton span:nth-child(3){width:64%}
+@keyframes moogSkeleton{0%{background-position:100% 0}100%{background-position:-100% 0}}
+@media(prefers-reduced-motion:reduce){.statusSkeleton span{animation:none;background:#1b1b1b}}
