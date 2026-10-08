@@ -75,7 +75,6 @@ export async function POST(request: Request) {
 
     const id = generateToken();
     const token = deriveShareToken(id);
-    const revokeToken = generateToken();
     const expiresAt = new Date(Date.now() + minutes * 60 * 1000);
 
     let rawCode = "";
@@ -88,7 +87,6 @@ export async function POST(request: Request) {
             text, language, imageData, imageMime, imageName,
             tokenHash: hashToken(token),
             codeHash: hashShareCode(rawCode),
-            revokeTokenHash: hashToken(revokeToken),
             passwordHash: password ? hashSecret(password) : null,
             viewOnce, expiresAt,
           },
@@ -103,7 +101,6 @@ export async function POST(request: Request) {
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? new URL(request.url).origin;
     return NextResponse.json({
       url: new URL(`/s/${token}`, baseUrl).toString(),
-      revokeUrl: new URL(`/revoke/${revokeToken}`, baseUrl).toString(),
       code: rawCode,
       expiresAt: expiresAt.toISOString(),
     }, { status: 201, headers: { "Cache-Control": "no-store" } });
