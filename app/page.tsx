@@ -34,7 +34,7 @@ const CODE_LANGUAGES = [
 
 type Tab = "send" | "receive";
 type Mode = "text" | "code" | "photo";
-type RecentShare = { type: Mode; createdAt: string; expiresAt: string; revokeUrl: string };
+type RecentShare = { type: Mode; createdAt: string; expiresAt: string };
 
 function formatReceiveCode(value: string): string {
   const raw = value.toUpperCase().replace(/[\s-]/g, "").slice(0, 10);
@@ -72,14 +72,11 @@ export default function HomePage() {
   const [previewUrl, setPreviewUrl] = useState("");
   const [dragActive, setDragActive] = useState(false);
   const [url, setUrl] = useState("");
-  const [revokeUrl, setRevokeUrl] = useState("");
   const [code, setCode] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
   const [remaining, setRemaining] = useState(0);
   const [copied, setCopied] = useState<"link" | "code" | "">("");
   const [loading, setLoading] = useState(false);
-  const [revokeLoading, setRevokeLoading] = useState(false);
-  const [revoked, setRevoked] = useState(false);
   const [viewed, setViewed] = useState(false);
   const [error, setError] = useState("");
   const [receiveCode, setReceiveCode] = useState("");
@@ -100,7 +97,6 @@ export default function HomePage() {
           return (item.type === "text" || item.type === "code" || item.type === "photo") &&
             typeof item.createdAt === "string" &&
             typeof item.expiresAt === "string" &&
-            typeof item.revokeUrl === "string" &&
             new Date(item.expiresAt).getTime() > now;
         });
         setRecentShares(valid);
@@ -137,58 +133,6 @@ export default function HomePage() {
     const interval = window.setInterval(tick, 1000);
     return () => window.clearInterval(interval);
   }, [expiresAt]);
-
-  useEffect(() => {
-    if (!revokeUrl || !viewOnce) return;
-    const token = revokeUrl.split("/").pop();
-    if (!token) return;
-    let active = true;
-    const check = async () => {
-      try {
-        const response = await fetch("/api/revokes/" + token + "/status", { cache: "no-store" });
-        if (!response.ok) return;
-        const body = await response.json() as { viewed?: boolean };
-        if (active && body.viewed) setViewed(true);
-      } catch {}
-    };
-    void check();
-    const interval = window.setInterval(() => void check(), 3000);
-    return () => { active = false; window.clearInterval(interval); };
-  }, [revokeUrl, viewOnce]);
-
-  useEffect(() => {
-    if (!url || !revokeUrl || revoked) return;
-    const token = revokeUrl.split("/").pop();
-    if (!token) return;
-
-    let active = true;
-    let controller: AbortController | null = null;
-
-    const check = async () => {
-      controller?.abort();
-      controller = new AbortController();
-      try {
-        const response = await fetch(url, { method: "HEAD", cache: "no-store", signal: controller.signal });
-        if (active && response.status === 404) setRevoked(true);
-      } catch {
-        // Transient errors should not revoke the UI state.
-      }
-    };
-
-    void check();
-    const interval = window.setInterval(() => void check(), 2000);
-    const onVisibility = () => {
-      if (document.visibilityState === "visible") void check();
-    };
-    document.addEventListener("visibilitychange", onVisibility);
-
-    return () => {
-      active = false;
-      controller?.abort();
-      window.clearInterval(interval);
-      document.removeEventListener("visibilitychange", onVisibility);
-    };
-  }, [url, revokeUrl, revoked]);
 
   useEffect(() => {
     return () => {
@@ -229,24 +173,16 @@ export default function HomePage() {
 
   function saveRecentShare(entry: RecentShare) {
     setRecentShares((current) => {
-      const next = [entry, ...current.filter((item) => item.revokeUrl !== entry.revokeUrl)].slice(0, 10);
+      const next = [entry, ...current.filter((item) => item.createdAt !== entry.createdAt)].slice(0, 10);
       try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(next)); } catch {}
       return next;
     });
   }
 
-  function removeRecentShare(revokeUrl: string) {
-    setRecentShares((current) => {
-      const next = current.filter((item) => item.revokeUrl !== revokeUrl);
-      try { window.localStorage.setItem("moog_recent_shares", JSON.stringify(next)); } catch {}
-      return next;
-    });
-  }
-
-  async function copyValue(value: string, kind: "link" | "code" | "revoke") {
+  async function copyValue(value: string, kind: "link" | "code") {
     try {
       await navigator.clipboard.writeText(value);
-      setCopied(kind === "revoke" ? "link" : kind);
+      setCopied(kind);
       window.setTimeout(() => setCopied(""), 1400);
     } catch {
       setError("Could not copy. Please copy it manually.");
@@ -257,11 +193,9 @@ export default function HomePage() {
     event.preventDefault();
     setError("");
     setUrl("");
-    setRevokeUrl("");
     setCode("");
     setExpiresAt("");
     setRemaining(0);
-    setRevoked(false);
     setViewed(false);
 
     if (mode === "photo" && !file) {
@@ -298,42 +232,16 @@ export default function HomePage() {
         });
       }
 
-      const body = (await response.json()) as { url?: string; revokeUrl?: string; code?: string; expiresAt?: string; error?: string };
+      const body = (await response.json()) as { url?: string; code?: string; expiresAt?: string; error?: string };
       if (!response.ok) throw new Error(body.error ?? "Could not create link.");
       setUrl(body.url ?? "");
-      setRevokeUrl(body.revokeUrl ?? "");
       setCode(body.code ?? "");
       setExpiresAt(body.expiresAt ?? "");
-      if (body.revokeUrl && body.expiresAt) {
-        saveRecentShare({ type: mode, createdAt: new Date().toISOString(), expiresAt: body.expiresAt, revokeUrl: body.revokeUrl });
-      }
+      if (body.expiresAt) saveRecentShare({ type: mode, createdAt: new Date().toISOString(), expiresAt: body.expiresAt });
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Could not create link.");
     } finally {
       setLoading(false);
-    }
-  }
-
-  async function revokeShare(targetRevokeUrl = revokeUrl) {
-    if (!targetRevokeUrl) return;
-    setRevokeLoading(true);
-    setError("");
-    try {
-      const response = await fetch(targetRevokeUrl, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-      });
-      const body = (await response.json()) as { revoked?: boolean; error?: string };
-      if (!response.ok || !body.revoked) {
-        setError(body.error ?? "Share is already unavailable.");
-        return;
-      }
-      setRevoked(targetRevokeUrl === revokeUrl);
-      removeRecentShare(targetRevokeUrl);
-    } catch {
-      setError("Could not revoke the share right now.");
-    } finally {
-      setRevokeLoading(false);
     }
   }
 
@@ -358,9 +266,7 @@ export default function HomePage() {
         const message =
           body.reason === "expired"
             ? "This share has expired"
-            : body.reason === "revoked"
-              ? "This share was revoked"
-              : response.status === 429
+            : response.status === 429
                 ? "Too many attempts. Try again in a few minutes."
                 : "That code didn't work";
         throw new Error(message);
@@ -499,7 +405,7 @@ export default function HomePage() {
               <div className="resultLabel">YOUR PRIVATE LINK IS READY</div>
               <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
               <div className="uniqueCodeBox"><div><span>Unique code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
-              <p className="resultNote">Your link is ready. Keep the creator controls below if you need to stop access early.</p><div className="revokeLinkRow"><span>Creator revoke link</span><button className="copy" type="button" onClick={() => void copyValue(revokeUrl, "revoke")}>{copied === "link" ? "Copied ✓" : "⧉ Copy"}</button></div><p className="resultWarning">Save your revoke link. You can use it to disable access before expiry.</p><div className="resultBottom"><span className="expiryStatus"><b>Expires in</b> {remaining > 0 ? formatCountdown(remaining) : "0s"}{viewOnce ? (viewed ? " · viewed" : " · not viewed yet") : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
+              <p className="resultNote">Your link is ready. It will automatically expire when the timer ends.</p><div className="resultBottom"><span className="expiryStatus"><b>Expires in</b> {remaining > 0 ? formatCountdown(remaining) : "0s"}{viewOnce ? (viewed ? " · viewed" : " · not viewed yet") : ""}{accessKey ? " · protected" : ""}</span></div>
             </div>
           </section>
         ) : null}
