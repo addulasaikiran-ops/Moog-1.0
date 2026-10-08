@@ -380,30 +380,29 @@ export default function HomePage() {
 
       <div className="shell">
         <header className="topbar">
-          <a className="logo" href="/" aria-label="Moog home"><span className="logoMark">M</span><span>Moog</span></a>
-          <nav className="topNav" aria-label="Primary"><button type="button" className={tab === "send" ? "navLink active" : "navLink"} onClick={() => changeTab("send")}>Send</button><button type="button" className={tab === "receive" ? "navLink active" : "navLink"} onClick={() => changeTab("receive")}>Receive</button><a className="navLink" href="#about-moog">About</a><div className="badge"><span className="pulse" /> temporary by design</div></nav>
+          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">●</span><span>Moog</span></a>
+          <nav className="topNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a className="headerCreate" href="#composer">Create link</a></nav>
         </header>
 
         <section className="hero">
-          <div className="eyebrow">TEMPORARY SHARING</div>
+          <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · NO ACCOUNT</div>
           <h1>Share privately.<br /><span>Let it disappear.</span></h1>
-          <p className="heroCopy">Share text, code, or images with a private link. No account required.</p>
-          <div className="heroTrust" aria-label="Moog benefits"><strong>No account</strong><span aria-hidden="true">•</span><strong>Private link</strong><span aria-hidden="true">•</span><strong>Automatic expiry</strong></div>
-          <div className="expiryHighlight" aria-label="Available expiry times"><span>Expires in:</span><strong>1 min · 5 min · 15 min · 1 hr · 6 hr · 24 hr</strong></div>
+          <p className="heroCopy">Share text, code, or images with a private link. No account required.<br />Set an expiry time, add an access key if you want, and keep control.</p>
         </section>
 
-        <div className="shareTabs" role="tablist" aria-label="Share mode" onKeyDown={(event) => { if (event.key === "ArrowRight" || event.key === "ArrowDown") { event.preventDefault(); changeTab("receive"); } if (event.key === "ArrowLeft" || event.key === "ArrowUp") { event.preventDefault(); changeTab("send"); } }}>
-          <button type="button" role="tab" tabIndex={tab === "send" ? 0 : -1} aria-selected={tab === "send"} className={tab === "send" ? "shareTab active" : "shareTab"} onClick={() => changeTab("send")}>↗ <span>Send</span></button>
-          <button type="button" role="tab" tabIndex={tab === "receive" ? 0 : -1} aria-selected={tab === "receive"} className={tab === "receive" ? "shareTab active" : "shareTab"} onClick={() => changeTab("receive")}>↓ <span>Receive</span></button>
-        </div>
-
         {tab === "send" ? (
-          <section className="composer card" aria-labelledby="send-title">
+          <section className="composer card" id="composer" aria-labelledby="send-title">
             <div className="srOnly" id="send-title">Send a share</div>
             <form onSubmit={handleSubmit}>
               <div className="composerTop">
-                <div><div className="fieldLabel">{mode === "photo" ? "PHOTO" : "MESSAGE"}</div><div className="editorHint">{mode === "photo" ? "Upload, drag & drop, or paste an image." : "Paste text or code. No account required."}</div></div>
+                <div className="srOnly">{mode === "photo" ? "Image" : mode === "code" ? "Code" : "Text"} composer</div>
                 {mode === "photo" ? <div className="counter">10 MB max</div> : <div className="counter">{text.length.toLocaleString()} / 100,000</div>}
+              </div>
+
+              <div className="modeToggle" role="group" aria-label="Content mode">
+                <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} onClick={() => setMode("text")}>▣ <span>Text</span></button>
+                <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} onClick={() => setMode("code")}>{"</>"} <span>Code</span></button>
+                <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} onClick={() => { setMode("photo"); setText(""); }}>▧ <span>Image</span></button>
               </div>
 
               {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder="Type or paste something to share…" maxLength={100000} aria-label="Text to share" autoFocus /> : null}
@@ -442,7 +441,7 @@ export default function HomePage() {
               ) : null}
 
               <div className="lifetimeSection">
-                <div className="lifetimeHeader"><span>LINK LIFETIME</span><strong>Access link · {EXPIRY_OPTIONS.find((option) => option.value === expiryMinutes)?.label ?? "1 hour"}</strong></div>
+                <div className="lifetimeHeader"><span>Link expires in</span><strong>{EXPIRY_OPTIONS.find((option) => option.value === expiryMinutes)?.label ?? "1 hour"}</strong></div>
                 <div className={`lifetimePills expiry-${EXPIRY_OPTIONS.findIndex((option) => option.value === expiryMinutes)}`} role="group" aria-label="Link lifetime">
                   <span className="lifetimeActivePill" aria-hidden="true" />
                   {EXPIRY_OPTIONS.map((option) => <button key={option.value} type="button" className={expiryMinutes === option.value ? "lifetimePill active" : "lifetimePill"} onClick={() => setExpiryMinutes(option.value)}>{option.label.replace(" minutes", " min").replace(" minute", " min").replace(" hours", " hr").replace(" hour", " hr")}</button>)}
@@ -462,7 +461,8 @@ export default function HomePage() {
 
               {error ? <div className="formError" role="alert">{error}</div> : null}
 
-              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>Create private link <span>→</span></>}</button>
+              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>↗ &nbsp; Create private link <span>→</span></>}</button>
+              <div className="composerTrust">◈ &nbsp; No account required. Your content expires automatically.</div>
             </form>
           </section>
         ) : (
@@ -511,11 +511,11 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section className="securitySection standalonePrivacy"><div className="eyebrow">PRIVACY</div><h3>Private by default.</h3><p>Moog does not publish a public directory of shares, and share pages are marked noindex. Anyone with the private link can access it unless you enable an access key. Moog controls access, not copies.</p></section>
+        <section className="securitySection standalonePrivacy" id="security"><div className="eyebrow">PRIVACY</div><h3>Private by default.</h3><p>Moog does not publish a public directory of shares, and share pages are marked noindex. Anyone with the private link can access it unless you enable an access key. Moog controls access, not copies.</p></section>
 
         <section className="securitySection standaloneSecurity"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Access-controlled, not end-to-end encrypted.</h3><p>Moog stores shared content on the server so it can deliver the share. Tokens and codes are stored as hashes, access keys are hashed, and expired or revoked shares are rejected. Moog does not provide end-to-end encryption yet, so do not use it for secrets that require server-blind encryption.</p></section>
 
-        <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3>
+        <section className="faq" id="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3>
           {[
             ["Is my share end-to-end encrypted?", "Not yet. Moog currently protects access to server-stored content, but the server can technically read active share content. Treat it as temporary access control, not zero-knowledge encryption."],
             ["Do I need an account?", "No. Sending and receiving are both account-free."],
