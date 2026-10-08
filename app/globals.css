@@ -2183,3 +2183,50 @@ textarea:focus{border-color:rgba(200,255,61,.35);box-shadow:0 0 0 4px rgba(200,2
   .page:not(.refPage) .productFeatures,.page:not(.refPage) .securityGrid{grid-template-columns:1fr}
   .page:not(.refPage) .lifetimePills{grid-template-columns:repeat(3,1fr)}
 }
+
+
+/* PrivateBin-inspired landing composer tabs — visual reference supplied by the user. */
+.page:not(.refPage) .referenceComposerTabs{
+  width:52%;
+  margin-left:48%;
+  margin-top:-300px;
+  display:flex;
+  border:1px solid #d5d9de;
+  border-bottom:0;
+  border-radius:8px 8px 0 0;
+  background:#fff;
+  overflow:hidden;
+}
+.page:not(.refPage) .referenceComposerTab{
+  flex:1;
+  min-height:46px;
+  border:0;
+  border-bottom:3px solid transparent;
+  background:#fff;
+  color:#66707a;
+  font:inherit;
+  font-size:14px;
+  font-weight:600;
+}
+.page:not(.refPage) .referenceComposerTab:hover{color:#212529;background:#f8f9fa}
+.page:not(.refPage) .referenceComposerTab.active{
+  color:#235a93;
+  border-bottom-color:#2b6cb0;
+  background:#fff;
+}
+.page:not(.refPage) .referenceComposerTabs + .composer{
+  margin-top:0;
+  border-top-left-radius:0;
+  border-top-right-radius:0;
+}
+@media(max-width:900px){
+  .page:not(.refPage) .referenceComposerTabs{
+    width:100%;
+    margin-left:0;
+    margin-top:0;
+  }
+  .page:not(.refPage) .referenceComposerTabs + .composer{
+    margin-top:0;
+    border-radius:0 0 8px 8px;
+  }
+}
