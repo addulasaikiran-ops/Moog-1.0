@@ -4,7 +4,7 @@ export default function ShareLoading() {
       <div className="viewerShell">
         <header className="viewerTopbar"><a className="minimalLogo" href="/">Moog</a><span className="viewerSecure">opening share</span></header>
         <section className="shareStatusCard minimalCard">
-          <div className="statusSpinner" aria-hidden="true" />
+          <div className="statusSkeleton" aria-hidden="true"><span /><span /><span /></div>
           <div className="viewerEyebrow">SECURE SHARE</div>
           <h1>Opening your share…</h1>
           <p>Checking the link and preparing the content.</p>
