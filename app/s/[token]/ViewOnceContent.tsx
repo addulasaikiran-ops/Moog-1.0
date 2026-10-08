@@ -47,11 +47,11 @@ export default function ViewOnceContent({ token }: { token: string }) {
   );
 
   if (failed) {
-    return <div className="minimalContent"><p className="minimalText">This share is no longer available.</p></div>;
+    return <div className="minimalContent viewOnceState"><div className="viewOnceStateIcon" aria-hidden="true">!</div><strong>This one-time share could not be opened.</strong><p>Please create a new share if the content is still needed.</p></div>;
   }
 
   if (!payload) {
-    return <div className="minimalContent"><p className="minimalText">Revealing…</p></div>;
+    return <div className="minimalContent viewOnceState" aria-live="polite"><div className="statusSpinner" aria-hidden="true" /><strong>Revealing private content…</strong><p>This one-time share is being opened securely.</p></div>;
   }
 
   return (
@@ -80,7 +80,7 @@ export default function ViewOnceContent({ token }: { token: string }) {
               Download
             </a>
           ) : (
-            <span className="minimalActionNote">View once</span>
+            <span className="minimalActionNote"><strong>Viewed once</strong> · this share is now consumed</span>
           )}
         </div>
         <a className="minimalNewShare" href="/">New share <span>→</span></a>
