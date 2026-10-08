@@ -20,7 +20,7 @@ export async function POST(request: Request, { params }: Params) {
   }
   const share = await prisma.share.findUnique({ where: { tokenHash } });
 
-  if (!share || share.revokedAt || !share.viewOnce || share.expiresAt <= new Date()) {
+  if (!share || !share.viewOnce || share.expiresAt <= new Date()) {
     return new NextResponse("Not found", { status: 404 });
   }
 
