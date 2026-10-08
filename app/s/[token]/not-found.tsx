@@ -10,7 +10,7 @@ export default function ShareNotFound() {
           <div className="lockIcon" aria-hidden="true">⌑</div>
           <div className="viewerEyebrow">SHARE UNAVAILABLE</div>
           <h1>This share is no longer available.</h1>
-          <p>It may have expired, been revoked, or already been viewed once. Nothing else is required.</p>
+          <p>It may have expired or already been viewed once. Nothing else is required.</p>
           <a className="minimalRevealButton" href="/">Create a new share <span>→</span></a>
         </section>
         <footer className="minimalFooter">moog · temporary sharing</footer>
