@@ -920,10 +920,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 .recentActions{display:flex;align-items:center;gap:7px;flex-wrap:wrap;justify-content:flex-end}
 .textButton{border:0;background:transparent;color:#737885;padding:6px 4px;font:inherit;font-size:11px}
 .textButton:hover{color:var(--text)}
-.revokeLinkRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px;padding-top:10px;border-top:1px solid var(--line);color:#777c88;font-size:11px}
-.revokeLinkRow .copy{width:auto}
-.resultWarning{margin:6px 0 0;color:#b28a90;font-size:11px}
-@media(max-width:520px){.recentItem{align-items:flex-start;flex-direction:column}.recentActions{justify-content:flex-start;width:100%}.recentActions .copy,.recentActions .revokeNow{flex:1}.revokeLinkRow{align-items:stretch;flex-direction:column}.revokeLinkRow .copy{width:100%}}
+@media(max-width:520px){.recentItem{align-items:flex-start;flex-direction:column}.recentActions{justify-content:flex-start;width:100%}.recentActions .copy{flex:1}.revokeLinkRow{align-items:stretch;flex-direction:column}.revokeLinkRow .copy{width:100%}}
 
 
 /* 2026 Moog UI pass — preserve the existing identity, tighten the hierarchy. */
