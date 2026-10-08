@@ -3145,3 +3145,37 @@ body{background:var(--moog-bg)!important;color:var(--moog-text)!important}
   .legalShell h1{font-size:clamp(42px,13vw,60px)!important}.legalShell .eyebrow{margin-top:55px!important}
   .legalShell h2{margin-top:45px!important}
 }
+
+/* MOOG 2.1 — interaction/state polish */
+.resultSuccessRow{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
+.resultSuccessRow h2{margin:3px 0 5px;color:#f1f5ed;font-size:24px;letter-spacing:-.04em}
+.resultSuccessRow p{margin:0;color:#727c88;font-size:13px;line-height:1.55}
+.resultFieldLabel{margin:0 0 7px;color:#626c78;font-size:9px;font-weight:800;letter-spacing:.14em}
+.resultMetaGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.resultMetaGrid>div{padding:12px;border:1px solid var(--moog-line);border-radius:11px;background:rgba(255,255,255,.018)}
+.resultMetaGrid span{display:block;color:#59636f;font-size:8px;font-weight:800;letter-spacing:.13em}
+.resultMetaGrid strong{display:block;margin-top:5px;color:#dce3da;font-size:12px}
+.copyFeedback{color:#78828d;font-size:11px}
+.resultNewButton{border:1px solid var(--moog-line-strong);background:#11151a;color:#dfe5dd;border-radius:9px;padding:8px 11px;font-weight:700;cursor:pointer}
+.resultNewButton:hover{background:#1b2026}
+.resultPrimaryCopy{border-color:rgba(196,255,74,.2)!important}
+.shareStatusPage{display:flex;align-items:center;justify-content:center}
+.shareStatusCard{width:min(600px,100%);padding:64px 30px;text-align:center}
+.shareStatusCard h1{margin:15px 0 10px;color:#f0f4ed;font-size:clamp(34px,5vw,52px);letter-spacing:-.055em}
+.shareStatusCard p{max-width:470px;margin:0 auto;color:#78828e;line-height:1.7}
+.statusIcon{width:64px;height:64px;margin:0 auto 20px;border-radius:18px;display:grid;place-items:center;background:rgba(196,255,74,.08);border:1px solid rgba(196,255,74,.18);color:var(--moog-accent);font-size:24px}
+.statusAction{display:inline-flex!important;margin-top:26px!important}
+.statusSpinner{width:28px;height:28px;margin:0 auto 22px;border:2px solid rgba(255,255,255,.1);border-top-color:var(--moog-accent);border-radius:50%;animation:moogSpin .75s linear infinite}
+@keyframes moogSpin{to{transform:rotate(360deg)}}
+.viewOnceState{text-align:center!important;padding:64px 24px!important}
+.viewOnceState strong{display:block;color:#e9eee7;font-size:16px}
+.viewOnceState p{margin:8px 0 0;color:#707a86;font-size:13px}
+.viewOnceStateIcon{width:42px;height:42px;margin:0 auto 14px;border-radius:50%;display:grid;place-items:center;background:rgba(255,150,110,.08);color:#ffb18d}
+@media(max-width:650px){
+  .resultSuccessRow{gap:10px}
+  .resultSuccessRow h2{font-size:20px}
+  .resultMetaGrid{grid-template-columns:1fr}
+  .resultBottom{gap:10px;align-items:flex-start}
+  .shareStatusCard{padding:46px 18px}
+}
+@media(prefers-reduced-motion:reduce){.statusSpinner{animation:none}}
