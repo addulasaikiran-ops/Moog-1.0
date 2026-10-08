@@ -12,7 +12,7 @@ export default function PrivacyPage() {
         <h1>Privacy, without pretending.</h1>
         <p>Moog stores active share content on the server because the service must retrieve it for recipients. This is access-controlled temporary sharing, not end-to-end encryption.</p>
         <h2>Temporary data</h2>
-        <p>Shares have a server-enforced expiry and are deleted by the expiry cleanup process. Optional access keys are stored as bcrypt hashes for new shares; legacy scrypt hashes remain supported for existing shares. Public share tokens, revoke tokens, and receive codes are stored only as hashes.</p>
+        <p>Shares have a server-enforced expiry and are deleted by the expiry cleanup process. Optional access keys are stored as bcrypt hashes for new shares; legacy scrypt hashes remain supported for existing shares. Public share tokens and receive codes are stored only as hashes.</p>
         <h2>Photos</h2>
         <p>Uploads are restricted to JPG, PNG, GIF, and WebP, checked against their real file signatures, reprocessed server-side, and limited to 10 MB. Reprocessing removes image metadata such as EXIF where the image processor supports it.</p>
         <h2>Copies and previews</h2>
