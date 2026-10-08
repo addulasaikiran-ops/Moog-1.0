@@ -380,14 +380,16 @@ export default function HomePage() {
 
       <div className="shell">
         <header className="topbar">
-          <a className="logo" href="/" aria-label="Moog home"><span className="logoMark">M</span><span>moog</span></a>
+          <a className="logo" href="/" aria-label="Moog home"><span className="logoMark">M</span><span>Moog</span></a>
           <nav className="topNav" aria-label="Primary"><button type="button" className={tab === "send" ? "navLink active" : "navLink"} onClick={() => changeTab("send")}>Send</button><button type="button" className={tab === "receive" ? "navLink active" : "navLink"} onClick={() => changeTab("receive")}>Receive</button><a className="navLink" href="#about-moog">About</a><div className="badge"><span className="pulse" /> temporary by design</div></nav>
         </header>
 
         <section className="hero">
           <div className="eyebrow">TEMPORARY SHARING</div>
-          <h1>Say it once.<br /><span>Then let it disappear.</span></h1>
-          <p className="heroCopy">Share text, code, or a photo with access controls and a clear expiry.</p>
+          <h1>Share privately.<br /><span>Let it disappear.</span></h1>
+          <p className="heroCopy">Share text, code, or images with a private link. No account required.</p>
+          <div className="heroTrust" aria-label="Moog benefits"><strong>No account</strong><span aria-hidden="true">•</span><strong>Private link</strong><span aria-hidden="true">•</span><strong>Automatic expiry</strong></div>
+          <div className="expiryHighlight" aria-label="Available expiry times"><span>Expires in:</span><strong>1 min · 5 min · 15 min · 1 hr · 6 hr · 24 hr</strong></div>
         </section>
 
         <div className="shareTabs" role="tablist" aria-label="Share mode" onKeyDown={(event) => { if (event.key === "ArrowRight" || event.key === "ArrowDown") { event.preventDefault(); changeTab("receive"); } if (event.key === "ArrowLeft" || event.key === "ArrowUp") { event.preventDefault(); changeTab("send"); } }}>
@@ -460,7 +462,7 @@ export default function HomePage() {
 
               {error ? <div className="formError" role="alert">{error}</div> : null}
 
-              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>Create share <span>→</span></>}</button>
+              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>Create private link <span>→</span></>}</button>
             </form>
           </section>
         ) : (
@@ -481,10 +483,10 @@ export default function HomePage() {
           <section className="result resultExpanded" aria-live="polite">
             <div className="resultIcon">✓</div>
             <div className="resultBody">
-              <div className="resultLabel">ACCESS LINK CREATED</div>
-              <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "⧉ Copy"}</button></div>
+              <div className="resultLabel">YOUR PRIVATE LINK IS READY</div>
+              <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
               <div className="uniqueCodeBox"><div><span>Unique code</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
-              <p className="resultNote">The code and revoke link are shown only once. Copy them now.</p><div className="revokeLinkRow"><span>Creator revoke link</span><button className="copy" type="button" onClick={() => void copyValue(revokeUrl, "revoke")}>{copied === "link" ? "Copied ✓" : "⧉ Copy"}</button></div><p className="resultWarning">Save this. It can&apos;t be recovered.</p><div className="resultBottom"><span className="expiryStatus"><b>Expires in</b> {remaining > 0 ? formatCountdown(remaining) : "0s"}{viewOnce ? (viewed ? " · viewed" : " · not viewed yet") : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
+              <p className="resultNote">Your link is ready. Keep the creator controls below if you need to stop access early.</p><div className="revokeLinkRow"><span>Creator revoke link</span><button className="copy" type="button" onClick={() => void copyValue(revokeUrl, "revoke")}>{copied === "link" ? "Copied ✓" : "⧉ Copy"}</button></div><p className="resultWarning">Save your revoke link. You can use it to disable access before expiry.</p><div className="resultBottom"><span className="expiryStatus"><b>Expires in</b> {remaining > 0 ? formatCountdown(remaining) : "0s"}{viewOnce ? (viewed ? " · viewed" : " · not viewed yet") : ""}{accessKey ? " · protected" : ""}</span><button className="revokeNow" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || revoked || remaining <= 0}>{revoked ? "Revoked ✓" : revokeLoading ? "Revoking…" : "Revoke now"}</button></div>
             </div>
           </section>
         ) : null}
@@ -509,6 +511,8 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section className="securitySection standalonePrivacy"><div className="eyebrow">PRIVACY</div><h3>Private by default.</h3><p>Moog does not publish a public directory of shares, and share pages are marked noindex. Anyone with the private link can access it unless you enable an access key. Moog controls access, not copies.</p></section>
+
         <section className="securitySection standaloneSecurity"><div className="eyebrow">SECURITY & PRIVACY</div><h3>Access-controlled, not end-to-end encrypted.</h3><p>Moog stores shared content on the server so it can deliver the share. Tokens and codes are stored as hashes, access keys are hashed, and expired or revoked shares are rejected. Moog does not provide end-to-end encryption yet, so do not use it for secrets that require server-blind encryption.</p></section>
 
         <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Questions, answered.</h3>
@@ -525,7 +529,7 @@ export default function HomePage() {
               <p>{answer}</p>
             </details>
           ))}</section>
-        <footer className="siteFooter"><div className="footerBrand"><strong>moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a><a href="/report-abuse">Report abuse</a></nav><div className="footerLegal">© 2026 Moog</div></footer>
+        <footer className="siteFooter"><div className="footerBrand"><strong>Moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a><a href="/report-abuse">Report abuse</a></nav><div className="footerLegal">© 2026 Moog</div></footer>
       </div>
     </main>
   );
