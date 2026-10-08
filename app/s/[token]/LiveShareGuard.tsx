@@ -77,7 +77,7 @@ export default function LiveShareGuard({
       <main className="viewerPage viewerMinimal viewerLockedPage">
         <div className="viewerShell">
           <header className="viewerTopbar">
-            <a className="minimalLogo" href="/">moog</a>
+            <a className="minimalLogo" href="/">Moog</a>
             <a className="newShareLink" href="/">New share <span>→</span></a>
           </header>
           <section className="lockStage">
