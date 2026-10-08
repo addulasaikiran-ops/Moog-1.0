@@ -498,6 +498,26 @@ export default function HomePage() {
           </section>
         ) : null}
 
+        <section className="productFeatures" aria-label="Moog benefits">
+          <div className="featureCard featurePurple"><i>▣</i><strong>Private by default</strong><small>Your content isn&apos;t publicly searchable. Only people with the link can access it.</small></div>
+          <div className="featureCard featureBlue"><i>◷</i><strong>Automatic expiry</strong><small>Choose exactly how long it stays available.</small></div>
+          <div className="featureCard featureGreen"><i>✓</i><strong>Revoke anytime</strong><small>Delete access before the timer ends.</small></div>
+          <div className="featureCard featureOrange"><i>◉</i><strong>No account required</strong><small>Share instantly without creating another account.</small></div>
+        </section>
+
+        <section className="howMoog referenceHow" id="how-it-works" aria-labelledby="how-title">
+          <div className="howIntro"><div className="eyebrow">HOW IT WORKS</div><h2 id="how-title">How it works</h2><p>A simple 4-step process. Share. Control. Done.</p></div>
+          <div className="howSteps">
+            <div><b className="stepPurple">01</b><strong>Create</strong><small>Paste text, code, or an image and choose an expiry time.</small></div>
+            <span>→</span>
+            <div><b className="stepBlue">02</b><strong>Share</strong><small>Get a private link and send it to anyone.</small></div>
+            <span>→</span>
+            <div><b className="stepGreen">03</b><strong>Open</strong><small>They open it without an account.</small></div>
+            <span>→</span>
+            <div><b className="stepOrange">04</b><strong>Expire</strong><small>Access disappears automatically.</small></div>
+          </div>
+        </section>
+
         <section className="aboutMoog" id="about-moog" aria-labelledby="about-title">
           <div className="aboutIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="about-title">Temporary access.</h2></div>
           <div className="featureGrid">
