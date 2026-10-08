@@ -3179,3 +3179,62 @@ body{background:var(--moog-bg)!important;color:var(--moog-text)!important}
   .shareStatusCard{padding:46px 18px}
 }
 @media(prefers-reduced-motion:reduce){.statusSpinner{animation:none}}
+
+
+/* MOOG 3.0 — quiet luxury / monochrome refinement */
+:root{
+  --moog-bg:#080808;
+  --moog-panel:#101010;
+  --moog-panel-2:#151515;
+  --moog-line:rgba(255,255,255,.09);
+  --moog-line-strong:rgba(255,255,255,.16);
+  --moog-text:#f5f5f3;
+  --moog-muted:#8b8b88;
+  --moog-dim:#5d5d5a;
+  --moog-accent:#f3f3ef;
+  --moog-accent-2:#cfcfca;
+  --moog-accent-soft:rgba(255,255,255,.055);
+}
+.page{
+  background:#080808!important;
+}
+.page:before{opacity:.018!important}
+.page .topbar{background:rgba(8,8,8,.86)!important}
+.page .logoLock,.page .securityDot{color:#f3f3ef!important;background:#f3f3ef!important;box-shadow:none!important}
+.page .topNav .headerCreate,.page .createButton,.page .receiveOpen,.page .contactCard a,.page .lifetimePill.active{
+  background:#f3f3ef!important;color:#080808!important;box-shadow:none!important
+}
+.page .topNav .headerCreate:hover,.page .createButton:hover:not(:disabled),.page .receiveOpen:hover:not(:disabled){
+  background:#fff!important
+}
+.page .heroBadge{border-color:var(--moog-line-strong)!important;background:rgba(255,255,255,.035)!important;color:#a9a9a5!important}
+.page .hero h1 span{color:#73736f!important}
+.page .heroBenefitIcon,.page .featureCard i,.page .securityIcon,.page .useGrid i{
+  background:rgba(255,255,255,.055)!important;color:#d9d9d5!important;box-shadow:none!important
+}
+.page .result{border-color:var(--moog-line-strong)!important;background:#101010!important}
+.page .resultIcon{background:#f3f3ef!important;color:#080808!important}
+.page .resultLabel{color:#bdbdb8!important}
+.page .resultPrimaryCopy{border-color:var(--moog-line-strong)!important}
+.page .resultDetails{margin-top:10px;border-top:1px solid var(--moog-line);border-bottom:1px solid var(--moog-line)}
+.page .resultDetails summary{cursor:pointer;padding:12px 2px;color:#aaa9a5;font-size:11px;font-weight:700;letter-spacing:.05em;list-style:none}
+.page .resultDetails summary::-webkit-details-marker{display:none}
+.page .resultDetails summary:after{content:"+";float:right;color:#666}
+.page .resultDetails[open] summary:after{content:"−"}
+.page .resultDetails .resultMetaGrid{margin:0 0 10px}
+.page .resultNewButton{background:#111!important;color:#ddd!important}
+.page .receiveInput{text-align:center;font-variant-numeric:tabular-nums;letter-spacing:.22em;font-size:24px;font-weight:750}
+.page .receiveHint{text-align:center}
+.page .resultLinkRow a{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.viewerPage,.legalPage{background:#080808!important}
+.viewerPage{background:#080808!important}
+.viewerTopbar{background:#080808!important}
+.viewerSecure .lockDot,.lockIcon,.statusIcon,.viewOnceStateIcon{box-shadow:none!important}
+.passwordRow .primary,.minimalRevealButton,.legalButton{background:#f3f3ef!important;color:#080808!important;box-shadow:none!important}
+.viewerEyebrow,.revealEyebrow,.legalShell .eyebrow{color:#9a9a96!important}
+.timeLine{background:#d8d8d3!important}
+@media(max-width:700px){
+  .page .heroBenefits{gap:6px!important}
+  .page .heroBenefits>div{background:#0d0d0d!important}
+  .page .referenceComposerTabs{margin-top:10px!important}
+}
