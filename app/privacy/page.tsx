@@ -7,7 +7,7 @@ export default function PrivacyPage() {
   return (
     <main className="legalPage">
       <article className="legalShell">
-        <a className="minimalLogo" href="/">moog</a>
+        <a className="minimalLogo brandLogo" href="/" aria-label="Moog home"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none"><path d="M25 20.5 22 23.5a7 7 0 0 0 9.9 9.9l4.4-4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M39 27.5 42 24.5a7 7 0 0 0-9.9-9.9l-4.4 4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="m26 29 12-12" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/></svg><span>moog</span></a>
         <p className="eyebrow">PRIVACY</p>
         <h1>Privacy, without pretending.</h1>
         <p>Moog stores active share content on the server because the service must retrieve it for recipients. This is access-controlled temporary sharing, not end-to-end encryption.</p>

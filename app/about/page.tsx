@@ -7,7 +7,7 @@ export default function AboutPage() {
   return (
     <main className="legalPage">
       <div className="legalShell">
-        <a className="minimalLogo" href="/">moog</a>
+        <a className="minimalLogo brandLogo" href="/" aria-label="Moog home"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none"><path d="M25 20.5 22 23.5a7 7 0 0 0 9.9 9.9l4.4-4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M39 27.5 42 24.5a7 7 0 0 0-9.9-9.9l-4.4 4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="m26 29 12-12" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/></svg><span>moog</span></a>
         <p className="eyebrow">ABOUT MOOG</p>
         <h1>Temporary access, no account required.</h1>
         <p>Moog lets you share text, code, and photos through access-controlled links that expire. Sending and receiving are account-free.</p>

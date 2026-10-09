@@ -13,7 +13,7 @@ export default function HowItWorksPage() {
   ];
   return <main className="recentPage">
     <div className="recentShell">
-      <header className="recentTopbar"><a className="recentLogo" href="/">◈ Moog</a><a href="/#composer">Create share →</a></header>
+      <header className="recentTopbar"><a className="recentLogo" href="/" aria-label="Moog home"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none"><path d="M25 20.5 22 23.5a7 7 0 0 0 9.9 9.9l4.4-4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M39 27.5 42 24.5a7 7 0 0 0-9.9-9.9l-4.4 4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="m26 29 12-12" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/></svg><span>Moog</span></a><a href="/#composer">Create share →</a></header>
       <section className="recentIntro"><p className="recentEyebrow">THREE SIMPLE STEPS</p><h1>How it works</h1><p>Temporary sharing should feel simple. Add content, choose the access rules, then send the link or code.</p></section>
       <section className="howGuideSteps">{steps.map(([number,title,description]) => <article className="howGuideStep" key={number}><span>{number}</span><div><h2>{title}</h2><p>{description}</p></div></article>)}</section>
       <section className="howGuideFaq"><p className="recentEyebrow">NEED TO KNOW</p><h2>Frequently asked questions</h2>{faqs.map(([question,answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</section>
