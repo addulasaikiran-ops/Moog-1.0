@@ -32,7 +32,7 @@ export async function POST(
   }
 
   const share = await prisma.share.findUnique({ where: { tokenHash: hashToken(token) } });
-  if (!share || share.expiresAt <= new Date() || !share.passwordHash) {
+  if (!share || share.revokedAt || share.expiresAt <= new Date() || !share.passwordHash) {
     return NextResponse.redirect(new URL("/?error=unavailable", request.url), 303);
   }
 

@@ -69,6 +69,10 @@ export default function HomePage() {
   const [dragActive, setDragActive] = useState(false);
   const [url, setUrl] = useState("");
   const [code, setCode] = useState("");
+  const [revokeToken, setRevokeToken] = useState("");
+  const [revoked, setRevoked] = useState(false);
+  const [revokeLoading, setRevokeLoading] = useState(false);
+  const [revokeError, setRevokeError] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
   const [remaining, setRemaining] = useState(0);
   const [copied, setCopied] = useState<"link" | "code" | "">("");
@@ -141,6 +145,9 @@ export default function HomePage() {
     setError("");
     setUrl("");
     setCode("");
+    setRevokeToken("");
+    setRevoked(false);
+    setRevokeError("");
     setExpiresAt("");
     setRemaining(0);
     setViewed(false);
@@ -179,15 +186,42 @@ export default function HomePage() {
         });
       }
 
-      const body = (await response.json()) as { url?: string; code?: string; expiresAt?: string; error?: string };
+      const body = (await response.json()) as { url?: string; code?: string; revokeToken?: string; expiresAt?: string; error?: string };
       if (!response.ok) throw new Error(body.error ?? "Could not create link.");
       setUrl(body.url ?? "");
       setCode(body.code ?? "");
+      setRevokeToken(body.revokeToken ?? "");
+      setRevoked(false);
       setExpiresAt(body.expiresAt ?? "");
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Could not create link.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function revokeShare() {
+    if (!url || !revokeToken || revoked) return;
+    if (!window.confirm("Revoke this share now? Anyone using its link or code will lose access.")) return;
+    const token = new URL(url).pathname.split("/").filter(Boolean).pop();
+    if (!token) { setRevokeError("Could not identify this share."); return; }
+    setRevokeLoading(true);
+    setRevokeError("");
+    try {
+      const response = await fetch(`/api/shares/${token}/revoke`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ revokeToken }),
+      });
+      const body = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Could not revoke this share.");
+      setRevoked(true);
+      setCode("");
+      setRevokeToken("");
+    } catch (error) {
+      setRevokeError(error instanceof Error ? error.message : "Could not revoke this share.");
+    } finally {
+      setRevokeLoading(false);
     }
   }
 
@@ -232,14 +266,15 @@ export default function HomePage() {
 
       <div className="shell">
         <header className="topbar">
-          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">●</span><span>Moog</span></a>
+          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">∞</span><span>Moog</span></a>
           <nav className="topNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a className="headerCreate" href="#composer">Create share</a></nav>
         </header>
 
         <section className="hero">
           <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · SIMPLE</div>
-          <h1>Create a private share.<br /><span>Let it disappear.</span></h1>
-          <p className="heroCopy">A simple, temporary way to share private text, code, or images.<br />No account. No clutter. Set an expiry and share.</p>
+          <h1>Share something.</h1>
+          <p className="heroCopy">Keep it temporary. Keep it yours.</p>
+          <div className="heroActions"><a className="heroPrimaryAction" href="#composer">Create a private share <span aria-hidden="true">→</span></a><button className="heroSecondaryAction" type="button" onClick={() => { changeTab("receive"); window.setTimeout(() => document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}>Receive a share</button></div>
           <div className="heroBenefits" aria-label="Key benefits">
             <div><i className="heroBenefitIcon heroBenefitPurple">●</i><span><strong>No account</strong><small>required</small></span></div>
             <div><i className="heroBenefitIcon heroBenefitBlue">◷</i><span><strong>Automatic</strong><small>expiry</small></span></div>
@@ -257,7 +292,7 @@ export default function HomePage() {
           <div className="visualExpiry"><b>◷</b><span>Link expires<br /><strong>in 15 minutes</strong></span></div>
         </div>
 
-        <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
+        <div className="figmaComposerLayout"><div className="figmaComposerMain"><div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
           <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("receive")}>Receive</button>
         </div>
@@ -331,7 +366,7 @@ export default function HomePage() {
             </form>
           </section>
         ) : (
-          <section className="receiveCard card" aria-labelledby="receive-title">
+          <section className="receiveCard card" id="composer" aria-labelledby="receive-title">
             <div className="receiveHeader"><span className="receiveGlyph" aria-hidden="true">↓</span><div><h2 id="receive-title">Receive</h2><p>Got a code from someone? Paste it here to open what they shared. No account needed.</p></div></div>
             <form onSubmit={receiveShare}>
               <label className="receiveLabel" htmlFor="receive-code">Unique code</label>
@@ -352,15 +387,27 @@ export default function HomePage() {
             </div>
             <div className="resultBody">
               <div className="resultFieldLabel">PRIVATE LINK</div>
-              <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
-              <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
+              {!revoked ? <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div> : <p className="revokeNotice" role="status">This share has been revoked. Its link and code can no longer be used.</p>}
+              {!revoked ? <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div> : null}
               <div className="resultMetaGrid" aria-label="Share details"><div><span>EXPIRES</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{accessKey ? "Password protected" : "Link only"}</strong></div><div><span>VIEWING</span><strong>{viewOnce ? "View once" : "Until expiry"}</strong></div></div>
-              <p className="resultNote">Keep the link private. Anyone who has it can attempt to open the share.</p>
-              <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{copied ? `${copied === "link" ? "Private link" : "Share code"} copied to clipboard.` : "Ready to share."}</span><button className="resultNewButton" type="button" onClick={() => { setUrl(""); setCode(""); setExpiresAt(""); setError(""); window.scrollTo({ top: document.getElementById("composer")?.offsetTop ?? 0, behavior: "smooth" }); }}>Create another</button></div>
+              <p className="resultNote">{revoked ? "Access has been revoked." : "Keep the link private. Anyone who has it can attempt to open the share."}</p>{revokeError ? <p className="formError" role="alert">{revokeError}</p> : null}
+              <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{revoked ? "Share revoked." : copied ? `${copied === "link" ? "Private link" : "Share code"} copied to clipboard.` : "Ready to share."}</span>{!revoked ? <button className="revokeButton" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || !revokeToken}>{revokeLoading ? "Revoking…" : "Revoke link"}</button> : null}<button className="resultNewButton" type="button" onClick={() => { setUrl(""); setCode(""); setRevokeToken(""); setRevoked(false); setRevokeError(""); setExpiresAt(""); setError(""); window.scrollTo({ top: document.getElementById("composer")?.offsetTop ?? 0, behavior: "smooth" }); }}>Create another</button></div>
             </div>
           </section>
         ) : null}
 
+        </div>
+        <aside className="figmaPrivacyColumn" aria-label="Privacy features">
+          <section className="figmaPrivacyCard">
+            <h2>Privacy, without the friction.</h2>
+            <p>Your content should not live forever.</p>
+            <div className="figmaPrivacyFeature"><span>01</span><div><strong>Set an expiry</strong><small>Links stop working automatically.</small></div></div>
+            <div className="figmaPrivacyFeature"><span>02</span><div><strong>Add a password</strong><small>Keep access limited to the right people.</small></div></div>
+            <div className="figmaPrivacyFeature"><span>03</span><div><strong>Reveal once</strong><small>One successful reveal consumes the share.</small></div></div>
+          </section>
+          <section className="figmaPrivacyNote"><strong>Your share, your rules.</strong><p>Copy the link or receive code after creation. Only share it with people you trust.</p></section>
+        </aside>
+        </div>
         <section className="productFeatures" aria-label="Moog benefits">
           <div className="featureCard featurePurple"><i>▣</i><strong>Private by default</strong><small>Your content isn&apos;t publicly searchable. Only people with the link can access it.</small></div>
           <div className="featureCard featureBlue"><i>◷</i><strong>Automatic expiry</strong><small>Choose exactly how long it stays available.</small></div>

@@ -20,7 +20,7 @@ export async function POST(request: Request, { params }: Params) {
   }
   const share = await prisma.share.findUnique({ where: { tokenHash } });
 
-  if (!share || !share.viewOnce || share.expiresAt <= new Date()) {
+  if (!share || share.revokedAt || !share.viewOnce || share.expiresAt <= new Date()) {
     return new NextResponse("Not found", { status: 404 });
   }
 
@@ -33,7 +33,7 @@ export async function POST(request: Request, { params }: Params) {
 
   const now = new Date();
   const claimed = await prisma.share.updateMany({
-    where: { id: share.id, viewedAt: null, expiresAt: { gt: now } },
+    where: { id: share.id, revokedAt: null, viewedAt: null, expiresAt: { gt: now } },
     data: { viewedAt: now },
   });
   if (claimed.count !== 1) return new NextResponse("Not found", { status: 404 });

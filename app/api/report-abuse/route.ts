@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
 import { getClientKey } from "@/lib/token";
 import { isAllowedOrigin } from "@/lib/origin";
+import { isValidEmail } from "@/lib/validation";
 
 const CATEGORIES = new Set(["illegal", "harassment", "copyright", "malware", "privacy", "other"]);
 function response(body: Record<string, unknown>, status = 200) {
@@ -22,7 +23,7 @@ export async function POST(request: Request) {
     if (!/^https?:$/.test(parsed.protocol) || !parsed.pathname.startsWith("/s/")) return response({ error: "Enter a valid Moog share URL." }, 400);
   } catch { return response({ error: "Enter a valid Moog share URL." }, 400); }
   if (!CATEGORIES.has(category) || details.length < 10 || details.length > 5000 || email.length > 254) return response({ error: "Please complete the report fields." }, 400);
-  if (email && !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) return response({ error: "Enter a valid email address or leave it blank." }, 400);
+  if (email && !isValidEmail(email)) return response({ error: "Enter a valid email address or leave it blank." }, 400);
   await prisma.abuseReport.create({ data: { shareUrl, category, email: email || null, details } });
   return response({ ok: true }, 201);
 }

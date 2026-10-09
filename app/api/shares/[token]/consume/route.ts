@@ -19,7 +19,7 @@ export async function POST(request: Request, { params }: Params) {
     return new NextResponse("Too many reveal attempts. Try again later.", { status: 429, headers: { "Cache-Control": "no-store" } });
   }
   const share = await prisma.share.findUnique({ where: { tokenHash } });
-  if (!share || !share.viewOnce || !share.viewedAt || share.expiresAt <= new Date()) {
+  if (!share || share.revokedAt || !share.viewOnce || !share.viewedAt || share.expiresAt <= new Date()) {
     return new NextResponse("Not found", { status: 404 });
   }
 
@@ -32,7 +32,7 @@ export async function POST(request: Request, { params }: Params) {
 
   const now = new Date();
   const claimed = await prisma.share.updateMany({
-    where: { id: share.id, viewedAt: { not: null }, rConsumedAt: null, expiresAt: { gt: now } },
+    where: { id: share.id, revokedAt: null, viewedAt: { not: null }, rConsumedAt: null, expiresAt: { gt: now } },
     data: { rConsumedAt: now },
   });
   if (claimed.count !== 1) return new NextResponse("Not found", { status: 404 });
