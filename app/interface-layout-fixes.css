@@ -1,0 +1,120 @@
+/* Post-theme fixes for the home composer and benefit cards.
+   Loaded after moog-light.css so the dark interface wins over legacy light overrides. */
+.page .securityBar {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid var(--moog-line) !important;
+  border-radius: 14px !important;
+  background: #101010 !important;
+}
+.page .securityDisclosure {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-height: 70px !important;
+  padding: 16px 18px !important;
+  border: 0 !important;
+  border-radius: 13px !important;
+  background: #101010 !important;
+  color: #e9ede6 !important;
+  text-align: left !important;
+}
+.page .securityDisclosure:hover,
+.page .securityDisclosure.open {
+  background: #151515 !important;
+}
+.page .securityDisclosureText,
+.page .securityDisclosure small,
+.page .securityDisclosure span,
+.page .securityDisclosure strong {
+  color: #a7ada5 !important;
+}
+.page .securityDisclosure strong {
+  color: #e9ede6 !important;
+}
+.page .securityDisclosure svg,
+.page .securityDisclosure .chevron {
+  color: #a7ada5 !important;
+  flex: 0 0 auto !important;
+}
+.page .securityOptions {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+  padding: 16px 18px 18px !important;
+  border-top: 1px solid var(--moog-line) !important;
+  background: #101010 !important;
+}
+.page .securityOptions > *,
+.page .securityOptions label {
+  min-width: 0 !important;
+  color: #d9ded7 !important;
+  background: #141414 !important;
+}
+.page .securityOptions input:not([type="checkbox"]) {
+  max-width: 100% !important;
+}
+.page .productFeatures {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 14px !important;
+  width: min(100%, 960px) !important;
+  max-width: 960px !important;
+  margin: 24px auto 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+}
+.page .productFeatures > .featureCard {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 190px !important;
+  margin: 0 !important;
+  padding: 22px !important;
+  overflow-wrap: anywhere !important;
+  border: 1px solid var(--moog-line) !important;
+  border-radius: 18px !important;
+  background: #101010 !important;
+  box-sizing: border-box !important;
+}
+.page .productFeatures > .featureCard strong {
+  margin-top: auto !important;
+  padding-top: 18px !important;
+  color: #e3e6e0 !important;
+}
+.page .productFeatures > .featureCard small {
+  color: #929890 !important;
+  white-space: normal !important;
+}
+.page .productFeatures > .featureCard i {
+  flex: 0 0 auto !important;
+  color: #d9ded7 !important;
+  background: #1a1d19 !important;
+}
+@media (max-width: 760px) {
+  .page .productFeatures {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+  .page .productFeatures > .featureCard {
+    min-height: 160px !important;
+    padding: 16px !important;
+  }
+}
+@media (max-width: 480px) {
+  .page .productFeatures,
+  .page .securityOptions {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .page .productFeatures > .featureCard {
+    min-height: 0 !important;
+  }
+}
