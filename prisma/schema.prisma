@@ -24,10 +24,13 @@ model Share {
   viewedAt        DateTime?
   revealTokenHash String?   @unique
   rConsumedAt     DateTime?
+  revokeTokenHash String?   @unique
+  revokedAt       DateTime?
   createdAt       DateTime  @default(now())
   expiresAt       DateTime
   @@index([expiresAt])
   @@index([viewOnce, viewedAt])
+  @@index([revokedAt])
 }
 
 model AbuseReport {
