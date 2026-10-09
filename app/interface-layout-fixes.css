@@ -233,3 +233,53 @@ html, body { background: #0b0f14 !important; }
   font-size: 13px !important;
   line-height: 1.5 !important;
 }
+
+/* Recent shares: local-only metadata dashboard */
+.recentPage { min-height: 100vh; background: #0b0f14; color: #f8fafc; padding: 0 20px 64px; }
+.recentShell { width: min(100%, 920px); margin: 0 auto; }
+.recentTopbar { min-height: 76px; display:flex; align-items:center; justify-content:space-between; gap:16px; border-bottom:1px solid #1e2836; }
+.recentTopbar a { color:#94a3b8; text-decoration:none; }
+.recentTopbar .recentLogo { color:#f8fafc; font-size:21px; font-weight:850; letter-spacing:-.06em; }
+.recentIntro { padding:58px 0 26px; }
+.recentEyebrow { color:#00e5a0; font:700 11px/1.5 ui-monospace,monospace; letter-spacing:.16em; }
+.recentIntro h1 { margin:10px 0; font-size:clamp(36px,6vw,56px); line-height:1; letter-spacing:-.065em; }
+.recentIntro p:last-child { max-width:600px; color:#94a3b8; line-height:1.7; }
+.recentControls { display:flex; gap:12px; align-items:center; }
+.recentSearch { display:flex; align-items:center; gap:10px; flex:1; min-width:0; padding:0 14px; border:1px solid #1e2836; border-radius:12px; background:#121821; color:#94a3b8; }
+.recentSearch input { width:100%; min-width:0; min-height:48px; border:0!important; outline:0!important; background:transparent!important; color:#f8fafc!important; }
+.recentClear,.recentFilters button,.recentActions button,.recentActions a { border:1px solid #2b394b; border-radius:10px; padding:11px 13px; background:#121821; color:#dbe4ee; text-decoration:none; cursor:pointer; font-size:13px; }
+.recentClear { border-color:rgba(239,68,68,.38); color:#fca5a5; }
+.recentFilters { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0; }
+.recentFilters button.selected { background:rgba(124,92,255,.18); border-color:#7c5cff; color:#fff; }
+.recentList { display:grid; gap:12px; }
+.recentItem { min-width:0; padding:20px; border:1px solid #1e2836; border-radius:16px; background:linear-gradient(145deg,#121821,#0f141b); }
+.recentItemHead { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.recentType { display:flex; align-items:center; gap:8px; color:#00e5a0; text-transform:capitalize; }
+.recentType b { color:#94a3b8; font-size:13px; font-weight:600; }
+.recentStatus { padding:5px 9px; border-radius:999px; background:#202832; color:#cbd5e1; font-size:12px; }
+.recentStatus.status-active { color:#86efac; background:rgba(34,197,94,.10); }
+.recentStatus.status-expiring-soon { color:#fcd34d; background:rgba(245,158,11,.10); }
+.recentStatus.status-revoked { color:#fca5a5; background:rgba(239,68,68,.10); }
+.recentStatus.status-viewed { color:#c4b5fd; background:rgba(124,92,255,.12); }
+.recentCode { margin:18px 0 12px; font:700 clamp(24px,4vw,32px)/1.2 ui-monospace,SFMono-Regular,monospace; letter-spacing:.14em; }
+.recentChips { display:flex; flex-wrap:wrap; gap:8px; }
+.recentChips span { border:1px solid #1e2836; border-radius:8px; padding:6px 8px; color:#94a3b8; font-size:12px; }
+.recentActions { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+.recentActions a { display:inline-flex; align-items:center; }
+.recentActions .recentRemove { margin-left:auto; color:#fca5a5; }
+.recentEmpty { margin-top:22px; padding:48px 20px; text-align:center; border:1px dashed #2b394b; border-radius:18px; background:#10161e; }
+.recentEmpty > div { color:#00e5a0; font-size:32px; }
+.recentEmpty h2 { margin:12px 0 6px; font-size:22px; }
+.recentEmpty p,.recentPrivacy,.recentFeedback { color:#94a3b8; line-height:1.65; }
+.recentEmpty a { display:inline-block; margin-top:12px; color:#c4b5fd; text-decoration:none; }
+.recentPrivacy { margin-top:24px; font-size:12px; }
+.recentFeedback { padding:10px 12px; border-radius:10px; background:#121821; }
+@media (max-width:600px) {
+ .recentPage { padding-inline:14px; }
+ .recentTopbar { min-height:64px; }
+ .recentIntro { padding-top:42px; }
+ .recentControls { align-items:stretch; flex-direction:column; }
+ .recentClear { min-height:44px; }
+ .recentItem { padding:16px; }
+ .recentActions .recentRemove { margin-left:0; }
+}
