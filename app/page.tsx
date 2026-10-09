@@ -94,7 +94,7 @@ export default function HomePage() {
     setLinkPreview(null);
     setLinkPreviewLoading(false);
     if (mode === "photo") return;
-    const match = text.match(/https:\\/\\/[^\\s<>"']+/i);
+    const match = text.match(/https:\/\/[^\s<>"']+/i);
     const candidate = match?.[0]?.replace(/[),.;!?]+$/, "");
     if (!candidate) return;
     let parsed: URL;
