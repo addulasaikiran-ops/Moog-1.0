@@ -134,7 +134,7 @@ export default function HomePage() {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(kind);
-      window.setTimeout(() => setCopied(""), 1400);
+      window.setTimeout(() => setCopied(""), 2000);
     } catch {
       setError("Could not copy. Please copy it manually.");
     }
