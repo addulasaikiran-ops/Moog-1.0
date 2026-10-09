@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import "./globals.css";
 import "./interface-system.css";
 import "./moog-light.css";
+import "./interface-layout-fixes.css";
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://lucid-radiance-production.up.railway.app";
 export const metadata: Metadata = {
