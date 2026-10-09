@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { allowRateLimit } from "@/lib/rate-limit";
 import { getClientKey } from "@/lib/token";
 import { isAllowedOrigin } from "@/lib/origin";
+import { isValidEmail } from "@/lib/validation";
 
 const CATEGORIES = new Set(["illegal", "harassment", "copyright", "malware", "privacy", "other"]);
 function response(body: Record<string, unknown>, status = 200) {
