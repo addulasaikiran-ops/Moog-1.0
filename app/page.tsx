@@ -266,31 +266,21 @@ export default function HomePage() {
 
       <div className="shell">
         <header className="topbar">
-          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">∞</span><span>Moog</span></a>
+          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.1" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 15-1.5 1.5a3.25 3.25 0 0 1-4.6-4.6l4-4a3.25 3.25 0 0 1 4.6 0"/><path d="m15 9 1.5-1.5a3.25 3.25 0 0 1 4.6 4.6l-4 4a3.25 3.25 0 0 1-4.6 0"/><path d="m8.8 15.2 6.4-6.4"/></svg></span><span>moog</span></a>
           <nav className="topNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a className="headerCreate" href="#composer">Create share</a></nav>
         </header>
 
         <section className="hero">
-          <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · SIMPLE</div>
-          <h1>Share something.</h1>
-          <p className="heroCopy">Keep it temporary. Keep it yours.</p>
+          <div className="eyebrow heroBadge">PRIVATE SHARING, WITHOUT AN ACCOUNT</div>
+          <h1>Share privately.<br /><span>Let it expire.</span></h1>
+          <p className="heroCopy">Send text, code, or images with a temporary link. Choose the lifetime and access controls that fit what you are sharing.</p>
           <div className="heroActions"><a className="heroPrimaryAction" href="#composer">Create a private share <span aria-hidden="true">→</span></a><button className="heroSecondaryAction" type="button" onClick={() => { changeTab("receive"); window.setTimeout(() => document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}>Receive a share</button></div>
           <div className="heroBenefits" aria-label="Key benefits">
-            <div><i className="heroBenefitIcon heroBenefitPurple">●</i><span><strong>No account</strong><small>required</small></span></div>
-            <div><i className="heroBenefitIcon heroBenefitBlue">◷</i><span><strong>Automatic</strong><small>expiry</small></span></div>
-            <div><i className="heroBenefitIcon heroBenefitGreen">✓</i><span><strong>Private</strong><small>by default</small></span></div>
+            <div><i className="heroBenefitIcon heroBenefitPurple">●</i><span><strong>No account</strong><small>needed</small></span></div>
+            <div><i className="heroBenefitIcon heroBenefitBlue">◷</i><span><strong>Expiry</strong><small>you control</small></span></div>
+            <div><i className="heroBenefitIcon heroBenefitGreen">✓</i><span><strong>Optional</strong><small>password</small></span></div>
           </div>
         </section>
-        <div className="heroVisual" aria-hidden="true">
-          <div className="visualGlow" />
-          <div className="visualPanel visualPanelBack"><span></span><span></span><span></span><span></span><span></span></div>
-          <div className="visualPanel visualPanelMain">
-            <div className="visualCode"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-            <div className="visualPhoto" />
-          </div>
-          <div className="visualLock">●</div>
-          <div className="visualExpiry"><b>◷</b><span>Link expires<br /><strong>in 15 minutes</strong></span></div>
-        </div>
 
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
@@ -311,7 +301,7 @@ export default function HomePage() {
                 <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} onClick={() => { setMode("photo"); setText(""); }}>▧ <span>Image</span></button>
               </div>
 
-              {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder="Type or paste something to share…" maxLength={100000} aria-label="Text to share" autoFocus /> : null}
+              {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder="Paste or type your content here…" maxLength={100000} aria-label="Text to share" /> : null}
 
               {mode === "code" ? (
                 <div className="codeSelectRow">
