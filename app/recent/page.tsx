@@ -11,11 +11,13 @@ type RecentShare = {
   passwordProtected: boolean;
   viewOnce: boolean;
   revoked?: boolean;
+  viewed?: boolean;
 };
 type Filter = "All" | "Active" | "Expiring soon" | "Expired" | "Revoked" | "Viewed";
 
 function statusOf(item: RecentShare, now: number): Filter {
   if (item.revoked) return "Revoked";
+  if (item.viewed) return "Viewed";
   const left = new Date(item.expiresAt).getTime() - now;
   if (left <= 0) return "Expired";
   if (left <= 60 * 60 * 1000) return "Expiring soon";
@@ -47,7 +49,7 @@ export default function RecentSharesPage() {
   }, []);
   const visible = useMemo(() => items.filter((item) => {
     const state = statusOf(item, now || Date.now());
-    const matchesFilter = filter === "All" || state === filter || (filter === "Viewed" && item.viewOnce && state === "Expired");
+    const matchesFilter = filter === "All" || state === filter || (filter === "Viewed" && item.viewed === true);
     const needle = query.trim().toLowerCase();
     return matchesFilter && (!needle || item.code.includes(needle) || item.type.includes(needle));
   }), [items, filter, query, now]);
