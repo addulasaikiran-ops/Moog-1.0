@@ -34,7 +34,7 @@ const CODE_LANGUAGES = [
 
 type Tab = "send" | "receive";
 type Mode = "text" | "code" | "photo";
-type RecentShare = { type: Mode; createdAt: string; expiresAt: string };
+type RecentShare = { type: Mode; createdAt: string; expiresAt: string; url: string; code: string; passwordProtected: boolean; viewOnce: boolean; revoked?: boolean };
 
 function formatReceiveCode(value: string): string {
   return value.replace(/\D/g, "").slice(0, 6);
@@ -59,8 +59,9 @@ export default function HomePage() {
   const [mode, setMode] = useState<Mode>("text");
   const [text, setText] = useState("");
   const [language, setLanguage] = useState("javascript");
-  const [expiryMinutes, setExpiryMinutes] = useState(60);
+  const [expiryMinutes, setExpiryMinutes] = useState(1440);
   const [accessKey, setAccessKey] = useState("");
+  const [passwordEnabled, setPasswordEnabled] = useState(false);
   const [showAccessKey, setShowAccessKey] = useState(false);
   const [showSecurity, setShowSecurity] = useState(false);
   const [viewOnce, setViewOnce] = useState(false);
@@ -84,6 +85,7 @@ export default function HomePage() {
   const [receiveError, setReceiveError] = useState("");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const receiveInputRefs = useRef<Array<HTMLInputElement | null>>([]);
 
   useEffect(() => {
     if (!expiresAt) return;
@@ -134,7 +136,7 @@ export default function HomePage() {
     try {
       await navigator.clipboard.writeText(value);
       setCopied(kind);
-      window.setTimeout(() => setCopied(""), 1400);
+      window.setTimeout(() => setCopied(""), 2000);
     } catch {
       setError("Could not copy. Please copy it manually.");
     }
@@ -157,7 +159,7 @@ export default function HomePage() {
       return;
     }
     if (mode !== "photo" && !text.trim()) {
-      setError("Text cannot be empty.");
+      setError("Please enter some text before creating a share.");
       return;
     }
 
@@ -179,7 +181,7 @@ export default function HomePage() {
           body: JSON.stringify({
             text,
             language: mode === "code" ? language : "text",
-            password: accessKey,
+            password: passwordEnabled ? accessKey : "",
             viewOnce,
             expiryMinutes,
           }),
@@ -193,6 +195,14 @@ export default function HomePage() {
       setRevokeToken(body.revokeToken ?? "");
       setRevoked(false);
       setExpiresAt(body.expiresAt ?? "");
+      if (body.url && body.code && body.expiresAt) {
+        try {
+          const key = "moog-recent-shares-v1";
+          const previous = JSON.parse(window.localStorage.getItem(key) ?? "[]") as RecentShare[];
+          const entry: RecentShare = { type: mode, createdAt: new Date().toISOString(), expiresAt: body.expiresAt, url: body.url, code: body.code, passwordProtected: Boolean(accessKey), viewOnce };
+          window.localStorage.setItem(key, JSON.stringify([entry, ...previous.filter((item) => item.url !== entry.url)].slice(0, 30)));
+        } catch { /* Local history is optional and must never block share creation. */ }
+      }
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Could not create link.");
     } finally {
@@ -267,20 +277,31 @@ export default function HomePage() {
       <div className="shell">
         <header className="topbar">
           <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none"><path d="M25 20.5 22 23.5a7 7 0 0 0 9.9 9.9l4.4-4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M39 27.5 42 24.5a7 7 0 0 0-9.9-9.9l-4.4 4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="m26 29 12-12" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/></svg></span><span>Moog</span></a>
-          <nav className="topNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a className="headerCreate" href="#composer">Create share</a></nav>
+          <nav className="topNav" aria-label="Primary"><a href="/how-it-works">How it works</a><a href="#security">Security</a><a href="/recent">Recent shares</a><a href="/report-abuse">Report abuse</a><a className="headerCreate" href="#composer">Create share</a></nav>
         </header>
 
         <section className="hero">
           <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · SIMPLE</div>
-          <h1>Share something.</h1>
-          <p className="heroCopy">Keep it temporary. Keep it yours.</p>
-          <div className="heroActions"><a className="heroPrimaryAction" href="#composer">Create a private share <span aria-hidden="true">→</span></a><button className="heroSecondaryAction" type="button" onClick={() => { changeTab("receive"); window.setTimeout(() => document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}>Receive a share</button></div>
+          <h1>Share privately.<br /><span>Disappear automatically.</span></h1>
+          <p className="heroCopy">Send text, code, or photos with expiry, password protection, and view-once access.</p>
+          <div className="heroActions"><a className="heroPrimaryAction" href="#composer">Create a secure share <span aria-hidden="true">→</span></a><button className="heroSecondaryAction" type="button" onClick={() => { changeTab("receive"); window.setTimeout(() => document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}>I have a code</button></div>
           <div className="heroBenefits" aria-label="Key benefits">
             <div><i className="heroBenefitIcon heroBenefitPurple">●</i><span><strong>No account</strong><small>required</small></span></div>
             <div><i className="heroBenefitIcon heroBenefitBlue">◷</i><span><strong>Automatic</strong><small>expiry</small></span></div>
             <div><i className="heroBenefitIcon heroBenefitGreen">✓</i><span><strong>Private</strong><small>by default</small></span></div>
           </div>
         </section>
+        <div className="heroVisual" aria-hidden="true">
+          <div className="visualGlow" />
+          <div className="visualPanel visualPanelBack"><span></span><span></span><span></span><span></span><span></span></div>
+          <div className="visualPanel visualPanelMain">
+            <div className="visualCode"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+            <div className="visualPhoto" />
+          </div>
+          <div className="visualLock">●</div>
+          <div className="visualExpiry"><b>◷</b><span>Link expires<br /><strong>in 15 minutes</strong></span></div>
+        </div>
+
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
           <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("receive")}>Receive</button>
@@ -297,10 +318,10 @@ export default function HomePage() {
               <div className="modeToggle" role="group" aria-label="Content mode">
                 <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} onClick={() => setMode("text")}>▣ <span>Text</span></button>
                 <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} onClick={() => setMode("code")}>{"</>"} <span>Code</span></button>
-                <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} onClick={() => { setMode("photo"); setText(""); }}>▧ <span>Image</span></button>
+                <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} onClick={() => { setMode("photo"); setText(""); }}>▧ <span>Photo</span></button>
               </div>
 
-              {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder="Type or paste something to share…" maxLength={100000} aria-label="Text to share" autoFocus /> : null}
+              {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder={mode === "code" ? "Paste your code snippet…" : "Paste the text you want to share…"} maxLength={100000} aria-label="Text to share" /> : null}
 
               {mode === "code" ? (
                 <div className="codeSelectRow">
@@ -339,18 +360,18 @@ export default function HomePage() {
               <div className="securityBar">
                 <button type="button" className={showSecurity ? "securityDisclosure open" : "securityDisclosure"} aria-expanded={showSecurity} onClick={() => setShowSecurity((value) => !value)}>
                   <span className="securityDot" aria-hidden="true" />
-                  <span><strong>Security</strong><small>{accessKey ? "Access key enabled" : viewOnce ? "View once enabled" : "Optional controls"}</small></span>
+                  <span><strong>Security</strong><small>{passwordEnabled && accessKey ? "Password protection enabled" : viewOnce ? "View once enabled" : "Optional controls"}</small></span>
                   <span className="securityChevron" aria-hidden="true">⌄</span>
                 </button>
                 {showSecurity ? <div className="securityOptions">
-                  <label className="optionField accessKeyField"><span>Access key <small>optional</small></span><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} placeholder="Add an access key" aria-describedby="access-key-note" /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide access key" : "Show access key"} onClick={() => setShowAccessKey((value) => !value)}>{showAccessKey ? "Hide" : "Show"}</button></div><small id="access-key-note" className="optionNote">Recipients enter this to open the share.</small></label>
-                  <label className="checkField"><input type="checkbox" checked={viewOnce} onChange={(event) => setViewOnce(event.target.checked)} /><span><strong>View once</strong><small>Opens once, then disappears.</small></span></label>
+                  <div className="optionField accessKeyField"><label className="passwordToggleRow"><input type="checkbox" checked={passwordEnabled} onChange={(event) => { setPasswordEnabled(event.target.checked); if (!event.target.checked) setAccessKey(""); }} /><span><strong>Password protection</strong><small>Require a password before the share can be opened.</small></span></label>{passwordEnabled ? <><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} minLength={1} placeholder="Set a password" aria-describedby="access-key-note" required /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide password" : "Show password"} onClick={() => setShowAccessKey((value) => !value)}>{showAccessKey ? "Hide" : "Show"}</button></div><small id="access-key-note" className="optionNote">Recipient must enter this password to view the share.</small></> : null}</div>
+                  <div><label className="checkField"><input type="checkbox" checked={viewOnce} onChange={(event) => setViewOnce(event.target.checked)} /><span><strong>View once</strong><small>Allow only one successful view.</small></span></label>{viewOnce ? <p className="viewOnceWarning" role="status">After the first successful view, this content will no longer be accessible.</p> : null}</div>
                 </div> : null}
               </div>
 
               {error ? <div className="formError" role="alert">{error}</div> : null}
 
-              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>↗ &nbsp; Create private link <span>→</span></>}</button>
+              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>↗ &nbsp; Create secure share <span>→</span></>}</button>
               <div className="composerTrust">◈ &nbsp; No account required. Your content expires automatically.</div>
             </form>
           </section>
@@ -358,8 +379,8 @@ export default function HomePage() {
           <section className="receiveCard card" id="composer" aria-labelledby="receive-title">
             <div className="receiveHeader"><span className="receiveGlyph" aria-hidden="true">↓</span><div><h2 id="receive-title">Receive</h2><p>Got a code from someone? Paste it here to open what they shared. No account needed.</p></div></div>
             <form onSubmit={receiveShare}>
-              <label className="receiveLabel" htmlFor="receive-code">Unique code</label>
-              <input id="receive-code" className="receiveInput" value={receiveCode} onChange={(event) => { setReceiveCode(formatReceiveCode(event.target.value)); setReceiveError(""); }} placeholder="000000" inputMode="numeric" pattern="[0-9]*" autoComplete="off" spellCheck={false} aria-describedby="receive-help" />
+              <div className="receiveLabel">Unique code</div>
+              <div className="receiveCodeBoxes" role="group" aria-labelledby="receive-code-label" onPaste={(event) => { const pasted = formatReceiveCode(event.clipboardData.getData("text")); if (pasted) { event.preventDefault(); setReceiveCode(pasted); setReceiveError(""); receiveInputRefs.current[Math.min(pasted.length, 5)]?.focus(); } }}><span id="receive-code-label" className="srOnly">Six-digit share code</span>{Array.from({ length: 6 }, (_, index) => <input key={index} ref={(node) => { receiveInputRefs.current[index] = node; }} className="receiveDigit" aria-label={`Share code digit ${index + 1}`} value={receiveCode[index] ?? ""} inputMode="numeric" pattern="[0-9]*" autoComplete="one-time-code" maxLength={1} onChange={(event) => { const digit = event.target.value.replace(/\D/g, "").slice(-1); const next = (receiveCode.slice(0, index) + digit + receiveCode.slice(index + 1)).slice(0, 6); setReceiveCode(next); setReceiveError(""); if (digit && index < 5) receiveInputRefs.current[index + 1]?.focus(); }} onKeyDown={(event) => { if (event.key === "Backspace" && !receiveCode[index] && index > 0) receiveInputRefs.current[index - 1]?.focus(); if (event.key === "ArrowLeft" && index > 0) receiveInputRefs.current[index - 1]?.focus(); if (event.key === "ArrowRight" && index < 5) receiveInputRefs.current[index + 1]?.focus(); }} />)}</div>
               <p id="receive-help" className="receiveHint">Six numbers. If the share is protected, you’ll also enter its password.</p>
               {receiveError ? <p className="receiveError" role="alert">{receiveError}</p> : null}
               <button className="receiveOpen primary" type="submit" disabled={!receiveCode || receiveLoading}>{receiveLoading ? <><span className="spinner" /> Opening share…</> : <>Open share <span>→</span></>}</button>
@@ -372,13 +393,13 @@ export default function HomePage() {
           <section className="result resultExpanded" aria-live="polite" aria-labelledby="share-ready-title">
             <div className="resultSuccessRow">
               <div className="resultIcon" aria-hidden="true">✓</div>
-              <div><div className="resultLabel">SHARE CREATED</div><h2 id="share-ready-title">Ready to share.</h2><p>Use either the private link or the 6-digit code.</p></div>
+              <div><div className="resultLabel">SHARE CREATED</div><h2 id="share-ready-title">Your secure share is ready.</h2><p>Use either the private link or the 6-digit code.</p></div>
             </div>
             <div className="resultBody">
               <div className="resultFieldLabel">PRIVATE LINK</div>
               {!revoked ? <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div> : <p className="revokeNotice" role="status">This share has been revoked. Its link and code can no longer be used.</p>}
               {!revoked ? <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div> : null}
-              <div className="resultMetaGrid" aria-label="Share details"><div><span>EXPIRES</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{accessKey ? "Password protected" : "Link only"}</strong></div><div><span>VIEWING</span><strong>{viewOnce ? "View once" : "Until expiry"}</strong></div></div>
+              <div className="resultMetaGrid" aria-label="Share details"><div><span>EXPIRES</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{accessKey ? "Password protected" : "No password"}</strong></div><div><span>VIEWING</span><strong>{viewOnce ? "View once" : "Until expiry"}</strong></div></div>
               <p className="resultNote">{revoked ? "Access has been revoked." : "Keep the link private. Anyone who has it can attempt to open the share."}</p>{revokeError ? <p className="formError" role="alert">{revokeError}</p> : null}
               <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{revoked ? "Share revoked." : copied ? `${copied === "link" ? "Private link" : "Share code"} copied to clipboard.` : "Ready to share."}</span>{!revoked ? <button className="revokeButton" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || !revokeToken}>{revokeLoading ? "Revoking…" : "Revoke link"}</button> : null}<button className="resultNewButton" type="button" onClick={() => { setUrl(""); setCode(""); setRevokeToken(""); setRevoked(false); setRevokeError(""); setExpiresAt(""); setError(""); window.scrollTo({ top: document.getElementById("composer")?.offsetTop ?? 0, behavior: "smooth" }); }}>Create another</button></div>
             </div>
@@ -387,10 +408,10 @@ export default function HomePage() {
 
 
                 <section className="productFeatures" aria-label="Moog benefits">
-          <div className="featureCard featurePurple"><i>▣</i><strong>Private by default</strong><small>Your content isn&apos;t publicly searchable. Only people with the link can access it.</small></div>
-          <div className="featureCard featureBlue"><i>◷</i><strong>Automatic expiry</strong><small>Choose exactly how long it stays available.</small></div>
+          <div className="featureCard featurePurple"><i>◷</i><strong>Temporary by design</strong><small>Your content expires automatically, based on the lifetime you choose.</small></div>
+          <div className="featureCard featureBlue"><i>⌑</i><strong>Protected access</strong><small>Optional password protection and view-once access help control who can open a share.</small></div>
           
-          <div className="featureCard featureOrange"><i>◉</i><strong>No account required</strong><small>Share instantly without creating another account.</small></div>
+          <div className="featureCard featureOrange"><i>◉</i><strong>No account needed</strong><small>Create a share and send it instantly without signing up.</small></div>
         </section>
 
         <section className="howMoog referenceHow" id="how-it-works" aria-labelledby="how-title">
@@ -422,7 +443,7 @@ export default function HomePage() {
             <div><i className="securityIcon securityPurple">⌁</i><strong>Private links</strong><small>High-entropy links that are difficult to guess.</small></div>
             <div><i className="securityIcon securityBlue">▤</i><strong>Secure storage</strong><small>Links and codes are stored as hashes.</small></div>
             <div><i className="securityIcon securityGreen">✓</i><strong>We control access, not copies</strong><small>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</small></div>
-            <div><i className="securityIcon securityPurple">◉</i><strong>No account required</strong><small>Send or receive a share without creating a profile or signing in.</small></div>
+            <div><i className="securityIcon securityPurple">◉</i><strong>No tracking</strong><small>Moog doesn&apos;t require an account and doesn&apos;t use third-party analytics tracking.</small></div>
           </div>
           <p className="securityDisclosureText">Moog stores shared content on the server so it can deliver the share. It is access-controlled, not end-to-end encrypted.</p>
         </section>
@@ -443,7 +464,7 @@ export default function HomePage() {
           ))}</section>
           <aside className="contactCard"><div className="contactIcon">✉</div><h3>Still have questions?</h3><p>We&apos;re here to help. If you need more information, feel free to reach out.</p><a href="/contact">Contact us <span>→</span></a></aside>
         </section>
-        <footer className="siteFooter"><div className="footerBrand"><strong>Moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a><a href="/report-abuse">Report abuse</a></nav><div className="footerLegal">© 2026 Moog</div></footer>
+        <footer className="siteFooter"><div className="footerBrand"><strong>Moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/recent">Recent shares</a><a href="/contact">Contact</a><a href="/report-abuse">Report abuse</a></nav><div className="footerLegal">© 2026 Moog</div></footer>
       </div>
     </main>
   );
