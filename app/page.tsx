@@ -292,7 +292,7 @@ export default function HomePage() {
           <div className="visualExpiry"><b>◷</b><span>Link expires<br /><strong>in 15 minutes</strong></span></div>
         </div>
 
-        <div className="figmaComposerLayout"><div className="figmaComposerMain"><div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
+        <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
           <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("receive")}>Receive</button>
         </div>
@@ -396,19 +396,8 @@ export default function HomePage() {
           </section>
         ) : null}
 
-        </div>
-        <aside className="figmaPrivacyColumn" aria-label="Privacy features">
-          <section className="figmaPrivacyCard">
-            <h2>Privacy, without the friction.</h2>
-            <p>Your content should not live forever.</p>
-            <div className="figmaPrivacyFeature"><span>01</span><div><strong>Set an expiry</strong><small>Links stop working automatically.</small></div></div>
-            <div className="figmaPrivacyFeature"><span>02</span><div><strong>Add a password</strong><small>Keep access limited to the right people.</small></div></div>
-            <div className="figmaPrivacyFeature"><span>03</span><div><strong>Reveal once</strong><small>One successful reveal consumes the share.</small></div></div>
-          </section>
-          <section className="figmaPrivacyNote"><strong>Your share, your rules.</strong><p>Copy the link or receive code after creation. Only share it with people you trust.</p></section>
-        </aside>
-        </div>
-        <section className="productFeatures" aria-label="Moog benefits">
+
+                <section className="productFeatures" aria-label="Moog benefits">
           <div className="featureCard featurePurple"><i>▣</i><strong>Private by default</strong><small>Your content isn&apos;t publicly searchable. Only people with the link can access it.</small></div>
           <div className="featureCard featureBlue"><i>◷</i><strong>Automatic expiry</strong><small>Choose exactly how long it stays available.</small></div>
           
