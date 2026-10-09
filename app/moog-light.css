@@ -155,8 +155,7 @@ body { color-scheme: light; }
 .viewerMinimal { --viewer-bg:#f7f8fc; --viewer-surface:#fff; --viewer-well:#f6f7fb; --viewer-border:rgba(32,36,58,.12); --viewer-text:#20243a; --viewer-body:#30364a; --viewer-2:#667085; --viewer-3:#7b8496; }
 .viewerMinimal .viewerShell, .viewerPage .container, .legalShell { color:#20243a !important; }
 .viewerMinimal .viewerTopbar { border-bottom:1px solid rgba(32,36,58,.09) !important; }
-.viewerMinimal .minimalCard, .viewerMinimal .minimalCard- text { background:#fff !important; }
-.viewerMinimal .minimalCard, .viewerMinimal .passwordCard, .viewerMinimal .revealCard,
+.viewerMinimal .minimalCard, .viewerMinimal .minimalCard, .viewerMinimal .passwordCard, .viewerMinimal .revealCard,
 .viewerPage .shareCard, .legalShell, .minimalCard {
   background:#fff !important; border:1px solid #e2e5ef !important;
   color:#20243a !important; box-shadow:0 18px 50px rgba(32,36,58,.06) !important;
