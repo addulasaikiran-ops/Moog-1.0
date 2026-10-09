@@ -59,7 +59,7 @@ export default function HomePage() {
   const [mode, setMode] = useState<Mode>("text");
   const [text, setText] = useState("");
   const [language, setLanguage] = useState("javascript");
-  const [expiryMinutes, setExpiryMinutes] = useState(60);
+  const [expiryMinutes, setExpiryMinutes] = useState(1440);
   const [accessKey, setAccessKey] = useState("");
   const [showAccessKey, setShowAccessKey] = useState(false);
   const [showSecurity, setShowSecurity] = useState(false);
@@ -157,7 +157,7 @@ export default function HomePage() {
       return;
     }
     if (mode !== "photo" && !text.trim()) {
-      setError("Text cannot be empty.");
+      setError("Please enter some text before creating a share.");
       return;
     }
 
@@ -272,9 +272,9 @@ export default function HomePage() {
 
         <section className="hero">
           <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · SIMPLE</div>
-          <h1>Share something.</h1>
-          <p className="heroCopy">Keep it temporary. Keep it yours.</p>
-          <div className="heroActions"><a className="heroPrimaryAction" href="#composer">Create a private share <span aria-hidden="true">→</span></a><button className="heroSecondaryAction" type="button" onClick={() => { changeTab("receive"); window.setTimeout(() => document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}>Receive a share</button></div>
+          <h1>Share privately.<br /><span>Disappear automatically.</span></h1>
+          <p className="heroCopy">Send text, code, or photos with expiry, password protection, and view-once access.</p>
+          <div className="heroActions"><a className="heroPrimaryAction" href="#composer">Create a secure share <span aria-hidden="true">→</span></a><button className="heroSecondaryAction" type="button" onClick={() => { changeTab("receive"); window.setTimeout(() => document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}>I have a code</button></div>
           <div className="heroBenefits" aria-label="Key benefits">
             <div><i className="heroBenefitIcon heroBenefitPurple">●</i><span><strong>No account</strong><small>required</small></span></div>
             <div><i className="heroBenefitIcon heroBenefitBlue">◷</i><span><strong>Automatic</strong><small>expiry</small></span></div>
@@ -308,10 +308,10 @@ export default function HomePage() {
               <div className="modeToggle" role="group" aria-label="Content mode">
                 <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} onClick={() => setMode("text")}>▣ <span>Text</span></button>
                 <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} onClick={() => setMode("code")}>{"</>"} <span>Code</span></button>
-                <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} onClick={() => { setMode("photo"); setText(""); }}>▧ <span>Image</span></button>
+                <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} onClick={() => { setMode("photo"); setText(""); }}>▧ <span>Photo</span></button>
               </div>
 
-              {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder="Type or paste something to share…" maxLength={100000} aria-label="Text to share" autoFocus /> : null}
+              {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder={mode === "code" ? "Paste your code snippet…" : "Paste the text you want to share…"} maxLength={100000} aria-label="Text to share" autoFocus /> : null}
 
               {mode === "code" ? (
                 <div className="codeSelectRow">
@@ -361,7 +361,7 @@ export default function HomePage() {
 
               {error ? <div className="formError" role="alert">{error}</div> : null}
 
-              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>↗ &nbsp; Create private link <span>→</span></>}</button>
+              <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>↗ &nbsp; Create secure share <span>→</span></>}</button>
               <div className="composerTrust">◈ &nbsp; No account required. Your content expires automatically.</div>
             </form>
           </section>
@@ -383,13 +383,13 @@ export default function HomePage() {
           <section className="result resultExpanded" aria-live="polite" aria-labelledby="share-ready-title">
             <div className="resultSuccessRow">
               <div className="resultIcon" aria-hidden="true">✓</div>
-              <div><div className="resultLabel">SHARE CREATED</div><h2 id="share-ready-title">Ready to share.</h2><p>Use either the private link or the 6-digit code.</p></div>
+              <div><div className="resultLabel">SHARE CREATED</div><h2 id="share-ready-title">Your secure share is ready.</h2><p>Use either the private link or the 6-digit code.</p></div>
             </div>
             <div className="resultBody">
               <div className="resultFieldLabel">PRIVATE LINK</div>
               {!revoked ? <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div> : <p className="revokeNotice" role="status">This share has been revoked. Its link and code can no longer be used.</p>}
               {!revoked ? <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div> : null}
-              <div className="resultMetaGrid" aria-label="Share details"><div><span>EXPIRES</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{accessKey ? "Password protected" : "Link only"}</strong></div><div><span>VIEWING</span><strong>{viewOnce ? "View once" : "Until expiry"}</strong></div></div>
+              <div className="resultMetaGrid" aria-label="Share details"><div><span>EXPIRES</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{accessKey ? "Password protected" : "No password"}</strong></div><div><span>VIEWING</span><strong>{viewOnce ? "View once" : "Until expiry"}</strong></div></div>
               <p className="resultNote">{revoked ? "Access has been revoked." : "Keep the link private. Anyone who has it can attempt to open the share."}</p>{revokeError ? <p className="formError" role="alert">{revokeError}</p> : null}
               <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{revoked ? "Share revoked." : copied ? `${copied === "link" ? "Private link" : "Share code"} copied to clipboard.` : "Ready to share."}</span>{!revoked ? <button className="revokeButton" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || !revokeToken}>{revokeLoading ? "Revoking…" : "Revoke link"}</button> : null}<button className="resultNewButton" type="button" onClick={() => { setUrl(""); setCode(""); setRevokeToken(""); setRevoked(false); setRevokeError(""); setExpiresAt(""); setError(""); window.scrollTo({ top: document.getElementById("composer")?.offsetTop ?? 0, behavior: "smooth" }); }}>Create another</button></div>
             </div>
@@ -398,10 +398,10 @@ export default function HomePage() {
 
 
                 <section className="productFeatures" aria-label="Moog benefits">
-          <div className="featureCard featurePurple"><i>▣</i><strong>Private by default</strong><small>Your content isn&apos;t publicly searchable. Only people with the link can access it.</small></div>
-          <div className="featureCard featureBlue"><i>◷</i><strong>Automatic expiry</strong><small>Choose exactly how long it stays available.</small></div>
+          <div className="featureCard featurePurple"><i>◷</i><strong>Temporary by design</strong><small>Your content expires automatically, based on the lifetime you choose.</small></div>
+          <div className="featureCard featureBlue"><i>⌑</i><strong>Protected access</strong><small>Optional password protection and view-once access help control who can open a share.</small></div>
           
-          <div className="featureCard featureOrange"><i>◉</i><strong>No account required</strong><small>Share instantly without creating another account.</small></div>
+          <div className="featureCard featureOrange"><i>◉</i><strong>No account needed</strong><small>Create a share and send it instantly without signing up.</small></div>
         </section>
 
         <section className="howMoog referenceHow" id="how-it-works" aria-labelledby="how-title">
