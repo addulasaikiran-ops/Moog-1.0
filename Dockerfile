@@ -13,7 +13,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-cert
   && rm -rf /var/lib/apt/lists/*
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+RUN mkdir -p public
 ENV NEXT_TELEMETRY_DISABLED=1
+# Prisma needs a syntactically valid URL during client generation/build; no DB connection is made here.
+ENV DATABASE_URL=postgresql://moog:build-only@localhost:5432/moog?schema=public
 RUN npx prisma generate && npm run build
 
 FROM node:24-bookworm-slim AS runner
