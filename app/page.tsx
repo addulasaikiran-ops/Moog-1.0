@@ -34,7 +34,7 @@ const CODE_LANGUAGES = [
 
 type Tab = "send" | "receive";
 type Mode = "text" | "code" | "photo";
-type RecentShare = { type: Mode; createdAt: string; expiresAt: string };
+type RecentShare = { type: Mode; createdAt: string; expiresAt: string; url: string; code: string; passwordProtected: boolean; viewOnce: boolean; revoked?: boolean };
 
 function formatReceiveCode(value: string): string {
   return value.replace(/\D/g, "").slice(0, 6);
@@ -194,6 +194,14 @@ export default function HomePage() {
       setRevokeToken(body.revokeToken ?? "");
       setRevoked(false);
       setExpiresAt(body.expiresAt ?? "");
+      if (body.url && body.code && body.expiresAt) {
+        try {
+          const key = "moog-recent-shares-v1";
+          const previous = JSON.parse(window.localStorage.getItem(key) ?? "[]") as RecentShare[];
+          const entry: RecentShare = { type: mode, createdAt: new Date().toISOString(), expiresAt: body.expiresAt, url: body.url, code: body.code, passwordProtected: Boolean(accessKey), viewOnce };
+          window.localStorage.setItem(key, JSON.stringify([entry, ...previous.filter((item) => item.url !== entry.url)].slice(0, 30)));
+        } catch { /* Local history is optional and must never block share creation. */ }
+      }
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Could not create link.");
     } finally {
