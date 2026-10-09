@@ -1,6 +1,8 @@
 import { lookup } from "node:dns/promises";
 import { isIP } from "node:net";
 import { NextRequest, NextResponse } from "next/server";
+import { allowRateLimit } from "@/lib/rate-limit";
+import { getClientKey } from "@/lib/token";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -109,6 +111,9 @@ async function readLimited(response: Response): Promise<string> {
 }
 
 export async function GET(request: NextRequest) {
+  if (!(await allowRateLimit("link-preview:" + getClientKey(request), 10, 60_000))) {
+    return NextResponse.json({ error: "Too many previews. Try again in a minute." }, { status: 429, headers: { "Cache-Control": "no-store" } });
+  }
   const raw = request.nextUrl.searchParams.get("url");
   if (!raw || raw.length > 2048) return NextResponse.json({ error: "Provide a valid URL." }, { status: 400 });
 
