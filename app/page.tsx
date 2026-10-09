@@ -396,82 +396,8 @@ export default function HomePage() {
           </section>
         ) : null}
 
-        </div>
-        <aside className="figmaPrivacyColumn" aria-label="Privacy features">
-          <section className="figmaPrivacyCard">
-            <h2>Privacy, without the friction.</h2>
-            <p>Your content should not live forever.</p>
-            <div className="figmaPrivacyFeature"><span>01</span><div><strong>Set an expiry</strong><small>Links stop working automatically.</small></div></div>
-            <div className="figmaPrivacyFeature"><span>02</span><div><strong>Add a password</strong><small>Keep access limited to the right people.</small></div></div>
-            <div className="figmaPrivacyFeature"><span>03</span><div><strong>Reveal once</strong><small>One successful reveal consumes the share.</small></div></div>
-          </section>
-          <section className="figmaPrivacyNote"><strong>Your share, your rules.</strong><p>Copy the link or receive code after creation. Only share it with people you trust.</p></section>
-        </aside>
-        </div>
-        <section className="productFeatures" aria-label="Moog benefits">
-          <div className="featureCard featurePurple"><i>▣</i><strong>Private by default</strong><small>Your content isn&apos;t publicly searchable. Only people with the link can access it.</small></div>
-          <div className="featureCard featureBlue"><i>◷</i><strong>Automatic expiry</strong><small>Choose exactly how long it stays available.</small></div>
-          
-          <div className="featureCard featureOrange"><i>◉</i><strong>No account required</strong><small>Share instantly without creating another account.</small></div>
-        </section>
 
-        <section className="howMoog referenceHow" id="how-it-works" aria-labelledby="how-title">
-          <div className="howIntro"><div className="eyebrow">HOW IT WORKS</div><h2 id="how-title">How it works</h2><p>A simple 4-step process. Share. Control. Done.</p></div>
-          <div className="howSteps">
-            <div><b className="stepPurple">01</b><strong>Create</strong><small>Paste text, code, or an image and choose an expiry time.</small></div>
-            <span>→</span>
-            <div><b className="stepBlue">02</b><strong>Share</strong><small>Get a private link and send it to anyone.</small></div>
-            <span>→</span>
-            <div><b className="stepGreen">03</b><strong>Open</strong><small>They open it without an account.</small></div>
-            <span>→</span>
-            <div><b className="stepOrange">04</b><strong>Expire</strong><small>Access disappears automatically.</small></div>
-          </div>
-        </section>
-
-        <section className="useMoog" id="about-moog" aria-labelledby="use-title">
-          <div className="useIntro"><div className="eyebrow">USE MOOG FOR</div><h2 id="use-title">Simple, secure and temporary sharing.</h2><p>Built for real situations where access should not last forever.</p></div>
-          <div className="useGrid">
-            <div><i className="usePink">▣</i><strong>Sensitive information</strong><small>Share passwords, API keys or other secrets.</small></div>
-            <div><i className="useBlue">&lt;/&gt;</i><strong>Code snippets</strong><small>Send code to a teammate without leaving it forever.</small></div>
-            <div><i className="useGreen">▤</i><strong>Temporary notes</strong><small>Share text between devices without an account.</small></div>
-            <div><i className="useOrange">▧</i><strong>Private images</strong><small>Share screenshots or photos that shouldn&apos;t stay online.</small></div>
-          </div>
-        </section>
-
-        <section className="securityReference" id="security" aria-labelledby="security-title">
-          <div className="sectionHeading"><div className="eyebrow">SECURITY & PRIVACY</div><h2 id="security-title">Built with privacy in mind.</h2><p>Here&apos;s what you need to know.</p></div>
-          <div className="securityGrid">
-            <div><i className="securityIcon securityPurple">⌁</i><strong>Private links</strong><small>High-entropy links that are difficult to guess.</small></div>
-            <div><i className="securityIcon securityBlue">▤</i><strong>Secure storage</strong><small>Links and codes are stored as hashes.</small></div>
-            <div><i className="securityIcon securityGreen">✓</i><strong>We control access, not copies</strong><small>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</small></div>
-            <div><i className="securityIcon securityPurple">◉</i><strong>No tracking</strong><small>Moog doesn&apos;t require an account and doesn&apos;t use third-party analytics tracking.</small></div>
-          </div>
-          <p className="securityDisclosureText">Moog stores shared content on the server so it can deliver the share. It is access-controlled, not end-to-end encrypted.</p>
-        </section>
-
-        <section className="faqArea" id="faq" aria-labelledby="faq-title">
-          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Frequently asked questions</h3>
-          {[
-            ["Is my share end-to-end encrypted?", "Not yet. Moog currently protects access to server-stored content, but the server can technically read active share content. Treat it as temporary access control, not zero-knowledge encryption."],
-            ["Do I need an account?", "No. Sending and receiving are both account-free."],
-            ["How long do shares stay alive?", "Choose from 1 minute to 7 days when you create a share."],
-            ["Can someone copy what I shared?", "Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back."],
-            ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP photos up to 10 MB."],
-          ].map(([question, answer], index) => (
-            <details key={question} open={openFaq === index}>
-              <summary onClick={(event) => { event.preventDefault(); setOpenFaq(openFaq === index ? null : index); }}>{question}</summary>
-              <p>{answer}</p>
-            </details>
-          ))}</section>
-          <aside className="contactCard"><div className="contactIcon">✉</div><h3>Still have questions?</h3><p>We&apos;re here to help. If you need more information, feel free to reach out.</p><a href="/contact">Contact us <span>→</span></a></aside>
-        </section>
-        <footer className="siteFooter"><div className="footerBrand"><strong>Moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/contact">Contact</a><a href="/report-abuse">Report abuse</a></nav><div className="footerLegal">© 2026 Moog</div></footer>
-      </div>
-    </main>
-  );
-}
-
-        <section className="productFeatures" aria-label="Moog benefits">
+                <section className="productFeatures" aria-label="Moog benefits">
           <div className="featureCard featurePurple"><i>▣</i><strong>Private by default</strong><small>Your content isn&apos;t publicly searchable. Only people with the link can access it.</small></div>
           <div className="featureCard featureBlue"><i>◷</i><strong>Automatic expiry</strong><small>Choose exactly how long it stays available.</small></div>
           
