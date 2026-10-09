@@ -430,3 +430,62 @@ html, body { background: #0b0f14 !important; }
   .page .resultExpanded .revokeButton,
   .page .resultExpanded .resultNewButton { width: 100% !important; }
 }
+
+
+/* Keep the share-ready heading in the same vertical flow as the link and metadata. */
+.page .resultExpanded {
+  display: block !important;
+  padding: 24px !important;
+  min-width: 0 !important;
+}
+.page .resultExpanded > .resultBody {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 14px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+.page .resultExpanded .resultSuccessRow {
+  display: flex !important;
+  position: static !important;
+  grid-column: auto !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+  width: 100% !important;
+  margin: 0 0 6px !important;
+  padding: 0 0 8px !important;
+}
+.page .resultExpanded .resultSuccessRow > div:last-child {
+  display: block !important;
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+.page .resultExpanded .resultLabel,
+.page .resultExpanded .resultSuccessRow h2,
+.page .resultExpanded .resultSuccessRow p,
+.page .resultExpanded .resultFieldLabel,
+.page .resultExpanded .resultNote {
+  position: static !important;
+  transform: none !important;
+  float: none !important;
+  clear: both !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  overflow: visible !important;
+  margin-top: 0 !important;
+  line-height: 1.5 !important;
+}
+.page .resultExpanded .resultSuccessRow h2 { margin-bottom: 6px !important; }
+.page .resultExpanded .resultFieldLabel { margin-bottom: -5px !important; }
+.page .resultExpanded .resultMetaGrid > div {
+  background: #111214 !important;
+  border-color: rgba(255,255,255,.12) !important;
+}
+.page .resultExpanded .resultMetaGrid span { color: #999b9f !important; }
+.page .resultExpanded .resultMetaGrid strong { color: #f1f1ed !important; }
+@media (max-width: 640px) {
+  .page .resultExpanded { padding: 16px !important; }
+  .page .resultExpanded .resultMetaGrid { grid-template-columns: minmax(0, 1fr) !important; }
+}

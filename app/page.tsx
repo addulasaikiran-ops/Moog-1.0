@@ -391,11 +391,11 @@ export default function HomePage() {
 
         {url ? (
           <section className="result resultExpanded" aria-live="polite" aria-labelledby="share-ready-title">
-            <div className="resultSuccessRow">
-              <div className="resultIcon" aria-hidden="true">✓</div>
-              <div><div className="resultLabel">SHARE CREATED</div><h2 id="share-ready-title">Your secure share is ready.</h2><p>Use either the private link or the 6-digit code.</p></div>
-            </div>
             <div className="resultBody">
+              <div className="resultSuccessRow">
+                <div className="resultIcon" aria-hidden="true">✓</div>
+                <div><div className="resultLabel">SHARE CREATED</div><h2 id="share-ready-title">Your secure share is ready.</h2><p>Use either the private link or the 6-digit code.</p></div>
+              </div>
               <div className="resultFieldLabel">PRIVATE LINK</div>
               {!revoked ? <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div> : <p className="revokeNotice" role="status">This share has been revoked. Its link and code can no longer be used.</p>}
               {!revoked ? <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div> : null}
