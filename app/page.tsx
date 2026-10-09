@@ -232,7 +232,7 @@ export default function HomePage() {
 
       <div className="shell">
         <header className="topbar">
-          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">●</span><span>Moog</span></a>
+          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">∞</span><span>Moog</span></a>
           <nav className="topNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a className="headerCreate" href="#composer">Create share</a></nav>
         </header>
 
@@ -240,6 +240,7 @@ export default function HomePage() {
           <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · SIMPLE</div>
           <h1>Create a private share.<br /><span>Let it disappear.</span></h1>
           <p className="heroCopy">A simple, temporary way to share private text, code, or images.<br />No account. No clutter. Set an expiry and share.</p>
+          <div className="heroActions"><a className="heroPrimaryAction" href="#composer">Create a private share <span aria-hidden="true">→</span></a><button className="heroSecondaryAction" type="button" onClick={() => { changeTab("receive"); window.setTimeout(() => document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}>Receive a share</button></div>
           <div className="heroBenefits" aria-label="Key benefits">
             <div><i className="heroBenefitIcon heroBenefitPurple">●</i><span><strong>No account</strong><small>required</small></span></div>
             <div><i className="heroBenefitIcon heroBenefitBlue">◷</i><span><strong>Automatic</strong><small>expiry</small></span></div>
@@ -331,7 +332,7 @@ export default function HomePage() {
             </form>
           </section>
         ) : (
-          <section className="receiveCard card" aria-labelledby="receive-title">
+          <section className="receiveCard card" id="composer" aria-labelledby="receive-title">
             <div className="receiveHeader"><span className="receiveGlyph" aria-hidden="true">↓</span><div><h2 id="receive-title">Receive</h2><p>Got a code from someone? Paste it here to open what they shared. No account needed.</p></div></div>
             <form onSubmit={receiveShare}>
               <label className="receiveLabel" htmlFor="receive-code">Unique code</label>
