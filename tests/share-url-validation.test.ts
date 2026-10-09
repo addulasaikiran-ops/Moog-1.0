@@ -16,4 +16,7 @@ testCase("rejects non-Moog hosts, malformed paths, and unsafe URLs", () => {
   assert.equal(isValidMoogShareUrl(`${trustedOrigin}/s/${token}/extra`, [trustedOrigin]), false);
   assert.equal(isValidMoogShareUrl(`${trustedOrigin}/s/short`, [trustedOrigin]), false);
   assert.equal(isValidMoogShareUrl(`https://user:pass@moog.example/s/${token}`, [trustedOrigin]), false);
+  assert.equal(isValidMoogShareUrl(`https://moog.example.attacker.test/s/${token}`, [trustedOrigin]), false);
+  assert.equal(isValidMoogShareUrl(`https://moog.example:8443/s/${token}`, [trustedOrigin]), false);
+  assert.equal(isValidMoogShareUrl(`${trustedOrigin}/s/${token}`, []), false);
 });
