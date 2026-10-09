@@ -1,0 +1,203 @@
+/* Moog light redesign — presentation only; existing API/security flows remain authoritative. */
+:root {
+  color-scheme: light;
+  --bg: #f7f8fc;
+  --panel: #ffffff;
+  --text: #20243a;
+  --muted: #667085;
+  --line: rgba(32, 36, 58, .13);
+  --accent: #6558f5;
+  --accent-ink: #ffffff;
+  --moog-bg: #f7f8fc;
+  --moog-panel: #ffffff;
+  --moog-panel-2: #f2f3fa;
+  --moog-line: rgba(32, 36, 58, .12);
+  --moog-line-strong: rgba(32, 36, 58, .2);
+  --moog-text: #20243a;
+  --moog-muted: #667085;
+  --moog-dim: #7b8496;
+  --moog-accent: #6558f5;
+  --moog-accent-2: #8177ff;
+  --moog-accent-soft: rgba(101, 88, 245, .09);
+  --moog-shadow: 0 24px 70px rgba(34, 39, 76, .08);
+}
+html, body { background: #f7f8fc !important; color: #20243a !important; }
+body { color-scheme: light; }
+::selection { background: rgba(101,88,245,.18); color: #20243a; }
+.page, .viewerPage, .legalPage, .sharePage, .viewerMinimal {
+  color: #20243a !important;
+  background: #f7f8fc !important;
+}
+.page {
+  background:
+    radial-gradient(ellipse at 52% 0%, rgba(101,88,245,.065), transparent 38rem),
+    #f7f8fc !important;
+}
+.page:before { opacity: 0 !important; }
+.ambient { opacity: .055 !important; background: #6558f5 !important; filter: blur(100px) !important; }
+.page .shell { width: min(100% - 40px, 1120px) !important; }
+.page .topbar, .viewerTopbar {
+  background: rgba(247,248,252,.88) !important;
+  border-bottom: 1px solid rgba(32,36,58,.09) !important;
+  backdrop-filter: blur(18px);
+}
+.page .logo, .legalShell .minimalLogo, .viewerTopbar .minimalLogo {
+  color: #20243a !important; font-weight: 800 !important; letter-spacing: -.055em !important;
+}
+.page .logoLock {
+  background: #6558f5 !important; color: #fff !important;
+  border: 0 !important; box-shadow: none !important; font-size: 18px !important;
+}
+.page .topNav a:not(.headerCreate), .footerLinks a { color: #667085 !important; }
+.page .topNav a:not(.headerCreate):hover, .footerLinks a:hover { color: #20243a !important; }
+.page .topNav .headerCreate, .page .createButton, .page .receiveOpen,
+.page .contactCard a, .legalButton, .passwordRow .primary, .minimalRevealButton,
+.page .heroPrimaryAction {
+  background: #6558f5 !important; color: #fff !important;
+  border: 1px solid #6558f5 !important; border-radius: 12px !important;
+  box-shadow: 0 6px 18px rgba(101,88,245,.15) !important;
+  font-weight: 750 !important; transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.page .topNav .headerCreate:hover, .page .createButton:hover:not(:disabled),
+.page .receiveOpen:hover:not(:disabled), .contactCard a:hover, .legalButton:hover,
+.passwordRow .primary:hover, .minimalRevealButton:hover, .page .heroPrimaryAction:hover {
+  background: #5144e6 !important; border-color: #5144e6 !important;
+  transform: translateY(-1px); box-shadow: 0 8px 24px rgba(101,88,245,.2) !important;
+}
+.page .hero { padding-top: clamp(48px, 7vw, 82px) !important; }
+.page .heroBadge {
+  border: 1px solid rgba(101,88,245,.18) !important;
+  background: rgba(101,88,245,.06) !important; color: #6558f5 !important;
+  border-radius: 999px !important;
+}
+.page .hero h1 {
+  color: #20243a !important; font-size: clamp(42px, 6.7vw, 76px) !important;
+  line-height: 1.02 !important; letter-spacing: -.07em !important; text-wrap: balance;
+}
+.page .hero h1 span { color: #6558f5 !important; }
+.page .heroCopy { color: #667085 !important; line-height: 1.8 !important; text-wrap: pretty; }
+.page .heroBenefits > div {
+  border: 1px solid rgba(32,36,58,.1) !important; border-radius: 14px !important;
+  background: rgba(255,255,255,.78) !important; box-shadow: 0 5px 20px rgba(32,36,58,.025) !important;
+}
+.page .heroBenefitIcon, .page .featureCard i, .page .securityIcon, .page .useGrid i {
+  background: rgba(101,88,245,.08) !important; color: #6558f5 !important;
+  border: 1px solid rgba(101,88,245,.12) !important; box-shadow: none !important;
+}
+.page .heroBenefitIcon { border-radius: 10px !important; }
+.page .heroVisual { filter: saturate(.65); opacity: .78; }
+.page .visualPanel, .page .visualPhoto { box-shadow: 0 18px 48px rgba(32,36,58,.09) !important; }
+.page .referenceComposerTabs {
+  padding: 5px !important; border: 1px solid rgba(32,36,58,.12) !important;
+  border-radius: 15px !important; background: #eceef6 !important;
+}
+.page .referenceComposerTab { border-radius: 10px !important; color: #667085 !important; }
+.page .referenceComposerTab.active { background: #fff !important; color: #20243a !important; box-shadow: 0 2px 7px rgba(32,36,58,.08) !important; }
+.page .card, .page .composer, .page .receiveCard, .page .result,
+.page .featureCard, .page .securityGrid > div, .page .useGrid > div,
+.page .howSteps > div, .page .resultExpanded {
+  color: #20243a !important; background: #fff !important;
+  border-color: rgba(32,36,58,.12) !important;
+  box-shadow: 0 16px 42px rgba(32,36,58,.045) !important;
+}
+.page .composer, .page .receiveCard { border-radius: 20px !important; }
+.page textarea, .page input:not([type=checkbox]), .page select, .page .secretInput,
+.page .codeSelectRow select, .page .receiveInput {
+  background: #fff !important; color: #20243a !important;
+  border: 1px solid #dfe2ec !important; border-radius: 11px !important;
+  box-shadow: none !important;
+}
+.page textarea::placeholder, .page input::placeholder { color: #98a0b2 !important; }
+.page textarea:focus, .page input:focus, .page select:focus {
+  border-color: #8b82ff !important; box-shadow: 0 0 0 3px rgba(101,88,245,.1) !important; outline: none;
+}
+.page .modeToggle, .page .lifetimePills, .page .securityBar, .page .securityOptions,
+.page .uniqueCodeBox, .page .resultMetaGrid, .page .receiveNote {
+  background: #f6f7fb !important; border-color: #e5e7f0 !important; color: #667085 !important;
+}
+.page .modeButton, .page .lifetimePill, .page .securityDisclosure,
+.page .toggleSecret, .page .copy, .page .resultNewButton {
+  background: #fff !important; color: #4b5267 !important; border-color: #dfe2ec !important;
+}
+.page .modeButton.active, .page .lifetimePill.active {
+  background: rgba(101,88,245,.09) !important; color: #5144e6 !important;
+  border-color: rgba(101,88,245,.24) !important;
+}
+.page .lifetimeActivePill { background: rgba(101,88,245,.09) !important; }
+.page .fieldLabel, .page .editorHint, .page .counter, .page .expiryHint,
+.page .trust, .page .composerTrust, .page .receiveHint, .page .resultNote,
+.page .resultMeta, .page .resultMetaGrid span, .page .resultFieldLabel,
+.page .resultLabel, .page .featureCard small, .page .howSteps small,
+.page .useGrid small, .page .securityGrid small { color: #667085 !important; }
+.page .features > div, .page .featureCard { background: #fff !important; }
+.page .features, .page .howSteps, .page .securityGrid, .page .useGrid { border-color: #e4e6ef !important; }
+.page .result a { color: #5144e6 !important; }
+.page .resultIcon { background: #e9e7ff !important; color: #5144e6 !important; }
+.page .resultLabel { color: #5144e6 !important; }
+.page .error, .page .formError, .page .receiveError { color: #b42335 !important; }
+.page .resultSuccessRow h2, .page .result h2, .page .featureCard strong,
+.page .securityGrid strong, .page .useGrid strong, .page .howSteps strong,
+.page .receiveHeader h2 { color: #20243a !important; }
+.page footer, .page .footerLinks, .page .footerNote { color: #7b8496 !important; }
+.page .heroActions { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-top:24px; }
+.page .heroPrimaryAction, .page .heroSecondaryAction {
+  min-height:46px; display:inline-flex; align-items:center; justify-content:center; gap:10px;
+  padding:0 18px; text-decoration:none; font-size:14px; font-weight:750;
+}
+.page .heroSecondaryAction {
+  background: #fff !important; color:#5144e6 !important; border:1px solid #dfe2ec !important;
+  border-radius:12px !important; cursor:pointer;
+}
+.page .heroSecondaryAction:hover { background:#f2f1ff !important; border-color:#c8c3ff !important; }
+.viewerMinimal, .viewerPage, .sharePage, .legalPage {
+  background: #f7f8fc !important; color: #20243a !important;
+}
+.viewerMinimal { --viewer-bg:#f7f8fc; --viewer-surface:#fff; --viewer-well:#f6f7fb; --viewer-border:rgba(32,36,58,.12); --viewer-text:#20243a; --viewer-body:#30364a; --viewer-2:#667085; --viewer-3:#7b8496; }
+.viewerMinimal .viewerShell, .viewerPage .container, .legalShell { color:#20243a !important; }
+.viewerMinimal .viewerTopbar { border-bottom:1px solid rgba(32,36,58,.09) !important; }
+.viewerMinimal .minimalCard, .viewerMinimal .minimalCard- text { background:#fff !important; }
+.viewerMinimal .minimalCard, .viewerMinimal .passwordCard, .viewerMinimal .revealCard,
+.viewerPage .shareCard, .legalShell, .minimalCard {
+  background:#fff !important; border:1px solid #e2e5ef !important;
+  color:#20243a !important; box-shadow:0 18px 50px rgba(32,36,58,.06) !important;
+}
+.viewerMinimal .minimalLogo, .viewerMinimal .minimalText, .viewerMinimal h1,
+.viewerMinimal .minimalMeta, .viewerMinimal .revealContent h1, .lockStage h1,
+.legalShell h1, .legalShell label { color:#20243a !important; }
+.viewerMinimal p, .viewerMinimal .minimalFooter, .viewerMinimal .minimalActionNote,
+.viewerMinimal .minimalMeta, .viewerMinimal .expiry, .viewerMinimal .revealContent p,
+.lockStage > p, .lockNote, .legalShell > p { color:#667085 !important; }
+.viewerMinimal .minimalAction, .viewerMinimal .minimalNewShare, .newShareLink { color:#5144e6 !important; }
+.viewerMinimal .minimalContent, .viewerMinimal .minimalPhoto, .viewerMinimal .shareText { color:#20243a !important; }
+.viewerMinimal .minimalActions, .viewerMinimal .minimalMeta, .viewerMinimal .expiry { border-color:#e5e7f0 !important; }
+.viewerMinimal .viewerSecure, .viewerExpiryBadge, .viewerType {
+  color:#667085 !important; background:#f6f7fb !important; border-color:#e1e4ee !important;
+}
+.viewerMinimal .lockIcon, .viewerMinimal .viewOnceStateIcon {
+  color:#6558f5 !important; background:rgba(101,88,245,.08) !important; border-color:rgba(101,88,245,.18) !important;
+}
+.viewerMinimal .passwordInput, .legalShell input, .legalShell select, .legalShell textarea {
+  background:#fff !important; color:#20243a !important; border:1px solid #dfe2ec !important;
+}
+.viewerMinimal .passwordInput::placeholder, .legalShell input::placeholder, .legalShell textarea::placeholder { color:#98a0b2 !important; }
+.viewerMinimal .timeLine { background:#6558f5 !important; }
+.legalShell { border-radius:20px !important; }
+.legalShell .eyebrow { color:#6558f5 !important; }
+.legalShell .reportSuccess { color:#157347 !important; }
+.legalShell .formError { color:#b42335 !important; }
+@media (max-width: 760px) {
+  .page .shell { width: min(100% - 28px, 1120px) !important; }
+  .page .topbar { align-items:center !important; }
+  .page .topNav { gap:10px !important; }
+  .page .hero { padding-top:44px !important; }
+  .page .hero h1 { font-size:clamp(38px, 10vw, 54px) !important; }
+  .page .heroActions { display:grid; grid-template-columns:1fr; }
+  .page .heroPrimaryAction, .page .heroSecondaryAction { width:100%; min-height:48px; }
+  .page .heroBenefits { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px !important; }
+  .page .heroBenefits > div { min-width:0 !important; padding:10px 8px !important; }
+  .page .heroBenefits small { font-size:11px !important; }
+  .page .heroVisual { transform:scale(.92); transform-origin:top center; margin-bottom:-18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
+}
