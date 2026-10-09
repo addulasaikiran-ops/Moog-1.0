@@ -430,3 +430,52 @@ html, body { background: #0b0f14 !important; }
   .page .resultExpanded .revokeButton,
   .page .resultExpanded .resultNewButton { width: 100% !important; }
 }
+
+
+/* Center the feature cards and the How it works section within the page shell. */
+.page .productFeatures {
+  width: min(1080px, 100%) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  justify-content: center !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+}
+.page .referenceHow,
+.page .howMoog {
+  width: min(1080px, 100%) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.page .referenceHow .howIntro,
+.page .howMoog .howIntro {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 auto 36px !important;
+  text-align: center !important;
+}
+.page .referenceHow .howSteps,
+.page .howMoog .howSteps {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  align-items: stretch !important;
+  gap: 16px !important;
+}
+.page .referenceHow .howSteps > span,
+.page .howMoog .howSteps > span {
+  display: none !important;
+}
+.page .referenceHow .howSteps > div,
+.page .howMoog .howSteps > div {
+  min-width: 0 !important;
+  width: 100% !important;
+}
+@media (max-width: 760px) {
+  .page .productFeatures { grid-template-columns: 1fr !important; }
+  .page .referenceHow .howSteps,
+  .page .howMoog .howSteps { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 480px) {
+  .page .referenceHow .howSteps,
+  .page .howMoog .howSteps { grid-template-columns: minmax(0, 1fr) !important; }
+}
