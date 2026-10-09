@@ -7,12 +7,13 @@ export default function ReportAbusePage() {
   const [message, setMessage] = useState("");
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault(); setStatus("sending"); setMessage("");
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     try {
       const response = await fetch("/api/report-abuse", { method: "POST", body: form });
       const body = await response.json() as { error?: string };
       if (!response.ok) throw new Error(body.error ?? "Could not submit the report.");
-      setStatus("sent"); setMessage("Report received. Thank you."); event.currentTarget.reset();
+      setStatus("sent"); setMessage("Report received. Thank you."); formElement.reset();
     } catch (error) { setStatus("error"); setMessage(error instanceof Error ? error.message : "Could not submit the report."); }
   }
   return <main className="legalPage"><article className="legalShell">

@@ -1,18 +1,28 @@
 # Moog redesign implementation notes
 
-## Included in this branch
-- Light, minimal, privacy-focused visual layer with violet accents across the home page, share viewer, password/reveal screens, and trust/legal pages.
-- Clear create/receive calls to action in the homepage hero.
-- Creator-only share revocation using a random creator token, stored as a hash and held in client memory only; revoked state is enforced by the share page, status, password unlock, image, reveal, and consume routes.
-- Email validation extracted into a small shared helper, with regression tests for ordinary addresses and whitespace/missing-part failures.
-- Reuses the existing creator-revocation database migration; no new migration is required.
+## Approved visual direction
+- PrivateBin-inspired, light, minimal, text-first and privacy-focused.
+- Violet accent, restrained surfaces, clear borders, readable typography and consistent keyboard focus.
+- The create and receive actions are the hero's primary actions; the decorative code/photo illustration is removed so the content workflow remains the focal point.
+- The refreshed design layer covers homepage composition, creator result state, receive flow, share viewer, password gate, view-once reveal/consumed states, legal pages, contact and abuse reporting.
+- Moog's violet chain mark is aligned across the homepage, share/viewer/trust wordmarks and favicon.
+- The page title and description describe temporary access-controlled sharing; they do not claim end-to-end encryption.
 
-## Existing behaviour preserved
-The redesign keeps the current API-backed share creation, text/code/image modes, expiry selection, optional password, view-once, receive code, and report-abuse flows.
+## Behaviour intentionally preserved
+- Existing API-backed text, code and supported image share creation.
+- Expiry selection, optional password, view-once flag, six-digit receive code, result/status UI, creator-token-based revoke flow and abuse reporting.
+- Existing share APIs and database access-control checks are still authoritative.
+- The redesign does not describe Moog as end-to-end encrypted or zero-knowledge.
 
-## Verification required before production
-- Run the full test, lint, typecheck, Prisma generation, and production build checks on this branch.
-- Add integration tests for password unlock, expiry, view-once concurrent opens/interrupted delivery, revoke attempts with incorrect creator tokens, and abuse-report rate limiting.
-- Verify proxy-derived client IP handling in the deployed Railway environment.
-- Confirm scheduled cleanup's GitHub Actions secret matches the Railway cron secret.
-- Do not deploy this branch until checks pass and the owner explicitly approves.
+## Interaction and accessibility details
+- Responsive composition for mobile, tablet and desktop breakpoints.
+- Visible keyboard focus and reduced-motion support.
+- Existing submit, disabled, error and loading states remain in place.
+- Automatic focus on the text composer is removed so mobile browsers do not open the keyboard unexpectedly.
+- The abuse-report form retains a stable form reference for its asynchronous success reset.
+
+## Verification still required before production
+- Run tests, ESLint, TypeScript typecheck, Prisma generation and the production build in GitHub Actions.
+- Perform a desktop/mobile browser pass through share creation, receive code, password unlock, view-once reveal/consumed, expiry, revoke and report-abuse success/error states.
+- Verify view-once concurrent opens and interrupted delivery, incorrect creator revoke tokens, abuse-report rate limiting, client-IP proxy trust, and the GitHub cleanup secret configuration.
+- Do not deploy this branch until automated checks pass and the owner explicitly approves deployment.
