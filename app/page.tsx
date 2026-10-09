@@ -61,6 +61,7 @@ export default function HomePage() {
   const [language, setLanguage] = useState("javascript");
   const [expiryMinutes, setExpiryMinutes] = useState(1440);
   const [accessKey, setAccessKey] = useState("");
+  const [passwordEnabled, setPasswordEnabled] = useState(false);
   const [showAccessKey, setShowAccessKey] = useState(false);
   const [showSecurity, setShowSecurity] = useState(false);
   const [viewOnce, setViewOnce] = useState(false);
@@ -179,7 +180,7 @@ export default function HomePage() {
           body: JSON.stringify({
             text,
             language: mode === "code" ? language : "text",
-            password: accessKey,
+            password: passwordEnabled ? accessKey : "",
             viewOnce,
             expiryMinutes,
           }),
@@ -350,11 +351,11 @@ export default function HomePage() {
               <div className="securityBar">
                 <button type="button" className={showSecurity ? "securityDisclosure open" : "securityDisclosure"} aria-expanded={showSecurity} onClick={() => setShowSecurity((value) => !value)}>
                   <span className="securityDot" aria-hidden="true" />
-                  <span><strong>Security</strong><small>{accessKey ? "Access key enabled" : viewOnce ? "View once enabled" : "Optional controls"}</small></span>
+                  <span><strong>Security</strong><small>{passwordEnabled && accessKey ? "Password protection enabled" : viewOnce ? "View once enabled" : "Optional controls"}</small></span>
                   <span className="securityChevron" aria-hidden="true">⌄</span>
                 </button>
                 {showSecurity ? <div className="securityOptions">
-                  <label className="optionField accessKeyField"><span>Access key <small>optional</small></span><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} placeholder="Add an access key" aria-describedby="access-key-note" /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide access key" : "Show access key"} onClick={() => setShowAccessKey((value) => !value)}>{showAccessKey ? "Hide" : "Show"}</button></div><small id="access-key-note" className="optionNote">Recipients enter this to open the share.</small></label>
+                  <div className="optionField accessKeyField"><label className="passwordToggleRow"><input type="checkbox" checked={passwordEnabled} onChange={(event) => { setPasswordEnabled(event.target.checked); if (!event.target.checked) setAccessKey(""); }} /><span><strong>Password protection</strong><small>Require a password before the share can be opened.</small></span></label>{passwordEnabled ? <><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={(event) => setAccessKey(event.target.value)} maxLength={128} minLength={1} placeholder="Set a password" aria-describedby="access-key-note" required /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide password" : "Show password"} onClick={() => setShowAccessKey((value) => !value)}>{showAccessKey ? "Hide" : "Show"}</button></div><small id="access-key-note" className="optionNote">Recipient must enter this password to view the share.</small></> : null}</div>
                   <label className="checkField"><input type="checkbox" checked={viewOnce} onChange={(event) => setViewOnce(event.target.checked)} /><span><strong>View once</strong><small>Opens once, then disappears.</small></span></label>
                 </div> : null}
               </div>
