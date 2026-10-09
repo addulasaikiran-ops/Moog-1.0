@@ -57,18 +57,20 @@ function decodeEntities(value: string): string {
 }
 
 function getMeta(html: string, key: string): string {
-  const escaped = key.replace(/[.*+?^{}()|[\]\\]/g, "\\$&");
-  const patterns = [
-    new RegExp('<meta\\b[^>]*(?:property|name)\\s*=\\s*["\\']' + escaped + '["\\'][^>]*content\\s*=\\s*["\\']([^"\\']*)["\\'][^>]*>', "i"),
-    new RegExp('<meta\\b[^>]*content\\s*=\\s*["\\']([^"\\']*)["\\'][^>]*(?:property|name)\\s*=\\s*["\\']' + escaped + '["\\'][^>]*>', "i"),
-  ];
-  for (const pattern of patterns) {
-    const match = html.match(pattern);
-    if (match?.[1]) return decodeEntities(match[1].trim()).slice(0, 500);
+  const tags = html.match(/<meta\\b[^>]*>/gi) ?? [];
+  for (const tag of tags) {
+    const readAttribute = (name: string) => {
+      const pattern = new RegExp("\\\\b" + name + "\\\\s*=\\\\s*(['\\\"]) ([\\s\\S]*?)\\\\1".replace("] (", "]("), "i");
+      return tag.match(pattern)?.[2] ?? "";
+    };
+    const property = readAttribute("property") || readAttribute("name");
+    if (property.toLowerCase() === key.toLowerCase()) {
+      const value = readAttribute("content");
+      if (value) return decodeEntities(value.trim()).slice(0, 500);
+    }
   }
   return "";
 }
-
 function getTitle(html: string): string {
   const match = html.match(/<title\b[^>]*>([\s\S]*?)<\/title\s*>/i);
   return match?.[1] ? decodeEntities(match[1].replace(/<[^>]+>/g, "").trim()).slice(0, 180) : "";
