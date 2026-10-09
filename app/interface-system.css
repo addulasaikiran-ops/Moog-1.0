@@ -257,3 +257,77 @@ body { background: var(--moog-bg); color: var(--moog-text); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+
+/* Desktop composition alignment: keep the primary controls in one centered column.
+   Overrides older split-column offsets in globals.css without changing app behavior. */
+@media (min-width: 901px) {
+  .page:not(.refPage) .shell {
+    width: min(100% - 48px, 1120px) !important;
+    margin-inline: auto !important;
+  }
+
+  .page:not(.refPage) .topbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 24px !important;
+  }
+
+  .page:not(.refPage) .topNav {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex-wrap: wrap !important;
+    gap: clamp(14px, 2vw, 28px) !important;
+  }
+
+  .page:not(.refPage) .topNav .headerCreate {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+    padding: 0 18px !important;
+    white-space: nowrap !important;
+  }
+
+  .page:not(.refPage) .hero {
+    width: 100% !important;
+    max-width: 900px !important;
+    margin-inline: auto !important;
+    text-align: center !important;
+  }
+
+  .page:not(.refPage) .heroCopy {
+    margin-inline: auto !important;
+  }
+
+  .page:not(.refPage) .heroBenefits {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  .page:not(.refPage) .heroVisual {
+    display: none !important;
+  }
+
+  .page:not(.refPage) .referenceComposerTabs {
+    width: min(100%, 760px) !important;
+    margin: 28px auto 12px !important;
+  }
+
+  .page:not(.refPage) .referenceComposerTabs + .composer {
+    width: min(100%, 760px) !important;
+    margin: 0 auto !important;
+    border-radius: 20px !important;
+  }
+
+  .page:not(.refPage) .receiveCard,
+  .page:not(.refPage) .result {
+    width: min(100%, 760px) !important;
+    margin-inline: auto !important;
+  }
+}
