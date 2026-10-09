@@ -69,6 +69,10 @@ export default function HomePage() {
   const [dragActive, setDragActive] = useState(false);
   const [url, setUrl] = useState("");
   const [code, setCode] = useState("");
+  const [revokeToken, setRevokeToken] = useState("");
+  const [revoked, setRevoked] = useState(false);
+  const [revokeLoading, setRevokeLoading] = useState(false);
+  const [revokeError, setRevokeError] = useState("");
   const [expiresAt, setExpiresAt] = useState("");
   const [remaining, setRemaining] = useState(0);
   const [copied, setCopied] = useState<"link" | "code" | "">("");
@@ -141,6 +145,9 @@ export default function HomePage() {
     setError("");
     setUrl("");
     setCode("");
+    setRevokeToken("");
+    setRevoked(false);
+    setRevokeError("");
     setExpiresAt("");
     setRemaining(0);
     setViewed(false);
@@ -179,15 +186,42 @@ export default function HomePage() {
         });
       }
 
-      const body = (await response.json()) as { url?: string; code?: string; expiresAt?: string; error?: string };
+      const body = (await response.json()) as { url?: string; code?: string; revokeToken?: string; expiresAt?: string; error?: string };
       if (!response.ok) throw new Error(body.error ?? "Could not create link.");
       setUrl(body.url ?? "");
       setCode(body.code ?? "");
+      setRevokeToken(body.revokeToken ?? "");
+      setRevoked(false);
       setExpiresAt(body.expiresAt ?? "");
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : "Could not create link.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function revokeShare() {
+    if (!url || !revokeToken || revoked) return;
+    if (!window.confirm("Revoke this share now? Anyone using its link or code will lose access.")) return;
+    const token = new URL(url).pathname.split("/").filter(Boolean).pop();
+    if (!token) { setRevokeError("Could not identify this share."); return; }
+    setRevokeLoading(true);
+    setRevokeError("");
+    try {
+      const response = await fetch(`/api/shares/${token}/revoke`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ revokeToken }),
+      });
+      const body = await response.json() as { error?: string };
+      if (!response.ok) throw new Error(body.error ?? "Could not revoke this share.");
+      setRevoked(true);
+      setCode("");
+      setRevokeToken("");
+    } catch (error) {
+      setRevokeError(error instanceof Error ? error.message : "Could not revoke this share.");
+    } finally {
+      setRevokeLoading(false);
     }
   }
 
@@ -353,11 +387,11 @@ export default function HomePage() {
             </div>
             <div className="resultBody">
               <div className="resultFieldLabel">PRIVATE LINK</div>
-              <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
-              <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div>
+              {!revoked ? <div className="resultLinkRow"><a href={url} target="_blank" rel="noreferrer">{url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copyValue(url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div> : <p className="revokeNotice" role="status">This share has been revoked. Its link and code can no longer be used.</p>}
+              {!revoked ? <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{code}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copyValue(code, "code")}>{copied === "code" ? "Copied ✓" : "⧉ Copy"}</button></div> : null}
               <div className="resultMetaGrid" aria-label="Share details"><div><span>EXPIRES</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{accessKey ? "Password protected" : "Link only"}</strong></div><div><span>VIEWING</span><strong>{viewOnce ? "View once" : "Until expiry"}</strong></div></div>
-              <p className="resultNote">Keep the link private. Anyone who has it can attempt to open the share.</p>
-              <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{copied ? `${copied === "link" ? "Private link" : "Share code"} copied to clipboard.` : "Ready to share."}</span><button className="resultNewButton" type="button" onClick={() => { setUrl(""); setCode(""); setExpiresAt(""); setError(""); window.scrollTo({ top: document.getElementById("composer")?.offsetTop ?? 0, behavior: "smooth" }); }}>Create another</button></div>
+              <p className="resultNote">{revoked ? "Access has been revoked." : "Keep the link private. Anyone who has it can attempt to open the share."}</p>{revokeError ? <p className="formError" role="alert">{revokeError}</p> : null}
+              <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{revoked ? "Share revoked." : copied ? `${copied === "link" ? "Private link" : "Share code"} copied to clipboard.` : "Ready to share."}</span>{!revoked ? <button className="revokeButton" type="button" onClick={() => void revokeShare()} disabled={revokeLoading || !revokeToken}>{revokeLoading ? "Revoking…" : "Revoke link"}</button> : null}<button className="resultNewButton" type="button" onClick={() => { setUrl(""); setCode(""); setRevokeToken(""); setRevoked(false); setRevokeError(""); setExpiresAt(""); setError(""); window.scrollTo({ top: document.getElementById("composer")?.offsetTop ?? 0, behavior: "smooth" }); }}>Create another</button></div>
             </div>
           </section>
         ) : null}
