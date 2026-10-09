@@ -1,0 +1,333 @@
+/* Moog Interface System v1
+   A consistent, responsive visual layer for the home, share viewer, and trust pages.
+   Deliberately presentation-only: no share, expiry, or access-control behavior changes. */
+:root {
+  color-scheme: dark;
+  --moog-bg: #090b0d;
+  --moog-panel: #101418;
+  --moog-panel-2: #151b20;
+  --moog-line: rgba(235, 243, 239, .10);
+  --moog-line-strong: rgba(235, 243, 239, .18);
+  --moog-text: #f1f5f2;
+  --moog-muted: #9ba7a5;
+  --moog-dim: #6d7978;
+  --moog-accent: #c9fa66;
+  --moog-accent-2: #e1ff9b;
+  --moog-accent-soft: rgba(201, 250, 102, .09);
+  --moog-radius-sm: 12px;
+  --moog-radius-md: 18px;
+  --moog-radius-lg: 26px;
+  --moog-shadow: 0 24px 80px rgba(0,0,0,.24);
+}
+html { scroll-behavior: smooth; background: var(--moog-bg); }
+body { background: var(--moog-bg); color: var(--moog-text); }
+::selection { background: rgba(201,250,102,.28); color: #fff; }
+:where(a, button, input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--moog-accent) !important;
+  outline-offset: 3px !important;
+}
+:where(button, input, textarea, select) { font: inherit; }
+:where(button, a, input, textarea, select) { -webkit-tap-highlight-color: transparent; }
+.page, .viewerPage, .legalPage {
+  color: var(--moog-text) !important;
+  background:
+    radial-gradient(ellipse at 50% -18%, rgba(201,250,102,.075), transparent 42rem),
+    radial-gradient(ellipse at 0% 35%, rgba(92,125,113,.055), transparent 36rem),
+    var(--moog-bg) !important;
+}
+.page:before { opacity: .025 !important; }
+.page .shell { width: min(100% - 40px, 1120px) !important; }
+.page .topbar, .viewerTopbar {
+  min-height: 76px !important;
+  border-bottom: 1px solid rgba(255,255,255,.055) !important;
+  background: rgba(9,11,13,.78) !important;
+  backdrop-filter: blur(18px);
+}
+.page .logo, .legalShell .minimalLogo, .viewerTopbar .minimalLogo {
+  color: #f4f7f2 !important;
+  font-size: 21px !important;
+  font-weight: 850 !important;
+  letter-spacing: -.07em !important;
+}
+.page .logoLock {
+  width: 26px !important; height: 26px !important; border-radius: 9px !important;
+  display: inline-grid !important; place-items: center !important;
+  background: var(--moog-accent) !important; color: #11170b !important;
+  font-size: 10px !important;
+}
+.page .topNav { gap: clamp(14px, 2.2vw, 28px) !important; }
+.page .topNav a:not(.headerCreate), .footerLinks a {
+  color: #a3aeaa !important; transition: color .18s ease;
+}
+.page .topNav a:not(.headerCreate):hover, .footerLinks a:hover { color: #fff !important; }
+.page .topNav .headerCreate, .page .createButton, .page .receiveOpen,
+.page .contactCard a, .legalButton, .passwordRow .primary, .minimalRevealButton {
+  background: var(--moog-accent) !important; color: #11170b !important;
+  border: 1px solid transparent !important; border-radius: 12px !important;
+  box-shadow: 0 6px 24px rgba(201,250,102,.08) !important;
+  font-weight: 800 !important; transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+}
+.page .topNav .headerCreate:hover, .page .createButton:hover:not(:disabled),
+.page .receiveOpen:hover:not(:disabled), .contactCard a:hover, .legalButton:hover,
+.passwordRow .primary:hover, .minimalRevealButton:hover {
+  background: var(--moog-accent-2) !important; transform: translateY(-1px);
+  box-shadow: 0 9px 30px rgba(201,250,102,.14) !important;
+}
+:where(.page button, .viewerPage button, .legalPage a) :disabled { opacity: .58; cursor: not-allowed; }
+.page .hero { padding-top: clamp(52px, 8vw, 94px) !important; }
+.page .heroBadge {
+  border: 1px solid rgba(201,250,102,.2) !important;
+  background: rgba(201,250,102,.055) !important; color: #c9d7c4 !important;
+  letter-spacing: .16em !important; border-radius: 999px !important;
+}
+.page .hero h1 {
+  max-width: 850px !important; margin-inline: auto !important;
+  font-size: clamp(42px, 7.2vw, 82px) !important;
+  line-height: .99 !important; letter-spacing: -.075em !important;
+  text-wrap: balance;
+}
+.page .hero h1 span { color: var(--moog-accent) !important; }
+.page .heroCopy { color: #a0aaa7 !important; line-height: 1.8 !important; text-wrap: pretty; }
+.page .heroBenefits { gap: 10px !important; }
+.page .heroBenefits > div {
+  min-width: 138px !important; padding: 12px 15px !important;
+  border: 1px solid var(--moog-line) !important; border-radius: 14px !important;
+  background: rgba(255,255,255,.025) !important;
+}
+.page .heroBenefitIcon, .page .featureCard i, .page .securityIcon, .page .useGrid i {
+  display: inline-grid !important; place-items: center !important;
+  background: var(--moog-accent-soft) !important; color: var(--moog-accent) !important;
+  border: 1px solid rgba(201,250,102,.12) !important; box-shadow: none !important;
+}
+.page .heroVisual { filter: saturate(.78); }
+.page .referenceComposerTabs {
+  padding: 5px !important; border: 1px solid var(--moog-line) !important;
+  border-radius: 15px !important; background: #0d1113 !important;
+}
+.page .referenceComposerTab { border-radius: 10px !important; color: #9ca8a4 !important; transition: background .18s ease, color .18s ease; }
+.page .referenceComposerTab.active { background: #20272a !important; color: #f5f8f3 !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.06) !important; }
+.page .card, .page .composer, .page .receiveCard, .page .result {
+  border: 1px solid var(--moog-line) !important; border-radius: var(--moog-radius-lg) !important;
+  background: linear-gradient(145deg, rgba(21,27,30,.98), rgba(13,17,19,.98)) !important;
+  box-shadow: var(--moog-shadow) !important;
+}
+.page .composer, .page .receiveCard { padding: clamp(18px, 3vw, 30px) !important; }
+.page .modeToggle {
+  display: inline-flex !important; gap: 5px !important; padding: 5px !important;
+  background: #090c0e !important; border: 1px solid var(--moog-line) !important; border-radius: 14px !important;
+}
+.page .modeButton { border-radius: 10px !important; color: #a5b0ac !important; transition: background .16s ease, color .16s ease; }
+.page .modeButton.active { background: #20282a !important; color: #f6f8f4 !important; box-shadow: inset 0 0 0 1px rgba(255,255,255,.07) !important; }
+.page textarea, .page .receiveInput, .page .codeSelectRow select,
+.page .secretInput input, .page input:not([type="checkbox"]):not([type="file"]), .reportForm input,
+.reportForm select, .reportForm textarea, .passwordInput {
+  background: #0a0e10 !important; border: 1px solid var(--moog-line-strong) !important;
+  color: #f0f5f0 !important; border-radius: 13px !important;
+  transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.page textarea { min-height: 210px; line-height: 1.75 !important; }
+.page textarea:focus, .page .receiveInput:focus, .page .secretInput input:focus,
+.page .codeSelectRow select:focus, .reportForm input:focus, .reportForm select:focus,
+.reportForm textarea:focus, .passwordInput:focus {
+  outline: none !important; border-color: rgba(201,250,102,.55) !important;
+  box-shadow: 0 0 0 4px rgba(201,250,102,.075) !important; background: #0b1010 !important;
+}
+.page textarea::placeholder, .page input::placeholder, .passwordInput::placeholder { color: #687572 !important; }
+.page .lifetimeSection, .page .securityBar, .page .codeSelectRow { border-color: var(--moog-line) !important; }
+.page .lifetimePills { gap: 5px !important; padding: 5px !important; border: 1px solid var(--moog-line) !important; border-radius: 14px !important; background: #0a0e10 !important; }
+.page .lifetimePill { border-radius: 9px !important; color: #9eaaa5 !important; }
+.page .lifetimePill.active { background: var(--moog-accent) !important; color: #11170b !important; font-weight: 800 !important; }
+.page .securityDisclosure { border-radius: 12px !important; }
+.page .securityDisclosure:hover { background: rgba(255,255,255,.035) !important; }
+.page .securityDot { background: var(--moog-accent) !important; color: #11170b !important; }
+.page .securityOptions { border-top-color: var(--moog-line) !important; }
+.page .checkField input { accent-color: var(--moog-accent) !important; }
+.page .createButton, .page .receiveOpen { min-height: 54px !important; }
+.page .composerTrust, .page .receiveHint, .page .optionNote { color: #8a9691 !important; }
+.page .formError, .page .receiveError { border-radius: 10px !important; }
+.page .result { padding: clamp(18px, 3vw, 28px) !important; }
+.page .resultIcon { background: var(--moog-accent) !important; color: #11170b !important; }
+.page .resultLabel { color: var(--moog-accent) !important; }
+.page .resultLinkRow, .page .uniqueCodeBox { border-color: var(--moog-line-strong) !important; background: rgba(0,0,0,.18) !important; border-radius: 13px !important; }
+.page .copy, .page .resultNewButton {
+  border: 1px solid var(--moog-line-strong) !important; border-radius: 10px !important;
+  background: #20272a !important; color: #eef4ef !important; transition: background .18s ease, transform .18s ease;
+}
+.page .copy:hover, .page .resultNewButton:hover { background: #2b3536 !important; transform: translateY(-1px); }
+.page .resultMetaGrid > div { background: rgba(255,255,255,.025) !important; border-color: var(--moog-line) !important; border-radius: 12px !important; }
+.page .productFeatures { gap: 14px !important; }
+.page .featureCard, .page .securityGrid > div, .page .useGrid > div {
+  border: 1px solid var(--moog-line) !important; border-radius: 18px !important;
+  background: rgba(255,255,255,.025) !important; transition: transform .2s ease, border-color .2s ease, background .2s ease;
+}
+.page .featureCard:hover, .page .securityGrid > div:hover, .page .useGrid > div:hover {
+  transform: translateY(-3px); border-color: rgba(201,250,102,.22) !important; background: rgba(255,255,255,.04) !important;
+}
+.page .howMoog, .page .useMoog, .page .securityReference, .page .faqArea {
+  border-top-color: var(--moog-line) !important;
+}
+.page :where(.howIntro h2, .useIntro h2, .sectionHeading h2) { letter-spacing: -.055em !important; text-wrap: balance; }
+.page .howSteps > div { border: 1px solid var(--moog-line) !important; border-radius: 16px !important; background: rgba(255,255,255,.022) !important; }
+.page .howSteps b { color: var(--moog-accent) !important; }
+.page .faq details { border-bottom-color: var(--moog-line) !important; }
+.page .faq summary { padding-block: 18px !important; }
+.page .faq summary:hover { color: var(--moog-accent) !important; }
+.page .contactCard { border: 1px solid var(--moog-line) !important; border-radius: 20px !important; background: #111719 !important; }
+.page .siteFooter { border-top-color: var(--moog-line) !important; }
+.page .footerBrand strong { color: #f1f6ef !important; }
+.viewerPage { min-height: 100vh !important; }
+.viewerShell { width: min(100% - 36px, 900px) !important; margin-inline: auto !important; }
+.viewerTopbar { padding-inline: 0 !important; }
+.viewerTopbar .minimalLogo { text-decoration: none !important; }
+.viewerSecure, .newShareLink { color: #a4b0ab !important; }
+.viewerMain { padding-top: clamp(42px, 8vw, 92px) !important; padding-bottom: 64px !important; }
+.minimalCard, .passwordCard, .revealCard, .shareStatusCard {
+  overflow: hidden; border: 1px solid var(--moog-line) !important; border-radius: var(--moog-radius-lg) !important;
+  background: linear-gradient(145deg, rgba(21,27,30,.98), rgba(13,17,19,.98)) !important;
+  box-shadow: var(--moog-shadow) !important;
+}
+.minimalMeta { color: #9aa6a1 !important; border-bottom-color: var(--moog-line) !important; }
+.minimalContent { color: #eaf0eb !important; }
+.minimalText { color: #eaf0eb !important; line-height: 1.9 !important; overflow-wrap: anywhere; }
+.minimalPhoto img { max-width: 100%; height: auto; border-radius: 12px; }
+.minimalActions { border-top-color: var(--moog-line) !important; }
+.minimalAction, .minimalNewShare { border-radius: 10px !important; }
+.minimalAction.primaryAction, .minimalNewShare {
+  border: 1px solid var(--moog-line-strong) !important; background: #20272a !important; color: #eff4ef !important;
+}
+.minimalAction.primaryAction:hover, .minimalNewShare:hover { background: #2a3435 !important; }
+.timeLine { background: var(--moog-accent) !important; }
+.lockIcon, .statusIcon { background: var(--moog-accent-soft) !important; border: 1px solid rgba(201,250,102,.18) !important; color: var(--moog-accent) !important; }
+.lockStage h1, .revealContent h1, .shareStatusCard h1 { color: #f2f6f0 !important; letter-spacing: -.06em !important; text-wrap: balance; }
+.lockStage > p, .revealContent > p, .shareStatusCard p { color: #9aa6a1 !important; }
+.viewerEyebrow, .revealEyebrow { color: var(--moog-accent) !important; }
+.passwordInput { min-height: 50px !important; }
+.passwordRow .primary, .minimalRevealButton { min-height: 50px !important; }
+.viewOnceState { color: #eef3ed !important; }
+.viewOnceState p { color: #9aa6a1 !important; }
+.legalPage { padding-bottom: 80px !important; }
+.legalShell { width: min(100%, 820px) !important; margin-inline: auto !important; padding-top: 30px !important; }
+.legalShell:before { color: #66736e !important; margin: 28px 0 56px !important; }
+.legalShell .eyebrow { color: var(--moog-accent) !important; }
+.legalShell h1 { letter-spacing: -.07em !important; text-wrap: balance; }
+.legalShell h2 { border-top-color: var(--moog-line) !important; }
+.legalShell > p:not(.eyebrow), .legalShell article p { color: #a0aba6 !important; }
+.legalCallout { background: var(--moog-accent-soft) !important; border-color: rgba(201,250,102,.18) !important; border-radius: 18px !important; }
+.reportForm { gap: 14px !important; }
+.reportForm label { color: #b7c1bb !important; }
+.reportForm input, .reportForm select, .reportForm textarea { padding: 14px !important; }
+@media (max-width: 760px) {
+  .page .shell { width: min(100% - 28px, 1120px) !important; }
+  .page .topbar { min-height: 66px !important; }
+  .page .topNav { gap: 10px !important; }
+  .page .topNav a:not(.headerCreate) { display: none !important; }
+  .page .hero { padding-top: 50px !important; }
+  .page .hero h1 { font-size: clamp(40px, 10vw, 64px) !important; }
+  .page .heroCopy br { display: none; }
+  .page .heroBenefits { display: grid !important; grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+  .page .heroBenefits > div { min-width: 0 !important; padding: 10px 8px !important; gap: 8px !important; }
+  .page .heroBenefits strong, .page .heroBenefits small { font-size: 11px !important; }
+  .page .composer, .page .receiveCard { border-radius: 20px !important; }
+  .page .lifetimePills { display: grid !important; grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+  .page .lifetimeActivePill { display: none !important; }
+  .page .lifetimePill { min-height: 38px !important; padding-inline: 4px !important; font-size: 11px !important; }
+  .page .resultLinkRow { align-items: stretch !important; }
+  .page .resultLinkRow a { min-width: 0; }
+  .page .resultMetaGrid { grid-template-columns: repeat(3, minmax(0,1fr)) !important; }
+  .page .resultMetaGrid > div { min-width: 0; padding: 10px 8px !important; }
+  .page .resultMetaGrid strong { overflow-wrap: anywhere; }
+  .page .howSteps { grid-template-columns: 1fr !important; }
+  .page .howSteps > span { display: none !important; }
+  .viewerShell { width: min(100% - 28px, 900px) !important; }
+  .minimalActions { flex-wrap: wrap !important; gap: 12px !important; }
+  .minimalActionGroup { min-width: 0 !important; }
+  .legalPage { padding-inline: 16px !important; }
+  .legalShell:before { margin-bottom: 42px !important; }
+}
+@media (max-width: 420px) {
+  .page .heroBenefits { grid-template-columns: 1fr !important; }
+  .page .heroBenefits > div { display: flex !important; align-items: center !important; justify-content: center !important; }
+  .page .resultMetaGrid { grid-template-columns: 1fr !important; }
+  .page .resultLinkRow { flex-direction: column !important; }
+  .page .resultLinkRow .copy { min-height: 44px !important; }
+  .page .modeButton { padding-inline: 12px !important; }
+  .passwordRow { flex-direction: column !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+
+/* Desktop composition alignment: keep the primary controls in one centered column.
+   Overrides older split-column offsets in globals.css without changing app behavior. */
+@media (min-width: 901px) {
+  .page:not(.refPage) .shell {
+    width: min(100% - 48px, 1120px) !important;
+    margin-inline: auto !important;
+  }
+
+  .page:not(.refPage) .topbar {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 24px !important;
+  }
+
+  .page:not(.refPage) .topNav {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    flex-wrap: wrap !important;
+    gap: clamp(14px, 2vw, 28px) !important;
+  }
+
+  .page:not(.refPage) .topNav .headerCreate {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+    padding: 0 18px !important;
+    white-space: nowrap !important;
+  }
+
+  .page:not(.refPage) .hero {
+    width: 100% !important;
+    max-width: 900px !important;
+    margin-inline: auto !important;
+    text-align: center !important;
+  }
+
+  .page:not(.refPage) .heroCopy {
+    margin-inline: auto !important;
+  }
+
+  .page:not(.refPage) .heroBenefits {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+  }
+
+  .page:not(.refPage) .heroVisual {
+    display: none !important;
+  }
+
+  .page:not(.refPage) .referenceComposerTabs {
+    width: min(100%, 760px) !important;
+    margin: 28px auto 12px !important;
+  }
+
+  .page:not(.refPage) .referenceComposerTabs + .composer {
+    width: min(100%, 760px) !important;
+    margin: 0 auto !important;
+    border-radius: 20px !important;
+  }
+
+  .page:not(.refPage) .receiveCard,
+  .page:not(.refPage) .result {
+    width: min(100%, 760px) !important;
+    margin-inline: auto !important;
+  }
+}
