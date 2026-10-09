@@ -32,4 +32,10 @@ test("access grants are bound to token hash and expiry", () => {
   assert.equal(verifyAccessGrant(tokenHash, expiresAt, grant), true);
   assert.equal(verifyAccessGrant(hashToken(generateToken()), expiresAt, grant), false);
   assert.equal(verifyAccessGrant(tokenHash, new Date(expiresAt.getTime() + 1), grant), false);
+  assert.equal(verifyAccessGrant(tokenHash, expiresAt, `${grant}tampered`), false);
+
+  const expiredAt = new Date(Date.now() - 1);
+  const expiredGrant = createAccessGrant(tokenHash, expiredAt);
+  assert.equal(verifyAccessGrant(tokenHash, expiredAt, expiredGrant), false);
+  assert.equal(verifyAccessGrant(tokenHash, expiresAt, "malformed"), false);
 });
