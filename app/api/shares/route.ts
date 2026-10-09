@@ -75,6 +75,7 @@ export async function POST(request: Request) {
 
     const id = generateToken();
     const token = deriveShareToken(id);
+    const revokeToken = generateToken();
     const expiresAt = new Date(Date.now() + minutes * 60 * 1000);
 
     let rawCode = "";
@@ -86,6 +87,7 @@ export async function POST(request: Request) {
             id,
             text, language, imageData, imageMime, imageName,
             tokenHash: hashToken(token),
+            revokeTokenHash: hashToken(revokeToken),
             codeHash: hashShareCode(rawCode),
             passwordHash: password ? hashSecret(password) : null,
             viewOnce, expiresAt,
@@ -102,6 +104,7 @@ export async function POST(request: Request) {
     return NextResponse.json({
       url: new URL(`/s/${token}`, baseUrl).toString(),
       code: rawCode,
+      revokeToken,
       expiresAt: expiresAt.toISOString(),
     }, { status: 201, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
