@@ -132,6 +132,10 @@ body { color-scheme: light; }
 .page .features > div, .page .featureCard { background: #fff !important; }
 .page .features, .page .howSteps, .page .securityGrid, .page .useGrid { border-color: #e4e6ef !important; }
 .page .result a { color: #5144e6 !important; }
+.page .revokeButton { border:1px solid #d5d8e6 !important; background:#fff !important; color:#b42335 !important; border-radius:10px !important; padding:9px 12px !important; font-weight:700 !important; }
+.page .revokeButton:hover:not(:disabled) { background:#fff2f3 !important; border-color:#f0b7bf !important; }
+.page .revokeButton:disabled { opacity:.65 !important; cursor:not-allowed !important; }
+.page .revokeNotice { color:#b42335 !important; background:#fff5f5 !important; border:1px solid #f3c8ce !important; border-radius:12px !important; padding:12px 14px !important; }
 .page .resultIcon { background: #e9e7ff !important; color: #5144e6 !important; }
 .page .resultLabel { color: #5144e6 !important; }
 .page .error, .page .formError, .page .receiveError { color: #b42335 !important; }
