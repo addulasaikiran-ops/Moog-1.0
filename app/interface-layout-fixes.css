@@ -306,3 +306,127 @@ html, body { background: #0b0f14 !important; }
 .howGuideCta h2 { margin:0 0 8px; font-size:24px; }
 .howGuideCta p { color:#94a3b8; }
 .howGuideCta a { display:inline-flex; margin-top:8px; padding:12px 16px; border-radius:10px; background:#7c5cff; color:white; text-decoration:none; font-weight:700; }
+
+
+/* Share-created result: keep the success header and details in separate rows.
+   The result section has two direct children (header and body), not a two-column icon layout. */
+.page .resultExpanded {
+  display: block !important;
+  width: min(100%, 960px) !important;
+  min-width: 0 !important;
+  padding: 24px !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+}
+.page .resultExpanded .resultSuccessRow {
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 14px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 0 22px !important;
+}
+.page .resultExpanded .resultSuccessRow > div:last-child {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+}
+.page .resultExpanded .resultLabel {
+  display: block !important;
+  margin: 0 0 6px !important;
+  line-height: 1.4 !important;
+  overflow-wrap: anywhere !important;
+}
+.page .resultExpanded .resultSuccessRow h2 {
+  margin: 0 0 6px !important;
+  line-height: 1.25 !important;
+  overflow-wrap: anywhere !important;
+}
+.page .resultExpanded .resultSuccessRow p {
+  margin: 0 !important;
+  line-height: 1.55 !important;
+}
+.page .resultExpanded .resultBody {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+.page .resultExpanded .resultFieldLabel {
+  margin: 0 0 -6px !important;
+  line-height: 1.4 !important;
+}
+.page .resultExpanded .resultLinkRow {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+}
+.page .resultExpanded .resultLinkRow a {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  overflow-wrap: anywhere !important;
+  word-break: break-word !important;
+  line-height: 1.5 !important;
+}
+.page .resultExpanded .uniqueCodeBox {
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+.page .resultExpanded .resultMetaGrid {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 10px !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+}
+.page .resultExpanded .resultMetaGrid > div {
+  min-width: 0 !important;
+  min-height: 78px !important;
+  padding: 16px !important;
+  border: 1px solid var(--moog-line) !important;
+  border-radius: 14px !important;
+  background: var(--moog-panel) !important;
+  box-sizing: border-box !important;
+}
+.page .resultExpanded .resultMetaGrid span,
+.page .resultExpanded .resultMetaGrid strong {
+  display: block !important;
+  line-height: 1.45 !important;
+  overflow-wrap: anywhere !important;
+}
+.page .resultExpanded .resultNote {
+  margin: 0 !important;
+  line-height: 1.55 !important;
+}
+.page .resultExpanded .resultBottom {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+  min-width: 0 !important;
+  margin: 4px 0 0 !important;
+}
+.page .resultExpanded .copyFeedback {
+  flex: 1 1 180px !important;
+  min-width: 0 !important;
+}
+.page .resultExpanded .revokeButton,
+.page .resultExpanded .resultNewButton {
+  flex: 0 0 auto !important;
+  min-width: 120px !important;
+  min-height: 48px !important;
+  white-space: normal !important;
+}
+@media (max-width: 640px) {
+  .page .resultExpanded { padding: 16px !important; }
+  .page .resultExpanded .resultSuccessRow { gap: 10px !important; margin-bottom: 16px !important; }
+  .page .resultExpanded .resultMetaGrid { grid-template-columns: minmax(0, 1fr) !important; }
+  .page .resultExpanded .resultMetaGrid > div { min-height: 0 !important; }
+  .page .resultExpanded .resultLinkRow { align-items: stretch !important; flex-direction: column !important; }
+  .page .resultExpanded .resultLinkRow .copy { width: 100% !important; }
+  .page .resultExpanded .resultBottom { align-items: stretch !important; flex-direction: column !important; }
+  .page .resultExpanded .revokeButton,
+  .page .resultExpanded .resultNewButton { width: 100% !important; }
+}
