@@ -57,7 +57,7 @@ function decodeEntities(value: string): string {
 }
 
 function getMeta(html: string, key: string): string {
-  const tags = html.match(/<meta\\b[^>]*>/gi) ?? [];
+  const tags = html.match(/<meta\b[^>]*>/gi) ?? [];
   for (const tag of tags) {
     const readAttribute = (name: string) => tag.match(new RegExp(`${name}\\\\s*=\\\\s*["']([^"']*)["']`, "i"))?.[1] ?? "";
     const property = readAttribute("property") || readAttribute("name");
