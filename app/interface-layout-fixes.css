@@ -283,3 +283,8 @@ html, body { background: #0b0f14 !important; }
  .recentItem { padding:16px; }
  .recentActions .recentRemove { margin-left:0; }
 }
+
+.page .receiveCodeBoxes { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:10px; margin:8px 0 12px; }
+.page .receiveDigit { width:100%; min-width:0; min-height:62px; text-align:center; font:700 24px/1 ui-monospace,SFMono-Regular,monospace; border-radius:12px!important; background:#121821!important; border:1px solid #2b394b!important; color:#f8fafc!important; }
+.page .receiveDigit:focus { border-color:#7c5cff!important; box-shadow:0 0 0 3px rgba(124,92,255,.16)!important; }
+@media (max-width:420px) { .page .receiveCodeBoxes { gap:6px; } .page .receiveDigit { min-height:52px; font-size:20px; } }
