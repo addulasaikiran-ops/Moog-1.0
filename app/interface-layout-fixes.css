@@ -118,3 +118,89 @@
     min-height: 0 !important;
   }
 }
+
+/* Premium privacy-vault visual direction from the Moog product brief. */
+:root {
+  --moog-bg: #0b0f14;
+  --moog-panel: #121821;
+  --moog-panel-2: #161e29;
+  --moog-line: #1e2836;
+  --moog-line-strong: #2b394b;
+  --moog-text: #f8fafc;
+  --moog-muted: #94a3b8;
+  --moog-dim: #718096;
+  --moog-accent: #7c5cff;
+  --moog-accent-2: #9b85ff;
+  --moog-accent-soft: rgba(124,92,255,.12);
+  --moog-shadow: 0 24px 72px rgba(0,0,0,.24);
+}
+html, body { background: #0b0f14 !important; }
+.page, .viewerPage, .legalPage {
+  background:
+    radial-gradient(ellipse at 50% -18%, rgba(124,92,255,.10), transparent 42rem),
+    radial-gradient(ellipse at 90% 40%, rgba(0,229,160,.035), transparent 32rem),
+    #0b0f14 !important;
+}
+.page .hero h1 span { color: #00e5a0 !important; }
+.page .heroBadge { border-color: rgba(0,229,160,.18) !important; }
+.page .securityBar,
+.page .securityDisclosure,
+.page .securityOptions,
+.page .securityOptions > *,
+.page .securityOptions label {
+  background-color: #121821 !important;
+  color: #f8fafc !important;
+}
+.page .securityDisclosure strong,
+.page .securityOptions strong { color: #f8fafc !important; }
+.page .securityDisclosure small,
+.page .securityOptions small,
+.page .optionNote { color: #94a3b8 !important; }
+.page .securityDisclosure:hover,
+.page .securityDisclosure.open { background-color: #161e29 !important; }
+.page .securityDot { background: #00e5a0 !important; }
+.page .lifetimePills { background: #121821 !important; border-color: #1e2836 !important; }
+.page .lifetimePill.active,
+.page .createButton,
+.page .receiveOpen,
+.page .topNav .headerCreate {
+  background: #7c5cff !important;
+  color: #fff !important;
+}
+.page .createButton:hover:not(:disabled),
+.page .receiveOpen:hover:not(:disabled),
+.page .topNav .headerCreate:hover { background: #9b85ff !important; }
+.page .productFeatures {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  width: min(100%, 960px) !important;
+  max-width: 960px !important;
+  margin: 24px auto 0 !important;
+  padding: 0 !important;
+  gap: 16px !important;
+  box-sizing: border-box !important;
+}
+.page .productFeatures > .featureCard {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  overflow-wrap: anywhere !important;
+  background: #121821 !important;
+  border-color: #1e2836 !important;
+}
+.page .featureCard i { background: rgba(0,229,160,.10) !important; color: #00e5a0 !important; }
+.page .featureCard strong { color: #f8fafc !important; }
+.page .featureCard small { color: #94a3b8 !important; }
+.page .composer, .page .receiveCard, .page .result,
+.viewerPage .minimalCard, .viewerPage .passwordCard,
+.viewerPage .revealCard, .viewerPage .shareStatusCard {
+  background: linear-gradient(145deg, #121821, #0f141b) !important;
+  border-color: #1e2836 !important;
+}
+@media (max-width: 760px) {
+  .page .productFeatures { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
+@media (max-width: 480px) {
+  .page .productFeatures { grid-template-columns: minmax(0, 1fr) !important; }
+}
