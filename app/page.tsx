@@ -266,7 +266,7 @@ export default function HomePage() {
 
       <div className="shell">
         <header className="topbar">
-          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">∞</span><span>Moog</span></a>
+          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true"><svg viewBox="0 0 48 48" aria-hidden="true" fill="none"><path d="M25 20.5 22 23.5a7 7 0 0 0 9.9 9.9l4.4-4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="M39 27.5 42 24.5a7 7 0 0 0-9.9-9.9l-4.4 4.4" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/><path d="m26 29 12-12" stroke="currentColor" strokeWidth="2.7" strokeLinecap="round" strokeLinejoin="round"/></svg></span><span>Moog</span></a>
           <nav className="topNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a href="#security">Security</a><a href="#faq">FAQ</a><a className="headerCreate" href="#composer">Create share</a></nav>
         </header>
 
@@ -281,17 +281,6 @@ export default function HomePage() {
             <div><i className="heroBenefitIcon heroBenefitGreen">✓</i><span><strong>Private</strong><small>by default</small></span></div>
           </div>
         </section>
-        <div className="heroVisual" aria-hidden="true">
-          <div className="visualGlow" />
-          <div className="visualPanel visualPanelBack"><span></span><span></span><span></span><span></span><span></span></div>
-          <div className="visualPanel visualPanelMain">
-            <div className="visualCode"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-            <div className="visualPhoto" />
-          </div>
-          <div className="visualLock">●</div>
-          <div className="visualExpiry"><b>◷</b><span>Link expires<br /><strong>in 15 minutes</strong></span></div>
-        </div>
-
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
           <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("receive")}>Receive</button>
@@ -433,7 +422,7 @@ export default function HomePage() {
             <div><i className="securityIcon securityPurple">⌁</i><strong>Private links</strong><small>High-entropy links that are difficult to guess.</small></div>
             <div><i className="securityIcon securityBlue">▤</i><strong>Secure storage</strong><small>Links and codes are stored as hashes.</small></div>
             <div><i className="securityIcon securityGreen">✓</i><strong>We control access, not copies</strong><small>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</small></div>
-            <div><i className="securityIcon securityPurple">◉</i><strong>No tracking</strong><small>Moog doesn&apos;t require an account and doesn&apos;t use third-party analytics tracking.</small></div>
+            <div><i className="securityIcon securityPurple">◉</i><strong>No account required</strong><small>Send or receive a share without creating a profile or signing in.</small></div>
           </div>
           <p className="securityDisclosureText">Moog stores shared content on the server so it can deliver the share. It is access-controlled, not end-to-end encrypted.</p>
         </section>
