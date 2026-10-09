@@ -18,8 +18,12 @@ export async function POST(request: Request) {
   const category = String(form.get("category") ?? "other").trim();
   const email = String(form.get("email") ?? "").trim();
   const details = String(form.get("details") ?? "").trim();
-  const trustedOrigin = process.env.NEXT_PUBLIC_APP_URL ?? request.url;
-  if (!isValidMoogShareUrl(shareUrl, [trustedOrigin])) return response({ error: "Enter a valid Moog share URL." }, 400);
+  // Trust only explicitly configured public origins. Falling back to request.url
+  // would let an unconfigured Host header become its own trusted origin.
+  const trustedOrigins = [process.env.NEXT_PUBLIC_APP_URL, process.env.RAILWAY_PUBLIC_DOMAIN]
+    .filter((origin): origin is string => Boolean(origin))
+    .map((origin) => origin.includes("://") ? origin : `https://${origin}`);
+  if (!isValidMoogShareUrl(shareUrl, trustedOrigins)) return response({ error: "Enter a valid Moog share URL." }, 400);
   if (!CATEGORIES.has(category) || details.length < 10 || details.length > 5000 || email.length > 254) return response({ error: "Please complete the report fields." }, 400);
   if (email && !isValidEmail(email)) return response({ error: "Enter a valid email address or leave it blank." }, 400);
   await prisma.abuseReport.create({ data: { shareUrl, category, email: email || null, details } });
