@@ -21,3 +21,86 @@ html{background:var(--mbg)!important;color-scheme:light!important;scroll-behavio
 @media(max-width:780px){.page,.viewerPage,.legalPage{padding-left:16px!important;padding-right:16px!important}.page .shell{width:100%!important}.page .topbar{min-height:65px!important}.page .topNav{gap:10px!important}.page .topNav a:not(.headerCreate){display:none!important}.page .hero{padding-top:55px!important}.page .hero h1{font-size:clamp(40px,9vw,62px)!important}.page .heroBenefits>div{min-width:0!important;flex:1 1 135px!important}.page .howSteps{grid-template-columns:repeat(2,minmax(0,1fr))!important}.page .useGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.page .faqArea{grid-template-columns:1fr!important;gap:20px!important}.page .contactCard{max-width:none!important}.page .siteFooter{align-items:flex-start!important}}
 @media(max-width:520px){.page,.viewerPage,.legalPage{padding-left:12px!important;padding-right:12px!important}.page .topbar{min-height:60px!important}.page .logo{font-size:19px!important}.page .topNav .headerCreate{min-height:37px!important;padding:0 11px!important;font-size:12px!important}.page .hero{padding:44px 0 25px!important}.page .hero h1{font-size:clamp(38px,11vw,48px)!important}.page .heroCopy{margin-top:14px!important;font-size:15px!important}.page .heroActions{flex-direction:column!important;align-items:stretch!important;margin-top:22px!important}.page .heroPrimaryAction,.page .heroSecondaryAction{width:100%!important;min-height:45px!important}.page .heroBenefits{gap:7px!important;margin-top:20px!important}.page .heroBenefits>div{flex-basis:calc(50% - 6px)!important;padding:9px!important}.page .heroBenefits>div:last-child{flex-grow:1!important}.page .heroBenefitIcon{width:27px!important;height:27px!important}.page .referenceComposerTabs{margin-top:0!important}.page .composer,.page .receiveCard,.page .result{padding:16px!important;border-radius:13px!important}.page textarea{min-height:205px!important;padding:12px!important;font-size:13px!important}.page .lifetimePills{gap:6px!important}.page .lifetimePill{flex:1 1 auto!important;padding:0 9px!important}.page .securityOptions{grid-template-columns:1fr!important;gap:13px!important}.page .resultLinkRow,.page .uniqueCodeBox{align-items:stretch!important;flex-direction:column!important}.page .resultLinkRow .copy,.page .uniqueCodeBox .copy{width:100%!important}.page .resultMetaGrid{grid-template-columns:1fr!important}.page .resultMetaGrid>div{display:flex!important;justify-content:space-between!important;align-items:center!important;gap:12px!important}.page .resultMetaGrid strong{margin-top:0!important;text-align:right!important}.page .resultBottom{align-items:stretch!important}.page .resultBottom>button{flex:1 1 auto!important}.page .productFeatures,.page .securityGrid{grid-template-columns:1fr!important}.page .howMoog,.page .useMoog,.page .securityReference,.page .faqArea{margin-top:48px!important}.page .footerLinks{gap:11px!important}.page .siteFooter{margin-top:48px!important}.page .modeButton{padding:0 10px!important}.passwordRow{flex-direction:column!important}.passwordRow .primary{width:100%!important;min-height:44px!important}.minimalMeta{align-items:flex-start!important;flex-direction:column!important;gap:6px!important;padding:13px 15px!important}.minimalContent{padding:18px!important}.minimalActions{padding:13px 15px!important}.reportForm{padding:16px!important}.legalShell .minimalLogo{margin-bottom:30px!important}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+
+/* P0 contrast repair: enforce the light palette inside the minimal share viewer.
+   globals.css contains later, more-specific legacy dark-viewer selectors. */
+.viewerMinimal{
+  --viewer-bg:#f7f8fc!important;
+  --viewer-surface:#fff!important;
+  --viewer-well:#f4f5fa!important;
+  --viewer-border:#e4e6ef!important;
+  --viewer-text:#20243a!important;
+  --viewer-body:#30364b!important;
+  --viewer-2:#667085!important;
+  --viewer-3:#667085!important;
+  color:var(--mtext)!important;
+  background:var(--mbg)!important;
+}
+.viewerMinimal .minimalCard,
+.viewerMinimal .minimalContent,
+.viewerMinimal .minimalCard-code .codeViewer{
+  background:#fff!important;
+  color:#20243a!important;
+}
+.viewerMinimal .minimalText,
+.viewerMinimal .minimalContent p,
+.viewerMinimal .revealContent p,
+.viewerMinimal .viewOnceState p{
+  color:#30364b!important;
+}
+.viewerMinimal .minimalMeta,
+.viewerMinimal .minimalMeta .countdownWrap strong,
+.viewerMinimal .minimalActionNote,
+.viewerMinimal .minimalFooter,
+.viewerMinimal .viewerSecure,
+.viewerMinimal .newShareLink{
+  color:#667085!important;
+}
+.viewerMinimal .minimalMeta,
+.viewerMinimal .minimalActions,
+.viewerMinimal .viewerTopbar{
+  border-color:#e4e6ef!important;
+}
+.viewerMinimal .minimalCard-code .codeViewerTop{
+  background:#f7f8fc!important;
+  border-color:#e4e6ef!important;
+}
+.viewerMinimal .minimalCard-code .codeViewer pre,
+.viewerMinimal .codeViewer pre{
+  color:#20243a!important;
+  background:#fff!important;
+}
+.viewerMinimal .codeViewer .lineNumber{
+  color:#858ba0!important;
+  border-color:#e4e6ef!important;
+}
+.viewerMinimal .codeViewer .lineCode{color:#20243a!important}
+.viewerMinimal .codeViewer .tokKeyword{color:#6941c6!important}
+.viewerMinimal .codeViewer .tokString{color:#067647!important}
+.viewerMinimal .codeViewer .tokNumber{color:#b54708!important}
+.viewerMinimal .codeViewer .tokComment{color:#858ba0!important}
+.viewerMinimal .codeViewer .tokTag{color:#175cd3!important}
+.viewerMinimal .codeViewer .tokAttr{color:#9333a6!important}
+.viewerMinimal .codeViewer .codeCopy{
+  color:#344054!important;
+  background:#fff!important;
+  border-color:#d0d5dd!important;
+}
+.viewerMinimal .codeViewer .codeCopy:hover{
+  background:#f4f5fa!important;
+  border-color:#b8b4f6!important;
+}
+.viewerMinimal .passwordInput,
+.viewerMinimal .lockForm input{
+  color:#20243a!important;
+  background:#fff!important;
+  border-color:#d0d5dd!important;
+}
+.viewerMinimal .passwordError,
+.viewerMinimal .viewOnceStateIcon{
+  color:#b42318!important;
+}
+@media(prefers-reduced-motion:reduce){
+  .viewerMinimal .minimalCard{animation:none!important}
+}
