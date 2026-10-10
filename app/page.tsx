@@ -277,7 +277,7 @@ export default function HomePage() {
       <div className="shell">
         <header className="topbar">
           <a className="moogLogo" href="/" aria-label="Moog home">Moog</a>
-          <nav className="moogTopNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a className="moogNavCta" href="#composer">Get started</a></nav>
+          <nav className="moogTopNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a className="moogNavCta" href="/create">Get started</a></nav>
         </header>
 
         <section className="moogHero">
@@ -285,7 +285,7 @@ export default function HomePage() {
           <h1>Share private text<br /><span>securely</span></h1>
           <p className="moogHeroCopy">No login. No clutter. Just secure, temporary sharing.</p>
           <div className="moogHeroActions">
-            <a className="moogPrimary" href="#composer">Create secure share <span aria-hidden="true">→</span></a>
+            <a className="moogPrimary" href="/create">Create secure share <span aria-hidden="true">→</span></a>
             <a className="moogSecondary" href="#how-it-works">How it works</a>
           </div>
           <div className="moogTrust" aria-label="Privacy benefits">
@@ -304,7 +304,7 @@ export default function HomePage() {
             <article className="moogStep"><span className="moogStepIcon" aria-hidden="true">⚙</span><span className="moogStepNumber">2</span><h3>Set expiration &amp; access</h3><p>Choose how long it stays available and add extra protection if needed.</p></article>
             <article className="moogStep"><span className="moogStepIcon" aria-hidden="true">↗</span><span className="moogStepNumber">3</span><h3>Create secure link</h3><p>Get a unique link to share. It’s private, temporary, and easy to revoke.</p></article>
           </div>
-          <a className="moogPrimary moogBottomCta" href="#composer">Start sharing <span aria-hidden="true">→</span></a>
+          <a className="moogPrimary moogBottomCta" href="/create">Start sharing <span aria-hidden="true">→</span></a>
         </section>
 
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
