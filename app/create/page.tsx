@@ -65,7 +65,7 @@ export default function CreateSharePage() {
   }
 
   if (result) {
-    const hoursLeft = Math.max(1, Math.ceil((new Date(result.expiresAt).getTime() - Date.now()) / 3600000));
+    const minutesLeft = Math.max(1, Math.ceil((new Date(result.expiresAt).getTime() - Date.now()) / 60000));\n    const expiryLabel = minutesLeft < 60 ? minutesLeft + (minutesLeft === 1 ? " minute" : " minutes") : minutesLeft < 1440 ? Math.ceil(minutesLeft / 60) + (Math.ceil(minutesLeft / 60) === 1 ? " hour" : " hours") : Math.ceil(minutesLeft / 1440) + (Math.ceil(minutesLeft / 1440) === 1 ? " day" : " days");
     return <main className="createShareSuccessPage">
       <header className="createShareTopbar"><a className="createShareLogo" href="/">Moog</a><nav><a href="/how-it-works">How it works</a></nav></header>
       <div className="createShareSuccessWrap">
@@ -74,7 +74,7 @@ export default function CreateSharePage() {
           <h1>Your share is ready</h1><p className="createShareSuccessSubtitle">Keep this link private and share it securely.</p>
           <div className="createShareUrlBox"><div className="createShareUrlText" title={result.url}>{result.url}</div><button type="button" onClick={copyLink} className={copied ? "createShareCopyIcon copied" : "createShareCopyIcon"} aria-label={copied ? "Link copied" : "Copy link"}>{copied ? "✓" : "▢"}</button></div>
           <div className="createShareDetails">
-            <p><span aria-hidden="true">◷</span> Expires in {hoursLeft === 1 ? "1 hour" : hoursLeft + " hours"} <span className="createShareDetailExact">· {new Date(result.expiresAt).toLocaleString()}</span></p>
+            <p><span aria-hidden="true">◷</span> Expires in {expiryLabel} <span className="createShareDetailExact">· {new Date(result.expiresAt).toLocaleString()}</span></p>
             {protect && <p><span aria-hidden="true">♢</span> Protected by access key</p>}
             {viewOnce && <p><span aria-hidden="true">◎</span> One-time view only</p>}
           </div>
