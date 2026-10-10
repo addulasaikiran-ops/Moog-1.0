@@ -276,31 +276,36 @@ export default function HomePage() {
 
       <div className="shell">
         <header className="topbar">
-          <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">∞</span><span>Moog</span></a>
-          <nav className="topNav" aria-label="Primary"><a href="/how-it-works">How it works</a><a href="#security">Security</a><a href="/recent">Recent shares</a><a href="/report-abuse">Report abuse</a><a className="headerCreate" href="#composer">Create share</a></nav>
+          <a className="moogLogo" href="/" aria-label="Moog home">Moog</a>
+          <nav className="moogTopNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a className="moogNavCta" href="#composer">Get started</a></nav>
         </header>
 
-        <section className="hero">
-          <div className="eyebrow heroBadge">PRIVATE · TEMPORARY · SIMPLE</div>
-          <h1>Share privately.<br /><span>Disappear automatically.</span></h1>
-          <p className="heroCopy">Send text, code, or photos with expiry, password protection, and view-once access.</p>
-          <div className="heroActions"><a className="heroPrimaryAction" href="#composer">Create a secure share <span aria-hidden="true">→</span></a><button className="heroSecondaryAction" type="button" onClick={() => { changeTab("receive"); window.setTimeout(() => document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}>I have a code</button></div>
-          <div className="heroBenefits" aria-label="Key benefits">
-            <div><i className="heroBenefitIcon heroBenefitPurple">●</i><span><strong>No account</strong><small>required</small></span></div>
-            <div><i className="heroBenefitIcon heroBenefitBlue">◷</i><span><strong>Automatic</strong><small>expiry</small></span></div>
-            <div><i className="heroBenefitIcon heroBenefitGreen">✓</i><span><strong>Private</strong><small>by default</small></span></div>
+        <section className="moogHero">
+          <p className="moogEyebrow">PRIVATE · TEMPORARY · SIMPLE</p>
+          <h1>Share private text<br /><span>securely</span></h1>
+          <p className="moogHeroCopy">No login. No clutter. Just secure, temporary sharing.</p>
+          <div className="moogHeroActions">
+            <a className="moogPrimary" href="#composer">Create secure share <span aria-hidden="true">→</span></a>
+            <a className="moogSecondary" href="#how-it-works">How it works</a>
+          </div>
+          <div className="moogTrust" aria-label="Privacy benefits">
+            <div><span className="moogTrustIcon" aria-hidden="true">♙</span><span>No login required</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">⬟</span><span>Private by default</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">◷</span><span>Auto-expires</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">♙</span><span>Revoke anytime</span></div>
           </div>
         </section>
-        <div className="heroVisual" aria-hidden="true">
-          <div className="visualGlow" />
-          <div className="visualPanel visualPanelBack"><span></span><span></span><span></span><span></span><span></span></div>
-          <div className="visualPanel visualPanelMain">
-            <div className="visualCode"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-            <div className="visualPhoto" />
+        <section className="moogHow" id="how-it-works">
+          <p className="moogSectionEyebrow">SIMPLE BY DESIGN</p>
+          <h2>How it works</h2>
+          <p className="moogSectionCopy">Share private text in three simple steps.</p>
+          <div className="moogSteps">
+            <article className="moogStep"><span className="moogStepIcon" aria-hidden="true">▤</span><span className="moogStepNumber">1</span><h3>Paste your text</h3><p>Add your text, code, or notes in a clean, distraction-free editor.</p></article>
+            <article className="moogStep"><span className="moogStepIcon" aria-hidden="true">⚙</span><span className="moogStepNumber">2</span><h3>Set expiration &amp; access</h3><p>Choose how long it stays available and add extra protection if needed.</p></article>
+            <article className="moogStep"><span className="moogStepIcon" aria-hidden="true">↗</span><span className="moogStepNumber">3</span><h3>Create secure link</h3><p>Get a unique link to share. It’s private, temporary, and easy to revoke.</p></article>
           </div>
-          <div className="visualLock">●</div>
-          <div className="visualExpiry"><b>◷</b><span>Link expires<br /><strong>in 15 minutes</strong></span></div>
-        </div>
+          <a className="moogPrimary moogBottomCta" href="#composer">Start sharing <span aria-hidden="true">→</span></a>
+        </section>
 
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
