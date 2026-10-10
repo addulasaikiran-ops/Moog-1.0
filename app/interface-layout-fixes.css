@@ -479,3 +479,100 @@ html, body { background: #0b0f14 !important; }
   .page .referenceHow .howSteps,
   .page .howMoog .howSteps { grid-template-columns: minmax(0, 1fr) !important; }
 }
+
+
+/* Architect-inspired editorial structure adapted for Moog (Next.js).
+   Keeps the existing composer and product UI intact; uses the theme's blue header,
+   restrained link color, centered content, and crisp bordered sections. */
+.page .architectMasthead {
+  width: 100%;
+  margin: 0 0 28px;
+  border-bottom: 1px solid rgba(73, 125, 183, .45);
+  background: linear-gradient(125deg, #2869a8 0%, #2e7bcf 48%, #215993 100%);
+  color: #fff;
+}
+.page .architectMastheadInner {
+  width: min(100%, 1040px);
+  margin: 0 auto;
+  padding: 30px 24px 28px;
+}
+.page .architectMastheadTitle {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(30px, 5vw, 48px);
+  line-height: 1.05;
+  letter-spacing: -.045em;
+  font-weight: 750;
+}
+.page .architectMastheadSubtitle {
+  margin: 10px 0 0;
+  max-width: 720px;
+  color: #d9edff;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.page .architectMastheadMeta {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.page .architectMastheadMeta span {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 4px;
+  padding: 5px 8px;
+  color: #eff8ff;
+  background: rgba(10,40,70,.16);
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .04em;
+}
+.page .architectMasthead .architectHomeLink {
+  display: inline-flex;
+  margin-top: 18px;
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 12px;
+}
+.page .shell {
+  max-width: 1040px !important;
+}
+.page .hero {
+  padding-top: 38px !important;
+}
+.page .heroBadge {
+  border-radius: 4px !important;
+}
+.page .composer,
+.page .receiveCard,
+.page .featureCard,
+.page .referenceHow .howSteps > div,
+.page .useMoog .useGrid > div,
+.page .securityReference .securityGrid > div,
+.page .faqArea .faq details {
+  border-radius: 5px !important;
+  box-shadow: none !important;
+}
+.page .composer,
+.page .receiveCard {
+  border-color: rgba(255,255,255,.16) !important;
+}
+.page .createButton,
+.page .receiveOpen,
+.page .topNav .headerCreate,
+.page .contactCard a {
+  border-radius: 4px !important;
+}
+.page .featureCard {
+  background: #101214 !important;
+}
+.page .siteFooter {
+  border-top: 2px solid #2e7bcf !important;
+}
+@media (max-width:700px) {
+  .page .architectMastheadInner { padding: 24px 16px 22px; }
+  .page .architectMastheadMeta { gap: 6px; }
+}
