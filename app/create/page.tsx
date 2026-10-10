@@ -23,7 +23,7 @@ export default function CreateSharePage() {
   const [hideListing, setHideListing] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [result, setResult] = useState<{url:string; code:string; expiresAt:string; revokeToken:string} | null>(null);
+  const [result, setResult] = useState<{url:string; code:string; expiresAt:string; revokeToken:string} | null>(null);\n  const [copied, setCopied] = useState(false);
 
   const customMinutes = useMemo(() => {
     if (!customExpiry) return 0;
@@ -60,8 +60,30 @@ export default function CreateSharePage() {
 
   async function copyLink() {
     if (!result) return;
-    try { await navigator.clipboard.writeText(result.url); }
+    try { await navigator.clipboard.writeText(result.url); setCopied(true); window.setTimeout(() => setCopied(false), 2200); }
     catch { setError("Copy wasn’t available. Select and copy the link manually."); }
+  }
+
+  if (result) {
+    const hoursLeft = Math.max(1, Math.ceil((new Date(result.expiresAt).getTime() - Date.now()) / 3600000));
+    return <main className="createShareSuccessPage">
+      <header className="createShareTopbar"><a className="createShareLogo" href="/">Moog</a><nav><a href="/how-it-works">How it works</a></nav></header>
+      <div className="createShareSuccessWrap">
+        <section className="createShareSuccessCard" aria-live="polite">
+          <div className="createShareSuccessMark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="m13 24 7.5 7.5L35 17" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
+          <h1>Your share is ready</h1><p className="createShareSuccessSubtitle">Keep this link private and share it securely.</p>
+          <div className="createShareUrlBox"><div className="createShareUrlText" title={result.url}>{result.url}</div><button type="button" onClick={copyLink} className={copied ? "createShareCopyIcon copied" : "createShareCopyIcon"} aria-label={copied ? "Link copied" : "Copy link"}>{copied ? "✓" : "▢"}</button></div>
+          <div className="createShareDetails">
+            <p><span aria-hidden="true">◷</span> Expires in {hoursLeft === 1 ? "1 hour" : hoursLeft + " hours"} <span className="createShareDetailExact">· {new Date(result.expiresAt).toLocaleString()}</span></p>
+            {protect && <p><span aria-hidden="true">♢</span> Protected by access key</p>}
+            {viewOnce && <p><span aria-hidden="true">◎</span> One-time view only</p>}
+          </div>
+          <div className="createShareSuccessActions"><button type="button" className="createSharePrimary" onClick={copyLink}>{copied ? "✓ Copied!" : "▢ Copy link"}</button><a className="createShareEmailButton" href={"mailto:?subject="+encodeURIComponent("A secure link shared with you")+"&body="+encodeURIComponent("Here is your secure link: "+result.url+(protect ? "\n\nAn access key is required to open this share. I will send it to you separately." : ""))}>Share via email ↗</a></div>
+          <div className="createShareSuccessFooter"><a href="/create" onClick={e => {e.preventDefault(); setResult(null); setText(""); setLifetime("1440"); setCustomExpiry(""); setProtect(false); setAccessKey(""); setViewOnce(false); setError(""); setCopied(false); window.scrollTo({top:0,behavior:"smooth"});}}>⟲ Create another share</a><a href="/recent">→ Go to my shares</a></div>
+          <p className="createShareSuccessCode">Keep your share code somewhere safe: <strong>{result.code}</strong></p>
+        </section>
+      </div>
+    </main>;
   }
 
   return <main className="createSharePage">
@@ -110,8 +132,7 @@ export default function CreateSharePage() {
             <label className="createShareCheckRow"><input type="checkbox" checked={hideListing} onChange={e => setHideListing(e.target.checked)} /><span><strong>Hide link from public listing</strong><small>Keep this share private and out of public lists.</small></span></label>
             <p className="createShareNote">Shares are private by default. Browser controls may still allow copying; these options do not prevent screenshots.</p>
           </section>
-          {error && <p className="createShareError" role="alert">{error}</p>}
-          {result ? <section className="createShareResult" aria-live="polite"><strong>Your secure link is ready</strong><a href={result.url}>{result.url}</a><p>Share code: <b>{result.code}</b></p><p>Expires: {new Date(result.expiresAt).toLocaleString()}</p><button type="button" className="createSharePrimary" onClick={copyLink}>Copy secure link</button><a className="createShareOpenLink" href={result.url}>Open share</a></section> : <div className="createShareFormActions"><button className="createSharePrimary" type="submit" disabled={loading}>{loading ? "Creating secure link…" : <><span aria-hidden="true">↗</span> Create secure link</>}</button><a href="/">Cancel</a></div>}
+          {error && <p className="createShareError" role="alert">{error}</p>}<div className="createShareFormActions"><button className="createSharePrimary" type="submit" disabled={loading}>{loading ? "Creating secure link…" : <><span aria-hidden="true">↗</span> Create secure link</>}</button><a href="/">Cancel</a></div>
         </aside>
       </form>
     </div>
