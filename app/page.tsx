@@ -274,6 +274,17 @@ export default function HomePage() {
       <div className="ambient ambientOne" />
       <div className="ambient ambientTwo" />
 
+      <section className="architectMasthead" aria-label="Moog introduction">
+        <div className="architectMastheadInner">
+          <h1 className="architectMastheadTitle">Moog — private sharing, made simple</h1>
+          <p className="architectMastheadSubtitle">A clean, documentation-inspired interface for temporary text, code, and photo sharing. Links expire automatically and access stays in your control.</p>
+          <div className="architectMastheadMeta" aria-label="Service properties">
+            <span>No account required</span><span>Auto-expiring links</span><span>Optional password protection</span>
+          </div>
+          <a className="architectHomeLink" href="#composer">Skip to share composer ↓</a>
+        </div>
+      </section>
+
       <div className="shell">
         <header className="topbar">
           <a className="logo" href="/" aria-label="Moog home"><span className="logoLock" aria-hidden="true">∞</span><span>Moog</span></a>
