@@ -558,7 +558,7 @@ html, body { background: #f8fafc !important; color: var(--moog-ink); }
 .createShareEditorCard,.createShareSettings{background:#fff;border:1px solid #e2e8f0;border-radius:14px;box-shadow:0 8px 28px rgba(15,23,42,.035)}
 .createShareEditorCard{padding:18px}
 .createShareEditorWrap{position:relative}
-.createShareEditorWrap textarea{display:block;width:100%;height:400px;min-height:400px;resize:vertical;padding:16px 16px 54px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;color:#0f172a;outline:none;font:400 16px/1.65 inherit;box-shadow:none}
+.createShareEditorWrap textarea{display:block;width:100%;height:400px;min-height:400px;resize:vertical;padding:16px 16px 54px;border:1px solid #e2e8f0;border-radius:8px;background:#fff;color:#0f172a;outline:none;font-family:inherit;font-size:16px;font-weight:400;line-height:1.65;box-shadow:none}
 .createShareEditorWrap textarea::placeholder{color:#94a3b8}
 .createShareEditorWrap textarea:focus{border-color:#93c5fd;box-shadow:0 0 0 3px rgba(37,99,235,.09)}
 .createShareCounter{position:absolute;right:15px;bottom:15px;display:flex;align-items:center;gap:9px;color:#64748b;font-size:13px;pointer-events:none}
