@@ -35,6 +35,7 @@ const CODE_LANGUAGES = [
 type Tab = "send" | "receive";
 type Mode = "text" | "code" | "photo";
 type RecentShare = { type: Mode; createdAt: string; expiresAt: string; url: string; code: string; passwordProtected: boolean; viewOnce: boolean; revoked?: boolean };
+type LinkPreview = { url: string; domain: string; title: string; description: string; image?: string | null };
 
 function formatReceiveCode(value: string): string {
   return value.replace(/\D/g, "").slice(0, 6);
@@ -84,8 +85,41 @@ export default function HomePage() {
   const [receiveLoading, setReceiveLoading] = useState(false);
   const [receiveError, setReceiveError] = useState("");
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [linkPreview, setLinkPreview] = useState<LinkPreview | null>(null);
+  const [linkPreviewLoading, setLinkPreviewLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const receiveInputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+  useEffect(() => {
+    setLinkPreview(null);
+    setLinkPreviewLoading(false);
+    if (mode === "photo") return;
+    const match = text.match(/https:\/\/[^\s<>"']+/i);
+    const candidate = match?.[0]?.replace(/[),.;!?]+$/, "");
+    if (!candidate) return;
+    let parsed: URL;
+    try { parsed = new URL(candidate); } catch { return; }
+    if (parsed.protocol !== "https:" || parsed.username || parsed.password) return;
+
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      setLinkPreviewLoading(true);
+      try {
+        const response = await fetch(`/api/link-preview?url=${encodeURIComponent(parsed.toString())}`, {
+          signal: controller.signal,
+          headers: { Accept: "application/json" },
+        });
+        if (!response.ok) return;
+        const data = await response.json() as LinkPreview;
+        if (!controller.signal.aborted) setLinkPreview(data);
+      } catch {
+        // Preview is optional; never block writing or sharing when a site cannot be previewed.
+      } finally {
+        if (!controller.signal.aborted) setLinkPreviewLoading(false);
+      }
+    }, 650);
+    return () => { window.clearTimeout(timer); controller.abort(); };
+  }, [mode, text]);
 
   useEffect(() => {
     if (!expiresAt) return;
@@ -322,6 +356,18 @@ export default function HomePage() {
               </div>
 
               {mode !== "photo" ? <textarea value={text} onChange={(event) => { setText(event.target.value); setError(""); setUrl(""); }} placeholder={mode === "code" ? "Paste your code snippet…" : "Paste the text you want to share…"} maxLength={100000} aria-label="Text to share" /> : null}
+              {mode !== "photo" && (linkPreviewLoading || linkPreview) ? (
+                <aside className="linkPreviewCard" aria-live="polite" aria-label="Link preview">
+                  <div className="linkPreviewEyebrow">LINK PREVIEW</div>
+                  {linkPreviewLoading && !linkPreview ? <p className="linkPreviewMuted">Loading page details…</p> : null}
+                  {linkPreview ? <>
+                    <div className="linkPreviewDomain">{linkPreview.domain}</div>
+                    <strong>{linkPreview.title}</strong>
+                    {linkPreview.description ? <p>{linkPreview.description}</p> : null}
+                    <a href={linkPreview.url} target="_blank" rel="noreferrer noopener">{linkPreview.url}</a>
+                  </> : null}
+                </aside>
+              ) : null}
 
               {mode === "code" ? (
                 <div className="codeSelectRow">
