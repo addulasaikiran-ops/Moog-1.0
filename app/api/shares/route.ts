@@ -7,6 +7,7 @@ import { IMAGE_TYPES, MAX_IMAGE_SIZE, hasValidImageSignature, sanitizeImage } fr
 import { isAllowedOrigin } from "@/lib/origin";
 
 const EXPIRY_OPTIONS = new Set([1, 5, 15, 30, 60, 360, 1440, 4320, 10080]);
+function isValidExpiry(value: unknown): value is number { return typeof value === "number" && Number.isInteger(value) && value >= 1 && value <= 10080; }
 const LANGUAGE_OPTIONS = new Set(["text", "javascript", "typescript", "python", "html", "css", "json", "sql", "bash", "java", "csharp", "cpp", "go", "rust", "php", "markdown"]);
 const MAX_MULTIPART_BODY = MAX_IMAGE_SIZE + 128 * 1024;
 const MAX_JSON_BODY = 256 * 1024;
@@ -61,7 +62,7 @@ export async function POST(request: Request) {
       language = typeof body.language === "string" && LANGUAGE_OPTIONS.has(body.language) ? body.language : "text";
       password = typeof body.password === "string" ? body.password : "";
       viewOnce = body.viewOnce === true;
-      minutes = typeof body.expiryMinutes === "number" && EXPIRY_OPTIONS.has(body.expiryMinutes) ? body.expiryMinutes : 60;
+      minutes = isValidExpiry(body.expiryMinutes) ? body.expiryMinutes : 60;
       text = body.text;
     }
 
