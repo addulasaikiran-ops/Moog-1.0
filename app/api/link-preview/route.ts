@@ -11,7 +11,7 @@ const MAX_HTML_BYTES = 512 * 1024;
 const TIMEOUT_MS = 4500;
 const USER_AGENT = "MoogLinkPreview/1.0 (+https://github.com/addulasaikiran-ops/Moog-1.0)";
 
-function isPublicIPv4(ip: string): boolean {
+export function isPublicIPv4(ip: string): boolean {
   const octets = ip.split(".").map(Number);
   if (octets.length !== 4 || octets.some((part) => !Number.isInteger(part) || part < 0 || part > 255)) return false;
   const [a, b, c] = octets;
@@ -24,15 +24,34 @@ function isPublicIPv4(ip: string): boolean {
     (a === 203 && b === 0 && c === 113));
 }
 
-function isPublicAddress(address: string): boolean {
+export function isPublicAddress(address: string): boolean {
   const family = isIP(address);
   if (family === 4) return isPublicIPv4(address);
   if (family === 6) {
+    // Only global-unicast 2000::/3 is considered, with special-use allocations excluded.
     const value = address.toLowerCase();
-    // Permit globally routable unicast IPv6 only; reject mapped IPv4 and special-use ranges.
-    return value.startsWith("2") || value.startsWith("3");
+    if (!value.startsWith("2") && !value.startsWith("3")) return false;
+    const words = expandIPv6(value);
+    if (!words || (words[0] & 0xe000) !== 0x2000) return false;
+    if (words[0] === 0x2001 && words[1] === 0x0db8) return false; // documentation
+    if (words[0] === 0x2001 && words[1] === 0x0000) return false; // protocol assignments
+    if (words[0] === 0x2002) return false; // 6to4 transition
+    if (words[0] === 0x2001 && (words[1] & 0xfff0) === 0x0010) return false; // ORCHID
+    return true;
   }
   return false;
+}
+
+function expandIPv6(input: string): number[] | null {
+  if (input.includes(".")) return null;
+  const halves = input.split("::");
+  if (halves.length > 2) return null;
+  const left = halves[0] ? halves[0].split(":") : [];
+  const right = halves.length === 2 && halves[1] ? halves[1].split(":") : [];
+  if ([...left, ...right].some((part) => !/^[0-9a-f]{1,4}$/i.test(part))) return null;
+  const missing = 8 - left.length - right.length;
+  if ((halves.length === 1 && missing !== 0) || (halves.length === 2 && missing < 1)) return null;
+  return [...left.map((part) => parseInt(part, 16)), ...Array(missing).fill(0), ...right.map((part) => parseInt(part, 16))];
 }
 
 async function validatePublicHost(hostname: string): Promise<void> {
