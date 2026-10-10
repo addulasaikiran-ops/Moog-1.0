@@ -23,7 +23,8 @@ export default function CreateSharePage() {
   const [hideListing, setHideListing] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [result, setResult] = useState<{url:string; code:string; expiresAt:string; revokeToken:string} | null>(null);\n  const [copied, setCopied] = useState(false);
+  const [result, setResult] = useState<{url:string; code:string; expiresAt:string; revokeToken:string} | null>(null);
+  const [copied, setCopied] = useState(false);
 
   const customMinutes = useMemo(() => {
     if (!customExpiry) return 0;
@@ -65,7 +66,8 @@ export default function CreateSharePage() {
   }
 
   if (result) {
-    const minutesLeft = Math.max(1, Math.ceil((new Date(result.expiresAt).getTime() - Date.now()) / 60000));\n    const expiryLabel = minutesLeft < 60 ? minutesLeft + (minutesLeft === 1 ? " minute" : " minutes") : minutesLeft < 1440 ? Math.ceil(minutesLeft / 60) + (Math.ceil(minutesLeft / 60) === 1 ? " hour" : " hours") : Math.ceil(minutesLeft / 1440) + (Math.ceil(minutesLeft / 1440) === 1 ? " day" : " days");
+    const minutesLeft = Math.max(1, Math.ceil((new Date(result.expiresAt).getTime() - Date.now()) / 60000));
+    const expiryLabel = minutesLeft < 60 ? minutesLeft + (minutesLeft === 1 ? " minute" : " minutes") : minutesLeft < 1440 ? Math.ceil(minutesLeft / 60) + (Math.ceil(minutesLeft / 60) === 1 ? " hour" : " hours") : Math.ceil(minutesLeft / 1440) + (Math.ceil(minutesLeft / 1440) === 1 ? " day" : " days");
     return <main className="createShareSuccessPage">
       <header className="createShareTopbar"><a className="createShareLogo" href="/">Moog</a><nav><a href="/how-it-works">How it works</a></nav></header>
       <div className="createShareSuccessWrap">
