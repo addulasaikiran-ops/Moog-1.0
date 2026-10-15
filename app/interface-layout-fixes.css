@@ -635,3 +635,83 @@ html, body { background: #f8fafc !important; color: var(--moog-ink); }
 .createShareSuccessCode{margin:17px 0 0;color:#94a3b8;font-size:11px;line-height:1.5}
 .createShareSuccessCode strong{color:#64748b;font-weight:700;letter-spacing:.08em}
 @media(max-width:480px){.createShareSuccessWrap{padding:24px 14px}.createShareSuccessCard{padding:26px 20px}.createShareSuccessActions{grid-template-columns:1fr}.createShareSuccessFooter{flex-direction:column;align-items:center;text-align:center}.createShareDetailExact{display:none}}
+
+
+/* Moog homepage UI polish — improved contrast, hierarchy and responsive controls */
+.home {
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(201,255,77,.10), transparent 42%),
+    radial-gradient(ellipse at 0% 55%, rgba(100,116,139,.08), transparent 32%),
+    linear-gradient(180deg, #0b0d11 0%, #08090c 68%);
+}
+.home .shell { width: min(980px, 100%); }
+.home .topbar { min-height: 42px; }
+.home .logo { color: #f8fafc; letter-spacing: -.045em; }
+.home .logoMark { border-radius: 12px; box-shadow: 0 5px 24px rgba(201,255,77,.18); }
+.home .badge { color: #c2c7d0; border-color: rgba(255,255,255,.12); background: rgba(255,255,255,.035); }
+.home .hero { max-width: 760px; padding: 82px 4px 38px; }
+.home .eyebrow { color: #d4ff70; }
+.home .hero h1 { color: #f8fafc; line-height: .99; letter-spacing: -.067em; text-wrap: balance; }
+.home .hero h1 span { color: #d4ff70; }
+.home .heroCopy { color: #b6bdc9; max-width: 620px; line-height: 1.7; }
+.home .card { background: rgba(17,19,25,.94); border-color: rgba(255,255,255,.12); border-radius: 20px; box-shadow: 0 22px 70px rgba(0,0,0,.22); }
+.home .composer { padding: clamp(16px, 3vw, 24px); }
+.home .fieldLabel { color: #d5d9e2; }
+.home .editorHint, .home .counter { color: #a0a7b5; }
+.home textarea { background: #0b0d12; border-color: #343945; color: #f8fafc; border-radius: 14px; }
+.home textarea::placeholder { color: #858d9c; }
+.home textarea:focus { border-color: rgba(201,255,77,.72); box-shadow: 0 0 0 4px rgba(201,255,77,.11); }
+.home .expiryPicker { border-top-color: rgba(255,255,255,.12); }
+.home .expiryHint { color: #a0a7b5; }
+.home .expiryOptions { flex-wrap: wrap; border-color: rgba(255,255,255,.13); background: rgba(255,255,255,.035); }
+.home .expiryOption { color: #c2c7d0; }
+.home .expiryOption:hover { color: #fff; background: rgba(255,255,255,.09); }
+.home .expiryOption.active { color: #10130a; background: #d4ff70; }
+.home .trust { color: #b2b8c4; }
+.home .primary { background: #d4ff70; color: #11140b; border-radius: 12px; box-shadow: 0 8px 24px rgba(201,255,77,.15); }
+.home .primary:focus-visible, .home button:focus-visible, .home a:focus-visible, .home input:focus-visible, .home select:focus-visible {
+  outline: 3px solid rgba(212,255,112,.9); outline-offset: 3px;
+}
+.home .result { background: rgba(201,255,77,.07); border-color: rgba(201,255,77,.28); border-radius: 16px; }
+.home .result a { color: #f0f4e9; }
+.home .resultMeta, .home .resultNote { color: #b1b7c2; }
+.home .copy { background: #252a34; border-color: #414754; color: #f8fafc; }
+.home .copy:hover { background: #333a47; }
+.home .features { gap: 12px; border: 0; border-radius: 0; background: transparent; overflow: visible; margin-top: 24px; }
+.home .features > div { background: rgba(17,19,25,.78); border: 1px solid rgba(255,255,255,.1); border-radius: 16px; padding: 22px; }
+.home .features span { color: #d4ff70; }
+.home .features strong { color: #f4f6fa; font-size: 15px; }
+.home .features small { color: #b1b7c2; line-height: 1.55; }
+.home .howMoog, .home .useMoog, .home .securityReference, .home .faqArea { color: #f1f4f8; }
+.home .howIntro h2, .home .useIntro h2, .home .sectionHeading h2 { color: #f8fafc; letter-spacing: -.045em; }
+.home .howIntro p, .home .useIntro p, .home .sectionHeading p { color: #b1b7c2; }
+.home .howSteps > div, .home .useGrid > div, .home .securityGrid > div {
+  background: rgba(17,19,25,.78); border: 1px solid rgba(255,255,255,.1); border-radius: 15px;
+}
+.home .howSteps strong, .home .useGrid strong, .home .securityGrid strong { color: #f4f6fa; }
+.home .howSteps small, .home .useGrid small, .home .securityGrid small { color: #b1b7c2; line-height: 1.55; }
+.home .howSteps > span { color: #8b93a2; }
+.home .faq, .home .contactCard { background: rgba(17,19,25,.8); border-color: rgba(255,255,255,.1); border-radius: 16px; }
+.home .faq h3, .home .contactCard h3 { color: #f8fafc; }
+.home .faq details { border-top-color: rgba(255,255,255,.12); }
+.home .faq summary { color: #e6eaf0; }
+.home .faq details p, .home .contactCard p { color: #b1b7c2; }
+.home .contactCard a { color: #d4ff70; }
+.home .siteFooter { border-top-color: rgba(255,255,255,.12); }
+.home .footerBrand strong { color: #f8fafc; }
+.home .footerBrand span, .home .footerLinks a, .home .footerLegal { color: #a0a7b5; }
+.home .footerLinks a:hover { color: #d4ff70; }
+.home footer { color: #a0a7b5; }
+@media (max-width: 650px) {
+  .home .hero { padding: 58px 2px 28px; }
+  .home .hero h1 { font-size: clamp(42px, 12vw, 56px); line-height: 1.02; }
+  .home .heroCopy { font-size: 15px; }
+  .home .composer { padding: 14px; }
+  .home .expiryOptions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
+  .home .expiryOption { padding: 10px 5px; }
+  .home .features { grid-template-columns: 1fr; gap: 10px; }
+  .home .features > div { padding: 17px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home *, .home *::before, .home *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
