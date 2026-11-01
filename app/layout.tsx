@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
-import "./interface-system.css";
-import "./moog-light.css";
+import "./moog-design-system.css";
 import "./interface-layout-fixes.css";
 import ThemeToggle from "@/components/ThemeToggle";
 
