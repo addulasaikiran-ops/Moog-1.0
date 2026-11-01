@@ -635,3 +635,149 @@ html, body { background: #f8fafc !important; color: var(--moog-ink); }
 .createShareSuccessCode{margin:17px 0 0;color:#94a3b8;font-size:11px;line-height:1.5}
 .createShareSuccessCode strong{color:#64748b;font-weight:700;letter-spacing:.08em}
 @media(max-width:480px){.createShareSuccessWrap{padding:24px 14px}.createShareSuccessCard{padding:26px 20px}.createShareSuccessActions{grid-template-columns:1fr}.createShareSuccessFooter{flex-direction:column;align-items:center;text-align:center}.createShareDetailExact{display:none}}
+
+
+/* Quiet luxury monochrome system — canonical tokens and cross-route polish */
+:root {
+  color-scheme: light dark;
+  --moog-bg: #fafaf9;
+  --moog-surface: #ffffff;
+  --moog-surface-raised: #ffffff;
+  --moog-text: #0a0a0a;
+  --moog-muted: #78716c;
+  --moog-border: #e7e5e4;
+  --moog-border-strong: #d6d3d1;
+  --moog-primary-bg: #0a0a0a;
+  --moog-primary-text: #ffffff;
+  --moog-radius-card: 14px;
+  --moog-radius-input: 10px;
+  --moog-shadow-card: 0 1px 2px rgb(0 0 0 / 3%), 0 10px 30px rgb(0 0 0 / 3%);
+  --moog-motion: 180ms ease-out;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --moog-bg: #0a0a0a;
+    --moog-surface: #111111;
+    --moog-surface-raised: #151515;
+    --moog-text: #fafafa;
+    --moog-muted: #a3a3a3;
+    --moog-border: #262626;
+    --moog-border-strong: #404040;
+    --moog-primary-bg: #fafafa;
+    --moog-primary-text: #0a0a0a;
+    --moog-shadow-card: 0 1px 2px rgb(0 0 0 / 18%), 0 12px 36px rgb(0 0 0 / 16%);
+  }
+}
+html, body {
+  background: var(--moog-bg) !important;
+  color: var(--moog-text);
+}
+body { font-family: Inter, Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+::selection { background: var(--moog-text); color: var(--moog-bg); }
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--moog-text) !important;
+  outline-offset: 3px;
+}
+:where(button, a, input, textarea, select, summary) { transition: color var(--moog-motion), background-color var(--moog-motion), border-color var(--moog-motion), box-shadow var(--moog-motion), opacity var(--moog-motion), transform var(--moog-motion); }
+:where(button, .primary, .moogPrimary, .createSharePrimary):active { transform: scale(.98); }
+.page, .home, .legalPage, .viewerPage, .createSharePage, .createShareSuccessPage {
+  color: var(--moog-text) !important;
+  background: var(--moog-bg) !important;
+}
+.page .ambient, .home .ambient { display: none !important; }
+.page .shell, .home .shell { max-width: 1120px; }
+.page .topbar, .home .topbar, .createShareTopbar {
+  background: color-mix(in srgb, var(--moog-bg) 88%, transparent) !important;
+  border-bottom: 1px solid var(--moog-border) !important;
+  backdrop-filter: blur(16px);
+}
+.page .moogLogo, .home .logo, .createShareLogo, .minimalLogo {
+  color: var(--moog-text) !important;
+  text-decoration: none;
+}
+.page .moogTopNav a, .home .topbar a, .createShareTopbar nav a { color: var(--moog-muted) !important; }
+.page .moogTopNav .moogNavCta, .page .moogPrimary, .home .primary, .primary, .createSharePrimary {
+  color: var(--moog-primary-text) !important;
+  background: var(--moog-primary-bg) !important;
+  border: 1px solid var(--moog-primary-bg) !important;
+  box-shadow: none !important;
+}
+.page .moogHero h1, .page .moogHow h2, .home h1, .home h2, .legalShell h1, .viewerShell h1 {
+  color: var(--moog-text) !important;
+  letter-spacing: -.045em;
+}
+.page .moogHero h1 span, .page .moogEyebrow, .page .moogSectionEyebrow,
+.page .moogTrustIcon, .page .moogStepIcon, .page .moogStepNumber {
+  color: var(--moog-text) !important;
+  background: transparent !important;
+}
+.page .moogHeroCopy, .page .moogSectionCopy, .page .moogTrust > div,
+.page .moogStep p, .page .moogSecondary, .legalShell p { color: var(--moog-muted) !important; }
+.page .moogPrimary, .page .moogSecondary { border-radius: 11px; min-height: 48px; }
+.page .moogSecondary { background: var(--moog-surface) !important; border: 1px solid var(--moog-border) !important; }
+.page .moogTrust { margin-top: 28px; }
+.page .moogTrust > div { flex-direction: row; gap: 9px; font-size: 13px; }
+.page .moogTrust > div + div { border-color: var(--moog-border); }
+.page .moogStep, .page .composer, .page .receiveCard, .page .result,
+.page .card, .page .referenceComposerTabs, .createShareEditorCard, .createShareSettings,
+.createShareSettingCard, .createShareSuccessCard, .viewerCard, .legalCallout {
+  color: var(--moog-text) !important;
+  background: var(--moog-surface) !important;
+  border: 1px solid var(--moog-border) !important;
+  border-radius: var(--moog-radius-card) !important;
+  box-shadow: var(--moog-shadow-card) !important;
+}
+.page .moogStep { background: var(--moog-surface) !important; }
+.page .referenceComposerTabs { box-shadow: none !important; padding: 4px; }
+.page .referenceComposerTab, .page .modeButton, .page .lifetimePill,
+.page .securityDisclosure, .page .copy, .page .resultNewButton {
+  color: var(--moog-muted) !important;
+  background: transparent !important;
+  border-color: var(--moog-border) !important;
+}
+.page .referenceComposerTab.active, .page .modeButton.active, .page .lifetimePill.active {
+  color: var(--moog-primary-text) !important;
+  background: var(--moog-primary-bg) !important;
+  border-color: var(--moog-primary-bg) !important;
+}
+.page .composer textarea, .page textarea, .page input, .page select,
+.createShareEditorWrap textarea, .createShareCustomExpiry input, .createShareAccessInput input,
+.reportForm input, .reportForm select, .reportForm textarea {
+  color: var(--moog-text) !important;
+  background: var(--moog-surface) !important;
+  border: 1px solid var(--moog-border-strong) !important;
+  border-radius: var(--moog-radius-input) !important;
+}
+.page .composer textarea::placeholder, .page input::placeholder, .page textarea::placeholder,
+.createShareEditorWrap textarea::placeholder { color: var(--moog-muted) !important; opacity: .8; }
+.page .lifetimePills { background: var(--moog-bg) !important; border: 1px solid var(--moog-border) !important; }
+.page .lifetimeActivePill { display: none !important; }
+.page .pageFooter, .page footer, .page .footer, .createShareTopbar {
+  background: var(--moog-bg) !important;
+  color: var(--moog-muted) !important;
+  border-color: var(--moog-border) !important;
+}
+.legalPage, .viewerPage, .createSharePage, .createShareSuccessPage {
+  min-height: 100vh;
+  background: var(--moog-bg) !important;
+  color: var(--moog-text) !important;
+}
+.legalShell { width: min(680px, calc(100% - 40px)); margin-inline: auto; padding: clamp(36px, 7vw, 76px) 0; }
+.legalShell h1 { font-size: clamp(34px, 5vw, 48px); line-height: 1.08; }
+.legalShell h2 { margin-top: 32px; color: var(--moog-text); letter-spacing: -.025em; }
+.legalShell p, .legalShell li { line-height: 1.8; }
+.createShareShell { max-width: 1120px; }
+.createShareEditorWrap textarea { border-radius: var(--moog-radius-input); }
+.createShareResult { background: var(--moog-surface) !important; border-color: var(--moog-border) !important; }
+.createShareResult > strong, .createShareResult > a { color: var(--moog-text) !important; }
+.createShareSuccessMark { background: var(--moog-bg) !important; color: var(--moog-text) !important; border: 1px solid var(--moog-border); }
+.createShareCopyIcon { background: var(--moog-primary-bg) !important; color: var(--moog-primary-text) !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
+@media (max-width: 640px) {
+  .page .moogHero { padding-top: 48px; }
+  .page .moogTrust { gap: 14px 8px; }
+  .page .moogTrust > div { justify-content: flex-start; border: 0 !important; }
+  .legalShell { width: calc(100% - 32px); }
+}
