@@ -281,3 +281,7 @@ h1,h2,h3,h4{letter-spacing:-.055em}
 @media(prefers-reduced-motion:reduce) {
   .page *, .page *:before, .page *:after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
 }
+
+/* Keep the custom wordmark mark singular and make the secondary hero CTA consistent. */
+.page .moogLogo:before { content:none; display:none; }
+.page .moogSecondary { min-height:48px; padding:0 20px; display:inline-flex; align-items:center; justify-content:center; font:inherit; cursor:pointer; }
