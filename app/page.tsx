@@ -305,7 +305,7 @@ export default function HomePage() {
             <form onSubmit={handleSubmit}>
               <div className="composerTop">
                 <div className="srOnly">{mode === "photo" ? "Image" : mode === "code" ? "Code" : "Text"} composer</div>
-                {mode === "photo" ? <div className="counter">10 MB max</div> : <div className="counter">{text.length.toLocaleString()} / 100,000</div>}
+                {mode === "photo" ? <div className="counter">10 MB max</div> : <div className={text.length >= 90000 ? "counter counterNearLimit" : "counter"} aria-live="polite">{text.length.toLocaleString()} / 100,000</div>}
               </div>
 
               <div className="modeToggle" role="group" aria-label="Content mode">
@@ -337,7 +337,7 @@ export default function HomePage() {
                     if (image) { event.preventDefault(); handleFile(image); }
                   }}
                 >
-                  {previewUrl ? <img src={previewUrl} alt="Selected preview" /> : <div className="photoDrop"><div className="photoDropIcon" aria-hidden="true">+</div><strong>Drop an image here</strong><span>or choose a photo</span><small>JPG / PNG / GIF / WebP · up to 10 MB</small></div>}
+                  {previewUrl ? <div className="photoPreview"><img src={previewUrl} alt="Selected image preview" /><div className="photoPreviewMeta"><span>{file?.name}</span><small>{file ? `${(file.size / 1024 / 1024).toFixed(2)} MB` : ""}</small><button className="copy" type="button" onClick={() => { setFile(null); setPreviewUrl(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}>Remove image</button></div></div> : <div className="photoDrop"><div className="photoDropIcon" aria-hidden="true">+</div><strong>Drop an image here</strong><span>or choose a photo</span><small>JPG / PNG / GIF / WebP · up to 10 MB</small></div>}
                   <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={(event) => handleFile(event.target.files?.[0] ?? null)} />
                   <button className="copy" type="button" onClick={() => fileInputRef.current?.click()}>Choose image</button>
                 </div>
