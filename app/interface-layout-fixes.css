@@ -781,3 +781,47 @@ body { font-family: Inter, Geist, ui-sans-serif, system-ui, -apple-system, Blink
   .page .moogTrust > div { justify-content: flex-start; border: 0 !important; }
   .legalShell { width: calc(100% - 32px); }
 }
+
+
+/* Explicit user-selected themes override the system preference. */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --moog-bg:#fafaf9; --moog-surface:#fff; --moog-surface-raised:#fff;
+  --moog-text:#0a0a0a; --moog-muted:#78716c; --moog-border:#e7e5e4;
+  --moog-border-strong:#d6d3d1; --moog-primary-bg:#0a0a0a; --moog-primary-text:#fff;
+  --moog-shadow-card:0 1px 2px rgb(0 0 0 / 3%),0 10px 30px rgb(0 0 0 / 3%);
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --moog-bg:#0a0a0a; --moog-surface:#111; --moog-surface-raised:#151515;
+  --moog-text:#fafafa; --moog-muted:#a3a3a3; --moog-border:#262626;
+  --moog-border-strong:#404040; --moog-primary-bg:#fafafa; --moog-primary-text:#0a0a0a;
+  --moog-shadow-card:0 1px 2px rgb(0 0 0 / 18%),0 12px 36px rgb(0 0 0 / 16%);
+}
+.moogThemeToggle {
+  position: fixed; z-index: 100; top: 18px; right: 20px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 40px; padding: 0 12px; border: 1px solid var(--moog-border);
+  border-radius: 999px; background: var(--moog-surface); color: var(--moog-text);
+  box-shadow: 0 3px 12px rgb(0 0 0 / 5%); font-size: 12px; font-weight: 600;
+  cursor: pointer; backdrop-filter: blur(14px);
+}
+.moogThemeToggle:hover { border-color: var(--moog-border-strong); }
+.moogThemeToggle svg { flex: 0 0 auto; }
+.page .topbar, .home .topbar { position: sticky; top: 0; z-index: 30; }
+.page .moogHero { padding: clamp(36px, 5vw, 62px) 0 26px !important; }
+.page .moogHero h1 { max-width: 760px; margin-inline: auto; font-size: clamp(38px, 5.2vw, 60px) !important; }
+.page .moogHeroActions { flex-direction: row; justify-content: center; }
+.page .moogTrust { max-width: 760px; margin-top: 22px !important; }
+.page .referenceComposerTabs { margin-top: 16px !important; }
+.page .composer { margin-bottom: 40px; }
+.page .moogEyebrow { letter-spacing: .12em; }
+@media (max-width: 760px) {
+  .moogThemeToggle { top: 12px; right: 12px; min-height: 38px; padding: 0 10px; }
+  .page .topbar, .home .topbar { padding-right: 92px; }
+  .page .moogHeroActions { flex-direction: column; }
+}
+@media (max-width: 360px) {
+  .moogThemeToggle span { display: none; }
+  .moogThemeToggle { width: 40px; padding: 0; }
+}
