@@ -1,0 +1,188 @@
+/* Moog visual system — one cohesive layer for every route. */
+:root {
+  --moog-bg:#f6f7f4; --moog-surface:#fff; --moog-surface-raised:#fbfcfa;
+  --moog-text:#18211d; --moog-muted:#66736b; --moog-dim:#89958d;
+  --moog-border:#e1e7e1; --moog-border-strong:#cbd5cd;
+  --moog-accent:#245d49; --moog-accent-strong:#194735; --moog-accent-soft:#e7f2eb;
+  --moog-success:#24704e; --moog-danger:#b53d3d; --moog-warning:#95631a;
+  --moog-shadow:0 18px 48px rgba(24,43,31,.07);
+  --moog-radius-sm:12px; --moog-radius-md:18px; --moog-radius-lg:26px;
+}
+:root[data-theme="dark"] {
+  --moog-bg:#101713; --moog-surface:#18221c; --moog-surface-raised:#202c24;
+  --moog-text:#edf4ee; --moog-muted:#b0beb4; --moog-dim:#87978c;
+  --moog-border:#2b3a30; --moog-border-strong:#405447;
+  --moog-accent:#a7d8b5; --moog-accent-strong:#c5e8ce; --moog-accent-soft:#24392b;
+  --moog-success:#9dd8b0; --moog-danger:#ffaaaa; --moog-warning:#f2cb83;
+  --moog-shadow:0 20px 54px rgba(0,0,0,.22);
+}
+@media(prefers-color-scheme:dark) {
+  :root:not([data-theme="light"]):not([data-theme="dark"]) {
+    --moog-bg:#101713; --moog-surface:#18221c; --moog-surface-raised:#202c24;
+    --moog-text:#edf4ee; --moog-muted:#b0beb4; --moog-dim:#87978c;
+    --moog-border:#2b3a30; --moog-border-strong:#405447;
+    --moog-accent:#a7d8b5; --moog-accent-strong:#c5e8ce; --moog-accent-soft:#24392b;
+    --moog-success:#9dd8b0; --moog-danger:#ffaaaa; --moog-warning:#f2cb83;
+    --moog-shadow:0 20px 54px rgba(0,0,0,.22);
+  }
+}
+html{background:var(--moog-bg);scroll-padding-top:24px}
+body{background:var(--moog-bg);color:var(--moog-text);font-size:15px;letter-spacing:-.01em}
+h1,h2,h3,h4{letter-spacing:-.055em}
+:where(button,a,input,textarea,select):focus-visible{outline:3px solid color-mix(in srgb,var(--moog-accent) 50%,transparent)!important;outline-offset:3px!important}
+.page,.createSharePage,.createShareSuccessPage,.recentPage,.viewerPage,.legalPage{background:var(--moog-bg);color:var(--moog-text)}
+.page{padding:0 28px 84px}
+.page .shell,.createShareShell,.recentShell,.viewerShell{width:min(1120px,100%);margin-inline:auto}
+.page .topbar,.createShareTopbar,.recentTopbar,.viewerTopbar{min-height:78px;border-color:var(--moog-border);background:transparent}
+.page .moogLogo,.page .logo,.createShareLogo,.recentLogo,.viewerTopbar .minimalLogo,.legalShell .minimalLogo{font-size:25px;letter-spacing:-.075em;font-weight:700}
+.page .moogLogo:before,.createShareLogo:before{content:"";display:inline-block;width:10px;height:10px;margin:0 9px 2px 0;border-radius:3px;background:var(--moog-accent);transform:rotate(-12deg)}
+.page .moogTopNav a,.createShareTopbar nav a,.recentTopbar>a:last-child{font-size:13px;color:var(--moog-muted)}
+.page .moogNavCta,.page .moogPrimary,.page .createButton,.page .receiveOpen,.page .primary,.createSharePrimary,.createSharePrimaryAction,.minimalRevealButton,.legalButton{min-height:48px;padding:0 20px;border:1px solid var(--moog-accent);border-radius:13px;background:var(--moog-accent);color:var(--moog-bg);font-weight:700;box-shadow:0 5px 14px color-mix(in srgb,var(--moog-accent) 13%,transparent)}
+.page .moogNavCta:hover,.page .moogPrimary:hover,.page .createButton:hover,.createSharePrimary:hover,.createSharePrimaryAction:hover{transform:translateY(-1px);background:var(--moog-accent-strong)}
+.page .moogSecondary,.createShareBack,.createShareFormActions>a{border:1px solid var(--moog-border-strong);border-radius:13px;background:var(--moog-surface);color:var(--moog-text)}
+.page .moogHero{max-width:980px;display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,.82fr);align-items:center;column-gap:clamp(34px,6vw,76px);row-gap:18px;padding:clamp(54px,8vw,96px) 0 38px;text-align:left}
+.page .moogEyebrow{grid-column:1;align-self:end;margin:0 0 -8px;color:var(--moog-accent);font-size:10px;letter-spacing:.18em}
+.page .moogHero h1{grid-column:1;max-width:560px;font-size:clamp(46px,6.4vw,72px);line-height:.99;letter-spacing:-.075em}
+.page .moogHeroCopy{grid-column:1;max-width:470px;margin:0;color:var(--moog-muted);font-size:17px;line-height:1.75}
+.page .moogHeroActions{grid-column:1;justify-content:flex-start;margin-top:8px}
+.page .moogTrust{grid-column:1;justify-content:flex-start;gap:8px 16px;margin-top:8px}
+.page .moogTrust>div{gap:7px;border:0;background:transparent;padding:0;color:var(--moog-muted);font-size:12px}
+.page .moogTrustIcon{display:grid;place-items:center;width:23px;height:23px;border:1px solid var(--moog-border);border-radius:7px;color:var(--moog-accent);font-size:9px}
+.moogLivePreview{grid-column:2;grid-row:1 / span 6;position:relative;align-self:center;min-width:0;padding:18px;border:1px solid var(--moog-border);border-radius:24px;background:var(--moog-surface);box-shadow:0 30px 80px rgba(28,61,43,.11);transform:rotate(1.2deg)}
+.moogPreviewTop,.moogPreviewFooter,.moogPreviewFile{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.moogPreviewTop{padding:2px 2px 17px;font-size:9px;font-weight:800;letter-spacing:.13em;color:var(--moog-muted)}
+.moogPreviewSignal{display:flex;align-items:center;gap:7px}
+.moogPreviewSignal i,.moogPreviewStatus i{width:7px;height:7px;border-radius:50%;background:#4a9b69;box-shadow:0 0 0 4px #4a9b691c}
+.moogPreviewExpiry{padding:7px 9px;border:1px solid var(--moog-border);border-radius:7px;letter-spacing:.05em}
+.moogPreviewPaper{padding:18px;border:1px solid var(--moog-border);border-radius:16px;background:var(--moog-bg)}
+.moogPreviewFile{justify-content:flex-start;padding-bottom:19px;border-bottom:1px solid var(--moog-border)}
+.moogPreviewFileIcon{display:grid;place-items:center;width:42px;height:42px;border-radius:12px;background:var(--moog-accent-soft);color:var(--moog-accent);font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:700}
+.moogPreviewFile>span:nth-child(2){display:grid;gap:3px;min-width:0;flex:1}
+.moogPreviewFile strong{font-size:13px;color:var(--moog-text)}
+.moogPreviewFile small{font-size:10px;color:var(--moog-muted)}
+.moogPreviewLock{color:var(--moog-muted);font-size:16px}
+.moogPreviewLines{display:grid;gap:9px;padding:21px 0}
+.moogPreviewLines i{display:block;height:7px;border-radius:99px;background:var(--moog-border)}
+.moogPreviewLines i:nth-child(1){width:95%}.moogPreviewLines i:nth-child(2){width:76%}.moogPreviewLines i:nth-child(3){width:88%}.moogPreviewLines i:nth-child(4){width:54%}
+.moogPreviewFooter{padding-top:14px;border-top:1px solid var(--moog-border);font-size:10px;color:var(--moog-muted)}
+.moogPreviewFooter b{font-family:ui-monospace,monospace;letter-spacing:.13em;color:var(--moog-text)}
+.moogPreviewStatus{display:flex;align-items:center;gap:7px}
+.moogPreviewStatus i{width:6px;height:6px}
+.moogPreviewCaption{margin:14px 0 0;text-align:center;font-size:11px;color:var(--moog-muted)}
+.page .referenceComposerTabs{width:fit-content;margin:12px auto 0;padding:5px;border:1px solid var(--moog-border);border-radius:14px;background:var(--moog-surface)}
+.page .referenceComposerTab{min-height:40px;padding:0 24px;border-radius:10px;color:var(--moog-muted);font-size:13px;font-weight:700}
+.page .referenceComposerTab.active{background:var(--moog-accent);color:var(--moog-bg);box-shadow:none}
+.page .composer,.page .receiveCard,.page .card,.page .result{border:1px solid var(--moog-border);border-radius:22px;background:var(--moog-surface);box-shadow:var(--moog-shadow)}
+.page .composer,.page .receiveCard{padding:clamp(18px,3vw,30px)}
+.page .composer textarea,.page textarea{min-height:250px;border:1px solid var(--moog-border);border-radius:14px;background:var(--moog-bg);color:var(--moog-text);padding:18px;line-height:1.75}
+.page textarea::placeholder{color:var(--moog-dim)}
+.page .modeToggle,.page .lifetimePills{padding:5px;border:1px solid var(--moog-border);border-radius:13px;background:var(--moog-bg)}
+.page .modeButton,.page .lifetimePill{min-height:40px;border-radius:9px;color:var(--moog-muted)}
+.page .modeButton.active,.page .lifetimePill.active{background:var(--moog-accent-soft);color:var(--moog-accent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--moog-accent) 12%,transparent)}
+.page .securityDisclosure{border:1px solid var(--moog-border);border-radius:13px;background:var(--moog-bg)}
+.page .productFeatures,.page .features,.page .featureGrid,.page .securityGrid,.page .useGrid{gap:14px}
+.page .featureCard,.page .securityGrid>*,.page .useGrid>*{border:1px solid var(--moog-border);border-radius:18px;background:var(--moog-surface);padding:22px}
+.page .featureCard strong{font-size:15px}.page .featureCard small{line-height:1.7;color:var(--moog-muted)}
+.page .siteFooter{margin-top:48px;border-color:var(--moog-border)}
+.createSharePage,.createShareSuccessPage,.recentPage,.viewerPage,.legalPage{padding-inline:28px}
+.createShareShell,.recentShell{padding-top:36px}
+.createShareHeading{margin:24px 0 28px}
+.createShareHeading h1,.recentIntro h1,.legalShell h1,.lockStage h1{font-size:clamp(38px,5.3vw,58px);line-height:1.02;letter-spacing:-.075em}
+.createShareHeading p,.recentIntro>p:last-child,.legalShell>p,.lockStage>p{max-width:650px;font-size:16px;line-height:1.75}
+.createShareGrid{gap:22px;grid-template-columns:minmax(0,1.45fr) minmax(290px,.8fr)}
+.createShareEditorCard,.createShareSettingCard,.createShareSuccessCard,.recentItem,.legalShell,.viewerPage .minimalCard{border:1px solid var(--moog-border);border-radius:22px;background:var(--moog-surface);box-shadow:var(--moog-shadow)}
+.createShareEditorCard,.createShareSettingCard{padding:clamp(18px,3vw,28px)}
+.createShareEditorWrap textarea{min-height:300px;border:1px solid var(--moog-border);border-radius:14px;background:var(--moog-bg);color:var(--moog-text);line-height:1.75}
+.createShareSettingCard{gap:20px}
+.createShareAccessInput input,.createShareCustomExpiry input,.recentSearch input,.passwordInput{border:1px solid var(--moog-border-strong);border-radius:12px;background:var(--moog-bg);color:var(--moog-text)}
+.createSharePrimary,.createSharePrimaryAction{border-radius:13px}
+.createShareSuccessWrap{width:min(650px,100%);margin:clamp(36px,8vw,86px) auto 0}
+.createShareSuccessCard{padding:clamp(22px,5vw,42px)}
+.createShareSuccessCard h1{font-size:clamp(34px,5vw,46px);letter-spacing:-.07em}
+.createShareUrlBox{padding:9px 10px 9px 16px;border:1px solid var(--moog-border-strong);border-radius:14px;background:var(--moog-bg)}
+.createShareUrlText{overflow-wrap:anywhere;color:var(--moog-text)}
+.createShareCopyIcon{border-radius:10px;background:var(--moog-accent);color:var(--moog-bg)}
+.createShareDetails{border:1px solid var(--moog-border);border-radius:14px;background:var(--moog-bg)}
+.createShareSuccessCode{padding-top:18px;border-top:1px solid var(--moog-border)}
+.recentIntro{padding:clamp(40px,7vw,76px) 0 24px}
+.recentControls{gap:12px}
+.recentSearch{min-height:48px;border:1px solid var(--moog-border-strong);border-radius:13px;background:var(--moog-surface)}
+.recentFilters{gap:8px;margin:20px 0}
+.recentFilters button{min-height:38px;padding:0 14px;border:1px solid var(--moog-border);border-radius:10px;background:var(--moog-surface);color:var(--moog-muted)}
+.recentFilters button.selected{border-color:var(--moog-accent);background:var(--moog-accent-soft);color:var(--moog-accent)}
+.recentItem{padding:22px}
+.recentCode{font-size:clamp(28px,4vw,36px);letter-spacing:.08em;font-variant-numeric:tabular-nums}
+.recentChips span,.recentStatus{background:var(--moog-bg)}
+.recentActions button,.recentActions a,.recentClear{min-height:40px;border:1px solid var(--moog-border-strong);border-radius:10px;background:var(--moog-surface);color:var(--moog-text);padding:0 13px;text-decoration:none;font-size:12px;font-weight:650}
+.recentEmpty{padding:50px 22px;border:1px dashed var(--moog-border-strong);border-radius:22px;background:var(--moog-surface);text-align:center}
+.recentEmpty>div{display:grid;place-items:center;width:54px;height:54px;margin:0 auto 18px;border-radius:16px;background:var(--moog-accent-soft);color:var(--moog-accent);font-size:24px}
+.viewerShell{max-width:900px}
+.viewerTopbar{margin-bottom:28px}
+.viewerMain{width:min(760px,100%);margin:clamp(40px,8vw,90px) auto}
+.viewerPage .minimalCard{overflow:hidden;border-radius:24px}
+.minimalMeta{padding:18px 24px;border-bottom:1px solid var(--moog-border);font-size:11px;letter-spacing:.1em}
+.minimalContent{padding:clamp(22px,5vw,48px)}
+.minimalText{font-size:clamp(16px,2vw,19px);line-height:1.9;overflow-wrap:anywhere}
+.codeViewer{border:1px solid var(--moog-border);border-radius:14px;background:var(--moog-bg)}
+.minimalActions{padding:18px 24px;border-top:1px solid var(--moog-border)}
+.lockStage{width:min(620px,100%);margin:clamp(38px,8vw,88px) auto;text-align:left}
+.lockIcon{display:grid;place-items:center;width:54px;height:54px;margin-bottom:22px;border-radius:17px;background:var(--moog-accent-soft);color:var(--moog-accent);font-size:24px}
+.minimalCard .passwordRow{gap:10px}
+.minimalCard .passwordInput{min-height:48px;padding:0 14px}
+.minimalFooter{padding:26px 0;text-align:center;border-top:1px solid var(--moog-border)}
+.howGuideSteps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:28px 0 60px}
+.howGuideStep{display:flex;gap:15px;padding:22px;border:1px solid var(--moog-border);border-radius:18px;background:var(--moog-surface)}
+.howGuideStep>span{display:grid;place-items:center;flex:none;width:36px;height:36px;border-radius:10px;background:var(--moog-accent-soft);color:var(--moog-accent);font-size:11px;font-weight:800}
+.howGuideStep h2{margin:4px 0 8px;font-size:18px}.howGuideStep p{margin:0;color:var(--moog-muted);font-size:13px;line-height:1.7}
+.howGuideFaq{max-width:760px;margin:0 auto 56px}.howGuideFaq h2{font-size:32px}
+.howGuideFaq details{border-bottom:1px solid var(--moog-border)}.howGuideFaq summary{padding:18px 0;color:var(--moog-text);font-weight:650}.howGuideFaq details p{color:var(--moog-muted);line-height:1.75}
+.howGuideCta{padding:clamp(24px,5vw,42px);border:1px solid var(--moog-border);border-radius:22px;background:var(--moog-surface);text-align:center}.howGuideCta a{display:inline-flex;min-height:46px;align-items:center;padding:0 18px;border-radius:12px;background:var(--moog-accent);color:var(--moog-bg);text-decoration:none;font-weight:700}
+@media(max-width:820px){
+ .page{padding-inline:20px}.page .moogHero{grid-template-columns:minmax(0,1fr) minmax(250px,.8fr);column-gap:28px;padding-top:56px}
+ .page .moogHero h1{font-size:clamp(42px,6.5vw,58px)}
+ .page .moogTrust{gap:8px 12px}.moogLivePreview{padding:13px}
+ .createShareGrid{grid-template-columns:minmax(0,1fr) minmax(260px,.8fr)}
+ .howGuideSteps{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+ .page,.createSharePage,.createShareSuccessPage,.recentPage,.viewerPage,.legalPage{padding-inline:16px}
+ .page .topbar,.createShareTopbar,.recentTopbar,.viewerTopbar{min-height:66px}
+ .page .moogTopNav{gap:12px}.page .moogTopNav a{font-size:12px}
+ .page .moogHero{display:flex;flex-direction:column;align-items:stretch;gap:18px;padding:42px 0 26px}
+ .page .moogEyebrow{margin:0 0 -7px}
+ .page .moogHero h1{font-size:clamp(42px,12vw,60px);max-width:520px}
+ .page .moogHeroCopy{font-size:16px;margin:0}
+ .page .moogHeroActions{display:grid;grid-template-columns:1fr;gap:9px;margin-top:0}
+ .page .moogHeroActions>a{width:100%;min-height:49px}
+ .page .moogTrust{display:grid;grid-template-columns:1fr 1fr;margin-top:2px;gap:10px}
+ .moogLivePreview{width:min(100%,420px);align-self:center;transform:none;margin:4px 0 6px;padding:13px}
+ .moogPreviewPaper{padding:14px}
+ .page .referenceComposerTabs{margin-top:12px}
+ .page .composer,.page .receiveCard{padding:15px;border-radius:18px}
+ .page .composerBottom{align-items:stretch;flex-direction:column}
+ .page .composerBottom button,.page .composerBottom .primary{width:100%}
+ .page .productFeatures,.page .features,.page .featureGrid,.page .securityGrid,.page .useGrid{grid-template-columns:1fr}
+ .createShareGrid{grid-template-columns:1fr}
+ .createShareShell,.recentShell{padding-top:22px}
+ .createShareHeading{margin:22px 0}
+ .createShareHeading h1,.recentIntro h1{font-size:clamp(36px,10vw,48px)}
+ .createShareEditorCard,.createShareSettingCard{padding:16px}
+ .createShareEditorWrap textarea{min-height:240px}
+ .createShareSuccessWrap{margin-top:28px}
+ .createShareSuccessCard{padding:22px 17px}
+ .createShareSuccessActions{display:grid;grid-template-columns:1fr}
+ .createShareSuccessActions>*{width:100%;min-height:46px}
+ .createShareDetailExact{display:block}
+ .recentControls{display:grid;grid-template-columns:1fr}
+ .recentClear{width:100%}
+ .recentItem{padding:17px}
+ .recentActions{display:grid;grid-template-columns:1fr 1fr}
+ .recentActions>*{justify-content:center}
+ .minimalMeta{padding:15px}
+ .minimalContent{padding:20px 17px}
+ .minimalActions{padding:15px}
+ .minimalCard .passwordRow{display:grid;grid-template-columns:1fr}
+ .minimalCard .passwordRow button{width:100%}
+ .howGuideCta{padding:24px 18px}
+}
+@media(prefers-reduced-motion:reduce){.moogLivePreview{transform:none}}
