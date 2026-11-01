@@ -825,3 +825,22 @@ body { font-family: Inter, Geist, ui-sans-serif, system-ui, -apple-system, Blink
   .moogThemeToggle span { display: none; }
   .moogThemeToggle { width: 40px; padding: 0; }
 }
+
+
+/* Composer micro-interactions and file-selection affordances */
+.page .counterNearLimit { color: #a16207 !important; }
+:root[data-theme="dark"] .page .counterNearLimit { color: #d6b36a !important; }
+.page .photoPreview { display: grid; gap: 12px; width: 100%; }
+.page .photoPreview > img { display: block; width: 100%; max-height: 320px; object-fit: contain; border-radius: 10px; background: var(--moog-bg); }
+.page .photoPreviewMeta { display: flex; align-items: center; gap: 12px; min-width: 0; flex-wrap: wrap; }
+.page .photoPreviewMeta > span { min-width: 0; flex: 1 1 180px; overflow-wrap: anywhere; color: var(--moog-text); font-size: 13px; }
+.page .photoPreviewMeta small { color: var(--moog-muted); font-variant-numeric: tabular-nums; }
+.page .photoPreviewMeta button { min-height: 44px; }
+.page .composer textarea { line-height: 1.75; }
+.page .modeButton, .page .lifetimePill, .page .copy, .page .revokeButton, .page .resultNewButton { min-height: 44px; }
+.page .securityDisclosure { min-height: 48px; }
+.page .faq details { border-bottom: 1px solid var(--moog-border); }
+.page .faq details summary { min-height: 48px; display: flex; align-items: center; cursor: pointer; }
+.page .faq details p { color: var(--moog-muted); line-height: 1.75; }
+.moogErrorActions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 24px; }
+.moogErrorActions .legalButton { margin: 0; cursor: pointer; font: inherit; }
