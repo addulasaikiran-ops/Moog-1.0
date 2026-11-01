@@ -21,3 +21,11 @@
 .revokeNotice{padding:12px;border:1px solid var(--moog-border);border-radius:var(--moog-radius-sm);color:var(--moog-muted)}
 .codeCopyButton{min-height:40px;padding:0 12px;border:1px solid var(--moog-border-strong);border-radius:var(--moog-radius-sm);background:var(--moog-surface);color:var(--moog-text)}
 @media(prefers-reduced-motion:reduce){.spinner,.statusSpinner{animation:none}}
+
+.resultSuccessRow{display:flex;align-items:flex-start;gap:14px;margin-bottom:18px}
+.resultSuccessRow h2{margin:3px 0 5px;color:var(--moog-text);font-size:24px;letter-spacing:-.04em}
+.resultSuccessRow p{margin:0;color:var(--moog-muted);font-size:13px;line-height:1.55}
+.resultFieldLabel{margin:0 0 7px;color:var(--moog-muted);font-size:10px;font-weight:800;letter-spacing:.14em}
+.resultPrimaryCopy{border-color:var(--moog-border-strong)!important}
+.copyFeedback{color:var(--moog-muted);font-size:12px}
+@media(max-width:650px){.resultSuccessRow h2{font-size:20px}}
