@@ -276,23 +276,23 @@ export default function HomePage() {
 
       <div className="shell">
         <header className="topbar">
-          <a className="moogLogo" href="/" aria-label="Moog home">Moog</a>
+          <a className="moogLogo" href="/" aria-label="Moog home"><span className="moogBrandMark" aria-hidden="true">◇</span><span>moog</span></a>
           <nav className="moogTopNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a className="moogNavCta" href="/create">Get started</a></nav>
         </header>
 
         <section className="moogHero">
-          <p className="moogEyebrow">PRIVATE SHARING, WITHOUT THE NOISE</p>
-          <h1>Share private text securely</h1>
-          <p className="moogHeroCopy">Private by default. Set an expiry, share a link, and stay in control.</p>
+          <p className="moogEyebrow">PRIVATE SHARING, REFINED</p>
+          <h1>Share privately.<br />Let it disappear.</h1>
+          <p className="moogHeroCopy">Share text, code, and images through private links. Choose how long a share remains available and configure the access options you need.</p>
           <div className="moogHeroActions">
-            <a className="moogPrimary" href="/create">Create secure share <span aria-hidden="true">→</span></a>
-            <a className="moogSecondary" href="#how-it-works">How it works</a>
+            <a className="moogPrimary" href="/create">Create a private share <span aria-hidden="true">→</span></a>
+            <a className="moogSecondary" href="#composer">Receive a share</a>
           </div>
           <div className="moogTrust" aria-label="Privacy benefits">
-            <div><span className="moogTrustIcon" aria-hidden="true">01</span><span>No login</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">02</span><span>Private by default</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">03</span><span>Auto-expires</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">04</span><span>Revoke anytime</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">◇</span><span>Private by default</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">↗</span><span>Temporary access</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">⌁</span><span>You stay in control</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">✓</span><span>No account required</span></div>
           </div>
           <aside className="moogLivePreview" aria-label="Example temporary share preview">
             <div className="moogPreviewTop"><span className="moogPreviewSignal"><i /> PRIVATE SHARE</span><span className="moogPreviewExpiry">EXPIRES IN 24H</span></div>
