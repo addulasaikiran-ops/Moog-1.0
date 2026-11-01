@@ -1,4 +1,8 @@
-# Moog 1.0
+<p align="center">
+  <img src="docs/assets/moog-bots.svg" alt="Tiny Moog bots jumping and passing a secret to each other, until it expires and disappears" width="100%">
+</p>
+
+<p align="center"><strong>Share a secret. Watch it vanish.</strong></p>
 
 Moog is a no-login text sharing app. You paste text, create a random share URL, choose its lifetime, optionally protect it with an access key, and optionally make it view once.
 
@@ -79,3 +83,11 @@ The current implementation limits text to 100,000 characters. Protected links us
 ## Railway migrations
 
 Set the Railway service pre-deploy command to `npx prisma migrate deploy`. Do not use `prisma db push` in production. Configure the required server-only secrets before deploying.
+
+## Hero animation
+
+The README hero is a self-contained SVG with a 12-second loop; the static companion is available at [docs/assets/moog-bots-static.svg](docs/assets/moog-bots-static.svg).
+
+- **Speed / loop length:** edit the `12s` animation durations and matching keyframe percentages in `docs/assets/moog-bots.svg` together to keep the handoffs and reset in sync.
+- **Colours:** adjust the CSS variables near the top of the SVG. The `prefers-color-scheme: dark` block swaps the monochrome tokens automatically.
+- **Preview locally:** open either SVG file directly in a browser. To check the README rendering, push the branch and open the README preview on GitHub; verify both light and dark themes and a narrow/mobile viewport. Reduced-motion preferences intentionally show a calm still frame.
