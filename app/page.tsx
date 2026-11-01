@@ -286,7 +286,7 @@ export default function HomePage() {
           <p className="moogHeroCopy">Share text, code, and images through private links. Choose how long a share remains available and configure the access options you need.</p>
           <div className="moogHeroActions">
             <a className="moogPrimary" href="/create">Create a private share <span aria-hidden="true">→</span></a>
-            <a className="moogSecondary" href="#composer">Receive a share</a>
+            <button className="moogSecondary" type="button" onClick={() => { changeTab("receive"); document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>Receive a share</button>
           </div>
           <div className="moogTrust" aria-label="Privacy benefits">
             <div><span className="moogTrustIcon" aria-hidden="true">◇</span><span>Private by default</span></div>
