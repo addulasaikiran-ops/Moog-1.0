@@ -281,32 +281,20 @@ export default function HomePage() {
         </header>
 
         <section className="moogHero">
-          <p className="moogEyebrow">PRIVATE · TEMPORARY · SIMPLE</p>
-          <h1>Share private text<br /><span>securely</span></h1>
-          <p className="moogHeroCopy">No login. No clutter. Just secure, temporary sharing.</p>
+          <p className="moogEyebrow">PRIVATE SHARING, WITHOUT THE NOISE</p>
+          <h1>Share private text securely</h1>
+          <p className="moogHeroCopy">Private by default. Set an expiry, share a link, and stay in control.</p>
           <div className="moogHeroActions">
             <a className="moogPrimary" href="/create">Create secure share <span aria-hidden="true">→</span></a>
             <a className="moogSecondary" href="#how-it-works">How it works</a>
           </div>
           <div className="moogTrust" aria-label="Privacy benefits">
-            <div><span className="moogTrustIcon" aria-hidden="true">♙</span><span>No login required</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">⬟</span><span>Private by default</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">◷</span><span>Auto-expires</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">♙</span><span>Revoke anytime</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">01</span><span>No login</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">02</span><span>Private by default</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">03</span><span>Auto-expires</span></div>
+            <div><span className="moogTrustIcon" aria-hidden="true">04</span><span>Revoke anytime</span></div>
           </div>
         </section>
-        <section className="moogHow" id="how-it-works">
-          <p className="moogSectionEyebrow">SIMPLE BY DESIGN</p>
-          <h2>How it works</h2>
-          <p className="moogSectionCopy">Share private text in three simple steps.</p>
-          <div className="moogSteps">
-            <article className="moogStep"><span className="moogStepIcon" aria-hidden="true">▤</span><span className="moogStepNumber">1</span><h3>Paste your text</h3><p>Add your text, code, or notes in a clean, distraction-free editor.</p></article>
-            <article className="moogStep"><span className="moogStepIcon" aria-hidden="true">⚙</span><span className="moogStepNumber">2</span><h3>Set expiration &amp; access</h3><p>Choose how long it stays available and add extra protection if needed.</p></article>
-            <article className="moogStep"><span className="moogStepIcon" aria-hidden="true">↗</span><span className="moogStepNumber">3</span><h3>Create secure link</h3><p>Get a unique link to share. It’s private, temporary, and easy to revoke.</p></article>
-          </div>
-          <a className="moogPrimary moogBottomCta" href="/create">Start sharing <span aria-hidden="true">→</span></a>
-        </section>
-
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
           <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("receive")}>Receive</button>
