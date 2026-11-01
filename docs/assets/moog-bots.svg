@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Moog bots share a secret that disappears</title>
+  <desc id="desc">Four tiny monochrome bots pass a glowing locked secret from one to another. A countdown ring closes, the secret vanishes, and the bots celebrate. The animation loops.</desc>
+  <style>
+    :root {
+      --ink: #0A0A0A;
+      --paper: #FAFAF9;
+      --line: #E7E5E4;
+      --muted: #78716C;
+      --deep: #262626;
+      --secret: #0A0A0A;
+      --secret-halo: #78716C;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --ink: #FAFAF9; --paper: #0A0A0A; --line: #262626; --muted: #A3A3A3; --deep: #E7E5E4; --secret: #FAFAF9; --secret-halo: #E7E5E4; }
+    }
+    * { box-sizing: border-box; }
+    .ground { fill: none; stroke: var(--line); stroke-width: 1.5; stroke-linecap: round; }
+    .bot-body { fill: var(--paper); stroke: var(--ink); stroke-width: 1.6; stroke-linejoin: round; }
+    .detail { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .eye { fill: var(--ink); transform-box: fill-box; transform-origin: center; }
+    .shadow { fill: var(--ink); opacity: .08; transform-box: fill-box; transform-origin: center; }
+    .bot { transform-box: fill-box; transform-origin: center bottom; animation: idle 2.8s cubic-bezier(.37,0,.2,1) infinite; }
+    .bot-a { animation-delay: -.35s; }
+    .bot-b { animation-delay: -.9s; }
+    .bot-c { animation-delay: -1.4s; }
+    .bot-d { animation-delay: -1.05s; }
+    .antenna { transform-box: fill-box; transform-origin: center bottom; animation: antenna 2.2s cubic-bezier(.4,0,.2,1) infinite; }
+    .blink { transform-box: fill-box; transform-origin: center; animation: blink 4.7s steps(1,end) infinite; }
+    .blink-b { animation-delay: -1.3s; }
+    .blink-c { animation-delay: -2.6s; }
+    .blink-d { animation-delay: -3.7s; }
+    .look { animation: look 12s cubic-bezier(.4,0,.2,1) infinite; }
+    .jump-a { animation: jumpA 12s cubic-bezier(.33,0,.2,1) infinite; }
+    .jump-b { animation: jumpB 12s cubic-bezier(.33,0,.2,1) infinite; }
+    .jump-c { animation: jumpC 12s cubic-bezier(.33,0,.2,1) infinite; }
+    .jump-d { animation: jumpD 12s cubic-bezier(.33,0,.2,1) infinite; }
+    .secret { transform-box: fill-box; transform-origin: center; animation: secretTravel 12s cubic-bezier(.4,0,.2,1) infinite; }
+    .secret-glow { fill: var(--secret-halo); opacity: .12; animation: glow 12s ease-in-out infinite; }
+    .secret-core { fill: var(--paper); stroke: var(--secret); stroke-width: 1.5; }
+    .secret-stroke { fill: none; stroke: var(--secret); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+    .countdown { fill: none; stroke: var(--secret); stroke-width: 1.5; stroke-linecap: round; stroke-dasharray: 88; stroke-dashoffset: 88; transform: rotate(-90deg); transform-origin: 0 0; opacity: 0; animation: expire 12s cubic-bezier(.2,0,.2,1) infinite; }
+    .particle { fill: var(--secret); opacity: 0; transform-box: fill-box; transform-origin: center; animation: particle 12s cubic-bezier(.16,1,.3,1) infinite; }
+    .particle.p2 { animation-delay: .025s; }
+    .particle.p3 { animation-delay: .05s; }
+    .particle.p4 { animation-delay: .075s; }
+    .particle.p5 { animation-delay: .1s; }
+    .dust { fill: var(--muted); opacity: 0; animation: dust 12s ease-out infinite; }
+    .celebrate { animation: celebrate 12s cubic-bezier(.2,.8,.2,1) infinite; }
+    @keyframes idle { 0%,100% { transform: translateY(0) scale(1,1); } 45% { transform: translateY(-2px) scale(.99,1.015); } 53% { transform: translateY(-2px) scale(1.01,.99); } }
+    @keyframes antenna { 0%,100% { transform: rotate(0); } 30% { transform: rotate(-8deg); } 65% { transform: rotate(5deg); } }
+    @keyframes blink { 0%,6%,48%,52%,100% { transform: scaleY(1); } 49%,51% { transform: scaleY(.12); } }
+    @keyframes look { 0%,20%,30%,100% { transform: translateX(0); } 22%,28% { transform: translateX(3px); } 45%,53% { transform: translateX(2px); } 65%,72% { transform: translateX(-2px); } 82%,91% { transform: translateX(0); } }
+    @keyframes jumpA { 0%,17%,100% { transform: translateY(0) scale(1,1); } 19% { transform: translateY(4px) scale(1.12,.86); } 24% { transform: translateY(-58px) scale(.92,1.1); } 29% { transform: translateY(-70px) scale(1,1); } 34% { transform: translateY(0) scale(1.12,.84); } 38% { transform: translateY(0) scale(1,1); } 84%,91% { transform: translateY(-15px) scale(.97,1.05); } 95% { transform: translateY(0) scale(1.08,.9); } }
+    @keyframes jumpB { 0%,34%,100% { transform: translateY(0) scale(1,1); } 37% { transform: translateY(3px) scale(1.1,.88); } 43% { transform: translateY(-44px) scale(.94,1.08); } 48% { transform: translateY(0) scale(1.12,.86); } 52% { transform: translateY(0) scale(1,1); } 84%,91% { transform: translateY(-15px) scale(.97,1.05); } 95% { transform: translateY(0) scale(1.08,.9); } }
+    @keyframes jumpC { 0%,51%,100% { transform: translateY(0) scale(1,1); } 54% { transform: translateY(3px) scale(1.1,.88); } 60% { transform: translateY(-47px) scale(.94,1.08); } 65% { transform: translateY(0) scale(1.12,.86); } 69% { transform: translateY(0) scale(1,1); } 84%,91% { transform: translateY(-15px) scale(.97,1.05); } 95% { transform: translateY(0) scale(1.08,.9); } }
+    @keyframes jumpD { 0%,60%,100% { transform: translateY(0) scale(1,1); } 63% { transform: translateY(3px) scale(1.1,.88); } 68% { transform: translateY(-20px) scale(.96,1.05); } 73% { transform: translateY(0) scale(1.1,.9); } 76% { transform: translateY(0) scale(1,1); } 84%,91% { transform: translateY(-15px) scale(.97,1.05); } 95% { transform: translateY(0) scale(1.08,.9); } }
+    @keyframes secretTravel {
+      0%,16% { opacity: 0; transform: translate(0,0) scale(.3); }
+      20%,34% { opacity: 1; transform: translate(0,-2px) scale(1); }
+      39% { opacity: 1; transform: translate(150px,-65px) scale(1.08); }
+      44%,48% { opacity: 1; transform: translate(185px,0) scale(1); }
+      56% { opacity: 1; transform: translate(330px,-52px) scale(1.08); }
+      62%,70% { opacity: 1; transform: translate(435px,0) scale(1); }
+      76%,81% { opacity: 1; transform: translate(435px,-8px) scale(1); }
+      86% { opacity: 0; transform: translate(435px,-8px) scale(.2); }
+      100% { opacity: 0; transform: translate(0,0) scale(.3); }
+    }
+    @keyframes glow { 0%,15%,86%,100% { opacity: 0; } 20%,80% { opacity: .14; } 83% { opacity: .24; } }
+    @keyframes expire { 0%,69% { opacity: 0; stroke-dashoffset: 88; } 72% { opacity: 1; stroke-dashoffset: 88; } 82% { opacity: 1; stroke-dashoffset: 0; } 85%,100% { opacity: 0; stroke-dashoffset: 0; } }
+    @keyframes particle { 0%,81% { opacity: 0; transform: translate(0,0) scale(.2); } 84% { opacity: .9; transform: translate(0,0) scale(1); } 90% { opacity: 0; transform: translate(var(--dx),var(--dy)) scale(.15); } 100% { opacity: 0; } }
+    @keyframes dust { 0%,18%,100% { opacity: 0; transform: scale(.5); } 32%,35% { opacity: .4; transform: scale(1); } 38% { opacity: 0; transform: scale(1.3); } 47%,50% { opacity: .3; transform: scale(1); } 53% { opacity: 0; transform: scale(1.2); } }
+    @keyframes celebrate { 0%,81%,100% { transform: translateY(0); } 84% { transform: translateY(-8px); } 88% { transform: translateY(-19px); } 92% { transform: translateY(0); } 95% { transform: translateY(-3px); } }
+    @media (prefers-reduced-motion: reduce) {
+      .bot,.antenna,.blink,.look,.jump-a,.jump-b,.jump-c,.jump-d,.secret,.secret-glow,.countdown,.particle,.dust,.celebrate { animation: none !important; }
+      .secret { opacity: 1; transform: translate(435px,0) scale(1); }
+      .secret-glow { opacity: .12; }
+      .countdown { opacity: 0; }
+      .particle,.dust { opacity: 0; }
+    }
+  </style>
+  <defs>
+    <filter id="soft" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="5"/>
+    </filter>
+  </defs>
+  <!-- Baseline and soft landing shadows -->
+  <path class="ground" d="M88 286 H1112"/>
+  <ellipse class="shadow" cx="206" cy="287" rx="31" ry="4"/>
+  <ellipse class="shadow" cx="450" cy="287" rx="32" ry="4"/>
+  <ellipse class="shadow" cx="696" cy="287" rx="31" ry="4"/>
+  <ellipse class="shadow" cx="948" cy="287" rx="30" ry="4"/>
+  <!-- Bot A: round bean with a single side notch -->
+  <g class="jump-a" transform="translate(170 0)">
+    <g class="bot bot-a">
+      <path class="bot-body" d="M7 274 C2 260 8 239 12 226 C17 210 29 201 43 202 C60 203 69 218 70 238 L70 259 Q70 271 60 274 Z"/>
+      <path class="bot-body" d="M8 245 l-5 5 6 4" stroke-linecap="round"/>
+      <path class="detail" d="M24 274 l-2 8 M54 274 l2 8"/>
+      <g class="look">
+        <ellipse class="eye blink" cx="30" cy="236" rx="2.8" ry="4"/>
+        <ellipse class="eye blink" cx="49" cy="236" rx="2.8" ry="4"/>
+      </g>
+      <path class="detail" d="M34 249 q5 4 10 0"/>
+      <g class="antenna"><path class="detail" d="M40 202 V190"/><circle class="bot-body" cx="40" cy="187" r="3.4"/></g>
+      <path class="detail" d="M18 220 q4 -5 8 -3" opacity=".65"/>
+    </g>
+  </g>
+  <!-- Bot B: taller bean with a short striped brow -->
+  <g class="jump-b" transform="translate(416 0)">
+    <g class="bot bot-b">
+      <path class="bot-body" d="M5 274 C1 258 7 232 13 217 C19 202 33 196 47 201 C62 206 67 222 67 240 L67 260 Q67 273 57 274 Z"/>
+      <path class="detail" d="M22 215 l7 -3 M34 212 l7 -2"/>
+      <path class="detail" d="M20 274 l-2 8 M51 274 l3 8"/>
+      <g class="look">
+        <ellipse class="eye blink-b" cx="27" cy="237" rx="2.7" ry="3.8"/>
+        <ellipse class="eye blink-b" cx="46" cy="237" rx="2.7" ry="3.8"/>
+      </g>
+      <path class="detail" d="M31 250 q5 3 9 -1"/>
+      <g class="antenna"><path class="detail" d="M38 201 l-2 -12"/><circle class="bot-body" cx="35.5" cy="186" r="3.2"/></g>
+    </g>
+  </g>
+  <!-- Bot C: compact body with a tiny visor -->
+  <g class="jump-c" transform="translate(662 0)">
+    <g class="bot bot-c">
+      <path class="bot-body" d="M8 274 C4 261 8 240 14 228 C20 215 32 210 45 214 C59 218 65 232 65 247 L65 260 Q65 273 56 274 Z"/>
+      <path class="bot-body" d="M20 232 Q36 226 52 232 L52 240 Q36 244 20 240 Z"/>
+      <ellipse class="eye blink-c" cx="30" cy="236" rx="2.4" ry="2.8"/>
+      <ellipse class="eye blink-c" cx="43" cy="236" rx="2.4" ry="2.8"/>
+      <path class="detail" d="M21 274 l-2 8 M49 274 l3 8 M34 253 q4 3 8 0"/>
+      <g class="antenna"><path class="detail" d="M37 214 V203"/><circle class="bot-body" cx="37" cy="200" r="3"/></g>
+    </g>
+  </g>
+  <!-- Bot D: small bean with a bent antenna -->
+  <g class="jump-d" transform="translate(914 0)">
+    <g class="bot bot-d">
+      <path class="bot-body" d="M8 274 C4 263 8 246 13 234 C18 222 29 216 41 219 C54 222 61 235 61 250 L61 261 Q61 273 52 274 Z"/>
+      <path class="detail" d="M20 274 l-2 8 M46 274 l3 8"/>
+      <g class="look">
+        <ellipse class="eye blink-d" cx="26" cy="242" rx="2.5" ry="3.6"/>
+        <ellipse class="eye blink-d" cx="43" cy="242" rx="2.5" ry="3.6"/>
+      </g>
+      <path class="detail" d="M29 254 q4 3 8 0"/>
+      <g class="antenna"><path class="detail" d="M35 219 l-2 -10 5 -3"/><circle class="bot-body" cx="40" cy="204" r="3"/></g>
+    </g>
+  </g>
+  <!-- Timeline 0–2s: quiet idle; 2–4s: secret appears above Bot A -->
+  <g class="secret" transform="translate(210 165)">
+    <circle class="secret-glow" cx="0" cy="0" r="23" filter="url(#soft)"/>
+    <circle class="secret-glow" cx="0" cy="0" r="16"/>
+    <circle class="secret-core" cx="0" cy="0" r="13"/>
+    <path class="secret-stroke" d="M-7 -4 L0 2 L7 -4 M-7 5 V-4 H7 V5 Z"/>
+    <path class="secret-stroke" d="M-2 0 H2"/>
+    <!-- Timeline 6–8s: tiny lock clicks shut during handoff -->
+    <g class="secret-stroke" transform="translate(9 8) scale(.58)">
+      <rect x="-4" y="-1" width="8" height="6" rx="1.2" fill="var(--paper)"/>
+      <path d="M-2 -1 V-3 A2 2 0 0 1 2 -3 V-1"/>
+    </g>
+  </g>
+  <!-- Timeline 8–10s: countdown ring winds down around the secret -->
+  <circle class="countdown" cx="0" cy="0" r="14" transform="translate(645 165)"/>
+  <!-- Timeline 10–11s: secret poofs into five quiet particles -->
+  <g transform="translate(645 165)">
+    <circle class="particle" cx="0" cy="-15" r="2" style="--dx:0px;--dy:-17px"/>
+    <circle class="particle p2" cx="14" cy="-5" r="1.8" style="--dx:16px;--dy:-7px"/>
+    <circle class="particle p3" cx="9" cy="12" r="2.1" style="--dx:11px;--dy:15px"/>
+    <circle class="particle p4" cx="-11" cy="9" r="1.7" style="--dx:-14px;--dy:13px"/>
+    <circle class="particle p5" cx="-14" cy="-7" r="1.8" style="--dx:-16px;--dy:-9px"/>
+  </g>
+  <!-- Soft dust puffs on staggered landings -->
+  <g class="dust">
+    <circle cx="206" cy="280" r="3"/><circle cx="218" cy="281" r="2"/>
+    <circle cx="450" cy="280" r="3"/><circle cx="461" cy="281" r="2"/>
+  </g>
+  <!-- Timeline 11–12s: synchronized tiny celebration, then a calm reset -->
+  <g class="celebrate" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round">
+    <path d="M178 199 l-5 -6 M202 187 v-8 M230 198 l5 -6" opacity=".7"/>
+    <path d="M430 194 l-4 -6 M450 185 v-8 M473 194 l5 -6" opacity=".7"/>
+    <path d="M679 202 l-4 -6 M697 192 v-8 M716 202 l5 -6" opacity=".7"/>
+    <path d="M930 211 l-4 -6 M947 201 v-8 M965 211 l5 -6" opacity=".7"/>
+  </g>
+</svg>
