@@ -294,6 +294,15 @@ export default function HomePage() {
             <div><span className="moogTrustIcon" aria-hidden="true">03</span><span>Auto-expires</span></div>
             <div><span className="moogTrustIcon" aria-hidden="true">04</span><span>Revoke anytime</span></div>
           </div>
+          <aside className="moogLivePreview" aria-label="Example temporary share preview">
+            <div className="moogPreviewTop"><span className="moogPreviewSignal"><i /> PRIVATE SHARE</span><span className="moogPreviewExpiry">EXPIRES IN 24H</span></div>
+            <div className="moogPreviewPaper">
+              <div className="moogPreviewFile"><span className="moogPreviewFileIcon">Aa</span><span><strong>Project notes</strong><small>Plain text · 248 characters</small></span><span className="moogPreviewLock" aria-label="Protected">↗</span></div>
+              <div className="moogPreviewLines"><i /><i /><i /><i /></div>
+              <div className="moogPreviewFooter"><span><b>••••••</b> Share code</span><span className="moogPreviewStatus"><i /> Link is active</span></div>
+            </div>
+            <p className="moogPreviewCaption">Your content. Your rules. Gone when it should be.</p>
+          </aside>
         </section>
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
