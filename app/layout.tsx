@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { headers } from "next/headers";
 import "./globals.css";
 import "./moog-design-system.css";
+import "./interface-layout-fixes.css";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://lucid-radiance-production.up.railway.app";
