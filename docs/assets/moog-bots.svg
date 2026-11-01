@@ -57,15 +57,15 @@
     @keyframes jumpC { 0%,51%,100% { transform: translateY(0) scale(1,1); } 54% { transform: translateY(3px) scale(1.1,.88); } 60% { transform: translateY(-47px) scale(.94,1.08); } 65% { transform: translateY(0) scale(1.12,.86); } 69% { transform: translateY(0) scale(1,1); } 84%,91% { transform: translateY(-15px) scale(.97,1.05); } 95% { transform: translateY(0) scale(1.08,.9); } }
     @keyframes jumpD { 0%,60%,100% { transform: translateY(0) scale(1,1); } 63% { transform: translateY(3px) scale(1.1,.88); } 68% { transform: translateY(-20px) scale(.96,1.05); } 73% { transform: translateY(0) scale(1.1,.9); } 76% { transform: translateY(0) scale(1,1); } 84%,91% { transform: translateY(-15px) scale(.97,1.05); } 95% { transform: translateY(0) scale(1.08,.9); } }
     @keyframes secretTravel {
-      0%,16% { opacity: 0; transform: translate(0,0) scale(.3); }
-      20%,34% { opacity: 1; transform: translate(0,-2px) scale(1); }
-      39% { opacity: 1; transform: translate(195px,-65px) scale(1.08); }
-      44%,48% { opacity: 1; transform: translate(240px,0) scale(1); }
-      56% { opacity: 1; transform: translate(365px,-52px) scale(1.08); }
-      62%,70% { opacity: 1; transform: translate(486px,0) scale(1); }
-      76%,81% { opacity: 1; transform: translate(486px,-8px) scale(1); }
-      86% { opacity: 0; transform: translate(486px,-8px) scale(.2); }
-      100% { opacity: 0; transform: translate(0,0) scale(.3); }
+      0%,16% { opacity: 0; transform: translate(210px,165px) scale(.3); }
+      20%,34% { opacity: 1; transform: translate(210px,163px) scale(1); }
+      39% { opacity: 1; transform: translate(405px,100px) scale(1.08); }
+      44%,48% { opacity: 1; transform: translate(450px,165px) scale(1); }
+      56% { opacity: 1; transform: translate(575px,113px) scale(1.08); }
+      62%,70% { opacity: 1; transform: translate(696px,165px) scale(1); }
+      76%,81% { opacity: 1; transform: translate(696px,157px) scale(1); }
+      86% { opacity: 0; transform: translate(696px,157px) scale(.2); }
+      100% { opacity: 0; transform: translate(210px,165px) scale(.3); }
     }
     @keyframes glow { 0%,15%,86%,100% { opacity: 0; } 20%,80% { opacity: .14; } 83% { opacity: .24; } }
     @keyframes expire { 0%,69% { opacity: 0; stroke-dashoffset: 88; } 72% { opacity: 1; stroke-dashoffset: 88; } 82% { opacity: 1; stroke-dashoffset: 0; } 85%,100% { opacity: 0; stroke-dashoffset: 0; } }
@@ -74,7 +74,7 @@
     @keyframes celebrate { 0%,81%,100% { transform: translateY(0); } 84% { transform: translateY(-8px); } 88% { transform: translateY(-19px); } 92% { transform: translateY(0); } 95% { transform: translateY(-3px); } }
     @media (prefers-reduced-motion: reduce) {
       .bot,.antenna,.blink,.look,.jump-a,.jump-b,.jump-c,.jump-d,.secret,.secret-glow,.countdown,.particle,.dust,.celebrate { animation: none !important; }
-      .secret { opacity: 1; transform: translate(486px,0) scale(1); }
+      .secret { opacity: 1; transform: translate(696px,165px) scale(1); }
       .secret-glow { opacity: .12; }
       .countdown { opacity: 0; }
       .particle,.dust { opacity: 0; }
@@ -160,7 +160,7 @@
   <!-- Timeline 8–10s: countdown ring winds down around the secret -->
   <circle class="countdown" cx="0" cy="0" r="14" transform="translate(696 165)"/>
   <!-- Timeline 10–11s: secret poofs into five quiet particles -->
-  <g transform="translate(645 165)">
+  <g transform="translate(696 165)">
     <circle class="particle" cx="0" cy="-15" r="2" style="--dx:0px;--dy:-17px"/>
     <circle class="particle p2" cx="14" cy="-5" r="1.8" style="--dx:16px;--dy:-7px"/>
     <circle class="particle p3" cx="9" cy="12" r="2.1" style="--dx:11px;--dy:15px"/>
