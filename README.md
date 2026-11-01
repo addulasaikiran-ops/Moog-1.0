@@ -22,7 +22,7 @@ The project does **not** require Vercel.
 2. The server generates a 256-bit random token.
 3. Only the token's SHA-256 hash is stored in PostgreSQL.
 4. The raw token is returned in the share URL.
-5. The share is readable until \`expiresAt\`.
+5. The share is readable until `expiresAt`.
 6. Reads enforce expiration immediately, even before cleanup runs.
 7. GitHub Actions calls the protected cleanup endpoint every 15 minutes to physically delete expired rows.
 
@@ -30,22 +30,22 @@ The project does **not** require Vercel.
 
 Install dependencies:
 
-\`\`\`bash
+```bash
 npm install
-\`\`\`
+```
 
-Create \`.env\` from the template:
+Create `.env` from the template:
 
-\`\`\`bash
+```bash
 cp .env.example .env
-\`\`\`
+```
 
-Set \`DATABASE_URL\` to a PostgreSQL database, then:
+Set `DATABASE_URL` to a PostgreSQL database, then:
 
-\`\`\`bash
+```bash
 npx prisma migrate dev
 npm run dev
-\`\`\`
+```
 
 Open http://localhost:3000.
 
@@ -53,22 +53,22 @@ Open http://localhost:3000.
 
 Configure your Node host with:
 
-- \`DATABASE_URL\`
-- \`NEXT_PUBLIC_APP_URL\`
-- \`CRON_SECRET\`
+- `DATABASE_URL`
+- `NEXT_PUBLIC_APP_URL`
+- `CRON_SECRET`
 
 Use:
 
-\`\`\`bash
+```bash
 npm install
 npm run build
 npm start
-\`\`\`
+```
 
 For GitHub Actions cleanup, add repository secrets:
 
-- \`MOOG_APP_URL\`: your deployed app URL, for example \`https://moog.example.com\`
-- \`MOOG_CRON_SECRET\`: the same value as \`CRON_SECRET\`
+- `MOOG_APP_URL`: your deployed app URL, for example `https://moog.example.com`
+- `MOOG_CRON_SECRET`: the same value as `CRON_SECRET`
 
 The workflow also supports manual execution from the GitHub Actions tab.
 
