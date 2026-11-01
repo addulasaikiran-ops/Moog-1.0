@@ -64,7 +64,7 @@
       56% { opacity: 1; transform: translate(365px,-52px) scale(1.08); }
       62%,70% { opacity: 1; transform: translate(486px,0) scale(1); }
       76%,81% { opacity: 1; transform: translate(486px,-8px) scale(1); }
-      86% { opacity: 0; transform: translate(435px,-8px) scale(.2); }
+      86% { opacity: 0; transform: translate(486px,-8px) scale(.2); }
       100% { opacity: 0; transform: translate(0,0) scale(.3); }
     }
     @keyframes glow { 0%,15%,86%,100% { opacity: 0; } 20%,80% { opacity: .14; } 83% { opacity: .24; } }
