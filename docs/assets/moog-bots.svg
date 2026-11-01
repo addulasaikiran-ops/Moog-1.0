@@ -59,11 +59,11 @@
     @keyframes secretTravel {
       0%,16% { opacity: 0; transform: translate(0,0) scale(.3); }
       20%,34% { opacity: 1; transform: translate(0,-2px) scale(1); }
-      39% { opacity: 1; transform: translate(150px,-65px) scale(1.08); }
-      44%,48% { opacity: 1; transform: translate(185px,0) scale(1); }
-      56% { opacity: 1; transform: translate(330px,-52px) scale(1.08); }
-      62%,70% { opacity: 1; transform: translate(435px,0) scale(1); }
-      76%,81% { opacity: 1; transform: translate(435px,-8px) scale(1); }
+      39% { opacity: 1; transform: translate(195px,-65px) scale(1.08); }
+      44%,48% { opacity: 1; transform: translate(240px,0) scale(1); }
+      56% { opacity: 1; transform: translate(365px,-52px) scale(1.08); }
+      62%,70% { opacity: 1; transform: translate(486px,0) scale(1); }
+      76%,81% { opacity: 1; transform: translate(486px,-8px) scale(1); }
       86% { opacity: 0; transform: translate(435px,-8px) scale(.2); }
       100% { opacity: 0; transform: translate(0,0) scale(.3); }
     }
@@ -74,7 +74,7 @@
     @keyframes celebrate { 0%,81%,100% { transform: translateY(0); } 84% { transform: translateY(-8px); } 88% { transform: translateY(-19px); } 92% { transform: translateY(0); } 95% { transform: translateY(-3px); } }
     @media (prefers-reduced-motion: reduce) {
       .bot,.antenna,.blink,.look,.jump-a,.jump-b,.jump-c,.jump-d,.secret,.secret-glow,.countdown,.particle,.dust,.celebrate { animation: none !important; }
-      .secret { opacity: 1; transform: translate(435px,0) scale(1); }
+      .secret { opacity: 1; transform: translate(486px,0) scale(1); }
       .secret-glow { opacity: .12; }
       .countdown { opacity: 0; }
       .particle,.dust { opacity: 0; }
@@ -158,7 +158,7 @@
     </g>
   </g>
   <!-- Timeline 8–10s: countdown ring winds down around the secret -->
-  <circle class="countdown" cx="0" cy="0" r="14" transform="translate(645 165)"/>
+  <circle class="countdown" cx="0" cy="0" r="14" transform="translate(696 165)"/>
   <!-- Timeline 10–11s: secret poofs into five quiet particles -->
   <g transform="translate(645 165)">
     <circle class="particle" cx="0" cy="-15" r="2" style="--dx:0px;--dy:-17px"/>
