@@ -62,7 +62,7 @@ export default async function SharePage({ params, searchParams }: Props) {
         <main className="viewerPage viewerMinimal">
         <div className="viewerShell">
           <header className="viewerTopbar">
-            <a className="minimalLogo" href="/">Moog</a>
+            <Logo className="minimalLogo" />
             <span className="viewerSecure">access link</span>
           </header>
           <main className="viewerMain">
@@ -87,7 +87,7 @@ export default async function SharePage({ params, searchParams }: Props) {
       <main className="viewerPage viewerMinimal">
       <div className="viewerShell">
         <header className="viewerTopbar">
-          <a className="minimalLogo" href="/">Moog</a>
+          <Logo className="minimalLogo" />
           <a className="newShareLink" href="/">New share <span>→</span></a>
         </header>
 
