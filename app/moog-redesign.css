@@ -301,6 +301,7 @@ h1,h2,h3,h4{letter-spacing:-.055em}
   --surface-soft: var(--moog-accent-soft);
 }
 :root[data-theme="dark"] { color-scheme: dark; }
+:root:not([data-theme="light"]):not([data-theme="dark"]) { color-scheme: light dark; }
 :root[data-theme="light"] { color-scheme: light; }
 html, body { background:var(--moog-bg); color:var(--moog-text); }
 ::selection { background:var(--moog-accent-soft); color:var(--moog-text); }
