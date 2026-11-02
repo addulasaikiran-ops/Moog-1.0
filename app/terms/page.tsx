@@ -1,3 +1,4 @@
+import Logo from "@/components/Logo";
 export const metadata = {
   title: "Terms — Moog",
   description: "Moog terms of use.",
@@ -7,7 +8,7 @@ export default function TermsPage() {
   return (
     <main className="legalPage">
       <article className="legalShell">
-        <a className="minimalLogo" href="/">moog</a>
+        <Logo className="minimalLogo" />
         <p className="eyebrow">TERMS</p>
         <h1>Use Moog responsibly.</h1>
         <p>Do not use Moog to distribute unlawful content, malware, abuse, or material you do not have the right to share.</p>
