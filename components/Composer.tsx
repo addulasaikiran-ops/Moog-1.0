@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ChevronDown, Code2, Eye, FileText, Image as ImageIcon, KeyRound, LockKeyhole, Upload } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Code2, FileText, Image as ImageIcon, LockKeyhole, Upload } from "lucide-react";
 
 const EXPIRY_OPTIONS = [
   { value: 1, label: "1 minute" }, { value: 5, label: "5 minutes" },
