@@ -105,9 +105,9 @@ export default function HomePage() {
         <SiteHeader active="home" />
 
         <section className="moogHero">
-          <p className="moogEyebrow">PRIVATE SHARING, REFINED</p>
-          <h1>Share privately.<br />Let it disappear.</h1>
-          <p className="moogHeroCopy">Share text, code, and images through private links. Choose how long a share remains available and configure the access options you need.</p>
+          <p className="moogEyebrow">Temporary sharing</p>
+          <h1>Share it.<br />Let it disappear.</h1>
+          <p className="moogHeroCopy">Send a note, code snippet, or image with an expiry you choose. No account to create. No old link to clean up.</p>
           <div className="moogHeroActions">
             <a className="moogPrimary" href="/create">Create a private share <span aria-hidden="true">→</span></a>
             <button className="moogSecondary" type="button" onClick={() => { changeTab("receive"); document.getElementById("receive-panel")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>Receive a share</button>
@@ -125,7 +125,7 @@ export default function HomePage() {
               <div className="moogPreviewLines"><i /><i /><i /><i /></div>
               <div className="moogPreviewFooter"><span><b>••••••</b> Share code</span><span className="moogPreviewStatus"><i /> Link is active</span></div>
             </div>
-            <p className="moogPreviewCaption">Your content. Your rules. Gone when it should be.</p>
+            <p className="moogPreviewCaption">Available until the expiry you choose.</p>
           </aside>
         </section>
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
@@ -160,7 +160,7 @@ export default function HomePage() {
         </section>
 
         <section className="howMoog referenceHow" id="how-it-works" aria-labelledby="how-title">
-          <div className="howIntro"><div className="eyebrow">HOW IT WORKS</div><h2 id="how-title">How it works</h2><p>A simple 4-step process. Share. Control. Done.</p></div>
+          <div className="howIntro"><div className="eyebrow">HOW IT WORKS</div><h2 id="how-title">How it works</h2><p>Create a share, send it along, and let its expiry handle the rest.</p></div>
           <div className="howSteps">
             <div><b className="stepPurple">01</b><strong>Create</strong><small>Paste text, code, or an image and choose an expiry time.</small></div>
             <span>→</span>
@@ -173,7 +173,7 @@ export default function HomePage() {
         </section>
 
         <section className="useMoog" id="about-moog" aria-labelledby="use-title">
-          <div className="useIntro"><div className="eyebrow">USE MOOG FOR</div><h2 id="use-title">Simple, secure and temporary sharing.</h2><p>Built for real situations where access should not last forever.</p></div>
+          <div className="useIntro"><div className="eyebrow">USE MOOG FOR</div><h2 id="use-title">For the things you only need to send once.</h2><p>Built for real situations where access should not last forever.</p></div>
           <div className="useGrid">
             <div><i className="usePink">▣</i><strong>Sensitive information</strong><small>Share passwords, API keys or other secrets.</small></div>
             <div><i className="useBlue">&lt;/&gt;</i><strong>Code snippets</strong><small>Send code to a teammate without leaving it forever.</small></div>
