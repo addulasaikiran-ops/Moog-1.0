@@ -333,3 +333,9 @@ html[data-theme="dark"] .restylePage .formError, html[data-theme="dark"] .restyl
   html { scroll-behavior: auto; }
   .restylePage *, .restylePage *::before, .restylePage *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
 }
+
+/* The theme switch is mounted beside the page rather than inside its shell. */
+body > .moogThemeToggle { position: fixed; z-index: 80; right: 20px; bottom: 20px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--moog-border); border-radius: 9px; background: var(--moog-raised); color: var(--moog-text); font: 13px var(--font-geist), Geist, sans-serif; cursor: pointer; }
+body > .moogThemeToggle:hover { transform: translateY(-1px); }
+.artifactCountdown { border-top: 0; padding-top: 0; }
+@media (max-width: 760px) { body > .moogThemeToggle { right: 12px; bottom: 12px; } }
