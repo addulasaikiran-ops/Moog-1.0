@@ -169,12 +169,7 @@ export default function HomePage() {
         )}
         </section>
 
-        <section className="productFeatures" aria-label="Moog benefits">
-          <div className="featureCard featurePurple"><i>◷</i><strong>Temporary by design</strong><small>Your content expires automatically, based on the lifetime you choose.</small></div>
-          <div className="featureCard featureBlue"><i>⌑</i><strong>Protected access</strong><small>Optional password protection and view-once access help control who can open a share.</small></div>
-          
-          <div className="featureCard featureOrange"><i>◉</i><strong>No account needed</strong><small>Create a share and send it instantly without signing up.</small></div>
-        </section>
+
 
         <section className="useMoog moogAbout" id="about-moog" aria-labelledby="use-title">
           <div className="useIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="use-title">Give every share a clear beginning and an end.</h2><p>Moog is a small, focused tool for sending something useful without leaving an open link behind. Choose how long it stays available, then let the expiry do its job.</p></div>
