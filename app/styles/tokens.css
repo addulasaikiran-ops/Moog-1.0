@@ -308,16 +308,6 @@ body {
 .sharedResult .resultLinkRow a { overflow-wrap: anywhere; }
 .sharedResult .uniqueCodeBox strong { font: 650 clamp(24px, 4vw, 34px)/1.1 var(--font-geist-mono), ui-monospace, monospace; letter-spacing: .1em; font-variant-numeric: tabular-nums; }
 .shareResultActions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
-.moogDialog { width: min(460px, calc(100% - 32px)); border: 1px solid var(--line-2); border-radius: var(--radius-composer); padding: var(--space-7); color: var(--text-1); background: var(--bg-1); box-shadow: 0 28px 90px rgba(0,0,0,.35); }
-.moogDialog::backdrop { background: rgba(3,5,7,.7); backdrop-filter: blur(5px); }
-.moogDialogMark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--danger-soft); color: var(--danger); font-weight: 800; }
-.moogDialog h2 { margin: var(--space-4) 0 var(--space-2); color: var(--text-1); font-size: 24px; letter-spacing: -.035em; }
-.moogDialog p { margin: 0; color: var(--text-2); line-height: 1.65; }
-.moogDialogActions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
-.moogDialogActions button { min-height: 42px; border-radius: var(--radius-sm); padding: 0 var(--space-4); font-weight: 650; }
-.moogDialogSecondary { border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text-1); }
-.moogDialogDanger { border: 1px solid var(--danger); background: var(--danger); color: white; }
-.moogDialog button:disabled { opacity: .6; cursor: wait; }
 .createSharePage .composer { margin-top: var(--space-5); }
 .createSharePage .composer .lifetimePills { gap: 8px; }
 .createSharePage .createShareEncryption { max-width: var(--prose-width); margin: var(--space-5) auto 0; color: var(--text-3); font-size: 13px; line-height: 1.6; }
@@ -347,9 +337,6 @@ body {
 @media (max-width: 600px) {
   .viewerShell { width: min(100% - 28px, 880px); }
   .viewerTopbar { min-height: 64px; }
-  .moogDialog { padding: var(--space-5); }
-  .moogDialogActions { flex-direction: column-reverse; }
-  .moogDialogActions button { width: 100%; }
   .shareResultActions { width: 100%; }
 }
 
