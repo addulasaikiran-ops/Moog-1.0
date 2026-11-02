@@ -1,3 +1,4 @@
+import Logo from "@/components/Logo";
 export const metadata = {
   title: "Privacy — Moog",
   description: "Moog privacy information.",
@@ -7,7 +8,7 @@ export default function PrivacyPage() {
   return (
     <main className="legalPage">
       <article className="legalShell">
-        <a className="minimalLogo" href="/">moog</a>
+        <Logo className="minimalLogo" />
         <p className="eyebrow">PRIVACY</p>
         <h1>Privacy, without pretending.</h1>
         <p>Moog stores active share content on the server because the service must retrieve it for recipients. This is access-controlled temporary sharing, not end-to-end encryption.</p>
