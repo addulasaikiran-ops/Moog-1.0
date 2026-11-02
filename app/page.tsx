@@ -1,49 +1,19 @@
 "use client";
 
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
+import { ArrowDownToLine, ArrowRight, ArrowUpRight, Check, Clock3, Code2, Eye, FileText, Image as ImageIcon, KeyRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
 import Composer, { type CreatedShare } from "@/components/Composer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ShareResult from "@/components/ShareResult";
 
-const EXPIRY_OPTIONS = [
-  { value: 1, label: "1 minute" },
-  { value: 5, label: "5 minutes" },
-  { value: 15, label: "15 minutes" },
-  { value: 30, label: "30 minutes" },
-  { value: 60, label: "1 hour" },
-  { value: 360, label: "6 hours" },
-  { value: 1440, label: "24 hours" },
-  { value: 4320, label: "3 days" },
-  { value: 10080, label: "7 days" },
-];
-
-const CODE_LANGUAGES = [
-  ["javascript", "JavaScript"],
-  ["typescript", "TypeScript"],
-  ["python", "Python"],
-  ["html", "HTML"],
-  ["css", "CSS"],
-  ["json", "JSON"],
-  ["sql", "SQL"],
-  ["bash", "Bash"],
-  ["java", "Java"],
-  ["csharp", "C#"],
-  ["cpp", "C++"],
-  ["go", "Go"],
-  ["rust", "Rust"],
-  ["php", "PHP"],
-  ["markdown", "Markdown"],
-] as const;
-
 type Tab = "send" | "receive";
-function formatReceiveCode(value: string): string {
-  return value.replace(/\D/g, "").slice(0, 6);
-}
-
-function isValidCode(value: string): boolean {
-  return /^\d{6}$/.test(value);
-}
+const COMMON_EXPIRY_LABELS: Record<number, string> = {
+  1: "1 minute", 5: "5 minutes", 15: "15 minutes", 30: "30 minutes",
+  60: "1 hour", 360: "6 hours", 1440: "24 hours", 4320: "3 days", 10080: "7 days",
+};
+function formatReceiveCode(value: string) { return value.replace(/\\D/g, "").slice(0, 6); }
+function isValidCode(value: string) { return /^\\d{6}$/.test(value); }
 
 export default function HomePage() {
   const [tab, setTab] = useState<Tab>("send");
@@ -51,8 +21,57 @@ export default function HomePage() {
   const [receiveCode, setReceiveCode] = useState("");
   const [receiveLoading, setReceiveLoading] = useState(false);
   const [receiveError, setReceiveError] = useState("");
-  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [previewExpiryMinutes, setPreviewExpiryMinutes] = useState(1440);
+  const [visualSeconds, setVisualSeconds] = useState(8);
+  const [previewExpired, setPreviewExpired] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const receiveInputRefs = useRef<Array<HTMLInputElement | null>>([]);
+
+  useEffect(() => {
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("tab") === "receive") setTab("receive");
+  }, []);
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReducedMotion(media.matches);
+    sync();
+    media.addEventListener("change", sync);
+    return () => media.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) return;
+    let seconds = 8;
+    let expiredTimer: ReturnType<typeof setTimeout> | undefined;
+    const interval = window.setInterval(() => {
+      seconds -= 1;
+      if (seconds <= 0) {
+        setVisualSeconds(0);
+        setPreviewExpired(true);
+        window.clearInterval(interval);
+        expiredTimer = window.setTimeout(() => {
+          seconds = 8;
+          setVisualSeconds(seconds);
+          setPreviewExpired(false);
+          // The lifecycle loops without changing layout or measuring content.
+          const nextInterval = window.setInterval(() => {
+            seconds -= 1;
+            if (seconds <= 0) {
+              setVisualSeconds(0);
+              setPreviewExpired(true);
+              window.clearInterval(nextInterval);
+              expiredTimer = window.setTimeout(() => {
+                setVisualSeconds(8);
+                setPreviewExpired(false);
+              }, 2200);
+            } else setVisualSeconds(seconds);
+          }, 1000);
+        }, 2200);
+      } else setVisualSeconds(seconds);
+    }, 1000);
+    return () => { window.clearInterval(interval); if (expiredTimer) window.clearTimeout(expiredTimer); };
+  }, [reducedMotion]);
 
   function changeTab(next: Tab) {
     setTab(next);
@@ -66,139 +85,141 @@ export default function HomePage() {
     event.preventDefault();
     setReceiveError("");
     const normalized = formatReceiveCode(receiveCode);
-    if (!isValidCode(normalized)) {
-      setReceiveError("Enter the 6-digit share code.");
-      return;
-    }
-
+    if (!isValidCode(normalized)) { setReceiveError("Enter the 6-digit share code."); return; }
     setReceiveLoading(true);
     try {
       const response = await fetch("/api/receive", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ code: normalized }),
       });
       const body = (await response.json()) as { token?: string; error?: string; reason?: string };
       if (!response.ok || !body.token) {
-        const message =
-          body.reason === "expired"
-            ? "This share has expired"
-            : response.status === 429
-                ? "Too many attempts. Try again in a few minutes."
-                : "That code didn't work";
+        const message = body.reason === "expired" ? "This share has expired" : response.status === 429 ? "Too many attempts. Try again in a few minutes." : "That code didn't work";
         throw new Error(message);
       }
       window.location.assign(`/s/${body.token}`);
-    } catch (receiveSubmitError) {
-      setReceiveError(receiveSubmitError instanceof Error ? receiveSubmitError.message : "Share unavailable.");
-    } finally {
-      setReceiveLoading(false);
-    }
+    } catch (error) {
+      setReceiveError(error instanceof Error ? error.message : "Share unavailable.");
+    } finally { setReceiveLoading(false); }
   }
 
-  return (
-    <main className="page">
-      <div className="ambient ambientOne" />
-      <div className="ambient ambientTwo" />
+  const expiryLabel = COMMON_EXPIRY_LABELS[previewExpiryMinutes] ?? "24 hours";
 
+  return (
+    <main className="page restylePage">
       <div className="shell">
         <SiteHeader active="home" />
-
-        <section className="moogHero">
-          <p className="moogEyebrow">Temporary sharing</p>
-          <h1>Share it. <span className="moogInlineArtifact" aria-hidden="true"><span className="moogInlineArtifactIcon">↗</span><span className="moogInlineArtifactCopy"><strong>Project notes</strong><small>Expires in 24 hours</small></span></span><br />Let it disappear.</h1>
-          <p className="moogHeroCopy">Send a note, code snippet, or image with an expiry you choose. No account to create. No old link to clean up.</p>
-          <div className="moogHeroActions">
-            <a className="moogPrimary" href="/create">Create a private share <span aria-hidden="true">→</span></a>
-            <button className="moogSecondary" type="button" onClick={() => { changeTab("receive"); document.getElementById("receive-panel")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>Receive a share</button>
+        <section className="moogHero restyleHero" aria-labelledby="hero-title">
+          <div className="restyleHeroCopy">
+            <h1 id="hero-title">Share it.<br />Let it disappear.</h1>
+            <p className="moogHeroCopy">Send text, code, or an image with an expiry you choose. No account to create.</p>
+            <div className="moogHeroActions">
+              <a className="moogPrimary" href="#composer">Create a private share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a>
+              <button className="moogSecondary" type="button" onClick={() => { changeTab("receive"); document.getElementById("composer")?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" }); }}>Receive a share</button>
+            </div>
+            <p className="heroQuietNote"><LockKeyhole size={16} strokeWidth={1.5} aria-hidden="true" /> No account required. Choose an expiry and optional access controls.</p>
           </div>
-          <div className="moogTrust" aria-label="Privacy benefits">
-            <div><span className="moogTrustIcon" aria-hidden="true">◇</span><span>Private by default</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">↗</span><span>Temporary access</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">⌁</span><span>You stay in control</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">✓</span><span>No account required</span></div>
+          <div className="expiryArtifact" data-ui="share-preview" aria-label="Illustrative share preview">
+            <div className="artifactTop"><span className="artifactStatus"><span className={previewExpired ? "artifactStatusDot expired" : "artifactStatusDot"} />{previewExpired ? "Expired" : "Active preview"}</span><span className="artifactSample">SAMPLE SHARE</span></div>
+            <div className="artifactDocument">
+              <div className="artifactFileIcon"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></div>
+              <div className="artifactDocumentTitle"><strong>Project notes</strong><span>Text share · Private link</span></div>
+              <span className="artifactExpiryBadge"><Clock3 size={14} strokeWidth={1.5} aria-hidden="true" /> Expires in {expiryLabel}</span>
+              <div className="artifactTextLines" aria-hidden="true"><span /><span /><span /><span /></div>
+              <div className={previewExpired ? "artifactCountdown isExpired" : "artifactCountdown"} aria-live="off">
+                <span className="artifactCountdownLabel">{previewExpired ? "Access ended" : "Preview countdown"}</span>
+                <strong>{previewExpired ? "Expired" : `00:00:0${visualSeconds}`}</strong>
+              </div>
+            </div>
+            <div className="artifactBottom"><span><LockKeyhole size={14} strokeWidth={1.5} aria-hidden="true" /> Access controlled</span><span>Illustrative preview</span></div>
           </div>
         </section>
-        <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
-          <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
-          <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("receive")}>Receive</button>
-        </div>
-        {tab === "send" ? (
-          <>
-            <Composer onCreated={(share) => { setCreatedShare(share); setTab("send"); }} />
-            {createdShare && <ShareResult share={createdShare} onCreateAnother={() => { setCreatedShare(null); document.getElementById("composer")?.scrollIntoView({ behavior: "smooth", block: "start" }); }} />}
-          </>
-        ) : (
-          <section className="receiveCard card" id="receive-panel" aria-labelledby="receive-title">
-            <div className="receiveHeader"><span className="receiveGlyph" aria-hidden="true">↓</span><div><h2 id="receive-title">Receive</h2><p>Got a code from someone? Paste it here to open what they shared. No account needed.</p></div></div>
-            <form onSubmit={receiveShare}>
-              <div className="receiveLabel">Unique code</div>
-              <div className="receiveCodeBoxes" role="group" aria-labelledby="receive-code-label" onPaste={(event) => { const pasted = formatReceiveCode(event.clipboardData.getData("text")); if (pasted) { event.preventDefault(); setReceiveCode(pasted); setReceiveError(""); receiveInputRefs.current[Math.min(pasted.length, 5)]?.focus(); } }}><span id="receive-code-label" className="srOnly">Six-digit share code</span>{Array.from({ length: 6 }, (_, index) => <input key={index} ref={(node) => { receiveInputRefs.current[index] = node; }} className="receiveDigit" aria-label={`Share code digit ${index + 1}`} value={receiveCode[index] ?? ""} inputMode="numeric" pattern="[0-9]*" autoComplete="one-time-code" maxLength={1} onChange={(event) => { const digit = event.target.value.replace(/\D/g, "").slice(-1); const next = (receiveCode.slice(0, index) + digit + receiveCode.slice(index + 1)).slice(0, 6); setReceiveCode(next); setReceiveError(""); if (digit && index < 5) receiveInputRefs.current[index + 1]?.focus(); }} onKeyDown={(event) => { if (event.key === "Backspace" && !receiveCode[index] && index > 0) receiveInputRefs.current[index - 1]?.focus(); if (event.key === "ArrowLeft" && index > 0) receiveInputRefs.current[index - 1]?.focus(); if (event.key === "ArrowRight" && index < 5) receiveInputRefs.current[index + 1]?.focus(); }} />)}</div>
-              <p id="receive-help" className="receiveHint">Six numbers. If the share is protected, you’ll also enter its password.</p>
-              {receiveError ? <p className="receiveError" role="alert">{receiveError}</p> : null}
-              <button className="receiveOpen primary" type="submit" disabled={receiveCode.length !== 6 || receiveLoading}>{receiveLoading ? <><span className="spinner" /> Opening share…</> : <>Open share <span>→</span></>}</button>
-            </form>
-            <div className="receiveNote"><span aria-hidden="true">⌁</span><span>Password-protected shares ask for the password when opened. View-once shares are consumed after the first successful reveal.</span></div>
-          </section>
-        )}
 
+        <section className="composerExperience" id="composer" aria-label="Create or receive a share">
+          <div className="composerExperienceHeading"><div><h2>Make a share</h2><p>Choose what to send and when access should end.</p></div><span className="composerNoAccount"><ShieldCheck size={16} strokeWidth={1.5} aria-hidden="true" /> No account</span></div>
+          <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
+            <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}><ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /> Send</button>
+            <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("receive")}><ArrowDownToLine size={18} strokeWidth={1.5} aria-hidden="true" /> Receive</button>
+          </div>
+          {tab === "send" ? (
+            <>
+              <Composer onExpiryChange={setPreviewExpiryMinutes} onCreated={share => { setCreatedShare(share); setTab("send"); }} />
+              {createdShare && <ShareResult share={createdShare} onCreateAnother={() => { setCreatedShare(null); document.getElementById("composer")?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" }); }} />}
+            </>
+          ) : (
+            <section className="receiveCard card" id="receive-panel" aria-labelledby="receive-title" data-ui="receive-form">
+              <div className="receiveHeader"><span className="receiveGlyph" aria-hidden="true"><ArrowDownToLine size={20} strokeWidth={1.5} /></span><div><h2 id="receive-title">Receive a share</h2><p>Enter the six-digit code you received to open the share. No account needed.</p></div></div>
+              <form onSubmit={receiveShare}>
+                <label className="receiveLabel" htmlFor="receive-code-1">Six-digit share code</label>
+                <div className="receiveCodeBoxes" role="group" aria-label="Six-digit share code" onPaste={event => {
+                  const pasted = formatReceiveCode(event.clipboardData.getData("text"));
+                  if (pasted) { event.preventDefault(); setReceiveCode(pasted); setReceiveError(""); receiveInputRefs.current[Math.min(pasted.length, 5)]?.focus(); }
+                }}>
+                  {Array.from({ length: 6 }, (_, index) => <input key={index} id={index === 0 ? "receive-code-1" : undefined} ref={node => { receiveInputRefs.current[index] = node; }} className="receiveDigit" aria-label={`Share code digit ${index + 1}`} value={receiveCode[index] ?? ""} inputMode="numeric" pattern="[0-9]*" autoComplete={index === 0 ? "one-time-code" : "off"} maxLength={6} onChange={event => {
+                    const entered = formatReceiveCode(event.target.value);
+                    if (entered.length > 1) {
+                      setReceiveCode(entered); setReceiveError("");
+                      receiveInputRefs.current[Math.min(entered.length, 5)]?.focus(); return;
+                    }
+                    const digit = entered.slice(-1);
+                    const next = (receiveCode.slice(0, index) + digit + receiveCode.slice(index + 1)).slice(0, 6);
+                    setReceiveCode(next); setReceiveError("");
+                    if (digit && index < 5) receiveInputRefs.current[index + 1]?.focus();
+                  }} onKeyDown={event => {
+                    if (event.key === "Backspace" && !receiveCode[index] && index > 0) receiveInputRefs.current[index - 1]?.focus();
+                    if (event.key === "ArrowLeft" && index > 0) receiveInputRefs.current[index - 1]?.focus();
+                    if (event.key === "ArrowRight" && index < 5) receiveInputRefs.current[index + 1]?.focus();
+                  }} />)}
+                </div>
+                <p id="receive-help" className="receiveHint">If the share is protected, you’ll also enter its password.</p>
+                {receiveError && <p className="receiveError" role="alert" aria-live="assertive">{receiveError}</p>}
+                <button className="receiveOpen primary" type="submit" disabled={receiveCode.length !== 6 || receiveLoading}>{receiveLoading ? <><span className="spinner" /> Opening share…</> : <>Open share <ArrowRight size={18} strokeWidth={1.5} aria-hidden="true" /></>}</button>
+              </form>
+              <p className="receiveNote"><LockKeyhole size={15} strokeWidth={1.5} aria-hidden="true" /> Password-protected shares ask for the password when opened. View-once shares are consumed after the first successful reveal.</p>
+            </section>
+          )}
+        </section>
 
-        <section className="useMoog" id="about-moog" aria-labelledby="use-title">
-          <div className="useIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="use-title">A short life for the things you share.</h2><p>Moog gives text, code, and images a chosen lifetime, with optional access controls and no account to create.</p></div>
+        <section className="useMoog restyleUseCases" id="about-moog" aria-labelledby="use-title">
+          <div className="useIntro"><h2 id="use-title">A short life for the things you share.</h2><p>Moog gives text, code, and images a chosen lifetime, with optional access controls and no account to create.</p><img className="moogBots" src="/moog-bots.svg" alt="Moog bots pass a small private share between one another." loading="lazy" /></div>
           <div className="useGrid">
-            <div><i className="usePink">▣</i><strong>Sensitive information</strong><small>Share passwords, API keys or other secrets.</small></div>
-            <div><i className="useBlue">&lt;/&gt;</i><strong>Code snippets</strong><small>Send code to a teammate without leaving it forever.</small></div>
-            <div><i className="useGreen">▤</i><strong>Temporary notes</strong><small>Share text between devices without an account.</small></div>
-            <div><i className="useOrange">▧</i><strong>Private images</strong><small>Share screenshots or photos that shouldn&apos;t stay online.</small></div>
+            <article className="useCase useCaseSecret"><span className="useCaseIcon"><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Sensitive information</h3><p>Share passwords, API keys or other secrets with an expiry.</p></article>
+            <article className="useCase useCaseCode"><span className="useCaseIcon"><Code2 size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Code snippets</h3><p>Send code to a teammate without leaving it available forever.</p><pre data-ui="code-fragment"><code>const share = await moog.create();</code></pre></article>
+            <article className="useCase useCaseNotes"><span className="useCaseIcon"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Temporary notes</h3><p>Move text between devices without an account.</p></article>
+            <article className="useCase useCaseImage"><span className="useCaseIcon"><ImageIcon size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Private images</h3><p>Share screenshots or photos that shouldn’t stay online.</p><div className="imageFragment" data-ui="image-fragment"><ImageIcon size={30} strokeWidth={1.5} aria-hidden="true" /><span>Image share · JPG / PNG / WebP</span></div></article>
           </div>
         </section>
 
-                <section className="productFeatures" aria-label="Moog benefits">
-          <div className="featureCard featurePurple"><i>◷</i><strong>Temporary by design</strong><small>Your content expires automatically, based on the lifetime you choose.</small></div>
-          <div className="featureCard featureBlue"><i>⌑</i><strong>Protected access</strong><small>Optional password protection and view-once access help control who can open a share.</small></div>
-          
-          <div className="featureCard featureOrange"><i>◉</i><strong>No account needed</strong><small>Create a share and send it instantly without signing up.</small></div>
+        <section className="howMoog restyleHow" id="how-it-works" aria-labelledby="how-title">
+          <div className="howIntro"><h2 id="how-title">Create. Send. Let it expire.</h2><p>Four simple steps from a new share to expired access.</p></div>
+          <ol className="howSteps">
+            <li><span className="stepIcon"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Create</h3><p>Paste text, code, or choose an image.</p></li>
+            <li><span className="stepIcon"><Clock3 size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Choose expiry</h3><p>Set a lifetime from 1 minute to 7 days.</p></li>
+            <li><span className="stepIcon"><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Share</h3><p>Send the private link or six-digit code.</p></li>
+            <li><span className="stepIcon"><Eye size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Open</h3><p>They open it without an account. Access ends at expiry.</p></li>
+          </ol>
         </section>
 
-        <section className="howMoog referenceHow" id="how-it-works" aria-labelledby="how-title">
-          <div className="howIntro"><div className="eyebrow">HOW IT WORKS</div><h2 id="how-title">How it works</h2><p>Create a share, send it along, and let its expiry handle the rest.</p></div>
-          <div className="howSteps">
-            <div><b className="stepPurple">01</b><strong>Create</strong><small>Paste text, code, or an image and choose an expiry time.</small></div>
-            <span>→</span>
-            <div><b className="stepBlue">02</b><strong>Share</strong><small>Get a private link and send it to anyone.</small></div>
-            <span>→</span>
-            <div><b className="stepGreen">03</b><strong>Open</strong><small>They open it without an account.</small></div>
-            <span>→</span>
-            <div><b className="stepOrange">04</b><strong>Expire</strong><small>Access disappears automatically.</small></div>
-          </div>
-        </section>
-
-        <section className="securityReference" id="security" aria-labelledby="security-title">
-          <div className="sectionHeading"><div className="eyebrow">SECURITY & PRIVACY</div><h2 id="security-title">Built with privacy in mind.</h2><p>Here&apos;s what you need to know.</p></div>
+        <section className="securityReference restylePrivacy" id="security" aria-labelledby="security-title">
+          <div className="privacyLead"><span className="privacyIcon"><ShieldCheck size={22} strokeWidth={1.5} aria-hidden="true" /></span><h2 id="security-title">Privacy, without the guesswork.</h2><p>Moog stores shared content on the server so it can deliver the share. Access is controlled, but it is not end-to-end encrypted.</p></div>
           <div className="securityGrid">
-            <div><i className="securityIcon securityPurple">⌁</i><strong>Private links</strong><small>High-entropy links that are difficult to guess.</small></div>
-            <div><i className="securityIcon securityBlue">▤</i><strong>Secure storage</strong><small>Links and codes are stored as hashes.</small></div>
-            <div><i className="securityIcon securityGreen">✓</i><strong>We control access, not copies</strong><small>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</small></div>
-            <div><i className="securityIcon securityPurple">◉</i><strong>No tracking</strong><small>Moog doesn&apos;t require an account and doesn&apos;t use third-party analytics tracking.</small></div>
+            <article><LockKeyhole size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Access control</h3><p>Private links and optional passwords help control who can open a share.</p></article>
+            <article><Clock3 size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Expiry</h3><p>Moog limits access after the expiry time. It cannot erase copies someone already made.</p></article>
+            <article><Eye size={20} strokeWidth={1.5} aria-hidden="true" /><h3>View once</h3><p>Choose view once to limit a share to one successful reveal.</p></article>
           </div>
-          <p className="securityDisclosureText">Moog stores shared content on the server so it can deliver the share. It is access-controlled, not end-to-end encrypted.</p>
         </section>
 
-        <section className="faqArea" id="faq" aria-labelledby="faq-title">
-          <section className="faq" aria-labelledby="faq-title"><div className="eyebrow">FAQ</div><h3 id="faq-title">Frequently asked questions</h3>
-          {[
-            ["Is my share end-to-end encrypted?", "Not yet. Moog currently protects access to server-stored content, but the server can technically read active share content. Treat it as temporary access control, not zero-knowledge encryption."],
-            ["Do I need an account?", "No. Sending and receiving are both account-free."],
-            ["How long do shares stay alive?", "Choose from 1 minute to 7 days when you create a share."],
-            ["Can someone copy what I shared?", "Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back."],
-            ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP photos up to 10 MB."],
-          ].map(([question, answer], index) => (
-            <details key={question} open={openFaq === index}>
-              <summary onClick={(event) => { event.preventDefault(); setOpenFaq(openFaq === index ? null : index); }}>{question}</summary>
-              <p>{answer}</p>
-            </details>
-          ))}</section>
-          <aside className="contactCard"><div className="contactIcon">✉</div><h3>Still have questions?</h3><p>We&apos;re here to help. If you need more information, feel free to reach out.</p><a href="/contact">Contact us <span>→</span></a></aside>
+        <section className="faqArea restyleFaq" id="faq" aria-labelledby="faq-title">
+          <div className="faq"><h2 id="faq-title">Frequently asked questions</h2>
+            {[
+              ["Is my share end-to-end encrypted?", "Not yet. Moog currently protects access to server-stored content, but the server can technically read active share content. Treat it as temporary access control, not zero-knowledge encryption."],
+              ["Do I need an account?", "No. Sending and receiving are both account-free."],
+              ["How long do shares stay alive?", "Choose from 1 minute to 7 days when you create a share."],
+              ["Can someone copy what I shared?", "Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back."],
+              ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP images up to 10 MB."],
+            ].map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}
+          </div>
+          <aside className="contactCard"><div className="contactIcon" aria-hidden="true"><Mail size={20} strokeWidth={1.5} /></div><h3>Still have questions?</h3><p>If you need more information, get in touch.</p><a href="/contact">Contact us <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a></aside>
         </section>
         <SiteFooter />
       </div>
