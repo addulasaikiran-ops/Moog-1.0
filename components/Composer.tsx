@@ -99,10 +99,10 @@ export default function Composer({ onCreated, onExpiryChange, compact = false }:
   }
 
   return (
-    <section className={compact ? "composer card composerCompact" : "composer card"} id="composer" aria-labelledby="composer-title">
+    <section className={compact ? "composer card composerCompact" : "composer card"} id="composer" data-ui="composer" aria-labelledby="composer-title">
       <div className="srOnly" id="composer-title">Create a share</div>
       <form onSubmit={submit}>
-        <div className="composerTop"><div className="srOnly">{mode} composer</div><span className="composerFieldLabel">{mode === "photo" ? "Image" : mode === "code" ? "Code content" : "Text content"}</span>
+        <div className="composerTop"><div className="srOnly">{mode} composer</div>{mode === "photo" ? <span className="composerFieldLabel">Image</span> : <label className="composerFieldLabel" htmlFor="composer-content">{mode === "code" ? "Code content" : "Text content"}</label>}
           {mode === "photo" ? <div className="counter">10 MB max</div> : <div className={text.length >= 90000 ? "counter counterNearLimit" : "counter"} aria-live="off">{text.length.toLocaleString()} / 100,000</div>}
         </div>
         <div className="modeToggle" role="group" aria-label="Content mode">
@@ -110,7 +110,7 @@ export default function Composer({ onCreated, onExpiryChange, compact = false }:
           <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} aria-pressed={mode === "code"} onClick={() => setMode("code")}><Code2 size={20} strokeWidth={1.5} aria-hidden="true" /><span>Code</span></button>
           <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} aria-pressed={mode === "photo"} onClick={() => setMode("photo")}><ImageIcon size={20} strokeWidth={1.5} aria-hidden="true" /><span>Image</span></button>
         </div>
-        {mode !== "photo" && <textarea value={text} onChange={e => { setText(e.target.value); setError(""); }} placeholder={mode === "code" ? "Paste your code snippet…" : "Paste the text you want to share…"} maxLength={100000} aria-label={mode === "code" ? "Code to share" : "Text to share"} />}
+        {mode !== "photo" && <textarea id="composer-content" value={text} onChange={e => { setText(e.target.value); setError(""); }} placeholder={mode === "code" ? "Paste your code snippet…" : "Paste the text you want to share…"} maxLength={100000} aria-label={mode === "code" ? "Code to share" : "Text to share"} />}
         {mode === "code" && <div className="codeSelectRow"><label htmlFor="composer-language">Language</label><select id="composer-language" value={language} onChange={e => setLanguage(e.target.value)}>{CODE_LANGUAGES.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></div>}
         {mode === "photo" && <div className={dragActive ? "photoComposer dragActive" : "photoComposer"}
           onDragOver={e => { e.preventDefault(); setDragActive(true); }} onDragLeave={() => setDragActive(false)}
@@ -135,11 +135,11 @@ export default function Composer({ onCreated, onExpiryChange, compact = false }:
             <div className="optionField accessKeyField"><label className="passwordToggleRow"><input type="checkbox" checked={passwordEnabled} onChange={e => { setPasswordEnabled(e.target.checked); if (!e.target.checked) setAccessKey(""); }} /><span><strong>Password protection</strong><small>Require a password before the share can be opened.</small></span></label>
               {passwordEnabled && <><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={e => setAccessKey(e.target.value)} maxLength={128} autoComplete="new-password" placeholder="Set a password" aria-label="Share password" aria-describedby="share-password-help" required /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide password" : "Show password"} onClick={() => setShowAccessKey(v => !v)}>{showAccessKey ? "Hide" : "Show"}</button></div><small className="optionNote" id="share-password-help">Recipient must enter this password to view the share.</small></>}
             </div>
-            <div><label className="checkField" aria-describedby="view-once-help"><input type="checkbox" checked={viewOnce} onChange={e => setViewOnce(e.target.checked)} /><span><strong>View once</strong><small id="view-once-help">Allow only one successful view.</small></span></label>{viewOnce && <p className="viewOnceWarning" role="status">After the first successful view, this content will no longer be accessible.</p>}</div>
+            <div><label className="checkField"><input type="checkbox" aria-describedby="view-once-help" checked={viewOnce} onChange={e => setViewOnce(e.target.checked)} /><span><strong>View once</strong><small id="view-once-help">Allow only one successful view.</small></span></label>{viewOnce && <p className="viewOnceWarning" role="status">After the first successful view, this content will no longer be accessible.</p>}</div>
           </div>}
         </div>
         {error && <div className="formError" role="alert">{error}</div>}
-        <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <><ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /> Create secure share</>}</button>
+        <button className="primary createButton" type="submit" disabled={loading || (mode === "photo" ? !file : !text.trim()) || (passwordEnabled && !accessKey.trim())}>{loading ? <><span className="spinner" /> Creating…</> : <><ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /> Create secure share</>}</button>
         <div className="composerTrust"><LockKeyhole size={15} strokeWidth={1.5} aria-hidden="true" /> No account required. Your content expires automatically.</div>
       </form>
     </section>
