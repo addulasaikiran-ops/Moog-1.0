@@ -26,7 +26,7 @@ export type CreatedShare = {
   mode: "text" | "code" | "photo";
 };
 
-type RecentShare = Omit<CreatedShare, "revokeToken"> & { createdAt: string; revoked?: boolean };
+type RecentShare = { type: CreatedShare["mode"]; createdAt: string; expiresAt: string; url: string; code: string; passwordProtected: boolean; viewOnce: boolean; revoked?: boolean };
 
 export default function Composer({ onCreated, compact = false }: {
   onCreated: (share: CreatedShare) => void;
@@ -86,8 +86,7 @@ export default function Composer({ onCreated, compact = false }: {
       try {
         const key = "moog-recent-shares-v1";
         const previous = JSON.parse(window.localStorage.getItem(key) ?? "[]") as RecentShare[];
-        const entry: RecentShare = { ...share, createdAt: new Date().toISOString() };
-        delete (entry as Partial<CreatedShare>).revokeToken;
+        const entry: RecentShare = { type: mode, createdAt: new Date().toISOString(), expiresAt: share.expiresAt, url: share.url, code: share.code, passwordProtected: share.passwordProtected, viewOnce: share.viewOnce };
         window.localStorage.setItem(key, JSON.stringify([entry, ...previous.filter(item => item.url !== share.url)].slice(0, 30)));
       } catch { /* Local history is optional and must not block creation. */ }
       onCreated(share);
