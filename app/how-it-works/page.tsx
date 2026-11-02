@@ -3,7 +3,8 @@ export default function HowItWorksPage() {
   const steps = [
     ["01", "Add your content", "Paste text, choose a code language, or upload a supported photo."],
     ["02", "Set access rules", "Choose an expiry time and optionally enable password protection or view-once access."],
-    ["03", "Share the link or code", "Send the private link or six-digit receive code to the intended recipient."],
+    ["03", "Open the share", "The recipient opens the private link or enters the six-digit receive code."],
+    ["04", "Let it expire", "Access ends automatically when the chosen lifetime runs out, or sooner if you revoke it."],
   ];
   const faqs = [
     ["How long do shares last?", "Choose from one minute to seven days when creating a share."],
