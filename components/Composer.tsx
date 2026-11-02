@@ -105,7 +105,7 @@ export default function Composer({ onCreated, compact = false }: {
         <div className="modeToggle" role="group" aria-label="Content mode">
           <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} aria-pressed={mode === "text"} onClick={() => setMode("text")}>▣ <span>Text</span></button>
           <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} aria-pressed={mode === "code"} onClick={() => setMode("code")}>{ "</>" } <span>Code</span></button>
-          <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} aria-pressed={mode === "photo"} onClick={() => setMode("photo")}>▧ <span>Photo</span></button>
+          <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} aria-pressed={mode === "photo"} onClick={() => setMode("photo")}>▧ <span>Image</span></button>
         </div>
         {mode !== "photo" && <textarea value={text} onChange={e => { setText(e.target.value); setError(""); }} placeholder={mode === "code" ? "Paste your code snippet…" : "Paste the text you want to share…"} maxLength={100000} aria-label={mode === "code" ? "Code to share" : "Text to share"} />}
         {mode === "code" && <div className="codeSelectRow"><label htmlFor="composer-language">Language</label><select id="composer-language" value={language} onChange={e => setLanguage(e.target.value)}>{CODE_LANGUAGES.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></div>}
