@@ -209,3 +209,83 @@ body {
 @media (max-width: 600px) {
   .page:not(.refPage) .shell { width: min(100% - 32px, var(--container-width)); }
 }
+
+
+/* Shared surfaces for the remaining legacy route markup during migration. */
+:where(.createSharePage, .createShareSuccessPage, .recentPage, .minimalPage, .sharePage) {
+  color: var(--text-1);
+  background: var(--bg-0);
+}
+:where(.createShareTopbar, .recentTopbar, .minimalTopbar, .shareTopbar) {
+  border-color: var(--line-1);
+  background: var(--bg-0);
+}
+:where(.createShareShell, .recentShell, .minimalShell, .shareShell) {
+  color: var(--text-1);
+}
+:where(.createShareEditorCard, .createShareSettings, .createShareSettingCard,
+       .createShareSuccessCard, .recentItem, .recentEmpty, .minimalCard,
+       .shareCard, .viewerCard, .shareContentCard) {
+  color: var(--text-1);
+  background: var(--bg-1);
+  border-color: var(--line-2);
+  box-shadow: none;
+}
+:where(.createShareHeading h1, .createShareSuccessCard h1, .recentShell h1,
+       .minimalShell h1, .shareShell h1, .createShareSettings h2) {
+  color: var(--text-1);
+  letter-spacing: -.04em;
+}
+:where(.createShareHeading p, .createShareSuccessSubtitle, .createShareToggleCopy p,
+       .createShareNote, .createShareHint, .recentShell p, .minimalShell p,
+       .shareShell p) {
+  color: var(--text-2);
+}
+:where(.createSharePrimary, .createShareGetStarted, .recentPrimary, .minimalPrimary,
+       .sharePrimary) {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+}
+:where(.createShareEmailButton, .createShareFormActions a, .createShareBack,
+       .recentTopbar a, .minimalShell a, .shareShell a) {
+  color: var(--text-2);
+}
+:where(.createShareEditorWrap textarea, .createShareAccessInput input,
+       .createShareCustomExpiry input, .recentSearch input, .shareShell input,
+       .shareShell textarea, .minimalShell input, .minimalShell textarea) {
+  color: var(--text-1);
+  background: var(--bg-0);
+  border-color: var(--line-2);
+  border-radius: var(--radius-sm);
+}
+:where(.createShareSuccessCode, .createShareUrlBox, .createShareDetails,
+       .createShareNote, .recentFilters button, .recentStatus, .shareStatus) {
+  border-color: var(--line-2);
+}
+:where(.createShareSwitch.on) { background: var(--accent); }
+:where(.createShareError, .formError, [role="alert"]) { color: var(--danger); }
+:where(.createShareSuccessCode) {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-card);
+  background: var(--accent-soft);
+}
+.createShareSuccessCode > span {
+  color: var(--text-2);
+  font: 600 11px/1.4 var(--font-geist-mono), ui-monospace, monospace;
+  letter-spacing: .1em;
+}
+.createShareSuccessCode > strong {
+  color: var(--text-1);
+  font: 600 clamp(28px, 5vw, 40px)/1.1 var(--font-geist-mono), ui-monospace, monospace;
+  letter-spacing: .08em;
+  font-variant-numeric: tabular-nums;
+}
+:root[data-theme="light"] :where(.createSharePage, .createShareSuccessPage, .recentPage, .minimalPage, .sharePage) {
+  color-scheme: light;
+}
