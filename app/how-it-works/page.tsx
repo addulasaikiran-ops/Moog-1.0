@@ -1,3 +1,4 @@
+import Logo from "@/components/Logo";
 export default function HowItWorksPage() {
   const steps = [
     ["01", "Add your content", "Paste text, choose a code language, or upload a supported photo."],
@@ -13,7 +14,7 @@ export default function HowItWorksPage() {
   ];
   return <main className="recentPage">
     <div className="recentShell">
-      <header className="recentTopbar"><a className="recentLogo" href="/">◈ Moog</a><a href="/#composer">Create share →</a></header>
+      <header className="recentTopbar"><Logo className="recentLogo" /><a href="/#composer">Create share →</a></header>
       <section className="recentIntro"><p className="recentEyebrow">THREE SIMPLE STEPS</p><h1>How it works</h1><p>Temporary sharing should feel simple. Add content, choose the access rules, then send the link or code.</p></section>
       <section className="howGuideSteps">{steps.map(([number,title,description]) => <article className="howGuideStep" key={number}><span>{number}</span><div><h2>{title}</h2><p>{description}</p></div></article>)}</section>
       <section className="howGuideFaq"><p className="recentEyebrow">NEED TO KNOW</p><h2>Frequently asked questions</h2>{faqs.map(([question,answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</section>
