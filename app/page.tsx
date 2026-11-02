@@ -107,7 +107,7 @@ export default function HomePage() {
         <section className="moogHero restyleHero" aria-labelledby="hero-title">
           <div className="restyleHeroCopy">
             <h1 id="hero-title">Share it.<br />Let it disappear.</h1>
-            <p className="moogHeroCopy">Send text, code, or an image with an expiry you choose. No account to create.</p>
+            <p className="moogHeroCopy">Send a note, code snippet, or image with an expiry you choose. No account to create. No old link to clean up.</p>
             <div className="moogHeroActions">
               <a className="moogPrimary" href="#composer">Create a private share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a>
               <button className="moogSecondary" type="button" onClick={() => { changeTab("receive"); document.getElementById("composer")?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" }); }}>Receive a share</button>
@@ -178,29 +178,30 @@ export default function HomePage() {
         <section className="useMoog restyleUseCases" id="about-moog" aria-labelledby="use-title">
           <div className="useIntro"><h2 id="use-title">A short life for the things you share.</h2><p>Moog gives text, code, and images a chosen lifetime, with optional access controls and no account to create.</p><img className="moogBots" src="/moog-bots.svg" alt="Moog bots pass a small private share between one another." loading="lazy" /></div>
           <div className="useGrid">
-            <article className="useCase useCaseSecret"><span className="useCaseIcon"><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Sensitive information</h3><p>Share passwords, API keys or other secrets with an expiry.</p></article>
-            <article className="useCase useCaseCode"><span className="useCaseIcon"><Code2 size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Code snippets</h3><p>Send code to a teammate without leaving it available forever.</p><pre data-ui="code-fragment"><code>const share = await moog.create();</code></pre></article>
-            <article className="useCase useCaseNotes"><span className="useCaseIcon"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Temporary notes</h3><p>Move text between devices without an account.</p></article>
+            <article className="useCase useCaseSecret"><span className="useCaseIcon"><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Sensitive information</h3><p>Share passwords, API keys or other secrets.</p></article>
+            <article className="useCase useCaseCode"><span className="useCaseIcon"><Code2 size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Code snippets</h3><p>Send code to a teammate without leaving it forever.</p><pre data-ui="code-fragment"><code>const share = await moog.create();</code></pre></article>
+            <article className="useCase useCaseNotes"><span className="useCaseIcon"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Temporary notes</h3><p>Share text between devices without an account.</p></article>
             <article className="useCase useCaseImage"><span className="useCaseIcon"><ImageIcon size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Private images</h3><p>Share screenshots or photos that shouldn’t stay online.</p><div className="imageFragment" data-ui="image-fragment"><ImageIcon size={30} strokeWidth={1.5} aria-hidden="true" /><span>Image share · JPG / PNG / WebP</span></div></article>
           </div>
         </section>
 
         <section className="howMoog restyleHow" id="how-it-works" aria-labelledby="how-title">
-          <div className="howIntro"><h2 id="how-title">Create. Send. Let it expire.</h2><p>Four simple steps from a new share to expired access.</p></div>
+          <div className="howIntro"><h2 id="how-title">How it works</h2><p>Create a share, send it along, and let its expiry handle the rest.</p></div>
           <ol className="howSteps">
             <li><span className="stepIcon"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Create</h3><p>Paste text, code, or choose an image.</p></li>
-            <li><span className="stepIcon"><Clock3 size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Choose expiry</h3><p>Set a lifetime from 1 minute to 7 days.</p></li>
-            <li><span className="stepIcon"><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Share</h3><p>Send the private link or six-digit code.</p></li>
-            <li><span className="stepIcon"><Eye size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Open</h3><p>They open it without an account. Access ends at expiry.</p></li>
+            <li><span className="stepIcon"><Clock3 size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Share</h3><p>Get a private link and send it to anyone.</p></li>
+            <li><span className="stepIcon"><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Open</h3><p>They open it without an account.</p></li>
+            <li><span className="stepIcon"><Eye size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Expire</h3><p>Access disappears automatically.</p></li>
           </ol>
         </section>
 
         <section className="securityReference restylePrivacy" id="security" aria-labelledby="security-title">
-          <div className="privacyLead"><span className="privacyIcon"><ShieldCheck size={22} strokeWidth={1.5} aria-hidden="true" /></span><h2 id="security-title">Privacy, without the guesswork.</h2><p>Moog stores shared content on the server so it can deliver the share. Access is controlled, but it is not end-to-end encrypted.</p></div>
+          <div className="privacyLead"><span className="privacyIcon"><ShieldCheck size={22} strokeWidth={1.5} aria-hidden="true" /></span><h2 id="security-title">Built with privacy in mind.</h2><p>Here’s what you need to know.</p><p>Moog stores shared content on the server so it can deliver the share. It is access-controlled, not end-to-end encrypted.</p></div>
           <div className="securityGrid">
-            <article><LockKeyhole size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Access control</h3><p>Private links and optional passwords help control who can open a share.</p></article>
-            <article><Clock3 size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Expiry</h3><p>Moog limits access after the expiry time. It cannot erase copies someone already made.</p></article>
-            <article><Eye size={20} strokeWidth={1.5} aria-hidden="true" /><h3>View once</h3><p>Choose view once to limit a share to one successful reveal.</p></article>
+            <article><LockKeyhole size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Private links</h3><p>High-entropy links that are difficult to guess.</p></article>
+            <article><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Secure storage</h3><p>Links and codes are stored as hashes.</p></article>
+            <article><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /><h3>We control access, not copies</h3><p>Once someone views or downloads the content, we can’t prevent them from copying it.</p></article>
+            <article><Eye size={20} strokeWidth={1.5} aria-hidden="true" /><h3>No tracking</h3><p>Moog doesn’t require an account and doesn’t use third-party analytics tracking.</p></article>
           </div>
         </section>
 
@@ -211,7 +212,7 @@ export default function HomePage() {
               ["Do I need an account?", "No. Sending and receiving are both account-free."],
               ["How long do shares stay alive?", "Choose from 1 minute to 7 days when you create a share."],
               ["Can someone copy what I shared?", "Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back."],
-              ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP images up to 10 MB."],
+              ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP photos up to 10 MB."],
             ].map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown size={18} strokeWidth={1.5} aria-hidden="true" /></summary><p>{answer}</p></details>)}
           </div>
           <aside className="contactCard"><div className="contactIcon" aria-hidden="true"><Mail size={20} strokeWidth={1.5} /></div><h3>Still have questions?</h3><p>If you need more information, get in touch.</p><a href="/contact">Contact us <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a></aside>
