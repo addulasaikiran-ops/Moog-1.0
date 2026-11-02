@@ -104,21 +104,47 @@ export default function HomePage() {
       <div className="shell">
         <SiteHeader active="home" />
 
-        <section className="moogHero">
-          <p className="moogEyebrow">Temporary sharing</p>
-          <h1>Share it. <span className="moogInlineArtifact" aria-hidden="true"><span className="moogInlineArtifactIcon">↗</span><span className="moogInlineArtifactCopy"><strong>Project notes</strong><small>Expires in 24 hours</small></span></span><br />Let it disappear.</h1>
-          <p className="moogHeroCopy">Send a note, code snippet, or image with an expiry you choose. No account to create. No old link to clean up.</p>
-          <div className="moogHeroActions">
-            <a className="moogPrimary" href="/create">Create a private share <span aria-hidden="true">→</span></a>
-            <button className="moogSecondary" type="button" onClick={() => { changeTab("receive"); document.getElementById("receive-panel")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>Receive a share</button>
+        <section className="moogHero" aria-labelledby="hero-title">
+          <div className="moogHeroStory">
+            <p className="moogEyebrow">A quieter way to share</p>
+            <h1 id="hero-title">Share it.<br /><em>Let it disappear.</em></h1>
+            <p className="moogHeroCopy">Send text, code, or an image with a lifetime you choose. No account to set up. No link to tidy away later.</p>
+            <div className="moogHeroActions">
+              <a className="moogPrimary" href="#share">Create a private share <span aria-hidden="true">↘</span></a>
+              <button className="moogSecondary" type="button" onClick={() => { changeTab("receive"); document.getElementById("receive-panel")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>I have a code</button>
+            </div>
+            <div className="moogTrust" aria-label="How Moog works">
+              <div><span className="moogTrustIcon" aria-hidden="true">⌁</span><span>Account-free</span></div>
+              <div><span className="moogTrustIcon" aria-hidden="true">◷</span><span>Expires on your terms</span></div>
+              <div><span className="moogTrustIcon" aria-hidden="true">↗</span><span>Revoke access early</span></div>
+            </div>
           </div>
-          <div className="moogTrust" aria-label="Privacy benefits">
-            <div><span className="moogTrustIcon" aria-hidden="true">◇</span><span>Private by default</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">↗</span><span>Temporary access</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">⌁</span><span>You stay in control</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">✓</span><span>No account required</span></div>
+          <div className="moogLivePreview" aria-label="Illustration of a temporary share">
+            <div className="moogPreviewTop"><span>MOOG / PRIVATE SHARE</span><span className="moogPreviewSignal"><i /> READY TO SEND</span></div>
+            <div className="moogPreviewPaper">
+              <div className="moogPreviewFile">
+                <span className="moogPreviewFileIcon" aria-hidden="true">M.</span>
+                <span><strong>Project handoff</strong><small>Text · Private link</small></span>
+                <span className="moogPreviewLock" aria-hidden="true">⌁</span>
+              </div>
+              <p className="moogPreviewExcerpt">The notes for the next release, with the context your teammate needs.</p>
+              <div className="moogPreviewLines" aria-hidden="true"><i /><i /><i /><i /></div>
+              <div className="moogPreviewFooter"><span>ACCESS WINDOW</span><b>24 HOURS</b></div>
+            </div>
+            <div className="moogPreviewBottom"><span className="moogPreviewStatus"><i /> Link is ready</span><span>Expires automatically ↗</span></div>
+            <p className="moogPreviewCaption">A share with a clear beginning and an end.</p>
           </div>
         </section>
+
+        <section className="shareExperience" id="share" aria-labelledby="share-title">
+          <div className="shareExperienceHeading">
+            <div>
+              <p className="eyebrow">CREATE A SHARE</p>
+              <h2 id="share-title">What are you sending?</h2>
+              <p>Choose a format, set the access rules, and share it when you’re ready.</p>
+            </div>
+            <span className="shareExperienceMeta"><i aria-hidden="true" /> NO ACCOUNT REQUIRED</span>
+          </div>
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
           <button type="button" role="tab" aria-selected={tab === "receive"} className={tab === "receive" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("receive")}>Receive</button>
@@ -141,13 +167,23 @@ export default function HomePage() {
             <div className="receiveNote"><span aria-hidden="true">⌁</span><span>Password-protected shares ask for the password when opened. View-once shares are consumed after the first successful reveal.</span></div>
           </section>
         )}
+        </section>
 
-
-                <section className="productFeatures" aria-label="Moog benefits">
+        <section className="productFeatures" aria-label="Moog benefits">
           <div className="featureCard featurePurple"><i>◷</i><strong>Temporary by design</strong><small>Your content expires automatically, based on the lifetime you choose.</small></div>
           <div className="featureCard featureBlue"><i>⌑</i><strong>Protected access</strong><small>Optional password protection and view-once access help control who can open a share.</small></div>
           
           <div className="featureCard featureOrange"><i>◉</i><strong>No account needed</strong><small>Create a share and send it instantly without signing up.</small></div>
+        </section>
+
+        <section className="useMoog moogAbout" id="about-moog" aria-labelledby="use-title">
+          <div className="useIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="use-title">Give every share a clear beginning and an end.</h2><p>Moog is a small, focused tool for sending something useful without leaving an open link behind. Choose how long it stays available, then let the expiry do its job.</p></div>
+          <div className="useGrid">
+            <div><i className="usePink">▣</i><strong>Temporary details</strong><small>Send everyday details that only need a short window. Keep highly sensitive credentials out of any online sharing tool.</small></div>
+            <div><i className="useBlue">&lt;/&gt;</i><strong>Code and context</strong><small>Pass along a snippet or a small piece of technical context.</small></div>
+            <div><i className="useGreen">▤</i><strong>Notes between devices</strong><small>Move a note from one screen to another without signing up.</small></div>
+            <div><i className="useOrange">▧</i><strong>Images and screenshots</strong><small>Send a supported image with an expiry you control.</small></div>
+          </div>
         </section>
 
         <section className="howMoog referenceHow" id="how-it-works" aria-labelledby="how-title">
@@ -160,16 +196,6 @@ export default function HomePage() {
             <div><b className="stepGreen">03</b><strong>Open</strong><small>They open it without an account.</small></div>
             <span>→</span>
             <div><b className="stepOrange">04</b><strong>Expire</strong><small>Access disappears automatically.</small></div>
-          </div>
-        </section>
-
-        <section className="useMoog" id="about-moog" aria-labelledby="use-title">
-          <div className="useIntro"><div className="eyebrow">USE MOOG FOR</div><h2 id="use-title">For the things you only need to send once.</h2><p>Built for real situations where access should not last forever.</p></div>
-          <div className="useGrid">
-            <div><i className="usePink">▣</i><strong>Sensitive information</strong><small>Share passwords, API keys or other secrets.</small></div>
-            <div><i className="useBlue">&lt;/&gt;</i><strong>Code snippets</strong><small>Send code to a teammate without leaving it forever.</small></div>
-            <div><i className="useGreen">▤</i><strong>Temporary notes</strong><small>Share text between devices without an account.</small></div>
-            <div><i className="useOrange">▧</i><strong>Private images</strong><small>Share screenshots or photos that shouldn&apos;t stay online.</small></div>
           </div>
         </section>
 
