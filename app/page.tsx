@@ -5,6 +5,7 @@ import Composer, { type CreatedShare } from "@/components/Composer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ShareResult from "@/components/ShareResult";
+import { ArrowUpRight, Clock3, FileText, LockKeyhole, ShieldCheck } from "lucide-react";
 
 const EXPIRY_OPTIONS = [
   { value: 1, label: "1 minute" },
@@ -104,20 +105,29 @@ export default function HomePage() {
       <div className="shell">
         <SiteHeader active="home" />
 
-        <section className="moogHero">
-          <p className="moogEyebrow">Temporary sharing</p>
-          <h1>Share it. <span className="moogInlineArtifact" aria-hidden="true"><span className="moogInlineArtifactIcon">↗</span><span className="moogInlineArtifactCopy"><strong>Project notes</strong><small>Expires in 24 hours</small></span></span><br />Let it disappear.</h1>
-          <p className="moogHeroCopy">Send a note, code snippet, or image with an expiry you choose. No account to create. No old link to clean up.</p>
-          <div className="moogHeroActions">
-            <a className="moogPrimary" href="/create">Create a private share <span aria-hidden="true">→</span></a>
-            <button className="moogSecondary" type="button" onClick={() => { changeTab("receive"); document.getElementById("receive-panel")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>Receive a share</button>
+        <section className="moogHero" aria-labelledby="hero-title">
+          <div className="moogHeroContent">
+            <p className="moogEyebrow">TEMPORARY SHARING</p>
+            <h1 id="hero-title">Share it.<br />Let it disappear.</h1>
+            <p className="moogHeroCopy">Send text, code, or an image with an expiry you choose. No account to create.</p>
+            <div className="moogHeroActions">
+              <a className="moogPrimary" href="#composer">Create a private share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a>
+              <button className="moogSecondary" type="button" onClick={() => { changeTab("receive"); document.getElementById("receive-panel")?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>Receive a share</button>
+            </div>
+            <div className="moogTrust" aria-label="Moog features">
+              <div><LockKeyhole size={16} strokeWidth={1.5} aria-hidden="true" /><span>No account</span></div>
+              <div><Clock3 size={16} strokeWidth={1.5} aria-hidden="true" /><span>Choose expiry</span></div>
+              <div><ShieldCheck size={16} strokeWidth={1.5} aria-hidden="true" /><span>Access controls</span></div>
+            </div>
           </div>
-          <div className="moogTrust" aria-label="Privacy benefits">
-            <div><span className="moogTrustIcon" aria-hidden="true">◇</span><span>Private by default</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">↗</span><span>Temporary access</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">⌁</span><span>You stay in control</span></div>
-            <div><span className="moogTrustIcon" aria-hidden="true">✓</span><span>No account required</span></div>
-          </div>
+          <aside className="moogLivePreview" aria-label="Sample share preview">
+            <div className="moogPreviewTop"><span>SHARE PREVIEW</span><span className="moogPreviewExpiry"><Clock3 size={13} strokeWidth={1.5} aria-hidden="true" /> Expires in 24 hours</span></div>
+            <div className="moogPreviewPaper">
+              <div className="moogPreviewFile"><span className="moogPreviewFileIcon"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></span><span><strong>Project notes</strong><small>Text share · Sample artifact</small></span></div>
+              <div className="moogPreviewContent"><span>Things to send over</span><span>01&nbsp; Updated project brief</span><span>02&nbsp; Review the latest draft</span><span>03&nbsp; Share feedback by Friday</span></div>
+            </div>
+            <div className="moogPreviewFooter"><span><span className="moogPreviewStatusDot" /> Access controlled</span><span>Sample only</span></div>
+          </aside>
         </section>
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
