@@ -36,19 +36,8 @@ const CODE_LANGUAGES = [
 ] as const;
 
 type Tab = "send" | "receive";
-type Mode = "text" | "code" | "photo";
 function formatReceiveCode(value: string): string {
   return value.replace(/\D/g, "").slice(0, 6);
-}
-
-function formatCountdown(ms: number): string {
-  const totalSeconds = Math.max(0, Math.ceil(ms / 1000));
-  const hours = Math.floor(totalSeconds / 3600);
-  const minutes = Math.floor((totalSeconds % 3600) / 60);
-  const seconds = totalSeconds % 60;
-  if (hours) return `${hours}h ${minutes}m`;
-  if (minutes) return `${minutes}m ${seconds}s`;
-  return `${seconds}s`;
 }
 
 function isValidCode(value: string): boolean {
