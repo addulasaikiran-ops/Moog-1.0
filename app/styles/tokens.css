@@ -78,3 +78,134 @@ body { background: var(--bg-0); color: var(--text-1); }
     transition-duration: .01ms !important;
   }
 }
+
+/* Transitional shared surface styles while pages move to CSS Modules. */
+body {
+  font-family: var(--font-geist), Inter, ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+:where(pre, code, kbd, samp, .code, .mono, .resultCode, .receiveDigit) {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+}
+.page:not(.refPage) {
+  color: var(--text-1);
+  background: var(--bg-0);
+}
+.page:not(.refPage) .shell {
+  width: min(100% - 48px, var(--container-width));
+}
+.page:not(.refPage) .topbar {
+  border-bottom: 1px solid var(--line-1);
+  background: color-mix(in srgb, var(--bg-0) 86%, transparent);
+  backdrop-filter: blur(18px);
+}
+.page:not(.refPage) .moogLogo,
+.page:not(.refPage) .moogTopNav a,
+.page:not(.refPage) .footerLinks a {
+  color: var(--text-2);
+}
+.page:not(.refPage) .moogLogo strong,
+.page:not(.refPage) .moogHero h1,
+.page:not(.refPage) .sectionHeading h2,
+.page:not(.refPage) .howIntro h2,
+.page:not(.refPage) .useIntro h2 {
+  color: var(--text-1);
+}
+.page:not(.refPage) .moogHero h1 {
+  letter-spacing: -.055em;
+  font-weight: 650;
+  line-height: .99;
+}
+.page:not(.refPage) .moogEyebrow,
+.page:not(.refPage) .eyebrow,
+.page:not(.refPage) .resultFieldLabel,
+.page:not(.refPage) .counter {
+  color: var(--text-3);
+  letter-spacing: .09em;
+}
+.page:not(.refPage) .moogPrimary,
+.page:not(.refPage) .createButton,
+.page:not(.refPage) .receiveOpen {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  font-weight: 650;
+}
+.page:not(.refPage) .moogPrimary:hover,
+.page:not(.refPage) .createButton:hover,
+.page:not(.refPage) .receiveOpen:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+.page:not(.refPage) .moogSecondary {
+  color: var(--text-1);
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-md);
+}
+.page:not(.refPage) .composer,
+.page:not(.refPage) .receiveCard,
+.page:not(.refPage) .result,
+.page:not(.refPage) .moogLivePreview,
+.page:not(.refPage) .featureCard,
+.page:not(.refPage) .howSteps>div,
+.page:not(.refPage) .useGrid>div,
+.page:not(.refPage) .securityDisclosureText,
+.page:not(.refPage) .faq,
+.page:not(.refPage) .contactCard {
+  color: var(--text-1);
+  background: var(--bg-1);
+  border-color: var(--line-2);
+  border-radius: var(--radius-card);
+  box-shadow: none;
+}
+.page:not(.refPage) .composer {
+  border-radius: var(--radius-composer);
+  border-color: var(--line-3);
+}
+.page:not(.refPage) :is(input, textarea, select, .secretInput, .receiveDigit) {
+  color: var(--text-1);
+  background: var(--bg-0);
+  border-color: var(--line-2);
+}
+.page:not(.refPage) :is(input, textarea, select)::placeholder {
+  color: var(--text-3);
+}
+.page:not(.refPage) .referenceComposerTabs,
+.page:not(.refPage) .modeToggle,
+.page:not(.refPage) .lifetimeSection {
+  border-color: var(--line-1);
+}
+.page:not(.refPage) .featureCard i,
+.page:not(.refPage) .stepPurple,
+.page:not(.refPage) .stepBlue,
+.page:not(.refPage) .stepGreen,
+.page:not(.refPage) .stepOrange,
+.page:not(.refPage) .featurePurple,
+.page:not(.refPage) .featureBlue,
+.page:not(.refPage) .featureOrange,
+.page:not(.refPage) .usePink,
+.page:not(.refPage) .useBlue,
+.page:not(.refPage) .useGreen,
+.page:not(.refPage) .useOrange,
+.page:not(.refPage) .securityPurple,
+.page:not(.refPage) .securityBlue,
+.page:not(.refPage) .securityGreen {
+  color: var(--accent);
+  background-color: var(--accent-soft);
+}
+.page:not(.refPage) .siteFooter {
+  border-top: 1px solid var(--line-1);
+}
+:root[data-theme="light"] .page:not(.refPage) .moogHeroCopy,
+:root[data-theme="light"] .page:not(.refPage) .sectionHeading p,
+:root[data-theme="light"] .page:not(.refPage) .howIntro p,
+:root[data-theme="light"] .page:not(.refPage) .useIntro p {
+  color: var(--text-2);
+}
+@media (max-width: 600px) {
+  .page:not(.refPage) .shell { width: min(100% - 32px, var(--container-width)); }
+}
