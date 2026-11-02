@@ -1,5 +1,6 @@
 "use client";
 
+import Logo from "@/components/Logo";
 import { useEffect } from "react";
 
 export default function ErrorPage({ error, reset }: { error: Error & { digest?: string }; reset: () => void }) {
@@ -11,7 +12,7 @@ export default function ErrorPage({ error, reset }: { error: Error & { digest?: 
   return (
     <main className="legalPage moogErrorPage">
       <section className="legalShell" aria-labelledby="error-title">
-        <a className="minimalLogo" href="/" aria-label="Moog home">moog</a>
+        <Logo className="minimalLogo" />
         <p className="eyebrow">SOMETHING WENT WRONG</p>
         <h1 id="error-title">That didn’t go as planned.</h1>
         <p>Nothing you need to do here. Try again, or return to Moog and start over.</p>
