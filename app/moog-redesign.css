@@ -1327,3 +1327,224 @@ textarea:focus, .passwordInput:focus, .sharePassword:focus {
   .page .faqArea > .contactCard { padding:24px !important; border-radius:20px !important; }
   .page .contactCard .contactIcon { margin-bottom:24px !important; }
 }
+
+
+/* =========================================================
+   MOOG COMMERCIAL HOMEPAGE — layout correction and polish
+   Scoped to the landing page; keeps all API and form logic intact.
+   ========================================================= */
+.page:not(.refPage) {
+  --bg: #f7f9fc;
+  --panel: #ffffff;
+  --text: #101828;
+  --muted: #667085;
+  --line: #e4e7ec;
+  --accent: #3157d5;
+  --accent-ink: #ffffff;
+  background: #f7f9fc;
+  color: var(--text);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+.page:not(.refPage) .shell { width: min(1160px, 100%); padding: 0 28px; }
+.page:not(.refPage) .topbar {
+  position: relative; top: auto; margin: 0 -28px; padding: 0 28px;
+  min-height: 76px; background: rgba(255,255,255,.88); border: 0;
+  border-bottom: 1px solid #e8ebf1; backdrop-filter: blur(16px);
+}
+.page:not(.refPage) .moogLogo { color: #101828; font-size: 25px; font-weight: 800; letter-spacing: -.07em; }
+.page:not(.refPage) .moogBrandMark { width: 32px; height: 32px; border: 0; border-radius: 10px; background: #3157d5; color: #fff; }
+.page:not(.refPage) .moogTopNav { gap: 26px; }
+.page:not(.refPage) .moogTopNav a { color: #475467; font-size: 14px; font-weight: 600; text-decoration: none; }
+.page:not(.refPage) .moogTopNav a:hover { color: #3157d5; }
+.page:not(.refPage) .moogTopNav .moogNavCta {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 42px; padding: 0 17px;
+  border: 1px solid #3157d5; border-radius: 10px; background: #3157d5; color: #fff;
+  box-shadow: 0 4px 10px rgba(49,87,213,.16);
+}
+.page:not(.refPage) .moogHero {
+  width: 100%; max-width: 1080px; margin: 0 auto; padding: clamp(54px,7vw,88px) 0 34px;
+  display: grid; grid-template-columns: minmax(0,1fr) minmax(340px,.88fr); align-items: center;
+  column-gap: clamp(38px,6vw,78px); row-gap: 20px; text-align: left;
+}
+.page:not(.refPage) .moogEyebrow {
+  grid-column: 1; margin: 0; color: #3157d5; font-size: 11px; font-weight: 800;
+  letter-spacing: .16em; line-height: 1.4;
+}
+.page:not(.refPage) .moogHero h1 {
+  grid-column: 1; max-width: 610px; margin: 0; color: #101828;
+  font-size: clamp(46px,5.7vw,72px); line-height: 1.02; letter-spacing: -.065em; font-weight: 800;
+}
+.page:not(.refPage) .moogHeroCopy {
+  grid-column: 1; max-width: 510px; margin: 0; color: #667085; font-size: 17px; line-height: 1.75;
+}
+.page:not(.refPage) .moogHeroActions {
+  grid-column: 1; display: flex; align-items: center; justify-content: flex-start; flex-wrap: wrap; gap: 12px; margin: 4px 0 0;
+}
+.page:not(.refPage) .moogPrimary, .page:not(.refPage) .moogSecondary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 49px;
+  padding: 0 19px; border-radius: 11px; font-size: 14px; font-weight: 750; text-decoration: none;
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.page:not(.refPage) .moogPrimary { background: #3157d5; color: #fff; border: 1px solid #3157d5; box-shadow: 0 7px 18px rgba(49,87,213,.18); }
+.page:not(.refPage) .moogPrimary:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(49,87,213,.24); }
+.page:not(.refPage) .moogSecondary { background: #fff; color: #344054; border: 1px solid #d0d5dd; }
+.page:not(.refPage) .moogSecondary:hover { background: #f9fafb; }
+.page:not(.refPage) .moogTrust {
+  grid-column: 1; display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 12px 18px; margin: 5px 0 0;
+}
+.page:not(.refPage) .moogTrust>div { display: flex; align-items: center; gap: 7px; color: #667085; font-size: 12px; }
+.page:not(.refPage) .moogTrustIcon { display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid #e4e7ec; border-radius: 7px; color: #3157d5; background: #fff; font-size: 10px; }
+.page:not(.refPage) .moogLivePreview {
+  grid-column: 2; grid-row: 1 / span 5; align-self: center; width: 100%; min-width: 0;
+  padding: 20px; border: 1px solid #e4e7ec; border-radius: 20px; background: #fff;
+  box-shadow: 0 24px 65px rgba(16,24,40,.10); transform: none;
+}
+.page:not(.refPage) .moogPreviewTop { padding-bottom: 17px; }
+.page:not(.refPage) .moogPreviewPaper { border-radius: 13px; background: #f8faff; }
+.page:not(.refPage) .moogPreviewFileIcon { border-radius: 10px; background: #e9efff; color: #3157d5; }
+.page:not(.refPage) .moogPreviewCaption { color: #667085; }
+.page:not(.refPage) .referenceComposerTabs {
+  display: flex; width: fit-content; margin: 22px auto 0; padding: 4px; gap: 4px;
+  border: 1px solid #e4e7ec; border-radius: 12px; background: #fff; overflow: hidden;
+  box-shadow: 0 2px 5px rgba(16,24,40,.03);
+}
+.page:not(.refPage) .referenceComposerTab {
+  flex: 0 0 auto; min-width: 112px; min-height: 42px; padding: 0 22px;
+  border: 0; border-radius: 8px; background: transparent; color: #667085;
+  font-size: 13px; font-weight: 750;
+}
+.page:not(.refPage) .referenceComposerTab.active { background: #3157d5; color: #fff; border: 0; }
+.page:not(.refPage) .referenceComposerTabs + .composer,
+.page:not(.refPage) .referenceComposerTabs + .receiveCard { margin-top: 14px; }
+.page:not(.refPage) .composer,
+.page:not(.refPage) .receiveCard {
+  width: min(760px,100%); margin: 14px auto 0; padding: clamp(20px,3vw,30px);
+  border: 1px solid #e4e7ec; border-radius: 18px; background: #fff;
+  box-shadow: 0 12px 35px rgba(16,24,40,.06); backdrop-filter: none;
+}
+.page:not(.refPage) .composerTop { display: flex; }
+.page:not(.refPage) .counter { color: #98a2b3; font-size: 12px; }
+.page:not(.refPage) .modeToggle { display: flex; gap: 5px; margin: 0 0 16px; padding: 5px; border: 1px solid #eaecf0; border-radius: 11px; background: #f9fafb; }
+.page:not(.refPage) .modeButton {
+  flex: 1; display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 42px;
+  margin: 0; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: #667085;
+  font-size: 13px; font-weight: 700;
+}
+.page:not(.refPage) .modeButton.active { background: #fff; color: #3157d5; border: 1px solid #e4e7ec; box-shadow: 0 1px 3px rgba(16,24,40,.06); }
+.page:not(.refPage) textarea {
+  display: block; width: 100%; min-height: 210px; margin: 0; padding: 16px;
+  border: 1px solid #d0d5dd; border-radius: 11px; background: #fff; color: #101828;
+  font-size: 14px; line-height: 1.7; resize: vertical;
+}
+.page:not(.refPage) textarea:focus { border-color: #8098f9; box-shadow: 0 0 0 4px rgba(49,87,213,.10); outline: none; }
+.page:not(.refPage) textarea::placeholder { color: #98a2b3; }
+.page:not(.refPage) .lifetimeSection { margin-top: 22px; }
+.page:not(.refPage) .lifetimeHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.page:not(.refPage) .lifetimeHeader span { color: #344054; font-size: 13px; font-weight: 700; }
+.page:not(.refPage) .lifetimeHeader strong { color: #3157d5; font-size: 13px; }
+.page:not(.refPage) .lifetimePills { display: flex; flex-wrap: wrap; gap: 7px; padding: 0; border: 0; background: transparent; }
+.page:not(.refPage) .lifetimePill { min-height: 35px; padding: 0 11px; border: 1px solid #e4e7ec; border-radius: 8px; background: #fff; color: #475467; font-size: 12px; font-weight: 650; }
+.page:not(.refPage) .lifetimePill.active { border-color: #3157d5; background: #eef2ff; color: #3157d5; box-shadow: none; }
+.page:not(.refPage) .lifetimeActivePill { display: none; }
+.page:not(.refPage) .securityBar { margin-top: 20px; border-top: 1px solid #eaecf0; }
+.page:not(.refPage) .securityDisclosure { width: 100%; padding: 15px 0 8px; border: 0; background: transparent; color: #101828; }
+.page:not(.refPage) .securityDisclosure small { color: #667085; }
+.page:not(.refPage) .securityOptions { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 14px; }
+.page:not(.refPage) .optionField, .page:not(.refPage) .checkField { padding: 14px; border: 1px solid #e4e7ec; border-radius: 11px; background: #f9fafb; color: #344054; }
+.page:not(.refPage) .secretInput input, .page:not(.refPage) .codeSelectRow select { min-height: 43px; border: 1px solid #d0d5dd; border-radius: 9px; background: #fff; color: #101828; }
+.page:not(.refPage) .createButton, .page:not(.refPage) .receiveOpen {
+  display: flex; width: 100%; align-items: center; justify-content: center; gap: 10px; min-height: 52px;
+  margin-top: 22px; border: 1px solid #3157d5; border-radius: 11px; background: #3157d5; color: #fff;
+  box-shadow: 0 6px 15px rgba(49,87,213,.16); font-size: 15px; font-weight: 750;
+}
+.page:not(.refPage) .createButton:hover:not(:disabled), .page:not(.refPage) .receiveOpen:hover:not(:disabled) { background: #2546b8; transform: translateY(-1px); }
+.page:not(.refPage) .composerTrust { margin-top: 13px; color: #667085; font-size: 12px; text-align: center; }
+.page:not(.refPage) .result { width: min(760px,100%); margin: 18px auto 0; border: 1px solid #b7e4c7; border-radius: 16px; background: #f0fdf4; box-shadow: 0 8px 22px rgba(16,24,40,.04); }
+.page:not(.refPage) .productFeatures { clear: both; width: 100%; margin: 54px auto 0; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; }
+.page:not(.refPage) .featureCard { min-height: 170px; padding: 24px; border: 1px solid #e4e7ec; border-radius: 15px; background: #fff; box-shadow: 0 3px 10px rgba(16,24,40,.025); }
+.page:not(.refPage) .featureCard i { width: 42px; height: 42px; border-radius: 11px; background: #eef2ff!important; color: #3157d5!important; }
+.page:not(.refPage) .featureCard strong { margin-top: 14px; color: #101828; font-size: 16px; font-weight: 750; }
+.page:not(.refPage) .featureCard small { color: #667085; font-size: 13px; line-height: 1.65; }
+.page:not(.refPage) .referenceHow, .page:not(.refPage) .useMoog, .page:not(.refPage) .securityReference { margin-top: 86px; }
+.page:not(.refPage) .referenceHow .howIntro .eyebrow,
+.page:not(.refPage) .useIntro .eyebrow,
+.page:not(.refPage) .sectionHeading .eyebrow { color: #3157d5; font-size: 11px; font-weight: 800; letter-spacing: .14em; }
+.page:not(.refPage) .referenceHow .howIntro h2,
+.page:not(.refPage) .useIntro h2,
+.page:not(.refPage) .sectionHeading h2 { color: #101828; font-size: clamp(30px,4vw,42px); letter-spacing: -.055em; }
+.page:not(.refPage) .referenceHow .howIntro p,
+.page:not(.refPage) .useIntro p,
+.page:not(.refPage) .sectionHeading p { color: #667085; font-size: 15px; line-height: 1.7; }
+.page:not(.refPage) .howSteps { gap: 12px; }
+.page:not(.refPage) .howSteps>div { min-width: 0; padding: 20px 16px; border: 1px solid #e4e7ec; border-radius: 13px; background: #fff; }
+.page:not(.refPage) .howSteps strong, .page:not(.refPage) .useGrid strong, .page:not(.refPage) .securityGrid strong { color: #101828; font-weight: 750; }
+.page:not(.refPage) .howSteps small, .page:not(.refPage) .useGrid small, .page:not(.refPage) .securityGrid small { color: #667085; line-height: 1.65; }
+.page:not(.refPage) .useGrid>div, .page:not(.refPage) .securityGrid>div { border: 1px solid #e4e7ec; border-radius: 14px; background: #fff; }
+.page:not(.refPage) .useGrid i, .page:not(.refPage) .securityIcon { background: #eef2ff!important; color: #3157d5!important; }
+.page:not(.refPage) .securityDisclosureText { color: #667085; line-height: 1.7; }
+.page:not(.refPage) .faqArea { display: grid; grid-template-columns: minmax(0,1.45fr) minmax(270px,.75fr); align-items: start; gap: 22px; width: 100%; margin: 86px auto 0; }
+.page:not(.refPage) .faq { display: grid; gap: 8px; min-width: 0; }
+.page:not(.refPage) .faq h3 { margin: 8px 0 12px; color: #101828; font-size: clamp(24px,3vw,32px); letter-spacing: -.045em; }
+.page:not(.refPage) .faq details { border: 1px solid #e4e7ec; border-radius: 11px; background: #fff; }
+.page:not(.refPage) .faq summary { min-height: 54px; padding: 15px 17px; color: #344054; font-size: 14px; font-weight: 700; }
+.page:not(.refPage) .faq details p { padding: 0 17px 17px; color: #667085; font-size: 13px; line-height: 1.7; }
+.page:not(.refPage) .contactCard { padding: 26px; border: 1px solid #dbe4ff; border-radius: 16px; background: linear-gradient(145deg,#eef2ff,#fff); }
+.page:not(.refPage) .contactIcon { width: 44px; height: 44px; border-radius: 12px; background: #3157d5; color: #fff; }
+.page:not(.refPage) .contactCard h3 { margin-top: 18px; color: #101828; font-size: 22px; letter-spacing: -.04em; }
+.page:not(.refPage) .contactCard p { color: #667085; font-size: 14px; line-height: 1.7; }
+.page:not(.refPage) .contactCard a { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 15px; border-radius: 10px; background: #3157d5; color: #fff; text-decoration: none; font-size: 13px; font-weight: 750; }
+.page:not(.refPage) .siteFooter { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin: 86px -28px 0; padding: 28px; border: 0; border-top: 1px solid #e4e7ec; background: #101828; color: #d0d5dd; }
+.page:not(.refPage) .footerBrand strong { color: #fff; font-size: 18px; }
+.page:not(.refPage) .footerBrand span, .page:not(.refPage) .footerLinks a { color: #d0d5dd; }
+.page:not(.refPage) .footerLinks { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+.page:not(.refPage) .footerLinks a { font-size: 12px; text-decoration: none; }
+.page:not(.refPage) .footerLinks a:hover { color: #fff; }
+.page:not(.refPage) .footerLegal { color: #98a2b3; font-size: 12px; white-space: nowrap; }
+
+@media(max-width:900px) {
+  .page:not(.refPage) .shell { padding: 0 22px; }
+  .page:not(.refPage) .topbar { margin: 0 -22px; padding: 0 22px; }
+  .page:not(.refPage) .moogHero { grid-template-columns: minmax(0,1fr) minmax(280px,.85fr); column-gap: 28px; }
+  .page:not(.refPage) .moogHero h1 { font-size: clamp(42px,6vw,58px); }
+  .page:not(.refPage) .moogTrust { gap: 10px 12px; }
+  .page:not(.refPage) .productFeatures { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .page:not(.refPage) .faqArea { grid-template-columns: minmax(0,1.2fr) minmax(230px,.8fr); }
+  .page:not(.refPage) .siteFooter { margin-left: -22px; margin-right: -22px; padding: 26px 22px; }
+}
+@media(max-width:720px) {
+  .page:not(.refPage) .shell { padding: 0 18px; }
+  .page:not(.refPage) .topbar { margin: 0 -18px; padding: 0 18px; min-height: 66px; }
+  .page:not(.refPage) .moogTopNav { gap: 12px; }
+  .page:not(.refPage) .moogTopNav a:not(.moogNavCta) { display: none; }
+  .page:not(.refPage) .moogHero { display: flex; flex-direction: column; align-items: stretch; gap: 17px; padding: 42px 0 28px; }
+  .page:not(.refPage) .moogHero h1 { font-size: clamp(42px,10.5vw,58px); }
+  .page:not(.refPage) .moogHeroCopy { font-size: 16px; }
+  .page:not(.refPage) .moogHeroActions { display: grid; grid-template-columns: 1fr; }
+  .page:not(.refPage) .moogHeroActions>* { width: 100%; }
+  .page:not(.refPage) .moogTrust { display: grid; grid-template-columns: 1fr 1fr; }
+  .page:not(.refPage) .moogLivePreview { width: 100%; margin-top: 4px; padding: 14px; }
+  .page:not(.refPage) .referenceComposerTabs { margin-top: 10px; }
+  .page:not(.refPage) .composer, .page:not(.refPage) .receiveCard { padding: 16px; }
+  .page:not(.refPage) .lifetimePills { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .page:not(.refPage) .lifetimePill { padding: 0 5px; }
+  .page:not(.refPage) .securityOptions { grid-template-columns: 1fr; }
+  .page:not(.refPage) .productFeatures { grid-template-columns: 1fr; margin-top: 36px; }
+  .page:not(.refPage) .featureCard { min-height: 0; }
+  .page:not(.refPage) .referenceHow, .page:not(.refPage) .useMoog, .page:not(.refPage) .securityReference, .page:not(.refPage) .faqArea { margin-top: 58px; }
+  .page:not(.refPage) .howSteps { grid-template-columns: 1fr 1fr; }
+  .page:not(.refPage) .howSteps>span { display: none; }
+  .page:not(.refPage) .useGrid, .page:not(.refPage) .securityGrid { grid-template-columns: 1fr; }
+  .page:not(.refPage) .faqArea { grid-template-columns: 1fr; }
+  .page:not(.refPage) .siteFooter { align-items: flex-start; flex-direction: column; margin: 58px -18px 0; padding: 26px 18px; }
+}
+@media(max-width:420px) {
+  .page:not(.refPage) .shell { padding: 0 14px; }
+  .page:not(.refPage) .topbar { margin: 0 -14px; padding: 0 14px; }
+  .page:not(.refPage) .moogHero h1 { font-size: 40px; }
+  .page:not(.refPage) .moogTrust { grid-template-columns: 1fr 1fr; }
+  .page:not(.refPage) .referenceComposerTab { min-width: 96px; }
+  .page:not(.refPage) .siteFooter { margin-left: -14px; margin-right: -14px; padding-left: 14px; padding-right: 14px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .page:not(.refPage) .moogPrimary, .page:not(.refPage) .moogSecondary { transition: none; }
+}
