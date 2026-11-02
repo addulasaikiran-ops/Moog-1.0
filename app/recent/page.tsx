@@ -71,7 +71,7 @@ export default function RecentSharesPage() {
         <label className="recentSearch"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by code or type" aria-label="Search recent shares" /></label>
         <button className="recentClear" onClick={() => { if (window.confirm("Clear local share history on this device? This will not revoke existing links.")) persist([]); }}>Clear local history</button>
       </section>
-      <div className="recentFilters" aria-label="Filter shares">{(["All","Active","Expiring soon","Expired","Revoked","Viewed"] as Filter[]).map((name) => <button key={name} className={filter === name ? "selected" : ""} onClick={() => setFilter(name)}>{name}</button>)}</div>
+      <div className="recentFilters" aria-label="Filter shares">{(["All","Active","Expiring soon","Expired","Revoked"] as Filter[]).map((name) => <button key={name} className={filter === name ? "selected" : ""} onClick={() => setFilter(name)}>{name}</button>)}</div>
       {feedback ? <p className="recentFeedback" role="status">{feedback}</p> : null}
       {visible.length ? <section className="recentList" aria-label="Recent shares">{visible.map((item) => {
         const state = statusOf(item, now || Date.now());
