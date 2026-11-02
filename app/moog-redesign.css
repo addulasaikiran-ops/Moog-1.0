@@ -1075,3 +1075,85 @@ textarea:focus, .passwordInput:focus, .sharePassword:focus {
   .page .moogHeroActions > * { width:100% !important; }
   .page .howSteps { grid-template-columns:1fr !important; }
 }
+
+
+/* HARD LAYOUT RESET — prevent legacy grid/absolute rules from overlapping homepage sections. */
+.page {
+  display: block !important;
+  min-height: 100vh !important;
+  overflow-x: clip !important;
+}
+.page > .ambient { pointer-events: none !important; }
+.page > .shell {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  justify-content: flex-start !important;
+  position: relative !important;
+  width: min(1080px, calc(100% - 48px)) !important;
+  max-width: 1080px !important;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 auto !important;
+  padding: 0 0 72px !important;
+  gap: 0 !important;
+  overflow: visible !important;
+}
+.page .topbar,
+.page .moogHero,
+.page .referenceComposerTabs,
+.page > .shell > .composer,
+.page > .shell > .receiveCard,
+.page .productFeatures,
+.page .features,
+.page .featureGrid,
+.page .featuresGrid,
+.page #how-it-works,
+.page .howMoog {
+  float: none !important;
+  clear: both !important;
+  grid-area: auto / auto / auto / auto !important;
+  inset: auto !important;
+}
+.page .topbar { flex: 0 0 auto !important; }
+.page .moogHero {
+  flex: 0 0 auto !important;
+  order: 1 !important;
+  display: flex !important;
+  width: 100% !important;
+  max-width: 850px !important;
+  align-self: center !important;
+  margin: 0 auto !important;
+  padding: 70px 0 30px !important;
+}
+.page .referenceComposerTabs {
+  order: 2 !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  width: min(760px, 100%) !important;
+  margin: 12px auto 0 !important;
+}
+.page > .shell > .composer,
+.page > .shell > .receiveCard {
+  order: 3 !important;
+  flex: 0 0 auto !important;
+  align-self: center !important;
+  width: min(760px, 100%) !important;
+  margin: 12px auto 0 !important;
+}
+.page .productFeatures,
+.page .features,
+.page .featureGrid,
+.page .featuresGrid,
+.page #how-it-works,
+.page .howMoog { flex: 0 0 auto !important; align-self: center !important; }
+.page .moogHero h1 { max-width: 820px !important; }
+.page .moogLivePreview { display: none !important; }
+@media (max-width: 760px) {
+  .page > .shell { width: calc(100% - 28px) !important; }
+  .page .moogHero { padding: 48px 0 22px !important; }
+  .page .moogHero h1 { font-size: clamp(42px, 10vw, 62px) !important; }
+  .page .referenceComposerTabs,
+  .page > .shell > .composer,
+  .page > .shell > .receiveCard { width: 100% !important; }
+}
