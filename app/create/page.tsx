@@ -19,8 +19,6 @@ export default function CreateSharePage() {
   const [accessKey, setAccessKey] = useState("");
   const [showKey, setShowKey] = useState(false);
   const [viewOnce, setViewOnce] = useState(false);
-  const [disableCopying, setDisableCopying] = useState(false);
-  const [hideListing, setHideListing] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [result, setResult] = useState<{url:string; code:string; expiresAt:string; revokeToken:string} | null>(null);
@@ -37,7 +35,7 @@ export default function CreateSharePage() {
     setError("");
     setResult(null);
     if (!text.trim()) { setError("Add a message before creating your link."); return; }
-    if (protect && !accessKey.trim()) { setError("Enter an access key or turn off access-key protection."); return; }
+    if (protect && !accessKey.trim()) { setError("Enter a password or turn off password protection."); return; }
     const expiryMinutes = lifetime === "custom" ? customMinutes : Number(lifetime);
     if (!Number.isInteger(expiryMinutes) || expiryMinutes < 1 || expiryMinutes > 10080) {
       setError("Choose an expiry between now and seven days from now."); return;
@@ -77,10 +75,10 @@ export default function CreateSharePage() {
           <div className="createShareUrlBox"><div className="createShareUrlText" title={result.url}>{result.url}</div><button type="button" onClick={copyLink} className={copied ? "createShareCopyIcon copied" : "createShareCopyIcon"} aria-label={copied ? "Link copied" : "Copy link"}>{copied ? "✓" : "▢"}</button></div>
           <div className="createShareDetails">
             <p><span aria-hidden="true">◷</span> Expires in {expiryLabel} <span className="createShareDetailExact">· {new Date(result.expiresAt).toLocaleString()}</span></p>
-            {protect && <p><span aria-hidden="true">♢</span> Protected by access key</p>}
+            {protect && <p><span aria-hidden="true">♢</span> Password protected</p>}
             {viewOnce && <p><span aria-hidden="true">◎</span> One-time view only</p>}
           </div>
-          <div className="createShareSuccessActions"><button type="button" className="createSharePrimary" onClick={copyLink}>{copied ? "✓ Copied!" : "▢ Copy link"}</button><a className="createShareEmailButton" href={"mailto:?subject="+encodeURIComponent("A secure link shared with you")+"&body="+encodeURIComponent("Here is your secure link: "+result.url+(protect ? "\n\nAn access key is required to open this share. I will send it to you separately." : ""))}>Share via email ↗</a></div>
+          <div className="createShareSuccessActions"><button type="button" className="createSharePrimary" onClick={copyLink}>{copied ? "✓ Copied!" : "▢ Copy link"}</button><a className="createShareEmailButton" href={"mailto:?subject="+encodeURIComponent("A secure link shared with you")+"&body="+encodeURIComponent("Here is your secure link: "+result.url+(protect ? "\n\nA password is required to open this share. I will send it to you separately." : ""))}>Share via email ↗</a></div>
           <div className="createShareSuccessFooter"><a href="/create" onClick={e => {e.preventDefault(); setResult(null); setText(""); setLifetime("1440"); setCustomExpiry(""); setProtect(false); setAccessKey(""); setViewOnce(false); setError(""); setCopied(false); window.scrollTo({top:0,behavior:"smooth"});}}>⟲ Create another share</a><a href="/recent">→ Go to my shares</a></div>
           <p className="createShareSuccessCode">Keep your share code somewhere safe: <strong>{result.code}</strong></p>
         </section>
@@ -103,7 +101,7 @@ export default function CreateSharePage() {
               <textarea value={text} onChange={e => setText(e.target.value)} maxLength={100000} placeholder="Paste your private message, note, or snippet here…" aria-label="Private message" />
               <div className="createShareCounter"><span aria-hidden="true">♙</span><span>{text.length.toLocaleString()} / 100,000 characters</span></div>
             </div>
-            <p className="createShareEncryption"><span aria-hidden="true">⬟</span> Your content is encrypted in transit and not exposed in the URL.</p>
+            <p className="createShareEncryption"><span aria-hidden="true">⬟</span> Sent over HTTPS. Not end-to-end encrypted. The server can technically read active share content.</p>
           </div>
         </section>
         <aside className="createShareSettings">
@@ -120,9 +118,9 @@ export default function CreateSharePage() {
             <h3><span aria-hidden="true">♢</span> Access control</h3>
             <div className="createShareToggleRow">
               <button type="button" role="switch" aria-checked={protect} className={protect ? "createShareSwitch on" : "createShareSwitch"} onClick={() => setProtect(!protect)}><span /></button>
-              <div className="createShareToggleCopy"><strong>Protect with access key</strong><p>Require a key to view your content.</p></div>
+              <div className="createShareToggleCopy"><strong>Password protection</strong><p>Require a password to view your content.</p></div>
             </div>
-            {protect && <label className="createShareAccessInput">Access key<div><input type={showKey ? "text" : "password"} autoComplete="new-password" maxLength={128} value={accessKey} onChange={e => setAccessKey(e.target.value)} placeholder="Enter an access key" /><button type="button" onClick={() => setShowKey(!showKey)} aria-label={showKey ? "Hide access key" : "Show access key"}>{showKey ? "Hide" : "Show"}</button></div></label>}
+            {protect && <label className="createShareAccessInput">Password<div><input type={showKey ? "text" : "password"} autoComplete="new-password" maxLength={128} value={accessKey} onChange={e => setAccessKey(e.target.value)} placeholder="Enter a password" /><button type="button" onClick={() => setShowKey(!showKey)} aria-label={showKey ? "Hide password" : "Show password"}>{showKey ? "Hide" : "Show"}</button></div></label>}
             <div className="createShareToggleRow">
               <button type="button" role="switch" aria-checked={viewOnce} className={viewOnce ? "createShareSwitch on" : "createShareSwitch"} onClick={() => setViewOnce(!viewOnce)}><span /></button>
               <div className="createShareToggleCopy"><strong>One-time view only</strong><p>Content becomes unavailable after its first successful view.</p></div>
@@ -130,8 +128,6 @@ export default function CreateSharePage() {
           </section>
           <section className="createShareSettingCard">
             <h3><span aria-hidden="true">⚙</span> Additional options</h3>
-            <label className="createShareCheckRow"><input type="checkbox" checked={disableCopying} onChange={e => setDisableCopying(e.target.checked)} /><span><strong>Disable copying from this share</strong><small>Discourage copying from the viewer screen.</small></span></label>
-            <label className="createShareCheckRow"><input type="checkbox" checked={hideListing} onChange={e => setHideListing(e.target.checked)} /><span><strong>Hide link from public listing</strong><small>Keep this share private and out of public lists.</small></span></label>
             <p className="createShareNote">Shares are private by default. Browser controls may still allow copying; these options do not prevent screenshots.</p>
           </section>
           {error && <p className="createShareError" role="alert">{error}</p>}<div className="createShareFormActions"><button className="createSharePrimary" type="submit" disabled={loading}>{loading ? "Creating secure link…" : <><span aria-hidden="true">↗</span> Create secure link</>}</button><a href="/">Cancel</a></div>
