@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Logo from "@/components/Logo";
 
 type RecentShare = {
   type: "text" | "code" | "photo";
@@ -64,7 +65,7 @@ export default function RecentSharesPage() {
   }
   return <main className="recentPage">
     <div className="recentShell">
-      <header className="recentTopbar"><a className="recentLogo" href="/">◈ Moog</a><a href="/">← Back to create share</a></header>
+      <header className="recentTopbar"><Logo className="recentLogo" /><a href="/">← Back to create share</a></header>
       <section className="recentIntro"><p className="recentEyebrow">LOCAL HISTORY · THIS DEVICE</p><h1>Recent shares</h1><p>Find links you created on this device. Shared content itself is not stored in this history.</p></section>
       <section className="recentControls">
         <label className="recentSearch"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by code or type" aria-label="Search recent shares" /></label>
