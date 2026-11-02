@@ -418,3 +418,76 @@ html[data-theme="dark"] .passwordError { color: #FFB8A8; }
 .restylePage .faq details:nth-of-type(5) { animation-delay: 280ms; }
 
 .restylePage .faq summary::after { content: none !important; }
+
+/* High-specificity bridge over legacy !important rules in the previous theme layers. */
+.page.restylePage { display:block !important; min-height:100vh !important; padding:0 !important; overflow-x:clip !important; background:var(--moog-canvas) !important; color:var(--moog-text) !important; }
+.page.restylePage .shell { display:block !important; width:min(1240px,calc(100% - 64px)) !important; max-width:1240px !important; height:auto !important; min-height:0 !important; margin:0 auto !important; padding:0 0 32px !important; gap:0 !important; overflow:visible !important; }
+.page.restylePage :where(h1,h2,h3,p,li,summary,a,button,label,small,strong,span) { font-family:var(--font-geist),Geist,sans-serif !important; }
+.page.restylePage .moogHero.restyleHero { position:relative !important; inset:auto !important; transform:none !important; display:grid !important; grid-template-columns:minmax(0,1fr) minmax(360px,.82fr) !important; align-items:center !important; justify-content:initial !important; gap:clamp(40px,7vw,96px) !important; width:100% !important; max-width:none !important; height:auto !important; min-height:0 !important; margin:0 !important; padding:64px 0 72px !important; border:0 !important; border-radius:0 !important; background:transparent !important; text-align:left !important; overflow:visible !important; }
+.page.restylePage .moogHero.restyleHero h1 { max-width:650px !important; margin:0 !important; color:var(--moog-text) !important; font-family:var(--font-geist),Geist,sans-serif !important; font-size:clamp(52px,5.5vw,76px) !important; font-weight:640 !important; line-height:.99 !important; letter-spacing:-.075em !important; text-align:left !important; }
+.page.restylePage .moogHero.restyleHero .moogHeroCopy { max-width:500px !important; margin:24px 0 0 !important; color:var(--moog-text) !important; font-family:var(--font-geist),Geist,sans-serif !important; font-size:18px !important; line-height:1.6 !important; text-align:left !important; }
+.page.restylePage .moogHero.restyleHero .moogHeroActions { display:flex !important; flex-wrap:wrap !important; justify-content:flex-start !important; align-items:center !important; gap:12px !important; margin:28px 0 0 !important; }
+.page.restylePage .moogHero.restyleHero .moogHeroActions > * { min-height:44px !important; padding:0 16px !important; border-radius:9px !important; font-size:14px !important; font-weight:650 !important; }
+.page.restylePage .moogHero.restyleHero .moogPrimary { border:1px solid var(--moog-lime) !important; background:var(--moog-lime) !important; color:var(--moog-ink) !important; }
+.page.restylePage .moogHero.restyleHero .moogSecondary { border:1px solid var(--moog-border) !important; background:transparent !important; color:var(--moog-text) !important; }
+.page.restylePage .referenceComposerTabs { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; width:min(100%,320px) !important; max-width:320px !important; margin:0 0 16px !important; padding:4px !important; border:1px solid var(--moog-border) !important; border-radius:10px !important; background:var(--moog-canvas) !important; box-shadow:none !important; }
+.page.restylePage .referenceComposerTab { min-height:44px !important; border:0 !important; border-radius:7px !important; background:transparent !important; color:var(--moog-muted) !important; font-size:14px !important; font-weight:600 !important; box-shadow:none !important; }
+.page.restylePage .referenceComposerTab.active { background:var(--moog-secondary) !important; color:var(--moog-text) !important; box-shadow:none !important; }
+.page.restylePage .composer.card, .page.restylePage .receiveCard.card { width:100% !important; max-width:none !important; margin:0 !important; padding:22px !important; border:1px solid var(--moog-border) !important; border-radius:14px !important; background:var(--moog-canvas) !important; box-shadow:none !important; }
+.page.restylePage .modeToggle { display:grid !important; grid-template-columns:repeat(3,minmax(0,1fr)) !important; gap:4px !important; margin:0 0 12px !important; padding:4px !important; border:1px solid var(--moog-border) !important; border-radius:10px !important; background:var(--moog-raised) !important; }
+.page.restylePage .modeButton { min-height:44px !important; gap:8px !important; padding:0 12px !important; border:1px solid transparent !important; border-radius:7px !important; background:transparent !important; color:var(--moog-muted) !important; font-size:14px !important; font-weight:600 !important; box-shadow:none !important; }
+.page.restylePage .modeButton.active { border-color:var(--moog-border) !important; background:var(--moog-secondary) !important; color:var(--moog-text) !important; box-shadow:none !important; }
+.page.restylePage .composer textarea { min-height:184px !important; margin:0 !important; padding:16px !important; border:1px solid var(--moog-border) !important; border-radius:10px !important; background:var(--moog-raised) !important; color:var(--moog-text) !important; font-family:var(--font-geist),Geist,sans-serif !important; font-size:16px !important; line-height:1.6 !important; box-shadow:none !important; }
+.page.restylePage .lifetimePills { display:grid !important; grid-template-columns:repeat(4,minmax(0,1fr)) auto !important; gap:6px !important; margin:0 !important; padding:0 !important; border:0 !important; border-radius:0 !important; background:transparent !important; }
+.page.restylePage .lifetimePill { min-width:0 !important; min-height:40px !important; padding:0 10px !important; border:1px solid var(--moog-border) !important; border-radius:8px !important; background:var(--moog-raised) !important; color:var(--moog-muted) !important; font-size:13px !important; font-weight:500 !important; box-shadow:none !important; }
+.page.restylePage .lifetimePill.active { border-color:var(--moog-lime) !important; background:var(--moog-lime) !important; color:var(--moog-ink) !important; }
+.page.restylePage .expiryMore { min-height:40px !important; border:1px solid var(--moog-border) !important; border-radius:8px !important; background:var(--moog-raised) !important; color:var(--moog-muted) !important; }
+.page.restylePage .securityDisclosure { min-height:58px !important; margin:0 !important; padding:10px 14px !important; border:0 !important; border-radius:9px !important; background:transparent !important; color:var(--moog-text) !important; box-shadow:none !important; }
+.page.restylePage .securityOptions { display:grid !important; grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:20px !important; margin:0 !important; padding:18px !important; border:0 !important; border-radius:0 0 9px 9px !important; background:var(--moog-secondary) !important; box-shadow:none !important; }
+.page.restylePage .createButton, .page.restylePage .receiveOpen { min-height:48px !important; margin-top:18px !important; border:1px solid var(--moog-lime) !important; border-radius:9px !important; background:var(--moog-lime) !important; color:var(--moog-ink) !important; font-size:15px !important; font-weight:650 !important; box-shadow:none !important; }
+.page.restylePage .useMoog.restyleUseCases { display:grid !important; grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr) !important; width:100% !important; max-width:none !important; margin:64px 0 0 !important; padding:48px !important; gap:56px !important; border:0 !important; border-radius:16px !important; background:var(--moog-secondary) !important; }
+.page.restylePage #how-it-works { width:100% !important; max-width:none !important; margin:64px 0 0 !important; padding:48px 0 0 !important; border:0 !important; border-radius:0 !important; background:var(--moog-canvas) !important; }
+.page.restylePage .howSteps { display:grid !important; grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:0 !important; margin:28px 0 0 !important; padding:0 !important; }
+.page.restylePage .howSteps li { min-height:0 !important; padding:22px 24px 24px !important; border:0 !important; border-radius:0 !important; background:var(--moog-raised) !important; box-shadow:none !important; }
+.page.restylePage .howSteps li:first-child { border-radius:12px 0 0 12px !important; }
+.page.restylePage .howSteps li:last-child { border-radius:0 12px 12px 0 !important; }
+.page.restylePage .howSteps li + li { background:var(--moog-secondary) !important; }
+.page.restylePage .securityReference.restylePrivacy { display:grid !important; grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr) !important; width:100% !important; max-width:none !important; margin:64px 0 0 !important; padding:48px !important; border:1px solid var(--moog-border) !important; border-radius:16px !important; background:var(--moog-raised) !important; box-shadow:none !important; }
+.page.restylePage .securityGrid { display:grid !important; grid-template-columns:minmax(0,1fr) !important; gap:20px !important; }
+.page.restylePage .faqArea.restyleFaq { display:grid !important; grid-template-columns:minmax(0,1fr) minmax(260px,.5fr) !important; width:100% !important; max-width:none !important; margin:64px 0 0 !important; padding:48px !important; border:0 !important; border-radius:16px !important; background:var(--moog-secondary) !important; }
+.page.restylePage .resultLinkRow a { background:var(--moog-raised) !important; color:var(--moog-text) !important; font-family:var(--font-geist),Geist,sans-serif !important; font-size:16px !important; }
+@media (max-width:1024px) and (min-width:761px) {
+ .page.restylePage .shell { width:calc(100% - 40px) !important; }
+ .page.restylePage .moogHero.restyleHero { grid-template-columns:minmax(0,1fr) minmax(300px,.8fr) !important; gap:32px !important; padding:48px 0 56px !important; }
+ .page.restylePage .moogHero.restyleHero h1 { font-size:clamp(46px,6vw,62px) !important; }
+ .page.restylePage .useMoog.restyleUseCases { grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr) !important; gap:28px !important; padding:32px !important; }
+ .page.restylePage .securityReference.restylePrivacy, .page.restylePage .faqArea.restyleFaq { gap:32px !important; padding:32px !important; }
+}
+@media (max-width:760px) {
+ .page.restylePage .shell { width:calc(100% - 32px) !important; }
+ .page.restylePage .moogHero.restyleHero { grid-template-columns:minmax(0,1fr) !important; gap:28px !important; padding:36px 0 40px !important; }
+ .page.restylePage .moogHero.restyleHero h1 { max-width:440px !important; font-size:clamp(40px,10vw,52px) !important; line-height:1.02 !important; letter-spacing:-.065em !important; }
+ .page.restylePage .moogHero.restyleHero .moogHeroCopy { margin-top:16px !important; font-size:16px !important; }
+ .page.restylePage .moogHero.restyleHero .moogHeroActions { display:grid !important; grid-template-columns:minmax(0,1fr) !important; gap:10px !important; margin-top:22px !important; }
+ .page.restylePage .moogHero.restyleHero .moogHeroActions > * { width:100% !important; }
+ .page.restylePage .composerExperience { padding:16px !important; }
+ .page.restylePage .composer.card, .page.restylePage .receiveCard.card { padding:14px !important; }
+ .page.restylePage .lifetimePill { padding:0 4px !important; font-size:11px !important; }
+ .page.restylePage .securityOptions { grid-template-columns:minmax(0,1fr) !important; gap:18px !important; padding:14px !important; }
+ .page.restylePage .useMoog.restyleUseCases, .page.restylePage #how-it-works, .page.restylePage .securityReference.restylePrivacy, .page.restylePage .faqArea.restyleFaq { grid-template-columns:minmax(0,1fr) !important; margin-top:40px !important; padding:24px 18px !important; border-radius:14px !important; }
+ .page.restylePage .howSteps { grid-template-columns:minmax(0,1fr) !important; gap:8px !important; }
+ .page.restylePage .howSteps li, .page.restylePage .howSteps li:first-child, .page.restylePage .howSteps li:last-child { padding:18px !important; border-radius:10px !important; }
+ .page.restylePage .howSteps li:not(:last-child)::after { top:auto !important; bottom:-4px !important; right:28px !important; transform:rotate(135deg) !important; }
+ .page.restylePage .resultLinkRow { grid-template-columns:minmax(0,1fr) !important; }
+ .page.restylePage .resultMetaGrid { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+ .page.restylePage .stitchFooter.restyleFooter { grid-template-columns:minmax(0,1fr) !important; gap:28px !important; margin-top:40px !important; padding:32px 0 90px !important; }
+}
+@media (max-width:390px) {
+ .page.restylePage .shell { width:calc(100% - 28px) !important; }
+ .page.restylePage .lifetimePills { grid-template-columns:repeat(4,minmax(0,1fr)) !important; gap:4px !important; }
+ .page.restylePage .expiryMore { grid-column:1 / -1 !important; justify-self:start !important; min-width:86px !important; }
+ .page.restylePage .expiryMore select { width:66px !important; }
+ .page.restylePage .modeButton { gap:5px !important; padding:0 6px !important; }
+ .page.restylePage .receiveCodeBoxes { gap:5px !important; }
+ .page.restylePage .receiveDigit { height:50px !important; font-size:20px !important; }
+}
