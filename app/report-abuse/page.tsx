@@ -1,5 +1,6 @@
 "use client";
 
+import Logo from "@/components/Logo";
 import { FormEvent, useState } from "react";
 
 export default function ReportAbusePage() {
@@ -16,7 +17,7 @@ export default function ReportAbusePage() {
     } catch (error) { setStatus("error"); setMessage(error instanceof Error ? error.message : "Could not submit the report."); }
   }
   return <main className="legalPage"><article className="legalShell">
-    <a className="minimalLogo" href="/">moog</a><p className="eyebrow">REPORT ABUSE</p>
+    <Logo className="minimalLogo" /><p className="eyebrow">REPORT ABUSE</p>
     <h1>Report a share.</h1><p>Use this for illegal content, harassment, malware, copyright concerns, or other abuse involving a Moog share.</p>
     <form className="reportForm" onSubmit={submit}>
       <label>Share URL<input name="shareUrl" type="url" placeholder="https://…/s/…" required maxLength={500}/></label>
