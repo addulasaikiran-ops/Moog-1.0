@@ -91,7 +91,7 @@ export default function CreateSharePage() {
           </div>
           <div className="createShareSuccessActions"><button type="button" className="createSharePrimary" onClick={copyLink}>{copied ? "✓ Copied!" : "▢ Copy link"}</button><a className="createShareEmailButton" href={"mailto:?subject="+encodeURIComponent("A secure link shared with you")+"&body="+encodeURIComponent("Here is your secure link: "+result.url+(protect ? "\n\nA password is required to open this share. I will send it to you separately." : ""))}>Share via email ↗</a></div>
           <div className="createShareSuccessFooter"><a href="/create" onClick={e => {e.preventDefault(); setResult(null); setText(""); setLifetime("1440"); setCustomExpiry(""); setProtect(false); setAccessKey(""); setViewOnce(false); setError(""); setCopied(false); window.scrollTo({top:0,behavior:"smooth"});}}>⟲ Create another share</a><a href="/recent">→ Go to my shares</a></div>
-          <div className="createShareSuccessCode"><span>6-DIGIT SHARE CODE</span><strong>{result.code.replace(/(\\d{3})(\\d{3})/, "$1 $2")}</strong><p>Share this code separately if the recipient will use the receive form.</p></div>
+          <div className="createShareSuccessCode"><span>6-DIGIT SHARE CODE</span><strong>{result.code.replace(/(\d{3})(\d{3})/, "$1 $2")}</strong><p>Share this code separately if the recipient will use the receive form.</p></div>
         </section>
       </div>
     </main>;
