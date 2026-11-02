@@ -188,7 +188,7 @@ export default function HomePage() {
         <section className="howMoog restyleHow" id="how-it-works" aria-labelledby="how-title">
           <div className="howIntro"><h2 id="how-title">How it works</h2><p>Create a share, send it along, and let its expiry handle the rest.</p></div>
           <ol className="howSteps">
-            <li><span className="stepIcon"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Create</h3><p>Paste text, code, or choose an image.</p></li>
+            <li><span className="stepIcon"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Create</h3><p>Paste text, code, or an image and choose an expiry time.</p></li>
             <li><span className="stepIcon"><Clock3 size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Share</h3><p>Get a private link and send it to anyone.</p></li>
             <li><span className="stepIcon"><ArrowUpRight size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Open</h3><p>They open it without an account.</p></li>
             <li><span className="stepIcon"><Eye size={20} strokeWidth={1.5} aria-hidden="true" /></span><h3>Expire</h3><p>Access disappears automatically.</p></li>
@@ -200,7 +200,7 @@ export default function HomePage() {
           <div className="securityGrid">
             <article><LockKeyhole size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Private links</h3><p>High-entropy links that are difficult to guess.</p></article>
             <article><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Secure storage</h3><p>Links and codes are stored as hashes.</p></article>
-            <article><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /><h3>We control access, not copies</h3><p>Once someone views or downloads the content, we can’t prevent them from copying it.</p></article>
+            <article><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /><h3>We control access, not copies</h3><p>Once someone views or downloads the content, we can't prevent them from copying it.</p></article>
             <article><Eye size={20} strokeWidth={1.5} aria-hidden="true" /><h3>No tracking</h3><p>Moog doesn’t require an account and doesn’t use third-party analytics tracking.</p></article>
           </div>
         </section>
