@@ -8,6 +8,7 @@ import "./moog-redesign.css";
 import "./styles/tokens.css";
 import "./moog-stitch.css";
 import "./moog-experience.css";
+import "./moog-polish.css";
 import "./moog-signature.css";
 import ThemeToggle from "@/components/ThemeToggle";
 
