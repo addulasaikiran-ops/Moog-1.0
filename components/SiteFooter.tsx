@@ -15,7 +15,7 @@ export default function SiteFooter() {
     <footer className="stitchFooter restyleFooter">
       <div className="restyleFooterBrand">
         <Logo className="stitchFooterLogo" />
-        <p>Give a share a lifetime. Let access end when it should.</p>
+        <p>Temporary access-controlled sharing for text, code, and photos.</p>
         <a className="footerCreateLink" href="/create">Create a private share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a>
       </div>
       <div className="restyleFooterBottom">
