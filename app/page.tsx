@@ -143,6 +143,16 @@ export default function HomePage() {
         )}
 
 
+        <section className="useMoog" id="about-moog" aria-labelledby="use-title">
+          <div className="useIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="use-title">A short life for the things you share.</h2><p>Moog gives text, code, and images a chosen lifetime, with optional access controls and no account to create.</p></div>
+          <div className="useGrid">
+            <div><i className="usePink">▣</i><strong>Sensitive information</strong><small>Share passwords, API keys or other secrets.</small></div>
+            <div><i className="useBlue">&lt;/&gt;</i><strong>Code snippets</strong><small>Send code to a teammate without leaving it forever.</small></div>
+            <div><i className="useGreen">▤</i><strong>Temporary notes</strong><small>Share text between devices without an account.</small></div>
+            <div><i className="useOrange">▧</i><strong>Private images</strong><small>Share screenshots or photos that shouldn&apos;t stay online.</small></div>
+          </div>
+        </section>
+
                 <section className="productFeatures" aria-label="Moog benefits">
           <div className="featureCard featurePurple"><i>◷</i><strong>Temporary by design</strong><small>Your content expires automatically, based on the lifetime you choose.</small></div>
           <div className="featureCard featureBlue"><i>⌑</i><strong>Protected access</strong><small>Optional password protection and view-once access help control who can open a share.</small></div>
@@ -160,16 +170,6 @@ export default function HomePage() {
             <div><b className="stepGreen">03</b><strong>Open</strong><small>They open it without an account.</small></div>
             <span>→</span>
             <div><b className="stepOrange">04</b><strong>Expire</strong><small>Access disappears automatically.</small></div>
-          </div>
-        </section>
-
-        <section className="useMoog" id="about-moog" aria-labelledby="use-title">
-          <div className="useIntro"><div className="eyebrow">USE MOOG FOR</div><h2 id="use-title">For the things you only need to send once.</h2><p>Built for real situations where access should not last forever.</p></div>
-          <div className="useGrid">
-            <div><i className="usePink">▣</i><strong>Sensitive information</strong><small>Share passwords, API keys or other secrets.</small></div>
-            <div><i className="useBlue">&lt;/&gt;</i><strong>Code snippets</strong><small>Send code to a teammate without leaving it forever.</small></div>
-            <div><i className="useGreen">▤</i><strong>Temporary notes</strong><small>Share text between devices without an account.</small></div>
-            <div><i className="useOrange">▧</i><strong>Private images</strong><small>Share screenshots or photos that shouldn&apos;t stay online.</small></div>
           </div>
         </section>
 
