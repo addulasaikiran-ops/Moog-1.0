@@ -329,3 +329,128 @@ body { font-family: var(--font-geist), Geist, Inter, ui-sans-serif, system-ui, s
   .page *, .page *::before, .page *::after { scroll-behavior: auto !important; }
   .moogLivePreview { transform: none; }
 }
+
+
+/* Shared route skin: creation, history, legal pages, and the actual share viewer. */
+:root:not([data-theme="light"]),
+:root[data-theme="dark"] {
+  --moog-bg: var(--bg-0);
+  --moog-surface: var(--bg-1);
+  --moog-surface-raised: var(--bg-2);
+  --moog-text: var(--text-1);
+  --moog-muted: var(--text-3);
+  --moog-border: var(--line-2);
+  --moog-border-strong: var(--line-3);
+  --moog-accent: var(--accent);
+  --moog-accent-soft: var(--accent-soft);
+  --moog-shadow: var(--surface-shadow);
+  --viewer-surface: var(--bg-1);
+  --viewer-border: var(--line-2);
+  --viewer-text: var(--text-1);
+  --viewer-2: var(--text-3);
+}
+:root[data-theme="light"] {
+  --moog-bg: var(--bg-0);
+  --moog-surface: var(--bg-1);
+  --moog-surface-raised: var(--bg-2);
+  --moog-text: var(--text-1);
+  --moog-muted: var(--text-3);
+  --moog-border: var(--line-2);
+  --moog-border-strong: var(--line-3);
+  --moog-accent: var(--accent);
+  --moog-accent-soft: var(--accent-soft);
+  --moog-shadow: var(--surface-shadow);
+  --viewer-surface: var(--bg-1);
+  --viewer-border: var(--line-2);
+  --viewer-text: var(--text-1);
+  --viewer-2: var(--text-3);
+}
+.createSharePage, .createShareSuccessPage, .recentPage, .viewerPage, .legalPage, .sharePage {
+  min-height: 100vh;
+  background: var(--bg-0);
+  color: var(--text-1);
+}
+.createSharePage, .createShareSuccessPage, .recentPage, .legalPage { padding-inline: clamp(18px, 4vw, 56px); }
+.createShareShell, .recentShell, .legalShell { width: min(100%, 1120px); margin-inline: auto; }
+.createShareShell, .recentShell { padding-top: clamp(28px, 5vw, 56px); }
+.createShareBack { color: var(--text-3); }
+.createShareHeading { margin-top: 26px; }
+.createShareHeading h1, .recentIntro h1, .legalShell h1 {
+  color: var(--text-1);
+  font-family: var(--font-geist), Geist, Inter, ui-sans-serif, system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: -.075em;
+  text-wrap: balance;
+}
+.createShareHeading p, .recentIntro > p:last-child, .legalShell > p {
+  color: var(--text-2);
+  font-size: 15px;
+  line-height: 1.8;
+  text-wrap: pretty;
+}
+.createShareEncryption { color: var(--text-3); font-size: 13px; line-height: 1.7; }
+.createShareEditorCard, .createShareSettingCard, .createShareSuccessCard, .recentItem, .legalShell,
+.viewerPage .minimalCard, .viewerPage .passwordCard, .viewerPage .revealCard {
+  border-color: var(--line-2);
+  border-radius: 14px;
+  background: var(--bg-1);
+  box-shadow: var(--surface-shadow);
+}
+.createShareEditorWrap textarea, .createShareAccessInput input, .createShareCustomExpiry input,
+.recentSearch input, .passwordInput {
+  border-color: var(--line-2);
+  border-radius: 9px;
+  background: var(--bg-0);
+  color: var(--text-1);
+}
+.createShareSettingCard h3, .createShareSettings h2 { color: var(--text-1); }
+.createSharePrimary, .createSharePrimaryAction, .minimalRevealButton, .legalButton,
+.passwordRow .primary {
+  border-color: var(--accent);
+  border-radius: 9px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  box-shadow: none;
+}
+.recentIntro { max-width: 760px; }
+.recentIntro h1 { font-size: clamp(42px, 6vw, 72px); }
+.recentControls { gap: 12px; }
+.recentSearch { border-color: var(--line-2); border-radius: 9px; background: var(--bg-1); }
+.recentFilters button, .recentActions button, .recentRemove, .recentClear {
+  border-color: var(--line-2);
+  border-radius: 8px;
+  background: var(--bg-1);
+  color: var(--text-2);
+}
+.recentFilters button.selected { border-color: var(--accent); background: var(--accent); color: var(--accent-ink); }
+.recentItem { padding: clamp(18px, 3vw, 26px); }
+.recentCode { color: var(--text-1); font-family: var(--font-geist-mono), ui-monospace, monospace; }
+.recentChips, .recentItem small, .recentEmpty p { color: var(--text-3); }
+.legalShell { margin-top: clamp(34px, 6vw, 72px); margin-bottom: 64px; padding: clamp(24px, 5vw, 56px); }
+.legalShell h1 { max-width: 850px; font-size: clamp(42px, 6vw, 72px); line-height: .99; }
+.legalShell h2 { margin-top: 34px; color: var(--text-1); font-size: 20px; letter-spacing: -.035em; }
+.legalShell > p { max-width: 760px; }
+.viewerPage { padding: 0 clamp(18px, 4vw, 42px) 48px; }
+.viewerShell { width: min(100%, 860px); }
+.viewerTopbar { min-height: 76px; border-color: var(--line-2); }
+.viewerSecure, .lockNote, .minimalFooter { color: var(--text-3); font-size: 13px; }
+.viewerMain { padding: clamp(34px, 7vw, 76px) 0 28px; }
+.viewerPage .minimalCard { overflow: hidden; }
+.viewerPage .minimalMeta { background: var(--bg-2); border-color: var(--line-2); color: var(--text-2); font-family: var(--font-geist), Geist, ui-sans-serif, sans-serif; font-size: 13px; letter-spacing: .015em; }
+.viewerPage .minimalContent { color: var(--text-1); }
+.viewerPage .minimalText { color: var(--text-1); font-size: 16px; line-height: 1.85; }
+.viewerPage .minimalActions { border-color: var(--line-2); }
+.viewerPage .lockStage h1, .viewerPage .revealContent h1 { color: var(--text-1); font-weight: 600; letter-spacing: -.065em; }
+.viewerPage .lockStage > p, .viewerPage .revealContent p { color: var(--text-2); }
+.viewerPage .lockIcon { border: 0; border-radius: 10px; background: var(--accent-soft); color: var(--accent); }
+.viewerPage .viewerEyebrow, .viewerPage .revealEyebrow { color: var(--text-3); font-family: var(--font-geist), Geist, ui-sans-serif, sans-serif; font-size: 13px; letter-spacing: .02em; }
+.viewerPage .passwordInput { min-height: 48px; }
+@media (max-width: 760px) {
+  .createSharePage, .createShareSuccessPage, .recentPage, .legalPage { padding-inline: 16px; }
+  .createShareShell, .recentShell { padding-top: 24px; }
+  .legalShell { padding: 22px; }
+  .recentControls { align-items: stretch; flex-direction: column; }
+  .recentClear { width: 100%; }
+  .viewerPage { padding-inline: 16px; }
+  .viewerPage .minimalContent { padding: 20px; }
+}
