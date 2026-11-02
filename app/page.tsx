@@ -5,7 +5,7 @@ import Composer, { type CreatedShare } from "@/components/Composer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ShareResult from "@/components/ShareResult";
-import { ArrowUpRight, Clock3, FileText, LockKeyhole, ShieldCheck } from "lucide-react";
+import { ArrowDownToLine, ArrowRight, ArrowUpRight, Check, Clock3, Code2, Eye, FileText, Image as ImageIcon, KeyRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
 
 const EXPIRY_OPTIONS = [
   { value: 1, label: "1 minute" },
@@ -140,15 +140,15 @@ export default function HomePage() {
           </>
         ) : (
           <section className="receiveCard card" id="receive-panel" aria-labelledby="receive-title">
-            <div className="receiveHeader"><span className="receiveGlyph" aria-hidden="true">↓</span><div><h2 id="receive-title">Receive</h2><p>Got a code from someone? Paste it here to open what they shared. No account needed.</p></div></div>
+            <div className="receiveHeader"><span className="receiveGlyph" aria-hidden="true"><ArrowDownToLine size={20} strokeWidth={1.5} /></span><div><h2 id="receive-title">Receive</h2><p>Got a code from someone? Paste it here to open what they shared. No account needed.</p></div></div>
             <form onSubmit={receiveShare}>
               <div className="receiveLabel">Unique code</div>
               <div className="receiveCodeBoxes" role="group" aria-labelledby="receive-code-label" onPaste={(event) => { const pasted = formatReceiveCode(event.clipboardData.getData("text")); if (pasted) { event.preventDefault(); setReceiveCode(pasted); setReceiveError(""); receiveInputRefs.current[Math.min(pasted.length, 5)]?.focus(); } }}><span id="receive-code-label" className="srOnly">Six-digit share code</span>{Array.from({ length: 6 }, (_, index) => <input key={index} ref={(node) => { receiveInputRefs.current[index] = node; }} className="receiveDigit" aria-label={`Share code digit ${index + 1}`} value={receiveCode[index] ?? ""} inputMode="numeric" pattern="[0-9]*" autoComplete="one-time-code" maxLength={1} onChange={(event) => { const digit = event.target.value.replace(/\D/g, "").slice(-1); const next = (receiveCode.slice(0, index) + digit + receiveCode.slice(index + 1)).slice(0, 6); setReceiveCode(next); setReceiveError(""); if (digit && index < 5) receiveInputRefs.current[index + 1]?.focus(); }} onKeyDown={(event) => { if (event.key === "Backspace" && !receiveCode[index] && index > 0) receiveInputRefs.current[index - 1]?.focus(); if (event.key === "ArrowLeft" && index > 0) receiveInputRefs.current[index - 1]?.focus(); if (event.key === "ArrowRight" && index < 5) receiveInputRefs.current[index + 1]?.focus(); }} />)}</div>
               <p id="receive-help" className="receiveHint">Six numbers. If the share is protected, you’ll also enter its password.</p>
               {receiveError ? <p className="receiveError" role="alert">{receiveError}</p> : null}
-              <button className="receiveOpen primary" type="submit" disabled={receiveCode.length !== 6 || receiveLoading}>{receiveLoading ? <><span className="spinner" /> Opening share…</> : <>Open share <span>→</span></>}</button>
+              <button className="receiveOpen primary" type="submit" disabled={receiveCode.length !== 6 || receiveLoading}>{receiveLoading ? <><span className="spinner" /> Opening share…</> : <>Open share <span aria-hidden="true"><ArrowRight size={18} strokeWidth={1.5} /></span></>}</button>
             </form>
-            <div className="receiveNote"><span aria-hidden="true">⌁</span><span>Password-protected shares ask for the password when opened. View-once shares are consumed after the first successful reveal.</span></div>
+            <div className="receiveNote"><span aria-hidden="true"><LockKeyhole size={16} strokeWidth={1.5} /></span><span>Password-protected shares ask for the password when opened. View-once shares are consumed after the first successful reveal.</span></div>
           </section>
         )}
 
@@ -156,18 +156,18 @@ export default function HomePage() {
         <section className="useMoog" id="about-moog" aria-labelledby="use-title">
           <div className="useIntro"><div className="eyebrow">ABOUT MOOG</div><h2 id="use-title">A short life for the things you share.</h2><p>Moog gives text, code, and images a chosen lifetime, with optional access controls and no account to create.</p></div>
           <div className="useGrid">
-            <div><i className="usePink">▣</i><strong>Sensitive information</strong><small>Share passwords, API keys or other secrets.</small></div>
-            <div><i className="useBlue">&lt;/&gt;</i><strong>Code snippets</strong><small>Send code to a teammate without leaving it forever.</small></div>
-            <div><i className="useGreen">▤</i><strong>Temporary notes</strong><small>Share text between devices without an account.</small></div>
-            <div><i className="useOrange">▧</i><strong>Private images</strong><small>Share screenshots or photos that shouldn&apos;t stay online.</small></div>
+            <div><i className="usePink"><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>Sensitive information</strong><small>Share passwords, API keys or other secrets.</small></div>
+            <div><i className="useBlue"><Code2 size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>Code snippets</strong><small>Send code to a teammate without leaving it forever.</small></div>
+            <div><i className="useGreen"><FileText size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>Temporary notes</strong><small>Share text between devices without an account.</small></div>
+            <div><i className="useOrange"><ImageIcon size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>Private images</strong><small>Share screenshots or photos that shouldn&apos;t stay online.</small></div>
           </div>
         </section>
 
                 <section className="productFeatures" aria-label="Moog benefits">
-          <div className="featureCard featurePurple"><i>◷</i><strong>Temporary by design</strong><small>Your content expires automatically, based on the lifetime you choose.</small></div>
-          <div className="featureCard featureBlue"><i>⌑</i><strong>Protected access</strong><small>Optional password protection and view-once access help control who can open a share.</small></div>
+          <div className="featureCard featurePurple"><i><Clock3 size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>Temporary by design</strong><small>Your content expires automatically, based on the lifetime you choose.</small></div>
+          <div className="featureCard featureBlue"><i><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>Protected access</strong><small>Optional password protection and view-once access help control who can open a share.</small></div>
           
-          <div className="featureCard featureOrange"><i>◉</i><strong>No account needed</strong><small>Create a share and send it instantly without signing up.</small></div>
+          <div className="featureCard featureOrange"><i><LockKeyhole size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>No account needed</strong><small>Create a share and send it instantly without signing up.</small></div>
         </section>
 
         <section className="howMoog referenceHow" id="how-it-works" aria-labelledby="how-title">
@@ -186,10 +186,10 @@ export default function HomePage() {
         <section className="securityReference" id="security" aria-labelledby="security-title">
           <div className="sectionHeading"><div className="eyebrow">SECURITY & PRIVACY</div><h2 id="security-title">Built with privacy in mind.</h2><p>Here&apos;s what you need to know.</p></div>
           <div className="securityGrid">
-            <div><i className="securityIcon securityPurple">⌁</i><strong>Private links</strong><small>High-entropy links that are difficult to guess.</small></div>
-            <div><i className="securityIcon securityBlue">▤</i><strong>Secure storage</strong><small>Links and codes are stored as hashes.</small></div>
-            <div><i className="securityIcon securityGreen">✓</i><strong>We control access, not copies</strong><small>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</small></div>
-            <div><i className="securityIcon securityPurple">◉</i><strong>No tracking</strong><small>Moog doesn&apos;t require an account and doesn&apos;t use third-party analytics tracking.</small></div>
+            <div><i className="securityIcon securityPurple"><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>Private links</strong><small>High-entropy links that are difficult to guess.</small></div>
+            <div><i className="securityIcon securityBlue"><LockKeyhole size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>Secure storage</strong><small>Links and codes are stored as hashes.</small></div>
+            <div><i className="securityIcon securityGreen"><Check size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>We control access, not copies</strong><small>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</small></div>
+            <div><i className="securityIcon securityPurple"><Eye size={20} strokeWidth={1.5} aria-hidden="true" /></i><strong>No tracking</strong><small>Moog doesn&apos;t require an account and doesn&apos;t use third-party analytics tracking.</small></div>
           </div>
           <p className="securityDisclosureText">Moog stores shared content on the server so it can deliver the share. It is access-controlled, not end-to-end encrypted.</p>
         </section>
@@ -208,7 +208,7 @@ export default function HomePage() {
               <p>{answer}</p>
             </details>
           ))}</section>
-          <aside className="contactCard"><div className="contactIcon">✉</div><h3>Still have questions?</h3><p>We&apos;re here to help. If you need more information, feel free to reach out.</p><a href="/contact">Contact us <span>→</span></a></aside>
+          <aside className="contactCard"><div className="contactIcon" aria-hidden="true"><Mail size={20} strokeWidth={1.5} /></div><h3>Still have questions?</h3><p>We&apos;re here to help. If you need more information, feel free to reach out.</p><a href="/contact">Contact us <span>→</span></a></aside>
         </section>
         <SiteFooter />
       </div>
