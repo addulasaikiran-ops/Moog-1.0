@@ -9,6 +9,7 @@ import LiveShareGuard from "./LiveShareGuard";
 import Logo from "@/components/Logo";
 import PasswordUnlockForm from "./PasswordUnlockForm";
 import RevealOnceForm from "./RevealOnceForm";
+import { ArrowUpRight, LockKeyhole } from "lucide-react";
 
 export const dynamic = "force-dynamic";
 
@@ -38,10 +39,10 @@ export default async function SharePage({ params, searchParams }: Props) {
         <div className="viewerShell">
           <header className="viewerTopbar">
             <Logo className="minimalLogo" />
-            <span className="viewerSecure"><span className="lockDot">⌁</span> access link</span>
+            <span className="viewerSecure"><LockKeyhole size={15} strokeWidth={1.5} aria-hidden="true" /> access link</span>
           </header>
           <section className="lockStage">
-            <div className="lockIcon">↗</div>
+            <div className="lockIcon" aria-hidden="true"><LockKeyhole size={22} strokeWidth={1.5} /></div>
             <div className="viewerEyebrow">PASSWORD PROTECTED</div>
             <h1>This link requires the access password.</h1>
             <p>Enter the password to reveal what was shared with you.</p>
@@ -88,7 +89,7 @@ export default async function SharePage({ params, searchParams }: Props) {
       <div className="viewerShell">
         <header className="viewerTopbar">
           <Logo className="minimalLogo" />
-          <a className="newShareLink" href="/">New share <span>→</span></a>
+          <a className="newShareLink" href="/">New share <ArrowUpRight size={16} strokeWidth={1.5} aria-hidden="true" /></a>
         </header>
 
         <main className="viewerMain">
