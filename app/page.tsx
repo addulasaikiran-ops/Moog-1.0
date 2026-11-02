@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import Logo from "@/components/Logo";
 
 const EXPIRY_OPTIONS = [
   { value: 1, label: "1 minute" },
@@ -276,7 +277,7 @@ export default function HomePage() {
 
       <div className="shell">
         <header className="topbar">
-          <a className="moogLogo" href="/" aria-label="Moog home"><span className="moogBrandMark" aria-hidden="true">◇</span><span>moog</span></a>
+          <Logo className="moogLogo" />
           <nav className="moogTopNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a className="moogNavCta" href="/create">Get started</a></nav>
         </header>
 
