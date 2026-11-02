@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { ArrowDownToLine, ArrowRight, ArrowUpRight, Clock3, Code2, Eye, FileText, Image as ImageIcon, KeyRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
+import { ArrowDownToLine, ArrowRight, ArrowUpRight, ChevronDown, Clock3, Code2, Eye, FileText, Image as ImageIcon, KeyRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
 import Composer, { type CreatedShare } from "@/components/Composer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -212,7 +212,7 @@ export default function HomePage() {
               ["How long do shares stay alive?", "Choose from 1 minute to 7 days when you create a share."],
               ["Can someone copy what I shared?", "Yes. Moog controls access, not copies. Screenshots and copied content cannot be taken back."],
               ["What can I share?", "Text, supported code formats, and JPG, PNG, GIF, or WebP images up to 10 MB."],
-            ].map(([question, answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}
+            ].map(([question, answer]) => <details key={question}><summary>{question}<ChevronDown size={18} strokeWidth={1.5} aria-hidden="true" /></summary><p>{answer}</p></details>)}
           </div>
           <aside className="contactCard"><div className="contactIcon" aria-hidden="true"><Mail size={20} strokeWidth={1.5} /></div><h3>Still have questions?</h3><p>If you need more information, get in touch.</p><a href="/contact">Contact us <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a></aside>
         </section>
