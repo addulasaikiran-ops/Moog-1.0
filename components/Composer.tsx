@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { ArrowUpRight, ChevronDown, Code2, FileText, Image as ImageIcon, LockKeyhole, ShieldCheck, Eye, Upload, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Code2, FileText, Image as ImageIcon, LockKeyhole, ShieldCheck, Upload } from "lucide-react";
 
 const EXPIRY_OPTIONS = [
   { value: 1, label: "1 minute" }, { value: 5, label: "5 minutes" },
@@ -110,7 +110,7 @@ export default function Composer({ onCreated, compact = false }: {
       <div className="srOnly" id="composer-title">Create a share</div>
       <form onSubmit={submit}>
         <div className="composerTop"><div className="srOnly">{mode} composer</div>
-          {mode === "photo" ? <div className="counter">10 MB max</div> : <div className={text.length >= 95000 ? "counter counterNearLimit" : "counter"} aria-live="polite">{text.length.toLocaleString()} / 100,000</div>}
+          {mode === "photo" ? <div className="counter">10 MB max</div> : <div className={text.length >= 95000 ? "counter counterNearLimit" : "counter"} aria-live="off">{text.length.toLocaleString()} / 100,000</div>}
         </div>
         <div className="modeToggle" role="group" aria-label="Content mode">
           <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} aria-pressed={mode === "text"} onClick={() => setMode("text")}><FileText size={20} strokeWidth={1.5} aria-hidden="true" /><span>Text</span></button>
