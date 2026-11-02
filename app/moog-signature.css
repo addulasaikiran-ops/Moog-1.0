@@ -525,3 +525,50 @@ body { font-family: var(--font-geist), Geist, Inter, ui-sans-serif, system-ui, s
   .moogInlineArtifact { width: 11.6em; height: 4.8em; gap: .45em; padding: .4em; }
   .moogInlineArtifactIcon { flex-basis: 2.8em; width: 2.8em; height: 2.8em; }
 }
+
+
+/* Homepage flow refinement: put the working share composer within the first viewport. */
+.page .moogHero {
+  max-width: 1180px;
+  padding: clamp(34px, 5vw, 58px) 0 24px;
+  text-align: left;
+}
+.page .moogHero h1 {
+  max-width: 920px;
+  margin-inline: 0;
+  font-size: clamp(44px, 6vw, 76px);
+  line-height: .99;
+  text-align: left;
+}
+.page .moogHeroCopy {
+  max-width: 650px;
+  margin: 18px 0 0;
+  font-size: clamp(15px, 1.3vw, 17px);
+}
+.page .moogHeroActions { justify-content: flex-start; margin-top: 20px; }
+.page .moogTrust { justify-content: flex-start; margin-top: 20px; }
+.page .referenceComposerTabs { margin-top: 8px; }
+.page #composer, .page #receive-panel { scroll-margin-top: 24px; }
+.page .useMoog, .page .howMoog, .page .securityReference, .page .faqArea {
+  margin-top: clamp(64px, 9vw, 112px);
+}
+.page .useIntro h2, .page .howIntro h2, .page .sectionHeading h2, .page .faq h3 {
+  max-width: 780px;
+  font-size: clamp(36px, 4.8vw, 60px);
+  line-height: 1.02;
+}
+.page .useGrid { margin-top: 28px; }
+.page .productFeatures { margin-top: 18px; }
+.page .productFeatures .featureCard { min-height: 150px; }
+.page .howSteps { margin-top: 30px; }
+.page .faqArea { margin-bottom: clamp(58px, 8vw, 100px); }
+.stitchFooter { margin-top: 0; }
+@media (max-width: 760px) {
+  .page .moogHero { padding: 32px 0 24px; text-align: left; }
+  .page .moogHero h1 { font-size: clamp(42px, 10vw, 60px); text-align: left; }
+  .page .moogHeroCopy { margin-top: 16px; }
+  .page .moogHeroActions { margin-top: 18px; }
+  .page .moogTrust { margin-top: 18px; }
+  .page .useMoog, .page .howMoog, .page .securityReference, .page .faqArea { margin-top: 58px; }
+  .page .useIntro h2, .page .howIntro h2, .page .sectionHeading h2, .page .faq h3 { font-size: clamp(32px, 9vw, 44px); }
+}
