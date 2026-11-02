@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useMemo, useState } from "react";
+import Logo from "@/components/Logo";
 
 type Lifetime = "15" | "60" | "1440" | "10080" | "custom";
 const lifetimeOptions: { value: Lifetime; label: string }[] = [
@@ -67,7 +68,7 @@ export default function CreateSharePage() {
     const minutesLeft = Math.max(1, Math.ceil((new Date(result.expiresAt).getTime() - Date.now()) / 60000));
     const expiryLabel = minutesLeft < 60 ? minutesLeft + (minutesLeft === 1 ? " minute" : " minutes") : minutesLeft < 1440 ? Math.ceil(minutesLeft / 60) + (Math.ceil(minutesLeft / 60) === 1 ? " hour" : " hours") : Math.ceil(minutesLeft / 1440) + (Math.ceil(minutesLeft / 1440) === 1 ? " day" : " days");
     return <main className="createShareSuccessPage">
-      <header className="createShareTopbar"><a className="createShareLogo" href="/">Moog</a><nav><a href="/how-it-works">How it works</a></nav></header>
+      <header className="createShareTopbar"><Logo className="createShareLogo" /><nav><a href="/how-it-works">How it works</a></nav></header>
       <div className="createShareSuccessWrap">
         <section className="createShareSuccessCard" aria-live="polite">
           <div className="createShareSuccessMark" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="m13 24 7.5 7.5L35 17" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/></svg></div>
