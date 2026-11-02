@@ -1,6 +1,7 @@
 "use client";
 
 import Logo from "@/components/Logo";
+import { ArrowUpRight } from "lucide-react";
 
 type ActivePage = "home" | "how" | "recent" | "privacy" | "create" | "about" | "terms" | "contact" | "report";
 
@@ -26,7 +27,7 @@ export default function SiteHeader({ active }: { active?: ActivePage }) {
         <div className="stitchHeaderActions">
           <a className="stitchHeaderCta" href="/create">
             <span className="stitchLiveDot" aria-hidden="true" />
-            Create a share <span aria-hidden="true">→</span>
+            Create a share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" />
           </a>
           <details className="stitchMobileMenu">
             <summary aria-label="Open navigation">
@@ -38,7 +39,7 @@ export default function SiteHeader({ active }: { active?: ActivePage }) {
                   {item.label}
                 </a>
               ))}
-              <a href="/create">Create a share →</a>
+              <a href="/create">Create a share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a>
               <a href="/terms">Terms</a>
               <a href="/report-abuse">Report abuse</a>
             </nav>
