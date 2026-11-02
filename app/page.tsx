@@ -176,9 +176,9 @@ export default function HomePage() {
             <div><b className="stepPurple">01</b><strong>Create</strong><small>Paste text, code, or an image and choose an expiry time.</small></div>
             <span aria-hidden="true"><ArrowRight size={18} strokeWidth={1.5} /></span>
             <div><b className="stepBlue">02</b><strong>Share</strong><small>Get a private link and send it to anyone.</small></div>
-            <span>→</span>
+            <span aria-hidden="true"><ArrowRight size={18} strokeWidth={1.5} /></span>
             <div><b className="stepGreen">03</b><strong>Open</strong><small>They open it without an account.</small></div>
-            <span>→</span>
+            <span aria-hidden="true"><ArrowRight size={18} strokeWidth={1.5} /></span>
             <div><b className="stepOrange">04</b><strong>Expire</strong><small>Access disappears automatically.</small></div>
           </div>
         </section>
@@ -208,7 +208,7 @@ export default function HomePage() {
               <p>{answer}</p>
             </details>
           ))}</section>
-          <aside className="contactCard"><div className="contactIcon" aria-hidden="true"><Mail size={20} strokeWidth={1.5} /></div><h3>Still have questions?</h3><p>We&apos;re here to help. If you need more information, feel free to reach out.</p><a href="/contact">Contact us <span>→</span></a></aside>
+          <aside className="contactCard"><div className="contactIcon" aria-hidden="true"><Mail size={20} strokeWidth={1.5} /></div><h3>Still have questions?</h3><p>We&apos;re here to help. If you need more information, feel free to reach out.</p><a href="/contact">Contact us <span aria-hidden="true"><ArrowRight size={18} strokeWidth={1.5} /></span></a></aside>
         </section>
         <SiteFooter />
       </div>
