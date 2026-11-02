@@ -6,6 +6,9 @@ import Countdown from "./Countdown";
 import CodeViewer from "./CodeViewer";
 import ViewOnceContent from "./ViewOnceContent";
 import LiveShareGuard from "./LiveShareGuard";
+import Logo from "@/components/Logo";
+import PasswordUnlockForm from "./PasswordUnlockForm";
+import RevealOnceForm from "./RevealOnceForm";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +37,7 @@ export default async function SharePage({ params, searchParams }: Props) {
         <main className="viewerPage viewerMinimal viewerLockedPage">
         <div className="viewerShell">
           <header className="viewerTopbar">
-            <a className="minimalLogo" href="/">Moog</a>
+            <Logo className="minimalLogo" />
             <span className="viewerSecure"><span className="lockDot">⌁</span> access link</span>
           </header>
           <section className="lockStage">
@@ -43,17 +46,7 @@ export default async function SharePage({ params, searchParams }: Props) {
             <h1>This link requires the access password.</h1>
             <p>Enter the password to reveal what was shared with you.</p>
             <section className="minimalCard passwordCard">
-              <div className="lockForm">
-                <form action={"/api/shares/" + token + "/unlock"} method="post">
-                  <label className="viewerLabel" htmlFor="password">ACCESS PASSWORD</label>
-                  <div className="passwordRow">
-                    <input className="passwordInput" id="password" name="password" type="password" placeholder="Enter password" autoFocus required />
-                    <button className="primary" type="submit">Unlock <span>→</span></button>
-                  </div>
-                  {error === "invalid" ? <p className="passwordError" role="alert">That password is not correct.</p> : null}
-                  {error === "missing" ? <p className="passwordError" role="alert">Enter the password to continue.</p> : null}
-                </form>
-              </div>
+              <div className="lockForm"><PasswordUnlockForm action={"/api/shares/" + token + "/unlock"} error={error === "invalid" || error === "missing" ? error : undefined} /></div>
             </section>
             <div className="lockNote">No account required · Access is temporary</div>
           </section>
@@ -69,7 +62,7 @@ export default async function SharePage({ params, searchParams }: Props) {
         <main className="viewerPage viewerMinimal">
         <div className="viewerShell">
           <header className="viewerTopbar">
-            <a className="minimalLogo" href="/">Moog</a>
+            <Logo className="minimalLogo" />
             <span className="viewerSecure">access link</span>
           </header>
           <main className="viewerMain">
@@ -78,9 +71,7 @@ export default async function SharePage({ params, searchParams }: Props) {
                 <div className="revealEyebrow">VIEW ONCE</div>
                 <h1>Ready to reveal.</h1>
                 <p>This share can be opened once. Reveal it when you are ready to read it.</p>
-                <form action={`/api/shares/${token}/reveal`} method="post">
-                  <button className="minimalRevealButton" type="submit">Reveal <span>→</span></button>
-                </form>
+                <RevealOnceForm action={"/api/shares/" + token + "/reveal"} />
               </div>
             </section>
           </main>
@@ -96,7 +87,7 @@ export default async function SharePage({ params, searchParams }: Props) {
       <main className="viewerPage viewerMinimal">
       <div className="viewerShell">
         <header className="viewerTopbar">
-          <a className="minimalLogo" href="/">Moog</a>
+          <Logo className="minimalLogo" />
           <a className="newShareLink" href="/">New share <span>→</span></a>
         </header>
 

@@ -8,8 +8,8 @@ const STORAGE_KEY = "moog-theme";
 
 function applyTheme(theme: Theme) {
   const root = document.documentElement;
-  root.dataset.theme = theme === "system" ? "" : theme;
-  root.style.colorScheme = theme === "system" ? "" : theme;
+  if (theme === "system") root.removeAttribute("data-theme");
+  else root.dataset.theme = theme;
 }
 
 export default function ThemeToggle() {

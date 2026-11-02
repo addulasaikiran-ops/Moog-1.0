@@ -1,3 +1,4 @@
+import Logo from "@/components/Logo";
 export const metadata = {
   title: "About — Moog",
   description: "About Moog, temporary access-controlled sharing.",
@@ -7,7 +8,7 @@ export default function AboutPage() {
   return (
     <main className="legalPage">
       <div className="legalShell">
-        <a className="minimalLogo" href="/">moog</a>
+        <Logo className="minimalLogo" />
         <p className="eyebrow">ABOUT MOOG</p>
         <h1>Temporary access, no account required.</h1>
         <p>Moog lets you share text, code, and photos through access-controlled links that expire. Sending and receiving are account-free.</p>

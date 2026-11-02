@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Logo from "@/components/Logo";
+import ConfirmDialog from "@/components/ConfirmDialog";
 
 type RecentShare = {
   type: "text" | "code" | "photo";
@@ -13,11 +15,10 @@ type RecentShare = {
   revoked?: boolean;
   viewed?: boolean;
 };
-type Filter = "All" | "Active" | "Expiring soon" | "Expired" | "Revoked" | "Viewed";
+type Filter = "All" | "Active" | "Expiring soon" | "Expired" | "Revoked";
 
 function statusOf(item: RecentShare, now: number): Filter {
   if (item.revoked) return "Revoked";
-  if (item.viewed) return "Viewed";
   const left = new Date(item.expiresAt).getTime() - now;
   if (left <= 0) return "Expired";
   if (left <= 60 * 60 * 1000) return "Expiring soon";
@@ -38,6 +39,7 @@ export default function RecentSharesPage() {
   const [filter, setFilter] = useState<Filter>("All");
   const [now, setNow] = useState(0);
   const [feedback, setFeedback] = useState("");
+  const [clearDialogOpen, setClearDialogOpen] = useState(false);
   useEffect(() => {
     setNow(Date.now());
     const timer = window.setInterval(() => setNow(Date.now()), 1000);
@@ -49,7 +51,7 @@ export default function RecentSharesPage() {
   }, []);
   const visible = useMemo(() => items.filter((item) => {
     const state = statusOf(item, now || Date.now());
-    const matchesFilter = filter === "All" || state === filter || (filter === "Viewed" && item.viewed === true);
+    const matchesFilter = filter === "All" || state === filter;
     const needle = query.trim().toLowerCase();
     return matchesFilter && (!needle || item.code.includes(needle) || item.type.includes(needle));
   }), [items, filter, query, now]);
@@ -64,13 +66,13 @@ export default function RecentSharesPage() {
   }
   return <main className="recentPage">
     <div className="recentShell">
-      <header className="recentTopbar"><a className="recentLogo" href="/">◈ Moog</a><a href="/">← Back to create share</a></header>
+      <header className="recentTopbar"><Logo className="recentLogo" /><a href="/">← Back to create share</a></header>
       <section className="recentIntro"><p className="recentEyebrow">LOCAL HISTORY · THIS DEVICE</p><h1>Recent shares</h1><p>Find links you created on this device. Shared content itself is not stored in this history.</p></section>
       <section className="recentControls">
         <label className="recentSearch"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by code or type" aria-label="Search recent shares" /></label>
-        <button className="recentClear" onClick={() => { if (window.confirm("Clear local share history on this device? This will not revoke existing links.")) persist([]); }}>Clear local history</button>
+        <button className="recentClear" onClick={() => setClearDialogOpen(true)}>Clear local history</button>
       </section>
-      <div className="recentFilters" aria-label="Filter shares">{(["All","Active","Expiring soon","Expired","Revoked","Viewed"] as Filter[]).map((name) => <button key={name} className={filter === name ? "selected" : ""} onClick={() => setFilter(name)}>{name}</button>)}</div>
+      <div className="recentFilters" aria-label="Filter shares">{(["All","Active","Expiring soon","Expired","Revoked"] as Filter[]).map((name) => <button key={name} className={filter === name ? "selected" : ""} onClick={() => setFilter(name)}>{name}</button>)}</div>
       {feedback ? <p className="recentFeedback" role="status">{feedback}</p> : null}
       {visible.length ? <section className="recentList" aria-label="Recent shares">{visible.map((item) => {
         const state = statusOf(item, now || Date.now());
@@ -83,5 +85,6 @@ export default function RecentSharesPage() {
       })}</section> : <section className="recentEmpty"><div>◈</div><h2>{items.length ? "No matching shares" : "No recent shares on this device."}</h2><p>{items.length ? "Try another search or filter." : "Create a share and its non-sensitive details will appear here."}</p><a href="/#composer">Create your first secure share →</a></section>}
       <p className="recentPrivacy">Local history can be cleared at any time. Clearing it does not revoke or delete shares from the server.</p>
     </div>
+    <ConfirmDialog open={clearDialogOpen} title="Clear local history?" description="This removes the saved list from this device only. It will not revoke shares or delete content from the server." confirmLabel="Clear history" onCancel={() => setClearDialogOpen(false)} onConfirm={() => { persist([]); setClearDialogOpen(false); }} />
   </main>;
 }

@@ -1,0 +1,348 @@
+:root {
+  color-scheme: dark;
+  --bg-0: #07080a;
+  --bg-1: #0c0e12;
+  --bg-2: #12151b;
+  --bg-3: #181c24;
+  --line-1: rgba(255,255,255,.06);
+  --line-2: rgba(255,255,255,.10);
+  --line-3: rgba(255,255,255,.18);
+  --text-1: #f4f5f7;
+  --text-2: #a7adb8;
+  --text-3: #7a8190;
+  --accent: #c6f432;
+  --accent-ink: #0a0c05;
+  --accent-soft: rgba(198,244,50,.12);
+  --accent-line: rgba(198,244,50,.35);
+  --success: #4ade80;
+  --success-soft: rgba(74,222,128,.12);
+  --warning: #f5b544;
+  --warning-soft: rgba(245,181,68,.12);
+  --danger: #f26d6d;
+  --danger-soft: rgba(242,109,109,.12);
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --space-9: 96px;
+  --container-width: 1200px;
+  --prose-width: 720px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-card: 16px;
+  --radius-composer: 24px;
+  --ease-out: cubic-bezier(.22,1,.36,1);
+}
+:root[data-theme="light"] {
+  color-scheme: light;
+  --bg-0: #f7f6f2;
+  --bg-1: #ffffff;
+  --bg-2: #ffffff;
+  --bg-3: #f1f0eb;
+  --line-1: rgba(14,16,20,.07);
+  --line-2: rgba(14,16,20,.12);
+  --line-3: rgba(14,16,20,.2);
+  --text-1: #0e1014;
+  --text-2: #4b5260;
+  --text-3: #6b7280;
+  --accent: #3f6b00;
+  --accent-ink: #ffffff;
+  --accent-soft: rgba(63,107,0,.10);
+  --accent-line: rgba(63,107,0,.32);
+  --success: #167343;
+  --success-soft: rgba(22,115,67,.10);
+  --warning: #8a5700;
+  --warning-soft: rgba(138,87,0,.10);
+  --danger: #b4232c;
+  --danger-soft: rgba(180,35,44,.10);
+}
+html { background: var(--bg-0); color: var(--text-1); }
+body { background: var(--bg-0); color: var(--text-1); }
+:where(button, a, input, textarea, select, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+:where(button, input, textarea, select) { font: inherit; }
+:where(code, pre, kbd, samp, time, [data-mono="true"]) {
+  font-variant-numeric: tabular-nums;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Transitional shared surface styles while pages move to CSS Modules. */
+body {
+  font-family: var(--font-geist), Inter, ui-sans-serif, system-ui, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+:where(pre, code, kbd, samp, .code, .mono, .resultCode, .receiveDigit) {
+  font-family: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
+}
+.page:not(.refPage) {
+  color: var(--text-1);
+  background: var(--bg-0);
+}
+.page:not(.refPage) .shell {
+  width: min(100% - 48px, var(--container-width));
+}
+.page:not(.refPage) .topbar {
+  border-bottom: 1px solid var(--line-1);
+  background: color-mix(in srgb, var(--bg-0) 86%, transparent);
+  backdrop-filter: blur(18px);
+}
+.page:not(.refPage) .moogLogo,
+.page:not(.refPage) .moogTopNav a,
+.page:not(.refPage) .footerLinks a {
+  color: var(--text-2);
+}
+.page:not(.refPage) .moogLogo strong,
+.page:not(.refPage) .moogHero h1,
+.page:not(.refPage) .sectionHeading h2,
+.page:not(.refPage) .howIntro h2,
+.page:not(.refPage) .useIntro h2 {
+  color: var(--text-1);
+}
+.page:not(.refPage) .moogHero h1 {
+  letter-spacing: -.055em;
+  font-weight: 650;
+  line-height: .99;
+}
+.page:not(.refPage) .moogEyebrow,
+.page:not(.refPage) .eyebrow,
+.page:not(.refPage) .resultFieldLabel,
+.page:not(.refPage) .counter {
+  color: var(--text-3);
+  letter-spacing: .09em;
+}
+.page:not(.refPage) .moogPrimary,
+.page:not(.refPage) .createButton,
+.page:not(.refPage) .receiveOpen {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+  font-weight: 650;
+}
+.page:not(.refPage) .moogPrimary:hover,
+.page:not(.refPage) .createButton:hover,
+.page:not(.refPage) .receiveOpen:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+.page:not(.refPage) .moogSecondary {
+  color: var(--text-1);
+  background: var(--bg-2);
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-md);
+}
+.page:not(.refPage) .composer,
+.page:not(.refPage) .receiveCard,
+.page:not(.refPage) .result,
+.page:not(.refPage) .moogLivePreview,
+.page:not(.refPage) .featureCard,
+.page:not(.refPage) .howSteps>div,
+.page:not(.refPage) .useGrid>div,
+.page:not(.refPage) .securityDisclosureText,
+.page:not(.refPage) .faq,
+.page:not(.refPage) .contactCard {
+  color: var(--text-1);
+  background: var(--bg-1);
+  border-color: var(--line-2);
+  border-radius: var(--radius-card);
+  box-shadow: none;
+}
+.page:not(.refPage) .composer {
+  border-radius: var(--radius-composer);
+  border-color: var(--line-3);
+}
+.page:not(.refPage) :is(input, textarea, select, .secretInput, .receiveDigit) {
+  color: var(--text-1);
+  background: var(--bg-0);
+  border-color: var(--line-2);
+}
+.page:not(.refPage) :is(input, textarea, select)::placeholder {
+  color: var(--text-3);
+}
+.page:not(.refPage) .referenceComposerTabs,
+.page:not(.refPage) .modeToggle,
+.page:not(.refPage) .lifetimeSection {
+  border-color: var(--line-1);
+}
+.page:not(.refPage) .featureCard i,
+.page:not(.refPage) .stepPurple,
+.page:not(.refPage) .stepBlue,
+.page:not(.refPage) .stepGreen,
+.page:not(.refPage) .stepOrange,
+.page:not(.refPage) .featurePurple,
+.page:not(.refPage) .featureBlue,
+.page:not(.refPage) .featureOrange,
+.page:not(.refPage) .usePink,
+.page:not(.refPage) .useBlue,
+.page:not(.refPage) .useGreen,
+.page:not(.refPage) .useOrange,
+.page:not(.refPage) .securityPurple,
+.page:not(.refPage) .securityBlue,
+.page:not(.refPage) .securityGreen {
+  color: var(--accent);
+  background-color: var(--accent-soft);
+}
+.page:not(.refPage) .siteFooter {
+  border-top: 1px solid var(--line-1);
+}
+:root[data-theme="light"] .page:not(.refPage) .moogHeroCopy,
+:root[data-theme="light"] .page:not(.refPage) .sectionHeading p,
+:root[data-theme="light"] .page:not(.refPage) .howIntro p,
+:root[data-theme="light"] .page:not(.refPage) .useIntro p {
+  color: var(--text-2);
+}
+@media (max-width: 600px) {
+  .page:not(.refPage) .shell { width: min(100% - 32px, var(--container-width)); }
+}
+
+
+/* Shared surfaces for the remaining legacy route markup during migration. */
+:where(.createSharePage, .createShareSuccessPage, .recentPage, .minimalPage, .sharePage) {
+  color: var(--text-1);
+  background: var(--bg-0);
+}
+:where(.createShareTopbar, .recentTopbar, .minimalTopbar, .shareTopbar) {
+  border-color: var(--line-1);
+  background: var(--bg-0);
+}
+:where(.createShareShell, .recentShell, .minimalShell, .shareShell) {
+  color: var(--text-1);
+}
+:where(.createShareEditorCard, .createShareSettings, .createShareSettingCard,
+       .createShareSuccessCard, .recentItem, .recentEmpty, .minimalCard,
+       .shareCard, .viewerCard, .shareContentCard) {
+  color: var(--text-1);
+  background: var(--bg-1);
+  border-color: var(--line-2);
+  box-shadow: none;
+}
+:where(.createShareHeading h1, .createShareSuccessCard h1, .recentShell h1,
+       .minimalShell h1, .shareShell h1, .createShareSettings h2) {
+  color: var(--text-1);
+  letter-spacing: -.04em;
+}
+:where(.createShareHeading p, .createShareSuccessSubtitle, .createShareToggleCopy p,
+       .createShareNote, .createShareHint, .recentShell p, .minimalShell p,
+       .shareShell p) {
+  color: var(--text-2);
+}
+:where(.createSharePrimary, .createShareGetStarted, .recentPrimary, .minimalPrimary,
+       .sharePrimary) {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+  border-radius: var(--radius-md);
+  box-shadow: none;
+}
+:where(.createShareEmailButton, .createShareFormActions a, .createShareBack,
+       .recentTopbar a, .minimalShell a, .shareShell a) {
+  color: var(--text-2);
+}
+:where(.createShareEditorWrap textarea, .createShareAccessInput input,
+       .createShareCustomExpiry input, .recentSearch input, .shareShell input,
+       .shareShell textarea, .minimalShell input, .minimalShell textarea) {
+  color: var(--text-1);
+  background: var(--bg-0);
+  border-color: var(--line-2);
+  border-radius: var(--radius-sm);
+}
+:where(.createShareSuccessCode, .createShareUrlBox, .createShareDetails,
+       .createShareNote, .recentFilters button, .recentStatus, .shareStatus) {
+  border-color: var(--line-2);
+}
+:where(.createShareSwitch.on) { background: var(--accent); }
+:where(.createShareError, .formError, [role="alert"]) { color: var(--danger); }
+:where(.createShareSuccessCode) {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: 1px solid var(--accent-line);
+  border-radius: var(--radius-card);
+  background: var(--accent-soft);
+}
+.createShareSuccessCode > span {
+  color: var(--text-2);
+  font: 600 11px/1.4 var(--font-geist-mono), ui-monospace, monospace;
+  letter-spacing: .1em;
+}
+.createShareSuccessCode > strong {
+  color: var(--text-1);
+  font: 600 clamp(28px, 5vw, 40px)/1.1 var(--font-geist-mono), ui-monospace, monospace;
+  letter-spacing: .08em;
+  font-variant-numeric: tabular-nums;
+}
+:root[data-theme="light"] :where(.createSharePage, .createShareSuccessPage, .recentPage, .minimalPage, .sharePage) {
+  color-scheme: light;
+}
+
+/* Shared Composer, result, and dialog layer. */
+.composer, .sharedResult { width: 100%; min-width: 0; }
+.composer textarea { width: 100%; min-height: 220px; resize: vertical; }
+.composer .modeButton[aria-pressed="true"],
+.composer .lifetimePill[aria-pressed="true"] { border-color: var(--accent-line); background: var(--accent-soft); color: var(--text-1); }
+.composer .photoComposer { border: 1px dashed var(--line-3); border-radius: var(--radius-md); padding: var(--space-4); }
+.composer .photoComposer.dragActive { border-color: var(--accent); background: var(--accent-soft); }
+.composer .photoComposer input[type="file"] { display: none; }
+.composer .photoPreview img { display: block; max-width: 100%; max-height: 360px; object-fit: contain; border-radius: var(--radius-sm); }
+.composer .codeSelectRow { display: flex; gap: var(--space-3); align-items: center; justify-content: flex-end; margin-top: var(--space-3); }
+.composer .codeSelectRow select { max-width: 220px; }
+.composer .lifetimePills { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.composer .lifetimePill { position: relative; }
+.composer .securityOptions { display: grid; gap: var(--space-4); }
+.sharedResult .resultLinkRow { min-width: 0; }
+.sharedResult .resultLinkRow a { overflow-wrap: anywhere; }
+.sharedResult .uniqueCodeBox strong { font: 650 clamp(24px, 4vw, 34px)/1.1 var(--font-geist-mono), ui-monospace, monospace; letter-spacing: .1em; font-variant-numeric: tabular-nums; }
+.shareResultActions { display: flex; flex-wrap: wrap; gap: var(--space-2); align-items: center; }
+.createSharePage .composer { margin-top: var(--space-5); }
+.createSharePage .composer .lifetimePills { gap: 8px; }
+.createSharePage .createShareEncryption { max-width: var(--prose-width); margin: var(--space-5) auto 0; color: var(--text-3); font-size: 13px; line-height: 1.6; }
+.viewerPage { min-height: 100vh; background: var(--bg-0); color: var(--text-1); }
+.viewerShell { width: min(100% - 40px, 880px); margin-inline: auto; }
+.viewerTopbar { min-height: 76px; border-bottom: 1px solid var(--line-1); display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); }
+.viewerTopbar .minimalLogo { display: inline-flex; align-items: center; gap: 9px; color: var(--text-1); text-decoration: none; font-size: 20px; font-weight: 700; }
+.viewerTopbar .moogBrandMark { width: 26px; height: 26px; color: var(--accent); }
+.viewerSecure { color: var(--text-2); font-size: 12px; letter-spacing: .04em; }
+.viewerMain { padding: clamp(32px, 7vw, 72px) 0; }
+.viewerMain .minimalCard, .viewerShell .minimalCard { border: 1px solid var(--line-2); border-radius: var(--radius-composer); background: var(--bg-1); box-shadow: none; color: var(--text-1); overflow: hidden; }
+.viewerMain .minimalMeta { border-bottom: 1px solid var(--line-1); color: var(--text-2); }
+.viewerMain .minimalText, .viewerMain .minimalContent { color: var(--text-1); overflow-wrap: anywhere; }
+.viewerMain .minimalPhoto img { display: block; max-width: 100%; height: auto; border-radius: var(--radius-md); }
+.viewerMain .minimalActions { border-top: 1px solid var(--line-1); }
+.viewerMain .minimalNewShare, .viewerTopbar .newShareLink { color: var(--text-2); }
+.viewerMain .revealCard, .viewerMain .passwordCard { max-width: 580px; margin: 0 auto; }
+.viewerMain .revealContent { padding: clamp(28px, 6vw, 52px); }
+.viewerPage .lockStage { max-width: 580px; margin: clamp(40px, 8vw, 88px) auto; }
+.viewerPage .lockStage h1, .viewerPage .revealContent h1 { color: var(--text-1); letter-spacing: -.05em; font-size: clamp(30px, 5vw, 48px); line-height: 1.06; }
+.viewerPage .lockStage p, .viewerPage .revealContent p { color: var(--text-2); line-height: 1.65; }
+.viewerPage .passwordInput { color: var(--text-1); background: var(--bg-0); border: 1px solid var(--line-2); border-radius: var(--radius-sm); min-width: 0; }
+.viewerPage .passwordRow { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.viewerPage .passwordRow .passwordInput { flex: 1 1 200px; }
+.viewerPage .passwordRow button, .viewerPage .minimalRevealButton { border-radius: var(--radius-md); background: var(--accent); color: var(--accent-ink); border: 1px solid var(--accent); min-height: 46px; padding: 0 20px; font-weight: 700; }
+.minimalFooter { border-top: 1px solid var(--line-1); color: var(--text-3); padding: var(--space-5) 0; font-size: 12px; }
+@media (max-width: 600px) {
+  .viewerShell { width: min(100% - 28px, 880px); }
+  .viewerTopbar { min-height: 64px; }
+  .shareResultActions { width: 100%; }
+}
+
+.viewerPage .passwordVisibility { min-height: 42px; border: 1px solid var(--line-2); border-radius: var(--radius-sm); padding: 0 12px; color: var(--text-1); background: var(--bg-2); }
+.viewerPage .passwordRow .primary { flex: 0 0 auto; }
+.viewerPage .viewerSecure { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line-2); border-radius: 999px; padding: 7px 11px; }
+.viewerPage .lockIcon { display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 24px; border-radius: 16px; background: var(--accent-soft); color: var(--accent); font-size: 22px; }
+.viewerPage .viewerEyebrow, .viewerPage .revealEyebrow { color: var(--accent); font: 650 11px/1.4 var(--font-geist-mono), ui-monospace, monospace; letter-spacing: .12em; }
+.viewerPage .lockNote { margin-top: 24px; color: var(--text-3); font-size: 12px; }
