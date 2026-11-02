@@ -585,3 +585,42 @@ textarea:focus, .passwordInput:focus, .sharePassword:focus {
   html { scroll-behavior:auto; }
   .featureCard, .primary, .copy, .modeButton, .lifetimePill { transition:none; }
 }
+
+
+/* Centered share composer layout requested from the homepage reference. */
+.page .moogHero {
+  display: block;
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 72px 0 30px;
+  text-align: center;
+}
+.page .moogHero .moogEyebrow { justify-content: center; }
+.page .moogHero h1,
+.page .moogHeroCopy { margin-left: auto; margin-right: auto; }
+.page .moogHero h1 { max-width: 760px; }
+.page .moogHeroCopy { max-width: 620px; }
+.page .moogHeroActions { justify-content: center; }
+.page .moogTrust { justify-content: center; }
+.page .moogLivePreview { display: none !important; }
+.page .referenceComposerTabs {
+  width: min(760px, 100%);
+  margin: 18px auto 0;
+}
+.page .referenceComposerTabs + .composer {
+  width: min(760px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.page .referenceComposerTabs + .composer textarea {
+  min-height: 260px;
+}
+@media (max-width: 640px) {
+  .page .moogHero { padding: 46px 0 24px; text-align: left; }
+  .page .moogHero .moogEyebrow { justify-content: flex-start; }
+  .page .moogHeroActions, .page .moogTrust { justify-content: flex-start; }
+  .page .referenceComposerTabs { margin-top: 10px; }
+  .page .referenceComposerTabs + .composer { padding: 16px; }
+}
