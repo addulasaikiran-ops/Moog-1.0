@@ -106,7 +106,7 @@ export default function HomePage() {
 
         <section className="moogHero">
           <p className="moogEyebrow">Temporary sharing</p>
-          <h1>Share it.<br />Let it disappear.</h1>
+          <h1>Share it. <span className="moogInlineArtifact" aria-hidden="true"><span className="moogInlineArtifactIcon">↗</span><span className="moogInlineArtifactCopy"><strong>Project notes</strong><small>Expires in 24 hours</small></span></span><br />Let it disappear.</h1>
           <p className="moogHeroCopy">Send a note, code snippet, or image with an expiry you choose. No account to create. No old link to clean up.</p>
           <div className="moogHeroActions">
             <a className="moogPrimary" href="/create">Create a private share <span aria-hidden="true">→</span></a>
@@ -118,15 +118,6 @@ export default function HomePage() {
             <div><span className="moogTrustIcon" aria-hidden="true">⌁</span><span>You stay in control</span></div>
             <div><span className="moogTrustIcon" aria-hidden="true">✓</span><span>No account required</span></div>
           </div>
-          <aside className="moogLivePreview" aria-label="Example temporary share preview">
-            <div className="moogPreviewTop"><span className="moogPreviewSignal"><i /> PRIVATE SHARE</span><span className="moogPreviewExpiry">EXPIRES IN 24H</span></div>
-            <div className="moogPreviewPaper">
-              <div className="moogPreviewFile"><span className="moogPreviewFileIcon">Aa</span><span><strong>Project notes</strong><small>Plain text · 248 characters</small></span><span className="moogPreviewLock" aria-label="Protected">↗</span></div>
-              <div className="moogPreviewLines"><i /><i /><i /><i /></div>
-              <div className="moogPreviewFooter"><span><b>••••••</b> Share code</span><span className="moogPreviewStatus"><i /> Link is active</span></div>
-            </div>
-            <p className="moogPreviewCaption">Available until the expiry you choose.</p>
-          </aside>
         </section>
         <div className="referenceComposerTabs" role="tablist" aria-label="Send or receive">
           <button type="button" role="tab" aria-selected={tab === "send"} className={tab === "send" ? "referenceComposerTab active" : "referenceComposerTab"} onClick={() => changeTab("send")}>Send</button>
