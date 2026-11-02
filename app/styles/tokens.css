@@ -352,3 +352,10 @@ body {
   .moogDialogActions button { width: 100%; }
   .shareResultActions { width: 100%; }
 }
+
+.viewerPage .passwordVisibility { min-height: 42px; border: 1px solid var(--line-2); border-radius: var(--radius-sm); padding: 0 12px; color: var(--text-1); background: var(--bg-2); }
+.viewerPage .passwordRow .primary { flex: 0 0 auto; }
+.viewerPage .viewerSecure { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line-2); border-radius: 999px; padding: 7px 11px; }
+.viewerPage .lockIcon { display: grid; place-items: center; width: 52px; height: 52px; margin-bottom: 24px; border-radius: 16px; background: var(--accent-soft); color: var(--accent); font-size: 22px; }
+.viewerPage .viewerEyebrow, .viewerPage .revealEyebrow { color: var(--accent); font: 650 11px/1.4 var(--font-geist-mono), ui-monospace, monospace; letter-spacing: .12em; }
+.viewerPage .lockNote { margin-top: 24px; color: var(--text-3); font-size: 12px; }
