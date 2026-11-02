@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 
 export default function ConfirmDialog({ open, title, description, confirmLabel = "Confirm", busy = false, onCancel, onConfirm }: {
   open: boolean;
