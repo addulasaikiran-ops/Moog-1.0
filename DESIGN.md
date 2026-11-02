@@ -55,3 +55,17 @@ Moog gives a piece of content a short, deliberate life. Someone creates a share,
 - Preserve semantic HTML and existing interactions.
 - Keep keyboard focus visible, maintain readable contrast, and support reduced motion.
 - Avoid motion that merely decorates. Any hover or entrance effect should be brief and should never be required to understand the interface.
+
+
+## Homepage reading order (November 2026)
+1. **Header and hero:** state the short-life sharing promise, with a single believable share artifact as the visual anchor.
+2. **Share composer:** place the working Text / Code / Photo creation controls directly after the hero. Keep Send/Receive in the same interaction area.
+3. **About Moog:** explain the product and its use cases without implying end-to-end encryption or encouraging the sharing of highly sensitive credentials.
+4. **How it works:** show the real four-step lifecycle from content to expiry.
+5. **Security, FAQ, and contact:** answer practical trust questions with plain language and no invented social proof.
+6. **Footer:** keep About, Privacy, Terms, Contact, and Report abuse links as the final navigation layer.
+
+## Skill application
+- **Design MD:** used a restrained product-led system inspired by Linear's hierarchy and Stripe's crisp control surfaces; retained Moog's moss/lime accent rather than copying either brand.
+- **Taste Skill:** used the share lifecycle as the visual idea, a real interactive composer as the page's live element, clear section claims, responsive layouts, and reduced-motion/focus states.
+- **Humanizer:** replaced inflated marketing language with specific descriptions and preserved the disclosure that Moog is access-controlled, not end-to-end encrypted.
