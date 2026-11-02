@@ -816,3 +816,119 @@ textarea:focus, .passwordInput:focus, .sharePassword:focus {
   .page .faq, .page .contactCard { padding: 22px; }
   .page .siteFooter { width: calc(100% - 24px); margin-top: 54px; }
 }
+
+
+/* Layout repair: keep the hero and share composer in normal document flow. */
+.page .topbar {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  min-height: 72px;
+  padding: 10px 18px;
+  border: 1px solid var(--moog-border);
+  border-radius: 20px;
+  background: color-mix(in srgb, var(--moog-surface) 94%, transparent);
+  color: var(--moog-text);
+  box-shadow: 0 10px 30px rgba(20, 30, 50, .06);
+  backdrop-filter: blur(18px);
+}
+.page .moogLogo { color: var(--moog-text); }
+.page .moogTopNav { display: flex; align-items: center; gap: 24px; }
+.page .moogTopNav a { color: var(--moog-muted); text-decoration: none; }
+.page .moogTopNav .moogNavCta { color: var(--moog-bg); }
+
+.page .moogHero {
+  position: relative;
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  width: 100%;
+  max-width: 900px;
+  height: auto !important;
+  min-height: 0 !important;
+  margin: 0 auto;
+  padding: clamp(54px, 7vw, 84px) 0 28px;
+  overflow: visible !important;
+  text-align: center;
+}
+.page .moogHero > * {
+  position: relative;
+  inset: auto;
+  grid-column: auto;
+  grid-row: auto;
+  transform: none;
+}
+.page .moogHero .moogEyebrow {
+  margin: 0 0 18px;
+  color: var(--moog-accent);
+}
+.page .moogHero h1 {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  font-size: clamp(48px, 6.4vw, 82px);
+  line-height: .98;
+  letter-spacing: -.075em;
+  overflow-wrap: normal;
+}
+.page .moogHeroCopy {
+  max-width: 650px;
+  margin: 22px auto 0;
+  color: var(--moog-muted);
+  font-size: 17px;
+  line-height: 1.75;
+}
+.page .moogHeroActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin: 24px 0 0;
+}
+.page .moogTrust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 20px;
+  margin: 26px 0 0;
+}
+.page .moogLivePreview { display: none !important; }
+.page .referenceComposerTabs {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  width: min(760px, 100%);
+  margin: 22px auto 0 !important;
+  padding: 5px;
+  border: 1px solid var(--moog-border);
+  border-radius: 16px 16px 0 0;
+  background: var(--moog-surface);
+  box-shadow: 0 8px 22px rgba(20, 30, 50, .035);
+}
+.page .referenceComposerTab { flex: 1; min-height: 48px; }
+.page .referenceComposerTabs + .composer {
+  position: relative;
+  z-index: 1;
+  width: min(760px, 100%);
+  margin: 0 auto !important;
+  padding: clamp(18px, 3vw, 30px);
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.page .referenceComposerTabs + .composer textarea { min-height: 270px; }
+@media (max-width: 650px) {
+  .page { padding-inline: 14px; }
+  .page .topbar { min-height: 60px; padding: 8px 12px; border-radius: 16px; }
+  .page .moogTopNav { gap: 12px; }
+  .page .moogTopNav > a:first-child { display: none; }
+  .page .moogHero { padding: 48px 0 18px; }
+  .page .moogHero h1 { font-size: clamp(42px, 12vw, 58px); }
+  .page .moogHeroCopy { font-size: 15px; margin-top: 18px; }
+  .page .moogHeroActions { width: 100%; flex-direction: column; }
+  .page .moogHeroActions > * { width: 100%; justify-content: center; }
+  .page .moogTrust { justify-content: flex-start; text-align: left; gap: 10px 14px; }
+  .page .referenceComposerTabs { margin-top: 20px !important; }
+}
