@@ -1,8 +1,9 @@
 "use client";
 
 import { FormEvent, useRef, useState } from "react";
-import Logo from "@/components/Logo";
 import Composer, { type CreatedShare } from "@/components/Composer";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import ShareResult from "@/components/ShareResult";
 
 const EXPIRY_OPTIONS = [
@@ -101,10 +102,7 @@ export default function HomePage() {
       <div className="ambient ambientTwo" />
 
       <div className="shell">
-        <header className="topbar">
-          <Logo className="moogLogo" />
-          <nav className="moogTopNav" aria-label="Primary"><a href="/how-it-works">How it works</a><a href="/#security">Security</a><a href="/#faq">FAQ</a><a href="/recent">Recent shares</a><a className="moogNavCta" href="/create">Create share</a></nav>
-        </header>
+        <SiteHeader active="home" />
 
         <section className="moogHero">
           <p className="moogEyebrow">PRIVATE SHARING, REFINED</p>
@@ -211,7 +209,7 @@ export default function HomePage() {
           ))}</section>
           <aside className="contactCard"><div className="contactIcon">✉</div><h3>Still have questions?</h3><p>We&apos;re here to help. If you need more information, feel free to reach out.</p><a href="/contact">Contact us <span>→</span></a></aside>
         </section>
-        <footer className="siteFooter"><div className="footerBrand"><strong>Moog</strong><span>Moog controls access, not copies.</span></div><nav className="footerLinks" aria-label="Footer"><a href="/about">About</a><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/recent">Recent shares</a><a href="/contact">Contact</a><a href="/report-abuse">Report abuse</a></nav><div className="footerLegal">© 2026 Moog</div></footer>
+        <SiteFooter />
       </div>
     </main>
   );

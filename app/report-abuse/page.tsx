@@ -1,6 +1,7 @@
 "use client";
 
-import Logo from "@/components/Logo";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import { FormEvent, useState } from "react";
 
 export default function ReportAbusePage() {
@@ -16,17 +17,22 @@ export default function ReportAbusePage() {
       setStatus("sent"); setMessage("Report received. Thank you."); event.currentTarget.reset();
     } catch (error) { setStatus("error"); setMessage(error instanceof Error ? error.message : "Could not submit the report."); }
   }
-  return <main className="legalPage"><article className="legalShell">
-    <Logo className="minimalLogo" /><p className="eyebrow">REPORT ABUSE</p>
-    <h1>Report a share.</h1><p>Use this for illegal content, harassment, malware, copyright concerns, or other abuse involving a Moog share.</p>
-    <form className="reportForm" onSubmit={submit}>
-      <label>Share URL<input name="shareUrl" type="url" placeholder="https://…/s/…" required maxLength={500}/></label>
-      <label>Category<select name="category" defaultValue="illegal"><option value="illegal">Illegal content</option><option value="harassment">Harassment / abuse</option><option value="copyright">Copyright</option><option value="malware">Malware / security</option><option value="privacy">Privacy request</option><option value="other">Other</option></select></label>
-      <label>Your email <span>(optional)</span><input name="email" type="email" placeholder="you@example.com" maxLength={254}/></label>
-      <label>Details<textarea name="details" rows={7} placeholder="Tell us what should be reviewed." required maxLength={5000}/></label>
-      <button className="primary legalButton" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Submit report →"}</button>
-      {message ? <p className={status === "error" ? "formError" : "reportSuccess"} role="status">{message}</p> : null}
-    </form>
-    <a className="minimalNewShare" href="/">Back to Moog <span>→</span></a>
-  </article></main>;
+  return <main className="legalPage">
+    <SiteHeader active="report" />
+    <article className="legalShell">
+      <p className="eyebrow">SUPPORT / REPORT ABUSE</p>
+      <h1>Report a share.</h1>
+      <p>Use this for illegal content, harassment, malware, copyright concerns, or other abuse involving a Moog share.</p>
+      <form className="reportForm" onSubmit={submit}>
+        <label>Share URL<input name="shareUrl" type="url" placeholder="https://…/s/…" required maxLength={500}/></label>
+        <label>Category<select name="category" defaultValue="illegal"><option value="illegal">Illegal content</option><option value="harassment">Harassment / abuse</option><option value="copyright">Copyright</option><option value="malware">Malware / security</option><option value="privacy">Privacy request</option><option value="other">Other</option></select></label>
+        <label>Your email <span>(optional)</span><input name="email" type="email" placeholder="you@example.com" maxLength={254}/></label>
+        <label>Details<textarea name="details" rows={7} placeholder="Tell us what should be reviewed." required maxLength={5000}/></label>
+        <button className="primary legalButton" type="submit" disabled={status === "sending"}>{status === "sending" ? "Sending…" : "Submit report →"}</button>
+        {message ? <p className={status === "error" ? "formError" : "reportSuccess"} role="status">{message}</p> : null}
+      </form>
+      <a className="minimalNewShare" href="/">Back to Moog <span>→</span></a>
+    </article>
+    <SiteFooter />
+  </main>;
 }

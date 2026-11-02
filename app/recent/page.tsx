@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Logo from "@/components/Logo";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 import ConfirmDialog from "@/components/ConfirmDialog";
 
 type RecentShare = {
@@ -65,14 +66,18 @@ export default function RecentSharesPage() {
     try { window.localStorage.setItem("moog-recent-shares-v1", JSON.stringify(next)); } catch { setFeedback("Could not update local history."); }
   }
   return <main className="recentPage">
+    <SiteHeader active="recent" />
     <div className="recentShell">
-      <header className="recentTopbar"><Logo className="recentLogo" /><a href="/">← Back to create share</a></header>
-      <section className="recentIntro"><p className="recentEyebrow">LOCAL HISTORY · THIS DEVICE</p><h1>Recent shares</h1><p>Find links you created on this device. Shared content itself is not stored in this history.</p></section>
+      <section className="recentIntro">
+        <p className="recentEyebrow">LOCAL HISTORY · THIS DEVICE</p>
+        <h1>Recent shares</h1>
+        <p>Find links you created on this device. Shared content itself is not stored in this history.</p>
+      </section>
       <section className="recentControls">
         <label className="recentSearch"><span aria-hidden="true">⌕</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search by code or type" aria-label="Search recent shares" /></label>
-        <button className="recentClear" onClick={() => setClearDialogOpen(true)}>Clear local history</button>
+        <button className="recentClear" type="button" onClick={() => setClearDialogOpen(true)}>Clear local history</button>
       </section>
-      <div className="recentFilters" aria-label="Filter shares">{(["All","Active","Expiring soon","Expired","Revoked"] as Filter[]).map((name) => <button key={name} className={filter === name ? "selected" : ""} onClick={() => setFilter(name)}>{name}</button>)}</div>
+      <div className="recentFilters" aria-label="Filter shares">{(["All","Active","Expiring soon","Expired","Revoked"] as Filter[]).map((name) => <button key={name} type="button" className={filter === name ? "selected" : ""} onClick={() => setFilter(name)}>{name}</button>)}</div>
       {feedback ? <p className="recentFeedback" role="status">{feedback}</p> : null}
       {visible.length ? <section className="recentList" aria-label="Recent shares">{visible.map((item) => {
         const state = statusOf(item, now || Date.now());
@@ -80,11 +85,12 @@ export default function RecentSharesPage() {
           <div className="recentItemHead"><span className="recentType">{item.type === "photo" ? "▧" : item.type === "code" ? "</>" : "▤"} <b>{item.type}</b></span><span className={`recentStatus status-${state.toLowerCase().replaceAll(" ", "-")}`}>{state}</span></div>
           <div className="recentCode">{item.code.replace(/(\d{3})(\d{3})/, "$1 $2")}</div>
           <div className="recentChips"><span>{item.passwordProtected ? "Password protected" : "No password"}</span><span>{item.viewOnce ? "View once" : "Multiple views"}</span><span>Expires {remaining(item.expiresAt, now || Date.now())}</span></div>
-          <div className="recentActions"><button onClick={() => void copy(item.url, "Link")}>Copy link</button><button onClick={() => void copy(item.code, "Code")}>Copy code</button><a href={item.url} target="_blank" rel="noreferrer">Open share ↗</a><button className="recentRemove" onClick={() => persist(items.filter((other) => other.url !== item.url))}>Remove locally</button></div>
+          <div className="recentActions"><button type="button" onClick={() => void copy(item.url, "Link")}>Copy link</button><button type="button" onClick={() => void copy(item.code, "Code")}>Copy code</button><a href={item.url} target="_blank" rel="noreferrer">Open share ↗</a><button type="button" className="recentRemove" onClick={() => persist(items.filter((other) => other.url !== item.url))}>Remove locally</button></div>
         </article>;
-      })}</section> : <section className="recentEmpty"><div>◈</div><h2>{items.length ? "No matching shares" : "No recent shares on this device."}</h2><p>{items.length ? "Try another search or filter." : "Create a share and its non-sensitive details will appear here."}</p><a href="/#composer">Create your first secure share →</a></section>}
+      })}</section> : <section className="recentEmpty"><div>◈</div><h2>{items.length ? "No matching shares" : "No recent shares on this device."}</h2><p>{items.length ? "Try another search or filter." : "Create a share and its non-sensitive details will appear here."}</p><a href="/create">Create your first share →</a></section>}
       <p className="recentPrivacy">Local history can be cleared at any time. Clearing it does not revoke or delete shares from the server.</p>
     </div>
+    <SiteFooter />
     <ConfirmDialog open={clearDialogOpen} title="Clear local history?" description="This removes the saved list from this device only. It will not revoke shares or delete content from the server." confirmLabel="Clear history" onCancel={() => setClearDialogOpen(false)} onConfirm={() => { persist([]); setClearDialogOpen(false); }} />
   </main>;
 }

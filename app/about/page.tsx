@@ -1,4 +1,5 @@
-import Logo from "@/components/Logo";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 export const metadata = {
   title: "About — Moog",
   description: "About Moog, temporary access-controlled sharing.",
@@ -7,8 +8,8 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <main className="legalPage">
-      <div className="legalShell">
-        <Logo className="minimalLogo" />
+      <SiteHeader active="about" />
+      <article className="legalShell">
         <p className="eyebrow">ABOUT MOOG</p>
         <h1>Temporary access, no account required.</h1>
         <p>Moog lets you share text, code, and photos through access-controlled links that expire. Sending and receiving are account-free.</p>
@@ -17,7 +18,8 @@ export default function AboutPage() {
         <h2>What Moog does not provide yet</h2>
         <p>Moog is not end-to-end encrypted. The service stores active share content on the server so it can deliver it. Do not treat Moog as a zero-knowledge vault.</p>
         <a className="primary legalButton" href="/">Back to Moog <span>→</span></a>
-      </div>
+      </article>
+      <SiteFooter />
     </main>
   );
 }

@@ -1,4 +1,6 @@
-import Logo from "@/components/Logo";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
+
 export default function HowItWorksPage() {
   const steps = [
     ["01", "Add your content", "Paste text, choose a code language, or upload a supported photo."],
@@ -14,12 +16,17 @@ export default function HowItWorksPage() {
     ["Do I need an account?", "No account is required for the core create and receive flows."],
   ];
   return <main className="recentPage">
+    <SiteHeader active="how" />
     <div className="recentShell">
-      <header className="recentTopbar"><Logo className="recentLogo" /><a href="/#composer">Create share →</a></header>
-      <section className="recentIntro"><p className="recentEyebrow">THREE SIMPLE STEPS</p><h1>How it works</h1><p>Temporary sharing should feel simple. Add content, choose the access rules, then send the link or code.</p></section>
+      <section className="recentIntro">
+        <p className="recentEyebrow">A SIMPLE FOUR-STEP PROCESS</p>
+        <h1>How it works</h1>
+        <p>Temporary sharing should feel simple. Add content, choose the access rules, then send the link or code.</p>
+      </section>
       <section className="howGuideSteps">{steps.map(([number,title,description]) => <article className="howGuideStep" key={number}><span>{number}</span><div><h2>{title}</h2><p>{description}</p></div></article>)}</section>
       <section className="howGuideFaq"><p className="recentEyebrow">NEED TO KNOW</p><h2>Frequently asked questions</h2>{faqs.map(([question,answer]) => <details key={question}><summary>{question}</summary><p>{answer}</p></details>)}</section>
-      <section className="howGuideCta"><h2>Ready to share something?</h2><p>No account. Clear expiry. Access you can revoke.</p><a href="/#composer">Create a secure share →</a></section>
+      <section className="howGuideCta"><h2>Ready to share something?</h2><p>No account. Clear expiry. Access you can revoke.</p><a href="/create">Create a share →</a></section>
     </div>
+    <SiteFooter />
   </main>;
 }
