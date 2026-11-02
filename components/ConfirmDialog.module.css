@@ -1,0 +1,23 @@
+.dialog {
+  width: min(460px, calc(100% - 32px));
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius-composer);
+  padding: var(--space-7);
+  color: var(--text-1);
+  background: var(--bg-1);
+  box-shadow: 0 28px 90px rgba(0,0,0,.35);
+}
+.dialog::backdrop { background: rgba(3,5,7,.7); backdrop-filter: blur(5px); }
+.mark { display: grid; place-items: center; width: 42px; height: 42px; border-radius: 50%; background: var(--danger-soft); color: var(--danger); font-weight: 800; }
+.title { margin: var(--space-4) 0 var(--space-2); color: var(--text-1); font-size: 24px; letter-spacing: -.035em; }
+.description { margin: 0; color: var(--text-2); line-height: 1.65; }
+.actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: var(--space-2); margin-top: var(--space-6); }
+.actions button { min-height: 42px; border-radius: var(--radius-sm); padding: 0 var(--space-4); font-weight: 650; }
+.secondary { border: 1px solid var(--line-2); background: var(--bg-2); color: var(--text-1); }
+.danger { border: 1px solid var(--danger); background: var(--danger); color: white; }
+.actions button:disabled { opacity: .6; cursor: wait; }
+@media (max-width: 600px) {
+  .dialog { padding: var(--space-5); }
+  .actions { flex-direction: column-reverse; }
+  .actions button { width: 100%; }
+}
