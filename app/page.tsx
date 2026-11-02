@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { ArrowDownToLine, ArrowRight, ArrowUpRight, ChevronDown, Clock3, Code2, Eye, FileText, Image as ImageIcon, KeyRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
 import Composer, { type CreatedShare } from "@/components/Composer";
 import SiteHeader from "@/components/SiteHeader";
@@ -176,7 +177,7 @@ export default function HomePage() {
         </section>
 
         <section className="useMoog restyleUseCases" id="about-moog" aria-labelledby="use-title">
-          <div className="useIntro"><h2 id="use-title">A short life for the things you share.</h2><p>Moog gives text, code, and images a chosen lifetime, with optional access controls and no account to create.</p><img className="moogBots" src="/moog-bots.svg" alt="Moog bots pass a small private share between one another." loading="lazy" /></div>
+          <div className="useIntro"><h2 id="use-title">A short life for the things you share.</h2><p>Moog gives text, code, and images a chosen lifetime, with optional access controls and no account to create.</p><Image className="moogBots" src="/moog-bots.svg" width={1200} height={360} sizes="(max-width: 760px) 100vw, 420px" alt="Moog bots pass a small private share between one another." /></div>
           <div className="useGrid">
             <article className="useCase useCaseSecret"><h3><span className="useCaseIcon"><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /></span>Sensitive information</h3><p>Share passwords, API keys or other secrets.</p></article>
             <article className="useCase useCaseCode"><h3><span className="useCaseIcon"><Code2 size={20} strokeWidth={1.5} aria-hidden="true" /></span>Code snippets</h3><p>Send code to a teammate without leaving it forever.</p><pre data-ui="code-fragment"><code>const share = await moog.create();</code></pre></article>
@@ -200,7 +201,7 @@ export default function HomePage() {
           <div className="securityGrid">
             <article><LockKeyhole size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Private links</h3><p>High-entropy links that are difficult to guess.</p></article>
             <article><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Secure storage</h3><p>Links and codes are stored as hashes.</p></article>
-            <article><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /><h3>We control access, not copies</h3><p>Once someone views or downloads the content, we can't prevent them from copying it.</p></article>
+            <article><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /><h3>We control access, not copies</h3><p>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</p></article>
             <article><Eye size={20} strokeWidth={1.5} aria-hidden="true" /><h3>No tracking</h3><p>Moog doesn’t require an account and doesn’t use third-party analytics tracking.</p></article>
           </div>
         </section>
