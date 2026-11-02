@@ -60,7 +60,7 @@ export default async function SharePage({ params, searchParams }: Props) {
   if (share.viewOnce && !revealed) {
     return (
       <LiveShareGuard token={token}>
-        <main className="viewerPage viewerMinimal" data-ui="share-view">
+        <main className="viewerPage viewerMinimal" data-ui="view-once">
         <div className="viewerShell">
           <header className="viewerTopbar">
             <Logo className="minimalLogo" />
@@ -85,7 +85,7 @@ export default async function SharePage({ params, searchParams }: Props) {
 
   return (
     <LiveShareGuard token={token}>
-      <main className="viewerPage viewerMinimal">
+      <main className="viewerPage viewerMinimal" data-ui="share-view">
       <div className="viewerShell">
         <header className="viewerTopbar">
           <Logo className="minimalLogo" />
