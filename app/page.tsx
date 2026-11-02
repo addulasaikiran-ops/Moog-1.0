@@ -1,7 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { ArrowDownToLine, ArrowRight, ArrowUpRight, Check, Clock3, Code2, Eye, FileText, Image as ImageIcon, KeyRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
+import { ArrowDownToLine, ArrowRight, ArrowUpRight, Clock3, Code2, Eye, FileText, Image as ImageIcon, KeyRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
 import Composer, { type CreatedShare } from "@/components/Composer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
@@ -41,36 +41,31 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion) {
+      setVisualSeconds(8);
+      setPreviewExpired(false);
+      return;
+    }
     let seconds = 8;
-    let expiredTimer: ReturnType<typeof setTimeout> | undefined;
+    let expiredTicks = 0;
     const interval = window.setInterval(() => {
-      seconds -= 1;
-      if (seconds <= 0) {
-        setVisualSeconds(0);
-        setPreviewExpired(true);
-        window.clearInterval(interval);
-        expiredTimer = window.setTimeout(() => {
+      if (seconds > 0) {
+        seconds -= 1;
+        setVisualSeconds(seconds);
+        if (seconds === 0) {
+          setPreviewExpired(true);
+          expiredTicks = 2;
+        }
+      } else if (expiredTicks > 0) {
+        expiredTicks -= 1;
+        if (expiredTicks === 0) {
           seconds = 8;
           setVisualSeconds(seconds);
           setPreviewExpired(false);
-          // The lifecycle loops without changing layout or measuring content.
-          const nextInterval = window.setInterval(() => {
-            seconds -= 1;
-            if (seconds <= 0) {
-              setVisualSeconds(0);
-              setPreviewExpired(true);
-              window.clearInterval(nextInterval);
-              expiredTimer = window.setTimeout(() => {
-                setVisualSeconds(8);
-                setPreviewExpired(false);
-              }, 2200);
-            } else setVisualSeconds(seconds);
-          }, 1000);
-        }, 2200);
-      } else setVisualSeconds(seconds);
+        }
+      }
     }, 1000);
-    return () => { window.clearInterval(interval); if (expiredTimer) window.clearTimeout(expiredTimer); };
+    return () => window.clearInterval(interval);
   }, [reducedMotion]);
 
   function changeTab(next: Tab) {
@@ -155,7 +150,7 @@ export default function HomePage() {
                   const pasted = formatReceiveCode(event.clipboardData.getData("text"));
                   if (pasted) { event.preventDefault(); setReceiveCode(pasted); setReceiveError(""); receiveInputRefs.current[Math.min(pasted.length, 5)]?.focus(); }
                 }}>
-                  {Array.from({ length: 6 }, (_, index) => <input key={index} id={index === 0 ? "receive-code-1" : undefined} ref={node => { receiveInputRefs.current[index] = node; }} className="receiveDigit" aria-label={`Share code digit ${index + 1}`} value={receiveCode[index] ?? ""} inputMode="numeric" pattern="[0-9]*" autoComplete={index === 0 ? "one-time-code" : "off"} maxLength={6} onChange={event => {
+                  {Array.from({ length: 6 }, (_, index) => <input key={index} id={index === 0 ? "receive-code-1" : undefined} ref={node => { receiveInputRefs.current[index] = node; }} className="receiveDigit" aria-label={`Share code digit ${index + 1}`} aria-describedby="receive-help" value={receiveCode[index] ?? ""} inputMode="numeric" pattern="[0-9]*" autoComplete={index === 0 ? "one-time-code" : "off"} maxLength={6} onChange={event => {
                     const entered = formatReceiveCode(event.target.value);
                     if (entered.length > 1) {
                       setReceiveCode(entered); setReceiveError("");
