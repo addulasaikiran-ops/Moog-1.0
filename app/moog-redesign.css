@@ -624,3 +624,195 @@ textarea:focus, .passwordInput:focus, .sharePassword:focus {
   .page .referenceComposerTabs { margin-top: 10px; }
   .page .referenceComposerTabs + .composer { padding: 16px; }
 }
+
+
+/* Premium landing-page polish: wider sections, richer cards, and a clearer process flow. */
+.page .productFeatures,
+.page .featureGrid,
+.page .featuresGrid {
+  width: min(1120px, calc(100% - 48px));
+  margin: 42px auto 0;
+  gap: 20px;
+}
+.page .featureCard {
+  min-height: 220px;
+  padding: 28px;
+  border: 1px solid var(--moog-border);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 100% 0%, var(--moog-accent-soft), transparent 44%),
+    var(--moog-surface);
+  box-shadow: 0 14px 38px rgba(20, 30, 50, .055);
+  transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.page .featureCard:hover {
+  transform: translateY(-6px);
+  border-color: var(--moog-border-strong);
+  box-shadow: 0 22px 48px rgba(20, 30, 50, .10);
+}
+.page .featureCard i,
+.page .featureCard .featureIcon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 28px;
+  border-radius: 16px;
+  background: var(--moog-accent-soft);
+  color: var(--moog-accent);
+  font-size: 20px;
+}
+.page .featureCard strong { font-size: 19px; letter-spacing: -.035em; }
+.page .featureCard small { font-size: 14px; line-height: 1.75; color: var(--moog-muted); }
+
+.page .howMoog,
+.page .useMoog,
+.page .securityReference,
+.page .faqArea {
+  width: min(1120px, calc(100% - 48px));
+  margin: 96px auto 0;
+}
+.page .howIntro,
+.page .useIntro { max-width: 650px; }
+.page .howIntro .moogEyebrow,
+.page .useIntro .moogEyebrow,
+.page .sectionHeading .moogEyebrow {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--moog-accent-soft);
+  color: var(--moog-accent);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+.page .howIntro h2,
+.page .useIntro h2,
+.page .sectionHeading h2 {
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.04;
+  letter-spacing: -.065em;
+  margin: 18px 0 12px;
+}
+.page .howIntro p,
+.page .useIntro p,
+.page .sectionHeading p { font-size: 15px; line-height: 1.8; color: var(--moog-muted); }
+
+.page .howSteps {
+  position: relative;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 34px;
+}
+.page .howSteps > div {
+  position: relative;
+  min-height: 205px;
+  padding: 26px 24px;
+  overflow: hidden;
+  border: 1px solid var(--moog-border);
+  border-radius: 22px;
+  background: var(--moog-surface);
+  box-shadow: 0 12px 30px rgba(20, 30, 50, .045);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.page .howSteps > div:hover {
+  transform: translateY(-5px);
+  border-color: var(--moog-border-strong);
+  box-shadow: 0 20px 42px rgba(20, 30, 50, .085);
+}
+.page .howSteps b {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 25px;
+  border-radius: 15px;
+  background: var(--moog-accent-soft);
+  color: var(--moog-accent);
+  font-size: 12px;
+  letter-spacing: .12em;
+}
+.page .howSteps strong { font-size: 18px; letter-spacing: -.03em; }
+.page .howSteps small { font-size: 13px; line-height: 1.75; color: var(--moog-muted); }
+.page .howSteps > div::after {
+  content: "";
+  position: absolute;
+  right: -34px;
+  bottom: -48px;
+  width: 112px;
+  height: 112px;
+  border: 1px solid var(--moog-border);
+  border-radius: 32px;
+  transform: rotate(28deg);
+  pointer-events: none;
+}
+.page .useGrid,
+.page .securityGrid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 30px;
+}
+.page .useGrid > div,
+.page .securityGrid > div {
+  min-height: 175px;
+  padding: 24px;
+  border: 1px solid var(--moog-border);
+  border-radius: 22px;
+  background: var(--moog-surface);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.page .useGrid > div:hover,
+.page .securityGrid > div:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(20,30,50,.07); }
+.page .useGrid strong,
+.page .securityGrid strong { font-size: 16px; letter-spacing: -.025em; }
+.page .useGrid small,
+.page .securityGrid small { font-size: 13px; line-height: 1.75; color: var(--moog-muted); }
+
+.page .faqArea { gap: 24px; }
+.page .faq,
+.page .contactCard {
+  border: 1px solid var(--moog-border);
+  border-radius: 26px;
+  background: var(--moog-surface);
+  box-shadow: 0 16px 42px rgba(20,30,50,.05);
+}
+.page .faq { padding: 30px; }
+.page .faq summary { color: var(--moog-text); font-size: 15px; }
+.page .faq details { border-color: var(--moog-border); }
+.page .faq details p,
+.page .contactCard p { color: var(--moog-muted); line-height: 1.8; }
+.page .contactCard { padding: 30px; }
+.page .siteFooter {
+  width: min(1120px, calc(100% - 48px));
+  margin: 80px auto 0;
+  padding-top: 28px;
+  border-color: var(--moog-border);
+}
+@media (max-width: 900px) {
+  .page .productFeatures,
+  .page .featureGrid,
+  .page .featuresGrid { width: min(100% - 32px, 720px); }
+  .page .howMoog,
+  .page .useMoog,
+  .page .securityReference,
+  .page .faqArea { width: min(100% - 32px, 720px); margin-top: 70px; }
+  .page .howSteps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .page .useGrid, .page .securityGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+  .page .productFeatures,
+  .page .featureGrid,
+  .page .featuresGrid { width: calc(100% - 24px); gap: 12px; margin-top: 28px; }
+  .page .featureCard { min-height: 0; padding: 22px; }
+  .page .howMoog,
+  .page .useMoog,
+  .page .securityReference,
+  .page .faqArea { width: calc(100% - 24px); margin-top: 54px; }
+  .page .howSteps,
+  .page .useGrid,
+  .page .securityGrid { grid-template-columns: 1fr; gap: 12px; }
+  .page .howSteps > div { min-height: 165px; }
+  .page .faq, .page .contactCard { padding: 22px; }
+  .page .siteFooter { width: calc(100% - 24px); margin-top: 54px; }
+}
