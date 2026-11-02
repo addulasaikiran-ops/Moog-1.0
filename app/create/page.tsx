@@ -4,6 +4,7 @@ import { FormEvent, useMemo, useState } from "react";
 import Logo from "@/components/Logo";
 
 type Lifetime = "15" | "60" | "1440" | "10080" | "custom";
+type RecentShare = { type: "text" | "code" | "photo"; createdAt: string; expiresAt: string; url: string; code: string; passwordProtected: boolean; viewOnce: boolean; revoked?: boolean; viewed?: boolean };
 const lifetimeOptions: { value: Lifetime; label: string }[] = [
   { value: "15", label: "15 minutes" },
   { value: "60", label: "1 hour" },
@@ -50,7 +51,16 @@ export default function CreateSharePage() {
       });
       const body = await response.json() as { url?: string; code?: string; expiresAt?: string; revokeToken?: string; error?: string };
       if (!response.ok || !body.url || !body.code || !body.expiresAt || !body.revokeToken) throw new Error(body.error ?? "Could not create your secure link.");
-      setResult({ url: body.url, code: body.code, expiresAt: body.expiresAt, revokeToken: body.revokeToken });
+      const nextResult = { url: body.url, code: body.code, expiresAt: body.expiresAt, revokeToken: body.revokeToken };
+      setResult(nextResult);
+      try {
+        const key = "moog-recent-shares-v1";
+        const previous = JSON.parse(window.localStorage.getItem(key) ?? "[]") as RecentShare[];
+        const entry: RecentShare = { type: "text", createdAt: new Date().toISOString(), expiresAt: body.expiresAt, url: body.url, code: body.code, passwordProtected: protect, viewOnce };
+        window.localStorage.setItem(key, JSON.stringify([entry, ...previous.filter((item) => item.url !== body.url)].slice(0, 30)));
+      } catch {
+        // The share is already created; local history is a convenience, not a dependency.
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not create your secure link.");
     } finally {
@@ -81,7 +91,7 @@ export default function CreateSharePage() {
           </div>
           <div className="createShareSuccessActions"><button type="button" className="createSharePrimary" onClick={copyLink}>{copied ? "✓ Copied!" : "▢ Copy link"}</button><a className="createShareEmailButton" href={"mailto:?subject="+encodeURIComponent("A secure link shared with you")+"&body="+encodeURIComponent("Here is your secure link: "+result.url+(protect ? "\n\nA password is required to open this share. I will send it to you separately." : ""))}>Share via email ↗</a></div>
           <div className="createShareSuccessFooter"><a href="/create" onClick={e => {e.preventDefault(); setResult(null); setText(""); setLifetime("1440"); setCustomExpiry(""); setProtect(false); setAccessKey(""); setViewOnce(false); setError(""); setCopied(false); window.scrollTo({top:0,behavior:"smooth"});}}>⟲ Create another share</a><a href="/recent">→ Go to my shares</a></div>
-          <p className="createShareSuccessCode">Keep your share code somewhere safe: <strong>{result.code}</strong></p>
+          <div className="createShareSuccessCode"><span>6-DIGIT SHARE CODE</span><strong>{result.code.replace(/(\\d{3})(\\d{3})/, "$1 $2")}</strong><p>Share this code separately if the recipient will use the receive form.</p></div>
         </section>
       </div>
     </main>;
@@ -89,7 +99,7 @@ export default function CreateSharePage() {
 
   return <main className="createSharePage">
     <header className="createShareTopbar">
-      <a className="createShareLogo" href="/">Moog</a>
+      <Logo className="createShareLogo" />
       <nav><a href="/how-it-works">How it works</a><a className="createShareGetStarted" href="/create">Get started</a></nav>
     </header>
     <div className="createShareShell">
