@@ -344,3 +344,61 @@ body > .moogThemeToggle:hover { transform: translateY(-1px); }
 .restylePage .useCase p, .restylePage .howSteps p, .restylePage .securityGrid p,
 .restylePage .faq details p, .restylePage .contactCard p, .restylePage .privacyLead p,
 .restylePage .restyleFooterBrand p { color: var(--moog-text); font-size: 16px; line-height: 1.65; }
+
+/* Share viewer, password prompt and expired states use the same product tokens. */
+.viewerPage, .legalPage.moogErrorPage { min-height: 100vh; padding: 24px; background: var(--moog-canvas) !important; color: var(--moog-text) !important; font-family: var(--font-geist), Geist, sans-serif !important; background-image: none !important; }
+.viewerPage::before, .viewerPage::after, .legalPage.moogErrorPage::before, .legalPage.moogErrorPage::after { display: none !important; }
+.viewerShell { width: min(100%, 820px); margin: 0 auto; }
+.viewerTopbar { min-height: 48px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 0 24px; border: 0 !important; background: transparent !important; }
+.viewerTopbar .minimalLogo, .legalShell .minimalLogo { display: inline-flex; align-items: center; gap: 8px; color: var(--moog-text); font-size: 20px; font-weight: 650; text-decoration: none; }
+.viewerSecure { display: inline-flex; align-items: center; gap: 8px; color: var(--moog-muted); font-size: 13px; }
+.viewerSecure svg { color: var(--moog-text); }
+.viewerMain { padding: 36px 0; }
+.minimalCard, .minimalCard.passwordCard, .minimalCard.revealCard { border: 1px solid var(--moog-border) !important; border-radius: 16px !important; background: var(--moog-raised) !important; color: var(--moog-text) !important; box-shadow: none !important; }
+.minimalMeta { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 24px; background: var(--moog-secondary); color: var(--moog-muted); }
+.minimalMeta > span { color: var(--moog-muted); font-size: 12px; }
+.countdownWrap { display: grid; gap: 4px; text-align: right; }
+.countdownLabel { color: var(--moog-muted); font-size: 10px; }
+.countdownWrap strong { color: var(--moog-text); font-size: 16px; font-weight: 620; font-variant-numeric: tabular-nums; }
+.minimalContent { padding: 28px 24px; color: var(--moog-text); font-size: 16px; line-height: 1.7; }
+.minimalText { color: var(--moog-text) !important; font: 16px/1.7 var(--font-geist), Geist, sans-serif !important; white-space: pre-wrap; overflow-wrap: anywhere; }
+.minimalPhoto img { display: block; max-width: 100%; height: auto; object-fit: contain; }
+.minimalPhoto p { color: var(--moog-text); font-size: 16px; }
+.minimalActions { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 24px; background: var(--moog-secondary); }
+.minimalAction, .minimalNewShare, .newShareLink, .minimalRevealButton, .passwordRow .primary, .legalButton { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0 14px; border: 1px solid var(--moog-border); border-radius: 9px; background: var(--moog-raised); color: var(--moog-text) !important; font: 14px/1.4 var(--font-geist), Geist, sans-serif; text-decoration: none; cursor: pointer; transition: transform 140ms ease, opacity 140ms ease; }
+.minimalRevealButton, .passwordRow .primary, .legalButton { border-color: var(--moog-lime); background: var(--moog-lime); color: var(--moog-ink) !important; font-weight: 650; }
+.minimalRevealButton:hover, .passwordRow .primary:hover, .legalButton:hover { transform: translateY(-1px); }
+.viewerPage :where(a,button,input,textarea):focus-visible, .legalPage.moogErrorPage :where(a,button,input):focus-visible { outline: 2px solid var(--moog-focus); outline-offset: 3px; }
+.lockStage { width: min(100%, 520px); margin: clamp(40px, 10vh, 100px) auto; padding: 32px; border: 1px solid var(--moog-border); border-radius: 16px; background: var(--moog-raised); text-align: left; }
+.lockIcon { width: 44px; height: 44px; display: grid; place-items: center; margin-bottom: 28px; border-radius: 10px; background: var(--moog-secondary); color: var(--moog-text); }
+.viewerEyebrow { margin-bottom: 12px; color: var(--moog-muted); font-size: 12px; letter-spacing: .04em; }
+.lockStage h1, .revealContent h1, .legalShell h1 { margin: 0; color: var(--moog-text); font-size: clamp(30px,5vw,42px); font-weight: 640; line-height: 1.08; letter-spacing: -.06em; }
+.lockStage > p, .revealContent p, .legalShell > p { margin: 16px 0 24px; color: var(--moog-text); font-size: 16px; line-height: 1.65; }
+.passwordCard { margin-top: 22px; padding: 18px; }
+.viewerLabel { display: block; margin-bottom: 8px; color: var(--moog-muted); font-size: 12px; }
+.passwordRow { display: grid; grid-template-columns: minmax(0,1fr) auto auto; gap: 8px; }
+.passwordInput { min-width: 0; min-height: 44px; padding: 0 12px; border: 1px solid var(--moog-border); border-radius: 9px; background: var(--moog-canvas); color: var(--moog-text); font: 16px var(--font-geist), Geist, sans-serif; }
+.passwordVisibility { min-height: 44px; padding: 0 12px; border: 1px solid var(--moog-border); border-radius: 9px; background: var(--moog-secondary); color: var(--moog-text); cursor: pointer; }
+.passwordError { margin: 12px 0 0; color: #A12E21; font-size: 14px; }
+html[data-theme="dark"] .passwordError { color: #FFB8A8; }
+.lockNote, .minimalFooter { padding: 22px 0; color: var(--moog-muted); font-size: 13px; }
+.revealContent { padding: 28px; }
+.revealEyebrow { margin-bottom: 12px; color: var(--moog-muted); font-size: 12px; }
+.viewerUnavailable .lockStage { background: transparent; border: 0; padding-inline: 0; }
+.viewerUnavailable .lockStage > p { max-width: 480px; }
+.legalPage.moogErrorPage { display: grid; place-items: center; }
+.legalPage.moogErrorPage .legalShell { width: min(100%, 560px); padding: 32px; border: 1px solid var(--moog-border); border-radius: 16px; background: var(--moog-raised); }
+.legalPage.moogErrorPage .eyebrow { margin-top: 40px; color: var(--moog-muted); }
+.legalPage.moogErrorPage h1 { color: var(--moog-text); }
+.legalPage.moogErrorPage .legalShell > p:not(.eyebrow) { color: var(--moog-text); font-size: 16px; }
+@media (max-width: 600px) {
+  .viewerPage, .legalPage.moogErrorPage { padding: 14px; }
+  .viewerMain { padding: 20px 0; }
+  .minimalMeta, .minimalActions { align-items: flex-start; flex-direction: column; padding: 16px; }
+  .countdownWrap { text-align: left; }
+  .minimalContent { padding: 20px 16px; }
+  .lockStage { margin: 24px auto; padding: 22px; }
+  .passwordRow { grid-template-columns: minmax(0,1fr) auto; }
+  .passwordRow .primary { grid-column: 1 / -1; }
+  .legalPage.moogErrorPage .legalShell { padding: 24px; }
+}
