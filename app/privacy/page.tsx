@@ -1,4 +1,5 @@
-import Logo from "@/components/Logo";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 export const metadata = {
   title: "Privacy — Moog",
   description: "Moog privacy information.",
@@ -7,9 +8,9 @@ export const metadata = {
 export default function PrivacyPage() {
   return (
     <main className="legalPage">
+      <SiteHeader active="privacy" />
       <article className="legalShell">
-        <Logo className="minimalLogo" />
-        <p className="eyebrow">PRIVACY</p>
+        <p className="eyebrow">PRIVACY / HOW DATA IS HANDLED</p>
         <h1>Privacy, without pretending.</h1>
         <p>Moog stores active share content on the server because the service must retrieve it for recipients. This is access-controlled temporary sharing, not end-to-end encryption.</p>
         <h2>Temporary data</h2>
@@ -24,6 +25,7 @@ export default function PrivacyPage() {
         <p>Use the report-abuse form for illegal content, harassment, malware, copyright concerns, or privacy requests. Reports are rate-limited and stored for review.</p>
         <a className="primary legalButton" href="/">Back to Moog <span>→</span></a>
       </article>
+      <SiteFooter />
     </main>
   );
 }

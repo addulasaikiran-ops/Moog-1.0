@@ -1,4 +1,5 @@
-import Logo from "@/components/Logo";
+import SiteHeader from "@/components/SiteHeader";
+import SiteFooter from "@/components/SiteFooter";
 export const metadata = {
   title: "Terms — Moog",
   description: "Moog terms of use.",
@@ -7,9 +8,9 @@ export const metadata = {
 export default function TermsPage() {
   return (
     <main className="legalPage">
+      <SiteHeader active="terms" />
       <article className="legalShell">
-        <Logo className="minimalLogo" />
-        <p className="eyebrow">TERMS</p>
+        <p className="eyebrow">TERMS / RESPONSIBLE USE</p>
         <h1>Use Moog responsibly.</h1>
         <p>Do not use Moog to distribute unlawful content, malware, abuse, or material you do not have the right to share.</p>
         <h2>Temporary means temporary</h2>
@@ -20,6 +21,7 @@ export default function TermsPage() {
         <p>We may review reports concerning unlawful content, abuse, malware, copyright, or privacy. Submit a report when a share needs review.</p>
         <a className="primary legalButton" href="/">Back to Moog <span>→</span></a>
       </article>
+      <SiteFooter />
     </main>
   );
 }

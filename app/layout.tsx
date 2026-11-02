@@ -6,6 +6,7 @@ import "./moog-design-system.css";
 import "./interface-layout-fixes.css";
 import "./moog-redesign.css";
 import "./styles/tokens.css";
+import "./moog-stitch.css";
 import ThemeToggle from "@/components/ThemeToggle";
 
 const geist = Geist({ subsets: ["latin"], display: "swap", variable: "--font-geist" });
