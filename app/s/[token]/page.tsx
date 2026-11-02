@@ -133,7 +133,7 @@ export default async function SharePage({ params, searchParams }: Props) {
                       <span className="minimalActionNote">Access-controlled share</span>
                     )}
                   </div>
-                  <a className="minimalNewShare" href="/">New share <span>→</span></a>
+                  <a className="minimalNewShare" href="/">New share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a>
                 </div>
               </>
             )}
