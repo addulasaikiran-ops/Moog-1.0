@@ -148,7 +148,7 @@ export default function Composer({ onCreated, compact = false }: {
           </div>}
         </div>
         {error && <div className="formError" role="alert">{error}</div>}
-        <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating share…</> : <>Create private share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></>}</button>
+        <button className="primary createButton" type="submit" disabled={loading || (mode === "photo" ? !file : !text.trim()) || (passwordEnabled && !accessKey.trim())}>{loading ? <><span className="spinner" /> Creating share…</> : <>Create private share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></>}</button>
         <div className="composerTrust"><LockKeyhole size={15} strokeWidth={1.5} aria-hidden="true" /><span>No account required. Expiry limits access through Moog; it cannot erase copies someone has already made.</span></div>
       </form>
     </section>
