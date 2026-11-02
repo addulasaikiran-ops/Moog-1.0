@@ -5,8 +5,8 @@ import Logo from "@/components/Logo";
 type ActivePage = "home" | "how" | "recent" | "privacy" | "create" | "about" | "terms" | "contact" | "report";
 
 const links: Array<{ href: string; label: string; key: ActivePage }> = [
-  { href: "/", label: "Home", key: "home" },
-  { href: "/how-it-works", label: "How it works", key: "how" },
+  { href: "/#about-moog", label: "About", key: "about" },
+  { href: "/#how-it-works", label: "How it works", key: "how" },
   { href: "/recent", label: "Recent shares", key: "recent" },
   { href: "/privacy", label: "Privacy", key: "privacy" },
 ];
