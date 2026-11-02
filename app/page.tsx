@@ -278,7 +278,7 @@ export default function HomePage() {
       <div className="shell">
         <header className="topbar">
           <Logo className="moogLogo" />
-          <nav className="moogTopNav" aria-label="Primary"><a href="#how-it-works">How it works</a><a className="moogNavCta" href="/create">Get started</a></nav>
+          <nav className="moogTopNav" aria-label="Primary"><a href="/how-it-works">How it works</a><a href="/#security">Security</a><a href="/#faq">FAQ</a><a href="/recent">Recent shares</a><a className="moogNavCta" href="/create">Create share</a></nav>
         </header>
 
         <section className="moogHero">
