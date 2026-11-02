@@ -454,3 +454,73 @@ body { font-family: var(--font-geist), Geist, Inter, ui-sans-serif, system-ui, s
   .viewerPage { padding-inline: 16px; }
   .viewerPage .minimalContent { padding: 20px; }
 }
+
+
+/* Signature composition: the share artifact sits inside the sentence. */
+.page .moogHero {
+  display: block;
+  max-width: 1220px;
+  margin-inline: auto;
+  padding: clamp(76px, 9vw, 128px) 0 clamp(56px, 7vw, 88px);
+  text-align: center;
+}
+.page .moogHero h1 {
+  max-width: 1120px;
+  margin-inline: auto;
+  font-size: clamp(64px, 8.4vw, 124px);
+  line-height: .96;
+  letter-spacing: -.085em;
+  text-align: center;
+}
+.page .moogHeroCopy { max-width: 640px; margin: 28px auto 0; }
+.page .moogHeroActions { justify-content: center; margin-top: 28px; }
+.page .moogTrust { justify-content: center; margin-top: 28px; }
+.moogInlineArtifact {
+  display: inline-flex;
+  align-items: center;
+  gap: .7em;
+  width: 15em;
+  height: 5.2em;
+  margin: 0 .08em;
+  padding: .6em;
+  overflow: hidden;
+  vertical-align: .02em;
+  border: 1px solid var(--line-2);
+  border-radius: .15em;
+  background: var(--bg-2);
+  text-align: left;
+  white-space: nowrap;
+}
+.moogInlineArtifactIcon {
+  display: grid;
+  flex: 0 0 3.2em;
+  place-items: center;
+  width: 3.2em;
+  height: 3.2em;
+  border-radius: .12em;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: clamp(13px, .15em, 17px);
+  font-weight: 700;
+}
+.moogInlineArtifactCopy { display: grid; min-width: 0; gap: .35em; }
+.moogInlineArtifactCopy strong {
+  overflow: hidden;
+  color: var(--text-1);
+  font-size: clamp(13px, .15em, 17px);
+  font-weight: 650;
+  letter-spacing: -.02em;
+  text-overflow: ellipsis;
+}
+.moogInlineArtifactCopy small {
+  color: var(--text-3);
+  font-size: clamp(13px, .13em, 15px);
+  font-weight: 450;
+  letter-spacing: 0;
+}
+@media (max-width: 760px) {
+  .page .moogHero { display: block; padding: 56px 0 48px; }
+  .page .moogHero h1 { font-size: clamp(52px, 12vw, 78px); line-height: .98; }
+  .moogInlineArtifact { width: 11.6em; height: 4.8em; gap: .45em; padding: .4em; }
+  .moogInlineArtifactIcon { flex-basis: 2.8em; width: 2.8em; height: 2.8em; }
+}
