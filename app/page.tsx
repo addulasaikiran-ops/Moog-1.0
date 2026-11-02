@@ -229,6 +229,13 @@ export default function HomePage() {
       setRevoked(true);
       setCode("");
       setRevokeToken("");
+      try {
+        const key = "moog-recent-shares-v1";
+        const history = JSON.parse(window.localStorage.getItem(key) ?? "[]") as RecentShare[];
+        window.localStorage.setItem(key, JSON.stringify(history.map((item) => item.url === url ? { ...item, revoked: true } : item).slice(0, 30)));
+      } catch {
+        // Revocation is already confirmed by the server; local history is best-effort only.
+      }
     } catch (error) {
       setRevokeError(error instanceof Error ? error.message : "Could not revoke this share.");
     } finally {
