@@ -63,7 +63,7 @@ body { background: var(--moog-canvas) !important; color: var(--moog-text) !impor
 .restylePage .moogHero.restyleHero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, .82fr); gap: clamp(40px, 7vw, 96px); align-items: center; padding: 64px 0 72px; margin: 0; border: 0; background: transparent; }
 .restyleHeroCopy { min-width: 0; }
 .restyleHero h1 { max-width: 650px; margin: 0; color: var(--moog-text); font-size: clamp(52px, 5.5vw, 76px); font-weight: 640; line-height: .99; letter-spacing: -.075em; }
-.restyleHero .moogHeroCopy { max-width: 500px; margin: 24px 0 0; color: var(--moog-muted); font-size: 18px; line-height: 1.6; }
+.restyleHero .moogHeroCopy { max-width: 500px; margin: 24px 0 0; color: var(--moog-text); font-size: 18px; line-height: 1.6; }
 .restyleHero .moogHeroActions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
 .restylePage .moogSecondary { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0 16px; border: 1px solid var(--moog-border); border-radius: var(--moog-control-radius); background: transparent; color: var(--moog-text); font-size: 14px; font-weight: 600; cursor: pointer; transition: transform 150ms ease, opacity 150ms ease; }
 .restylePage .moogSecondary:hover { transform: translateY(-2px); background: var(--moog-secondary); }
@@ -183,13 +183,13 @@ html[data-theme="dark"] .restylePage .formError, html[data-theme="dark"] .restyl
 .restylePage .imageFragment { display: flex; align-items: center; gap: 10px; margin-top: 16px; padding: 12px; border-radius: 8px; background: var(--moog-canvas); color: var(--moog-muted); font-size: 12px; }
 .restylePage .howMoog.restyleHow { background: var(--moog-canvas); padding-inline: 0; }
 .restylePage .howIntro { margin-bottom: 28px; }
-.restylePage .howSteps { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0; margin: 0; padding: 0; list-style: none; counter-reset: moog-step; }
-.restylePage .howSteps li { position: relative; min-width: 0; padding: 22px 24px 24px; background: var(--moog-raised); counter-increment: moog-step; }
+.restylePage .howSteps { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 0; margin: 0; padding: 0; list-style: none; }
+.restylePage .howSteps li { position: relative; min-width: 0; padding: 22px 24px 24px; background: var(--moog-raised); }
 .restylePage .howSteps li:first-child { border-radius: 12px 0 0 12px; }
 .restylePage .howSteps li:last-child { border-radius: 0 12px 12px 0; }
 .restylePage .howSteps li + li { background: var(--moog-secondary); }
-.restylePage .howSteps li::before { content: counter(moog-step, decimal-leading-zero); display: block; margin-bottom: 24px; color: var(--moog-muted); font-size: 12px; }
-.restylePage .howSteps li:not(:last-child)::after { content: ""; position: absolute; z-index: 1; top: 34px; right: -4px; width: 8px; height: 8px; border-top: 2px solid var(--moog-lime); border-right: 2px solid var(--moog-lime); transform: rotate(45deg); }
+.restylePage .howSteps li::before { content: none; }
+.restylePage .howSteps li:not(:last-child)::after { content: ""; position: absolute; z-index: 1; top: 50%; right: -4px; width: 8px; height: 8px; border-top: 2px solid var(--moog-lime); border-right: 2px solid var(--moog-lime); transform: translateY(-50%) rotate(45deg); }
 .restylePage .stepIcon { display: none; }
 .restylePage .howSteps h3 { margin: 0; color: var(--moog-text); font-size: 18px; font-weight: 630; }
 .restylePage .howSteps p { margin: 10px 0 0; color: var(--moog-muted); font-size: 14px; }
@@ -306,7 +306,7 @@ html[data-theme="dark"] .restylePage .formError, html[data-theme="dark"] .restyl
   .restylePage .useCase { padding: 16px; }
   .restylePage .howSteps { grid-template-columns: minmax(0,1fr); gap: 8px; }
   .restylePage .howSteps li, .restylePage .howSteps li:first-child, .restylePage .howSteps li:last-child { padding: 18px; border-radius: 10px; }
-  .restylePage .howSteps li::before { margin-bottom: 12px; }
+  .restylePage .howSteps li::before { content: none; }
   .restylePage .howSteps li:not(:last-child)::after { top: auto; bottom: -4px; right: 28px; transform: rotate(135deg); }
   .restylePage .securityReference.restylePrivacy, .restylePage .restyleFaq { grid-template-columns: minmax(0,1fr); gap: 28px; }
   .restylePage .resultLinkRow { grid-template-columns: minmax(0,1fr); }
@@ -402,3 +402,17 @@ html[data-theme="dark"] .passwordError { color: #FFB8A8; }
   .passwordRow .primary { grid-column: 1 / -1; }
   .legalPage.moogErrorPage .legalShell { padding: 24px; }
 }
+
+.restylePage .stitchHeaderCta, .restylePage .moogPrimary, .restylePage .moogSecondary,
+.restylePage .composerExperience, .restylePage .expiryArtifact, .restylePage .useCase,
+.restylePage .contactCard, .restylePage .result, body > .moogThemeToggle,
+.viewerPage *, .legalPage.moogErrorPage * { box-shadow: none !important; background-image: none !important; }
+.restylePage .howSteps li:nth-child(2) { animation-delay: 70ms; }
+.restylePage .howSteps li:nth-child(3) { animation-delay: 140ms; }
+.restylePage .howSteps li:nth-child(4) { animation-delay: 210ms; }
+.restylePage .securityGrid article:nth-child(2) { animation-delay: 70ms; }
+.restylePage .securityGrid article:nth-child(3) { animation-delay: 140ms; }
+.restylePage .faq details:nth-of-type(2) { animation-delay: 70ms; }
+.restylePage .faq details:nth-of-type(3) { animation-delay: 140ms; }
+.restylePage .faq details:nth-of-type(4) { animation-delay: 210ms; }
+.restylePage .faq details:nth-of-type(5) { animation-delay: 280ms; }
