@@ -16,7 +16,7 @@ export default function SiteHeader({ active }: { active?: ActivePage }) {
   return (
     <header className="stitchHeader">
       <div className="stitchHeaderInner">
-        <Logo className="stitchLogo" />
+        <Logo className="stitchLogo" aria-current={active === "home" ? "page" : undefined} />
         <nav className="stitchDesktopNav" aria-label="Primary navigation">
           {links.map((item) => (
             <a key={item.key} href={item.href} aria-current={active === item.key ? "page" : undefined}>
