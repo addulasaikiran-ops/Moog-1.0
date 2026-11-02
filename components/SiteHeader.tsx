@@ -6,9 +6,9 @@ type ActivePage = "home" | "how" | "recent" | "privacy" | "create" | "about" | "
 
 const links: Array<{ href: string; label: string; key: ActivePage }> = [
   { href: "/", label: "Home", key: "home" },
-  { href: "/how-it-works", label: "How it works", key: "how" },
-  { href: "/recent", label: "Recent shares", key: "recent" },
-  { href: "/privacy", label: "Privacy", key: "privacy" },
+  { href: "/#share", label: "Share", key: "create" },
+  { href: "/#about-moog", label: "About", key: "about" },
+  { href: "/#how-it-works", label: "How it works", key: "how" },
 ];
 
 export default function SiteHeader({ active }: { active?: ActivePage }) {
@@ -38,7 +38,8 @@ export default function SiteHeader({ active }: { active?: ActivePage }) {
                   {item.label}
                 </a>
               ))}
-              <a href="/create">Create a share →</a>
+              <a href="/#share">Create a share →</a>
+              <a href="/privacy">Privacy</a>
               <a href="/terms">Terms</a>
               <a href="/report-abuse">Report abuse</a>
             </nav>
