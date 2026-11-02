@@ -44,7 +44,7 @@ body { background: var(--moog-canvas) !important; color: var(--moog-text) !impor
 .page.restylePage { min-height: 100vh; background: var(--moog-canvas) !important; color: var(--moog-text); overflow: clip; }
 .restylePage .ambient, .restylePage::before, .restylePage::after { display: none !important; }
 .restylePage .shell { width: min(1240px, calc(100% - 64px)); margin-inline: auto; padding: 0; }
-.restylePage :where(h1,h2,h3,p,li,summary,a,button,label,small,strong,span) { font-family: var(--font-geist), Geist, sans-serif; }
+.restylePage :where(h1,h2,h3,p,li,summary,a,button,label,small,strong,span,input,textarea,select,option) { font-family: var(--font-geist), Geist, sans-serif; }
 .restylePage :where(p,li) { color: var(--moog-text); font-size: 16px; line-height: 1.65; }
 .restylePage :where(a,button,input,textarea,select,summary) { -webkit-tap-highlight-color: transparent; }
 .restylePage :where(a,button,input,textarea,select,summary):focus-visible { outline: 2px solid var(--moog-focus) !important; outline-offset: 3px; }
