@@ -24,7 +24,7 @@ export default function SiteHeader({ active }: { active?: ActivePage }) {
           ))}
         </nav>
         <div className="stitchHeaderActions">
-          <a className="stitchHeaderCta" href="/create">
+          <a className="stitchHeaderCta" href="/#share">
             <span className="stitchLiveDot" aria-hidden="true" />
             Create a share <span aria-hidden="true">→</span>
           </a>
