@@ -416,3 +416,5 @@ html[data-theme="dark"] .passwordError { color: #FFB8A8; }
 .restylePage .faq details:nth-of-type(3) { animation-delay: 140ms; }
 .restylePage .faq details:nth-of-type(4) { animation-delay: 210ms; }
 .restylePage .faq details:nth-of-type(5) { animation-delay: 280ms; }
+
+.restylePage .faq summary::after { content: none !important; }
