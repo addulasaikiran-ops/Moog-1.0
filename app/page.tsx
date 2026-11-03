@@ -7,14 +7,15 @@ import Composer, { type CreatedShare } from "@/components/Composer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ShareResult from "@/components/ShareResult";
+import AdSenseUnit from "@/components/AdSenseUnit";
 
 type Tab = "send" | "receive";
 const COMMON_EXPIRY_LABELS: Record<number, string> = {
   1: "1 minute", 5: "5 minutes", 15: "15 minutes", 30: "30 minutes",
   60: "1 hour", 360: "6 hours", 1440: "24 hours", 4320: "3 days", 10080: "7 days",
 };
-function formatReceiveCode(value: string) { return value.replace(/\\D/g, "").slice(0, 6); }
-function isValidCode(value: string) { return /^\\d{6}$/.test(value); }
+function formatReceiveCode(value: string) { return value.replace(/\D/g, "").slice(0, 6); }
+function isValidCode(value: string) { return /^\d{6}$/.test(value); }
 
 export default function HomePage() {
   const [tab, setTab] = useState<Tab>("send");
@@ -202,7 +203,7 @@ export default function HomePage() {
             <article><LockKeyhole size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Private links</h3><p>High-entropy links that are difficult to guess.</p></article>
             <article><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Secure storage</h3><p>Links and codes are stored as hashes.</p></article>
             <article><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /><h3>We control access, not copies</h3><p>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</p></article>
-            <article><Eye size={20} strokeWidth={1.5} aria-hidden="true" /><h3>No tracking</h3><p>Moog doesn’t require an account and doesn’t use third-party analytics tracking.</p></article>
+            <article><Eye size={20} strokeWidth={1.5} aria-hidden="true" /><h3>No tracking</h3><p>No third-party analytics. Google ads may use cookies as explained in our privacy page.</p></article>
           </div>
         </section>
 
@@ -218,6 +219,7 @@ export default function HomePage() {
           </div>
           <aside className="contactCard"><div className="contactIcon" aria-hidden="true"><Mail size={20} strokeWidth={1.5} /></div><h3>Still have questions?</h3><p>If you need more information, get in touch.</p><a href="/contact">Contact us <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a></aside>
         </section>
+        <AdSenseUnit />
         <SiteFooter />
       </div>
     </main>

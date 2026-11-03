@@ -37,8 +37,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
       <head>
         <script nonce={nonce} dangerouslySetInnerHTML={{ __html: themeBootstrap }} />
         <meta name="google-site-verification" content="faNn5oeght5riOAmDiyfA_ki0nCNh6xq2flmzaJ_K7A" />
-        <meta name="google-adsense-account" content="ca-pub-854551842374792" />
-        <script nonce={nonce} async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-854551842374792" crossOrigin="anonymous"></script>
+        <meta name="google-adsense-account" content="ca-pub-8545541842374792" />
         <script nonce={nonce} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       </head>
       <body>{children}<ThemeToggle /></body>
