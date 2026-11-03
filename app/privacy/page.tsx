@@ -21,6 +21,8 @@ export default function PrivacyPage() {
         <p>Anyone who can open a share may copy or screenshot what they see. View-once shares require an explicit reveal action before the content is consumed.</p>
         <h2>Rate limiting and logs</h2>
         <p>Moog does not store raw IP addresses or user-agent values in its application data. For abuse prevention and rate limiting, it uses a short-lived HMAC-derived client key; rate-limit records are automatically deleted after 26 hours.</p>
+        <h2>Advertising and cookies</h2>
+        <p>Moog displays Google AdSense advertisements on the homepage only. Google and its partners may use cookies or similar technologies to serve, measure, and personalize ads, depending on your location and available ad settings. These advertising technologies are separate from Moog’s share storage and access controls. Learn more in Google’s advertising and privacy information.</p>
         <h2>Abuse reports</h2>
         <p>Use the report-abuse form for illegal content, harassment, malware, copyright concerns, or privacy requests. Reports are rate-limited and stored for review.</p>
         <a className="primary legalButton" href="/">Back to Moog <span>→</span></a>
