@@ -7,6 +7,7 @@ import Composer, { type CreatedShare } from "@/components/Composer";
 import SiteHeader from "@/components/SiteHeader";
 import SiteFooter from "@/components/SiteFooter";
 import ShareResult from "@/components/ShareResult";
+import AdSenseUnit from "@/components/AdSenseUnit";
 
 type Tab = "send" | "receive";
 const COMMON_EXPIRY_LABELS: Record<number, string> = {
@@ -218,6 +219,7 @@ export default function HomePage() {
           </div>
           <aside className="contactCard"><div className="contactIcon" aria-hidden="true"><Mail size={20} strokeWidth={1.5} /></div><h3>Still have questions?</h3><p>If you need more information, get in touch.</p><a href="/contact">Contact us <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a></aside>
         </section>
+        <AdSenseUnit />
         <SiteFooter />
       </div>
     </main>
