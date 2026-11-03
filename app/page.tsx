@@ -13,8 +13,8 @@ const COMMON_EXPIRY_LABELS: Record<number, string> = {
   1: "1 minute", 5: "5 minutes", 15: "15 minutes", 30: "30 minutes",
   60: "1 hour", 360: "6 hours", 1440: "24 hours", 4320: "3 days", 10080: "7 days",
 };
-function formatReceiveCode(value: string) { return value.replace(/\\D/g, "").slice(0, 6); }
-function isValidCode(value: string) { return /^\\d{6}$/.test(value); }
+function formatReceiveCode(value: string) { return value.replace(/\D/g, "").slice(0, 6); }
+function isValidCode(value: string) { return /^\d{6}$/.test(value); }
 
 export default function HomePage() {
   const [tab, setTab] = useState<Tab>("send");
