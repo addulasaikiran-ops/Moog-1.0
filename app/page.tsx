@@ -203,7 +203,7 @@ export default function HomePage() {
             <article><LockKeyhole size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Private links</h3><p>High-entropy links that are difficult to guess.</p></article>
             <article><KeyRound size={20} strokeWidth={1.5} aria-hidden="true" /><h3>Secure storage</h3><p>Links and codes are stored as hashes.</p></article>
             <article><ShieldCheck size={20} strokeWidth={1.5} aria-hidden="true" /><h3>We control access, not copies</h3><p>Once someone views or downloads the content, we can&apos;t prevent them from copying it.</p></article>
-            <article><Eye size={20} strokeWidth={1.5} aria-hidden="true" /><h3>No tracking</h3><p>Moog doesn’t require an account and doesn’t use third-party analytics tracking.</p></article>
+            <article><Eye size={20} strokeWidth={1.5} aria-hidden="true" /><h3>No tracking</h3><p>No third-party analytics. Google ads may use cookies as explained in our privacy page.</p></article>
           </div>
         </section>
 
