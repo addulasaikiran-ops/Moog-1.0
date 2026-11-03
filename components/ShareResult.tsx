@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { CheckCircle2, XCircle } from "lucide-react";
 import ConfirmDialog from "@/components/ConfirmDialog";
 import type { CreatedShare } from "@/components/Composer";
 
@@ -62,17 +63,17 @@ export default function ShareResult({ share, onCreateAnother }: { share: Created
   const remaining = new Date(share.expiresAt).getTime() - now;
   const active = !revoked && remaining > 0;
   return <>
-    <section className="result resultExpanded sharedResult" aria-live="polite" aria-labelledby="share-ready-title">
-      <div className="resultSuccessRow"><div className="resultIcon" aria-hidden="true">{revoked ? "×" : "✓"}</div><div><div className="resultLabel">{revoked ? "ACCESS REVOKED" : "SHARE CREATED"}</div><h2 id="share-ready-title">{revoked ? "This share has been revoked." : "Your share is ready."}</h2><p>{revoked ? "The link and code can no longer be used." : "Share the private link or send the six-digit code separately."}</p></div></div>
+    <section className="result resultExpanded sharedResult" data-ui="created-link" aria-labelledby="share-ready-title">
+      <div className="resultSuccessRow"><div className="resultIcon" aria-hidden="true">{revoked ? <XCircle size={22} strokeWidth={1.5} /> : <CheckCircle2 size={22} strokeWidth={1.5} />}</div><div><div className="resultLabel">{revoked ? "ACCESS REVOKED" : "SHARE CREATED"}</div><h2 id="share-ready-title">{revoked ? "This share has been revoked." : "Your share is ready."}</h2><p>{revoked ? "The link and code can no longer be used." : "Share the private link or send the six-digit code separately."}</p></div></div>
       {active ? <div className="resultBody">
         <div className="resultFieldLabel">PRIVATE LINK</div>
-        <div className="resultLinkRow"><a href={share.url} target="_blank" rel="noreferrer">{share.url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copy(share.url, "link")}>{copied === "link" ? "Copied ✓" : "Copy link"}</button></div>
-        <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{share.code.replace(/(\d{3})(\d{3})/, "$1 $2")}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copy(share.code, "code")}>{copied === "code" ? "Copied ✓" : "Copy code"}</button></div>
-        <div className="resultMetaGrid" aria-label="Share details"><div><span>TIME REMAINING</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{share.passwordProtected ? "Password protected" : "No password"}</strong></div><div><span>VIEWING</span><strong>{share.viewOnce ? "View once" : "Until expiry"}</strong></div></div>
+        <div className="resultLinkRow"><a href={share.url} target="_blank" rel="noreferrer">{share.url}</a><button className="copy resultPrimaryCopy" type="button" onClick={() => void copy(share.url, "link")}>{copied === "link" ? "Copied" : "Copy link"}</button></div>
+        <div className="uniqueCodeBox"><div><span>6-DIGIT SHARE CODE</span><strong>{share.code.replace(/(\d{3})(\d{3})/, "$1 $2")}</strong></div><button className="copy codeCopyButton" type="button" onClick={() => void copy(share.code, "code")}>{copied === "code" ? "Copied" : "Copy code"}</button></div>
+        <div className="resultMetaGrid" aria-label="Share details"><div><span>EXPIRES AT</span><strong>{new Date(share.expiresAt).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}</strong></div><div><span>TIME REMAINING</span><strong>{remaining > 0 ? formatCountdown(remaining) : "Expired"}</strong></div><div><span>ACCESS</span><strong>{share.passwordProtected ? "Password protected" : "No password"}</strong></div><div><span>VIEWING</span><strong>{share.viewOnce ? "View once" : "Until expiry"}</strong></div></div>
         <p className="resultNote">Keep the link private. Anyone who has it can attempt to open the share.</p>
       </div> : <p className="revokeNotice" role="status">{revoked ? "Access has been revoked." : "This share has expired."}</p>}
       {error && <p className="formError" role="alert">{error}</p>}
-      <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{feedback || (active ? "Ready to share." : "Share is no longer active.")}</span><div className="shareResultActions">{active && <><button className="resultNewButton" type="button" onClick={() => void shareLink()}>Share…</button><button className="revokeButton" type="button" onClick={() => setDialogOpen(true)} disabled={revoking}>Revoke link</button></>}<button className="resultNewButton" type="button" onClick={onCreateAnother}>Create another</button></div></div>
+      <div className="resultBottom"><span className="copyFeedback" aria-live="polite">{copied ? "Copied" : feedback || (active ? "Ready to share." : "Share is no longer active.")}</span><div className="shareResultActions">{active && <><button className="resultNewButton" type="button" onClick={() => void shareLink()}>Share…</button><button className="revokeButton" type="button" onClick={() => setDialogOpen(true)} disabled={revoking}>Revoke link</button></>}<button className="resultNewButton" type="button" onClick={onCreateAnother}>Create another</button></div></div>
     </section>
     <ConfirmDialog open={dialogOpen} title="Revoke this share?" description="Anyone using this link or code will lose access immediately. This action cannot be undone." confirmLabel="Revoke share" busy={revoking} onCancel={() => setDialogOpen(false)} onConfirm={() => void revoke()} />
   </>;

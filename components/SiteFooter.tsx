@@ -1,38 +1,29 @@
 "use client";
 
+import { ArrowUpRight } from "lucide-react";
 import Logo from "@/components/Logo";
+
+const footerLinks = [
+  { href: "/#about-moog", label: "About" },
+  { href: "/#how-it-works", label: "How it works" },
+  { href: "/recent", label: "Recent shares" },
+  { href: "/privacy", label: "Privacy" },
+];
 
 export default function SiteFooter() {
   return (
-    <footer className="stitchFooter">
-      <div className="stitchFooterInner">
-        <div className="stitchFooterBrand">
-          <Logo className="stitchFooterLogo" />
-          <p>Temporary access-controlled sharing for text, code, and photos.</p>
-          <span className="stitchFooterPill"><i aria-hidden="true" /> No account required</span>
-        </div>
-        <div className="stitchFooterColumn">
-          <h2>PRODUCT</h2>
-          <a href="/">Home</a>
-          <a href="/how-it-works">How it works</a>
-          <a href="/recent">Recent shares</a>
-          <a href="/create">Create a share</a>
-        </div>
-        <div className="stitchFooterColumn">
-          <h2>GOVERNANCE</h2>
-          <a href="/about">About</a>
-          <a href="/privacy">Privacy</a>
-          <a href="/terms">Terms</a>
-        </div>
-        <div className="stitchFooterColumn">
-          <h2>SUPPORT</h2>
-          <a href="/contact">Contact</a>
-          <a href="/report-abuse">Report abuse</a>
-        </div>
+    <footer className="stitchFooter restyleFooter">
+      <div className="restyleFooterBrand">
+        <Logo className="stitchFooterLogo" />
+        <p>Temporary access-controlled sharing for text, code, and photos.</p>
+        <a className="footerCreateLink" href="/create">Create a private share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a>
       </div>
-      <div className="stitchFooterBottom">
-        <span>© 2026 Moog</span>
-        <span>Moog controls access, not copies.</span>
+      <div className="restyleFooterBottom">
+        <nav aria-label="Footer navigation">
+          {footerLinks.map(link => <a href={link.href} key={link.label}>{link.label}</a>)}
+        </nav>
+        <div className="footerLegal"><a href="/terms">Terms</a><a href="/contact">Contact</a><a href="/report-abuse">Report abuse</a></div>
+        <div className="footerNote"><span>© 2026 Moog</span><span>Moog controls access, not copies.</span></div>
       </div>
     </footer>
   );

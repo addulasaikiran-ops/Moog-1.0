@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { ArrowUpRight, LockKeyhole } from "lucide-react";
 import { cookies } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { hashToken, isValidToken, verifyAccessGrant } from "@/lib/token";
@@ -34,14 +35,14 @@ export default async function SharePage({ params, searchParams }: Props) {
   if (!unlocked) {
     return (
       <LiveShareGuard token={token}>
-        <main className="viewerPage viewerMinimal viewerLockedPage">
+        <main className="viewerPage viewerMinimal viewerLockedPage" data-ui="password-prompt">
         <div className="viewerShell">
           <header className="viewerTopbar">
             <Logo className="minimalLogo" />
-            <span className="viewerSecure"><span className="lockDot">⌁</span> access link</span>
+            <span className="viewerSecure"><LockKeyhole size={15} strokeWidth={1.5} aria-hidden="true" /> access link</span>
           </header>
           <section className="lockStage">
-            <div className="lockIcon">↗</div>
+            <div className="lockIcon" aria-hidden="true"><LockKeyhole size={22} strokeWidth={1.5} /></div>
             <div className="viewerEyebrow">PASSWORD PROTECTED</div>
             <h1>This link requires the access password.</h1>
             <p>Enter the password to reveal what was shared with you.</p>
@@ -59,7 +60,7 @@ export default async function SharePage({ params, searchParams }: Props) {
   if (share.viewOnce && !revealed) {
     return (
       <LiveShareGuard token={token}>
-        <main className="viewerPage viewerMinimal">
+        <main className="viewerPage viewerMinimal" data-ui="view-once">
         <div className="viewerShell">
           <header className="viewerTopbar">
             <Logo className="minimalLogo" />
@@ -84,11 +85,11 @@ export default async function SharePage({ params, searchParams }: Props) {
 
   return (
     <LiveShareGuard token={token}>
-      <main className="viewerPage viewerMinimal">
+      <main className="viewerPage viewerMinimal" data-ui="share-view">
       <div className="viewerShell">
         <header className="viewerTopbar">
           <Logo className="minimalLogo" />
-          <a className="newShareLink" href="/">New share <span>→</span></a>
+          <a className="newShareLink" href="/">New share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a>
         </header>
 
         <main className="viewerMain">
@@ -132,7 +133,7 @@ export default async function SharePage({ params, searchParams }: Props) {
                       <span className="minimalActionNote">Access-controlled share</span>
                     )}
                   </div>
-                  <a className="minimalNewShare" href="/">New share <span>→</span></a>
+                  <a className="minimalNewShare" href="/">New share <ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /></a>
                 </div>
               </>
             )}

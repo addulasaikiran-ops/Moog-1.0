@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+  <title id="title">Moog bots with a temporary secret</title>
+  <desc id="desc">Four quiet monochrome Moog bots gather around a small locked envelope. The secret is temporary.</desc>
+  <style>
+    :root { --ink:#0A0A0A; --paper:#FAFAF9; --line:#E7E5E4; --muted:#78716C; --secret:#0A0A0A; }
+    @media (prefers-color-scheme:dark) { :root { --ink:#FAFAF9; --paper:#0A0A0A; --line:#262626; --muted:#A3A3A3; --secret:#FAFAF9; } }
+    .body { fill:var(--paper); stroke:var(--ink); stroke-width:1.6; stroke-linejoin:round; }
+    .line { fill:none; stroke:var(--ink); stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+    .ground { fill:none; stroke:var(--line); stroke-width:1.5; stroke-linecap:round; }
+    .eye { fill:var(--ink); }
+  </style>
+  <path class="ground" d="M88 286 H1112"/>
+  <g transform="translate(170 0)">
+    <path class="body" d="M7 274 C2 260 8 239 12 226 C17 210 29 201 43 202 C60 203 69 218 70 238 L70 259 Q70 271 60 274 Z"/>
+    <path class="body" d="M8 245 l-5 5 6 4"/><path class="line" d="M24 274 l-2 8 M54 274 l2 8"/>
+    <ellipse class="eye" cx="200" cy="236" rx="2.8" ry="4" transform="translate(-170 0)"/>
+    <ellipse class="eye" cx="219" cy="236" rx="2.8" ry="4" transform="translate(-170 0)"/>
+    <path class="line" d="M34 249 q5 4 10 0 M40 202 V190"/><circle class="body" cx="40" cy="187" r="3.4"/>
+  </g>
+  <g transform="translate(416 0)">
+    <path class="body" d="M5 274 C1 258 7 232 13 217 C19 202 33 196 47 201 C62 206 67 222 67 240 L67 260 Q67 273 57 274 Z"/>
+    <path class="line" d="M22 215 l7 -3 M34 212 l7 -2 M20 274 l-2 8 M51 274 l3 8"/>
+    <ellipse class="eye" cx="27" cy="237" rx="2.7" ry="3.8"/><ellipse class="eye" cx="46" cy="237" rx="2.7" ry="3.8"/>
+    <path class="line" d="M31 250 q5 3 9 -1 M38 201 l-2 -12"/><circle class="body" cx="35.5" cy="186" r="3.2"/>
+  </g>
+  <g transform="translate(662 0)">
+    <path class="body" d="M8 274 C4 261 8 240 14 228 C20 215 32 210 45 214 C59 218 65 232 65 247 L65 260 Q65 273 56 274 Z"/>
+    <path class="body" d="M20 232 Q36 226 52 232 L52 240 Q36 244 20 240 Z"/>
+    <ellipse class="eye" cx="30" cy="236" rx="2.4" ry="2.8"/><ellipse class="eye" cx="43" cy="236" rx="2.4" ry="2.8"/>
+    <path class="line" d="M21 274 l-2 8 M49 274 l3 8 M34 253 q4 3 8 0 M37 214 V203"/><circle class="body" cx="37" cy="200" r="3"/>
+  </g>
+  <g transform="translate(914 0)">
+    <path class="body" d="M8 274 C4 263 8 246 13 234 C18 222 29 216 41 219 C54 222 61 235 61 250 L61 261 Q61 273 52 274 Z"/>
+    <path class="line" d="M20 274 l-2 8 M46 274 l3 8 M29 254 q4 3 8 0 M35 219 l-2 -10 5 -3"/><circle class="body" cx="40" cy="204" r="3"/>
+    <ellipse class="eye" cx="940" cy="242" rx="2.5" ry="3.6" transform="translate(-914 0)"/><ellipse class="eye" cx="957" cy="242" rx="2.5" ry="3.6" transform="translate(-914 0)"/>
+  </g>
+  <ellipse cx="645" cy="165" rx="30" ry="30" fill="var(--muted)" opacity=".1"/>
+  <circle cx="645" cy="165" r="22" fill="var(--paper)" stroke="var(--secret)" stroke-width="1.5"/>
+  <path class="line" d="M633 159 L645 169 L657 159 M633 174 V159 H657 V174 Z"/>
+  <g transform="translate(658 174)" fill="var(--paper)" stroke="var(--secret)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="-4" y="-1" width="8" height="6" rx="1.2"/><path d="M-2 -1 V-3 A2 2 0 0 1 2 -3 V-1" fill="none"/>
+  </g>
+  <circle cx="645" cy="165" r="27" fill="none" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="3 5" opacity=".7"/>
+</svg>

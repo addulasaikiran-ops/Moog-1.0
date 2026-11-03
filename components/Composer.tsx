@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useEffect, useRef, useState } from "react";
+import { ArrowUpRight, ChevronDown, Code2, FileText, Image as ImageIcon, LockKeyhole, Upload } from "lucide-react";
 
 const EXPIRY_OPTIONS = [
   { value: 1, label: "1 minute" }, { value: 5, label: "5 minutes" },
@@ -28,8 +29,9 @@ export type CreatedShare = {
 
 type RecentShare = { type: CreatedShare["mode"]; createdAt: string; expiresAt: string; url: string; code: string; passwordProtected: boolean; viewOnce: boolean; revoked?: boolean };
 
-export default function Composer({ onCreated, compact = false }: {
+export default function Composer({ onCreated, onExpiryChange, compact = false }: {
   onCreated: (share: CreatedShare) => void;
+  onExpiryChange?: (minutes: number) => void;
   compact?: boolean;
 }) {
   const [mode, setMode] = useState<CreatedShare["mode"]>("text");
@@ -49,6 +51,7 @@ export default function Composer({ onCreated, compact = false }: {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl); }, [previewUrl]);
+  useEffect(() => { onExpiryChange?.(expiryMinutes); }, [expiryMinutes, onExpiryChange]);
 
   function handleFile(nextFile: File | null) {
     if (!nextFile) return;
@@ -96,47 +99,48 @@ export default function Composer({ onCreated, compact = false }: {
   }
 
   return (
-    <section className={compact ? "composer card composerCompact" : "composer card"} id="composer" aria-labelledby="composer-title">
+    <section className={compact ? "composer card composerCompact" : "composer card"} id="composer" data-ui="composer" aria-labelledby="composer-title">
       <div className="srOnly" id="composer-title">Create a share</div>
       <form onSubmit={submit}>
-        <div className="composerTop"><div className="srOnly">{mode} composer</div>
-          {mode === "photo" ? <div className="counter">10 MB max</div> : <div className={text.length >= 90000 ? "counter counterNearLimit" : "counter"} aria-live="polite">{text.length.toLocaleString()} / 100,000</div>}
+        <div className="composerTop"><div className="srOnly">{mode} composer</div>{mode === "photo" ? <span className="composerFieldLabel">Image</span> : <label className="composerFieldLabel" htmlFor="composer-content">{mode === "code" ? "Code content" : "Text content"}</label>}
+          {mode === "photo" ? <div className="counter">10 MB max</div> : <div className={text.length >= 90000 ? "counter counterNearLimit" : "counter"} aria-live="off">{text.length.toLocaleString()} / 100,000</div>}
         </div>
         <div className="modeToggle" role="group" aria-label="Content mode">
-          <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} aria-pressed={mode === "text"} onClick={() => setMode("text")}>▣ <span>Text</span></button>
-          <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} aria-pressed={mode === "code"} onClick={() => setMode("code")}>{ "</>" } <span>Code</span></button>
-          <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} aria-pressed={mode === "photo"} onClick={() => setMode("photo")}>▧ <span>Image</span></button>
+          <button type="button" className={mode === "text" ? "modeButton active" : "modeButton"} aria-pressed={mode === "text"} onClick={() => setMode("text")}><FileText size={20} strokeWidth={1.5} aria-hidden="true" /><span>Text</span></button>
+          <button type="button" className={mode === "code" ? "modeButton active" : "modeButton"} aria-pressed={mode === "code"} onClick={() => setMode("code")}><Code2 size={20} strokeWidth={1.5} aria-hidden="true" /><span>Code</span></button>
+          <button type="button" className={mode === "photo" ? "modeButton active" : "modeButton"} aria-pressed={mode === "photo"} onClick={() => setMode("photo")}><ImageIcon size={20} strokeWidth={1.5} aria-hidden="true" /><span>Image</span></button>
         </div>
-        {mode !== "photo" && <textarea value={text} onChange={e => { setText(e.target.value); setError(""); }} placeholder={mode === "code" ? "Paste your code snippet…" : "Paste the text you want to share…"} maxLength={100000} aria-label={mode === "code" ? "Code to share" : "Text to share"} />}
+        {mode !== "photo" && <textarea id="composer-content" value={text} onChange={e => { setText(e.target.value); setError(""); }} placeholder={mode === "code" ? "Paste your code snippet…" : "Paste the text you want to share…"} maxLength={100000} aria-label={mode === "code" ? "Code to share" : "Text to share"} />}
         {mode === "code" && <div className="codeSelectRow"><label htmlFor="composer-language">Language</label><select id="composer-language" value={language} onChange={e => setLanguage(e.target.value)}>{CODE_LANGUAGES.map(([value,label]) => <option key={value} value={value}>{label}</option>)}</select></div>}
         {mode === "photo" && <div className={dragActive ? "photoComposer dragActive" : "photoComposer"}
           onDragOver={e => { e.preventDefault(); setDragActive(true); }} onDragLeave={() => setDragActive(false)}
           onDrop={e => { e.preventDefault(); setDragActive(false); handleFile(e.dataTransfer.files?.[0] ?? null); }}
           onPaste={e => { const image = Array.from(e.clipboardData.files).find(item => item.type.startsWith("image/")); if (image) { e.preventDefault(); handleFile(image); } }}>
-          {previewUrl ? <div className="photoPreview"><img src={previewUrl} alt="Selected image preview" /><div className="photoPreviewMeta"><span>{file?.name}</span><small>{file ? (file.size / 1024 / 1024).toFixed(2) + " MB" : ""}</small><button className="copy" type="button" onClick={() => { setFile(null); setPreviewUrl(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}>Remove image</button></div></div> : <div className="photoDrop"><div className="photoDropIcon" aria-hidden="true">+</div><strong>Drop an image here</strong><span>or choose a photo</span><small>JPG / PNG / GIF / WebP · up to 10 MB</small></div>}
+          {previewUrl ? <div className="photoPreview"><img src={previewUrl} alt="Selected image preview" /><div className="photoPreviewMeta"><span>{file?.name}</span><small>{file ? (file.size / 1024 / 1024).toFixed(2) + " MB" : ""}</small><button className="copy" type="button" onClick={() => { setFile(null); setPreviewUrl(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}>Remove image</button></div></div> : <div className="photoDrop"><div className="photoDropIcon" aria-hidden="true"><Upload size={22} strokeWidth={1.5} /></div><strong>Drop an image here</strong><span>or choose a photo</span><small>JPG / PNG / GIF / WebP · up to 10 MB</small></div>}
           <input ref={fileInputRef} type="file" accept="image/jpeg,image/png,image/gif,image/webp" onChange={e => handleFile(e.target.files?.[0] ?? null)} aria-label="Choose photo" />
           <button className="copy" type="button" onClick={() => fileInputRef.current?.click()}>Choose image</button>
         </div>}
         <div className="lifetimeSection">
           <div className="lifetimeHeader"><span>Link expires in</span><strong>{EXPIRY_OPTIONS.find(o => o.value === expiryMinutes)?.label}</strong></div>
-          <div className="lifetimePills" role="group" aria-label="Link lifetime">
-            {EXPIRY_OPTIONS.map(option => <button key={option.value} type="button" aria-pressed={expiryMinutes === option.value} className={expiryMinutes === option.value ? "lifetimePill active" : "lifetimePill"} onClick={() => setExpiryMinutes(option.value)}>{option.label.replace(" minutes"," min").replace(" minute"," min").replace(" hours"," hr").replace(" hour"," hr")}</button>)}
+          <div className="lifetimePills" role="group" aria-label="Common link expiry">
+            {[{ value: 15, label: "15 min" }, { value: 60, label: "1 hr" }, { value: 1440, label: "24 hr" }, { value: 10080, label: "7 days" }].map(option => <button key={option.value} type="button" aria-pressed={expiryMinutes === option.value} className={expiryMinutes === option.value ? "lifetimePill active" : "lifetimePill"} onClick={() => setExpiryMinutes(option.value)}>{option.label}</button>)}
+            <label className="expiryMore"><span className="srOnly">More expiry options</span><select aria-label="More expiry options" value={[15,60,1440,10080].includes(expiryMinutes) ? "" : String(expiryMinutes)} onChange={event => { if (event.target.value) setExpiryMinutes(Number(event.target.value)); }}><option value="">More</option>{EXPIRY_OPTIONS.filter(option => ![15,60,1440,10080].includes(option.value)).map(option => <option key={option.value} value={option.value}>{option.label}</option>)}</select><ChevronDown size={14} strokeWidth={1.5} aria-hidden="true" /></label>
           </div>
         </div>
         <div className="securityBar">
           <button type="button" className={showSecurity ? "securityDisclosure open" : "securityDisclosure"} aria-expanded={showSecurity} onClick={() => setShowSecurity(v => !v)}>
-            <span className="securityDot" aria-hidden="true" /><span><strong>Security</strong><small>{passwordEnabled ? "Password protection enabled" : viewOnce ? "View once enabled" : "Optional controls"}</small></span><span className="securityChevron" aria-hidden="true">⌄</span>
+            <span className="securityDot" aria-hidden="true"><LockKeyhole size={16} strokeWidth={1.5} /></span><span><strong>Security options</strong><small>{passwordEnabled ? "Password protection enabled" : viewOnce ? "View once enabled" : "Optional controls"}</small></span><ChevronDown className="securityChevron" size={18} strokeWidth={1.5} aria-hidden="true" />
           </button>
           {showSecurity && <div className="securityOptions">
-            <div className="optionField accessKeyField"><label className="passwordToggleRow"><input type="checkbox" checked={passwordEnabled} onChange={e => { setPasswordEnabled(e.target.checked); if (!e.target.checked) setAccessKey(""); }} /><span><strong>Password protection</strong><small>Require a password before the share can be opened.</small></span></label>
-              {passwordEnabled && <><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={e => setAccessKey(e.target.value)} maxLength={128} autoComplete="new-password" placeholder="Set a password" aria-label="Share password" required /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide password" : "Show password"} onClick={() => setShowAccessKey(v => !v)}>{showAccessKey ? "Hide" : "Show"}</button></div><small className="optionNote">Recipient must enter this password to view the share.</small></>}
+            <div className="optionField accessKeyField"><label className="passwordToggleRow"><input type="checkbox" aria-describedby="password-protection-help" checked={passwordEnabled} onChange={e => { setPasswordEnabled(e.target.checked); if (!e.target.checked) setAccessKey(""); }} /><span><strong>Password protection</strong><small id="password-protection-help">Require a password before the share can be opened.</small></span></label>
+              {passwordEnabled && <><div className="secretInput"><input type={showAccessKey ? "text" : "password"} value={accessKey} onChange={e => setAccessKey(e.target.value)} maxLength={128} autoComplete="new-password" placeholder="Set a password" aria-label="Share password" aria-describedby="share-password-help" required /><button type="button" className="toggleSecret" aria-label={showAccessKey ? "Hide password" : "Show password"} onClick={() => setShowAccessKey(v => !v)}>{showAccessKey ? "Hide" : "Show"}</button></div><small className="optionNote" id="share-password-help">Recipient must enter this password to view the share.</small></>}
             </div>
-            <div><label className="checkField"><input type="checkbox" checked={viewOnce} onChange={e => setViewOnce(e.target.checked)} /><span><strong>View once</strong><small>Allow only one successful view.</small></span></label>{viewOnce && <p className="viewOnceWarning" role="status">After the first successful view, this content will no longer be accessible.</p>}</div>
+            <div><label className="checkField"><input type="checkbox" aria-describedby="view-once-help" checked={viewOnce} onChange={e => setViewOnce(e.target.checked)} /><span><strong>View once</strong><small id="view-once-help">Allow only one successful view.</small></span></label>{viewOnce && <p className="viewOnceWarning" role="status">After the first successful view, this content will no longer be accessible.</p>}</div>
           </div>}
         </div>
         {error && <div className="formError" role="alert">{error}</div>}
-        <button className="primary createButton" type="submit" disabled={loading}>{loading ? <><span className="spinner" /> Creating…</> : <>↗ &nbsp; Create secure share <span>→</span></>}</button>
-        <div className="composerTrust">◈ &nbsp; No account required. Your content expires automatically.</div>
+        <button className="primary createButton" type="submit" disabled={loading || (mode === "photo" ? !file : !text.trim()) || (passwordEnabled && !accessKey.trim())}>{loading ? <><span className="spinner" /> Creating…</> : <><ArrowUpRight size={18} strokeWidth={1.5} aria-hidden="true" /> Create secure share</>}</button>
+        <div className="composerTrust"><LockKeyhole size={15} strokeWidth={1.5} aria-hidden="true" /> No account required. Your content expires automatically.</div>
       </form>
     </section>
   );
